@@ -75,7 +75,7 @@ Image(url=url)
 
 
 
-## Raw form
+## Raw form - When you need to be closer to the metal
 
 The `raw` object is a thin layer on top of the `openai` package, which is itself a thin layer over the web requests. 
 
