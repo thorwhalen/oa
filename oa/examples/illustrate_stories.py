@@ -98,17 +98,16 @@ def topic_points_json(topic, n_talking_points=3, min_n_words=15, max_n_words=40)
     return _repair_json(t)
 
 
-
-@postprocess(extract_first_text_choice)
-def make_it_rhyming(story) -> str:
+# @postprocess(extract_first_text_choice)
+def make_it_rhyming(story, *, max_tokens=512, **chat_param) -> str:
     prompt = make_it_rhyming_prompt.format(story=story)
-    return oa.complete(prompt, max_tokens=512, n=1)
+    return oa.chat(prompt, max_tokens=max_tokens, n=1, **chat_param)
 
 
-@postprocess(extract_first_text_choice)
+# @postprocess(extract_first_text_choice)
 def get_image_description(story_text: str, image_style=DFLT_IMAGE_STYLE) -> str:
     prompt = illustrate_prompt.format(text=story_text, image_style=image_style)
-    return oa.complete(prompt, max_tokens=512, n=1)
+    return oa.chat(prompt, max_tokens=512, n=1)
 
 
 def get_image_url(image_description, image_style=DFLT_IMAGE_STYLE):
