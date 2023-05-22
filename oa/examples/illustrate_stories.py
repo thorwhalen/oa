@@ -105,9 +105,11 @@ def make_it_rhyming(story, *, max_tokens=512, **chat_param) -> str:
 
 
 # @postprocess(extract_first_text_choice)
-def get_image_description(story_text: str, image_style=DFLT_IMAGE_STYLE) -> str:
+def get_image_description(
+        story_text: str, image_style=DFLT_IMAGE_STYLE, max_tokens=256, **chat_param
+        ) -> str:
     prompt = illustrate_prompt.format(text=story_text, image_style=image_style)
-    return oa.chat(prompt, max_tokens=512, n=1)
+    return oa.chat(prompt, max_tokens=max_tokens, n=1, **chat_param)
 
 
 def get_image_url(image_description, image_style=DFLT_IMAGE_STYLE):
