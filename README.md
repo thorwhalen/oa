@@ -8,13 +8,109 @@ To install:	```pip install oa```
 
 # Usage
 
+See notebooks:
+* [oa - An OpenAI facade.ipynb](https://github.com/thorwhalen/oa/blob/main/misc/oa%20-%20An%20OpenAI%20facade.ipynb)
+* [oa - Making an Aesop fables children's book oa.ipynb](https://github.com/thorwhalen/oa/blob/main/misc/oa%20-%20Making%20an%20Aesop%20fables%20children's%20book%20oa.ipynb)
+
+Below are a few snippets from there. 
+
+
+## Functionalizing prompts
+
+Sure, you can do many things in English now with our new AI superpowers, but still, to be able to really reuse and compose your best prompts, you had better parametrize them -- that is, distill them down to the minimal necessary interface. The function.
+
+The `oa.prompt_function` is an easy to use, yet extremely configurable, tool to do that.
+
+
+```python
+from oa import prompt_function
+
+template = """
+I'd like you to give me help me understand domain-specific jargon. 
+I will give you a CONTEXT and some WORDS. 
+You will then provide me with a tab separated table (with columns name and definition)
+that gives me a short definition of each word in the context of the context.
+Only output the table, with no words before or after it, since I will be parsing the output
+automatically.
+
+CONTEXT:
+{context}
+
+WORDS:
+{words}
+"""
+
+define_jargon = prompt_function(template, defaults=dict(context='machine learning'))
+```
+
+
+```python
+# Let's look at the signature
+import inspect
+print(inspect.signature(define_jargon))
+```
+
+    (*, words, context='machine learning')
+
+
+
+```python
+response = define_jargon(words='supervised learning\tunsupervised learning\treinforcement learning')
+print(response)
+```
+
+    name	definition
+    supervised learning	A type of machine learning where an algorithm learns from labeled training data to make predictions or take actions. The algorithm is provided with input-output pairs and uses them to learn patterns and make accurate predictions on new, unseen data.
+    unsupervised learning	A type of machine learning where an algorithm learns patterns and structures in input data without any labeled output. The algorithm identifies hidden patterns and relationships in the data to gain insights and make predictions or classifications based on the discovered patterns.
+    reinforcement learning	A type of machine learning where an algorithm learns to make a sequence of decisions in an environment to maximize a cumulative reward. The algorithm interacts with the environment, receives feedback in the form of rewards or punishments, and adjusts its actions to achieve the highest possible reward over time.
+
+
+
+```python
+def table_str_to_dict(table_str, *, newline='\n', sep='   '):
+    return dict([x.split('   ') for x in table_str.split('\n')[1:]])
+
+table_str_to_dict(define_jargon(
+    words='\n'.join(['allomorph', 'phonology', 'phonotactic constraints']),
+    context='linguistics'
+))
+
+```
+
+
+    {'allomorph': 'A variant form of a morpheme that is used in a specific linguistic context, often resulting in different phonetic realizations.',
+     'phonology': 'The study of speech sounds and their patterns, including the way sounds are organized and used in a particular language or languages.',
+     'phonotactic constraints': 'The rules or restrictions that govern the possible combinations of sounds within a language, specifying what sound sequences are allowed and which ones are not.'}
+
+
+
+Check out the many ways you can configure your function with `prompt_function`:
+
+
+```python
+str(inspect.signature(prompt_function)).split(', ')
+```
+
+
+
+
+    ['(template',
+     '*',
+     'defaults: Optional[dict] = None',
+     'template_to_names=<function _extract_names_from_format_string at 0x106d20940>',
+     'embodier=<function string_format_embodier at 0x106d204c0>',
+     'name=None',
+     'prompt_func=<function chat at 0x128420af0>',
+     'prompt_func_kwargs=None',
+     'egress=None)']
+
+
+
 ## Just-do-it: A minimal-boilerplate facade to OpenAI stuff
 
 For the typical tasks you might want to use OpenAI for.
 
 Note there's no "enter API KEY here" code. That's because if you don't have it in the place(s) it'll look for it, it will simply ask you for it, and, with your permission, put it in a hidden file for you, so you don't have to do this every time.
-
-
 
 
 ```python
@@ -68,11 +164,7 @@ from IPython.display import Image
 Image(url=url)
 ```
 
-
-
-
-<img src="https://oaidalleapiprodscus.blob.core.windows.net/private/org-AY3lr3H3xB9yPQ0HGR498f9M/user-7ZNCDYLWzP0GT48V6DCiTFWt/img-pNE6fCWGN3eJGj7ycFwZREhi.png?st=2023-04-22T22%3A17%3A03Z&se=2023-04-23T00%3A17%3A03Z&sp=r&sv=2021-08-06&sr=b&rscd=inline&rsct=image/png&skoid=6aaadede-4fb3-4698-a8f6-684d7786b067&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2023-04-22T21%3A08%3A14Z&ske=2023-04-23T21%3A08%3A14Z&sks=b&skv=2021-08-06&sig=5j6LPVO992R95dllAAjbmOXzS0MORD06Fo8unwtGNl0%3D"/>
-
+<img width="608" alt="image" src="https://github.com/thorwhalen/oa/assets/1906276/6e7b2ac4-648c-4ec0-81bf-078208f4ac39">
 
 
 ## Raw form - When you need to be closer to the metal

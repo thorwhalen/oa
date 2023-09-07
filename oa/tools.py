@@ -33,7 +33,7 @@ def string_format_embodier(template):
     return templated_string_embodier
 
 
-def templated_function(
+def prompt_function(
     template,
     *,
     defaults: Optional[dict] = None,
