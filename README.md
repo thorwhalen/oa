@@ -8,6 +8,12 @@ To install:	```pip install oa```
 
 # Usage
 
+Sure, you can do many things in English now with our new AI superpowers, but still, to be able to really reuse and compose your best prompts, you had better parametrize them -- that is, distill them down to the minimal necessary interface. The function.
+
+What `oa` does for you is enable you to easily -- really easily -- harness the newly available super-powers of AI from python. 
+
+Below, you'll see how 
+
 See notebooks:
 * [oa - An OpenAI facade.ipynb](https://github.com/thorwhalen/oa/blob/main/misc/oa%20-%20An%20OpenAI%20facade.ipynb)
 * [oa - Making an Aesop fables children's book oa.ipynb](https://github.com/thorwhalen/oa/blob/main/misc/oa%20-%20Making%20an%20Aesop%20fables%20children's%20book%20oa.ipynb)
@@ -15,9 +21,120 @@ See notebooks:
 Below are a few snippets from there. 
 
 
-## Functionalizing prompts
+## A collection of prompt-enabled functions
 
-Sure, you can do many things in English now with our new AI superpowers, but still, to be able to really reuse and compose your best prompts, you had better parametrize them -- that is, distill them down to the minimal necessary interface. The function.
+```python
+from oa.ask import ai
+
+list(ai)
+```
+
+    ['define_jargon', 'suggest_names']
+
+
+These are the names of functions automatically generated from a (for now small) folder of prompt templates. 
+
+These functions all have propert signatures:
+
+```python
+import inspect
+print(inspect.signature(ai.suggest_names))
+```
+
+(*, thing, n='30', min_length='1', max_length='15')
+
+
+```python
+answer = ai.suggest_names(
+    thing="""
+    A python package that provides propert python functions to do things,
+    enabled by prompts sent to an OpenAI engine.
+    """
+)
+print(answer)
+```
+
+    GyroPy
+    PromptCore
+    FlexiFunc
+    ProperPy
+    PyCogito
+    ...
+    PyPrompter
+    FuncDomino
+    SmartPy
+    PyVirtuoso
+
+
+
+### `PromptFuncs`
+
+Above, all we did was scan some local text files that specify prompt templates and make an object that contained the functions they define. We used `oa.PromptFuncs` for that. You can do the same. What `PromptFuncs` uses itself, is a convenient `oa.prompt_function` function that transforms a template into a function. See more details in the next "Functionalizing prompts" section.
+
+Let's just scratch the surface of what `PromptFuncs` can do. For more, you can look at the documentation, including the docs for `ai.prompt_function`.
+
+
+```python
+from oa import PromptFuncs
+
+funcs = PromptFuncs(
+    template_store = {
+        "haiku": "Write haiku about {subject}. Only output the haiku.",
+        "stylize": """
+            Reword what I_SAY, using the style: {style:funny}.
+            Only output the reworded text.
+            I_SAY:
+            {something}
+        """,
+    }
+)
+
+list(funcs)
+```
+
+    ['haiku', 'stylize']
+
+
+
+```python
+import inspect
+for name in funcs:
+    print(f"{name}: {inspect.signature(funcs[name])}")
+
+```
+
+    haiku: (*, subject)
+    stylize: (*, something, style='funny')
+
+
+
+```python
+print(funcs.haiku(subject="The potential elegance of code"))
+```
+
+    Code speaks a language,
+    Elegant syntax dances,
+    Beauty in function.
+
+
+
+```python
+print(funcs.stylize(something="The mess that is spagetti code!"))
+```
+
+    Spaghetti code, the tangled web of chaos!
+
+
+
+```python
+print(funcs.stylize(something="The mess that is spagetti code!", style="poetic"))
+```
+
+    The tangled strands of code, a chaotic tapestry!
+
+
+
+## Functionalizing prompts
 
 The `oa.prompt_function` is an easy to use, yet extremely configurable, tool to do that.
 

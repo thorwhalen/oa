@@ -1,0 +1,4 @@
+Suggest {n:30} names 
+between {min_length:1} and {max_length:15} characters long for {thing}.
+Only output the names, one per line with no words before or after it, 
+since I will be parsing the output.

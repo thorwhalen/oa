@@ -53,7 +53,7 @@ The topic is:
 {topic}
 '''
 
-DFLT_IMAGE_STYLE = "drawing"
+DFLT_IMAGE_STYLE = 'drawing'
 
 
 def extract_first_text_choice(response) -> str:
@@ -65,14 +65,14 @@ def extract_first_text_choice(response) -> str:
 #  mentioned by the FuncNodes, and auto-editing FuncNode binds.
 @postprocess(extract_first_text_choice)
 def topic_points(topic, n_talking_points=3) -> str:
-    print(f"topic_points: topic={topic}, n_talking_points={n_talking_points}")
+    print(f'topic_points: topic={topic}, n_talking_points={n_talking_points}')
     min_n_words = 5
     max_n_words = 20
     prompt = topic_points_prompt.format(
         topic=topic,
         n_talking_points=n_talking_points,
         min_n_words=min_n_words,
-        max_n_words=max_n_words
+        max_n_words=max_n_words,
     )
     return oa.complete(prompt, max_tokens=2048, n=1, engine='text-davinci-003')
 
@@ -91,7 +91,7 @@ def topic_points_json(topic, n_talking_points=3, min_n_words=15, max_n_words=40)
         topic=topic,
         n_talking_points=n_talking_points,
         min_n_words=min_n_words,
-        max_n_words=max_n_words
+        max_n_words=max_n_words,
     )
     t = oa.complete(prompt, max_tokens=2048, n=1, engine='text-davinci-003')
     t = extract_first_text_choice(t)
@@ -106,8 +106,8 @@ def make_it_rhyming(story, *, max_tokens=512, **chat_param) -> str:
 
 # @postprocess(extract_first_text_choice)
 def get_image_description(
-        story_text: str, image_style=DFLT_IMAGE_STYLE, max_tokens=256, **chat_param
-        ) -> str:
+    story_text: str, image_style=DFLT_IMAGE_STYLE, max_tokens=256, **chat_param
+) -> str:
     prompt = illustrate_prompt.format(text=story_text, image_style=image_style)
     return oa.chat(prompt, max_tokens=max_tokens, n=1, **chat_param)
 
@@ -128,7 +128,7 @@ def get_illustration(story_text: str, image_style=DFLT_IMAGE_STYLE):
 def _format_for_html_display(input_string: str) -> str:
     escaped_string = html.escape(input_string)
     newline_replaced_string = escaped_string.replace('\n', '<br>')
-    html_formatted_string = f"<p>{newline_replaced_string}</p>"
+    html_formatted_string = f'<p>{newline_replaced_string}</p>'
     return html_formatted_string
 
 
@@ -144,5 +144,3 @@ def aggregate_story_and_image(image_url, story_text):
     </html>'''
 
     return html
-
-

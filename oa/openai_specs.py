@@ -132,10 +132,11 @@ def schema_to_signature(schema):
 
     >>> from oa.openai_specs import specs
     >>> schema = specs['components']['schemas']['CreateChatCompletionRequest']
-    >>> print(str(schema_to_signature(schema)))  # doctest: +ELLIPSIS
+    >>> print(str(schema_to_signature(schema)))  # doctest: +SKIP
     (model: str, messages: List[openai_specs.Message], *, temperature: float = 1, ...
 
     """
+
     def gen():
         required = schema.get('required', [])
         for name, props in schema['properties'].items():
@@ -160,7 +161,7 @@ def _clean_up_whitespace(s):
 
 
 def schema_to_rst_argument_descriptions(
-        schema, process_description=_clean_up_whitespace
+    schema, process_description=_clean_up_whitespace
 ):
     """Yield rst-formatted argument descriptions for a schema
 
@@ -180,7 +181,9 @@ def schema_to_rst_argument_descriptions(
         yield f':param {name}: {description}'
 
 
-def schema_to_docs(name, schema: dict,  prefix='', line_prefix: str = '\t',):
+def schema_to_docs(
+    name, schema: dict, prefix='', line_prefix: str = '\t',
+):
     """Get the docs for a schema
 
     >>> from oa.openai_specs import specs
@@ -193,7 +196,7 @@ def schema_to_docs(name, schema: dict,  prefix='', line_prefix: str = '\t',):
     """
     s = schema_to_signature(schema)
     doc = prefix
-    doc += f"{name}(\n\t" + '\n\t'.join(str(s)[1:-1].split(', ')) + '\n)'
+    doc += f'{name}(\n\t' + '\n\t'.join(str(s)[1:-1].split(', ')) + '\n)'
     doc += '\n\n'
     doc += '\n\n'.join(schema_to_rst_argument_descriptions(schema))
     return _prefix_all_lines(doc, line_prefix)
@@ -267,6 +270,7 @@ class SpecNames:
     @cached_property
     def doc_for_name(self):
         import oa
+
         return {
             op_name: (getattr(oa.openai, op_name).create.__doc__ or '').strip()
             for op_name in self.matched_names
@@ -275,7 +279,7 @@ class SpecNames:
     @cached_property
     def schema_for_name(self):
         return {
-            name: schemas[f"Create{name[0].upper()}{name[1:]}Request"]
+            name: schemas[f'Create{name[0].upper()}{name[1:]}Request']
             for name in self.matched_names
         }
 

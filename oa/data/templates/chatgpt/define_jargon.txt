@@ -1,0 +1,12 @@
+I'd like you to give me help me understand domain-specific jargon. 
+I will give you a CONTEXT and some WORDS. 
+You will then provide me with a tab separated table (with columns name and definition)
+that gives me a short definition of each word in the context of the context.
+Only output the table, with no words before or after it, since I will be parsing the output
+automatically.
+
+CONTEXT:
+{context}
+
+WORDS:
+{words}
