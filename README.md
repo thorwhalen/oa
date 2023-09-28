@@ -133,6 +133,10 @@ print(funcs.stylize(something="The mess that is spagetti code!", style="poetic")
     The tangled strands of code, a chaotic tapestry!
 
 
+We used a `dict` to express our `func_name:template` specification, but note that it can be any `Mapping`. Therefore, you can source `PromptFuncs` with local files (example, using `dol.TextFiles`, like we did), a DB, or anything you can map to a key-value `Mapping` interface.
+
+(We suggest you use the [dol](https://pypi.org/project/dol/) package, and ecosystem, to help out with that.)
+
 
 ## Functionalizing prompts
 
