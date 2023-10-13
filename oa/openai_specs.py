@@ -38,7 +38,7 @@ from oa.util import grazed
 @lru_cache
 def get_openapi_spec_dict(
     openapi_spec_url: str = (
-        'https://raw.githubusercontent.com/openai/openai-openapi/master/openapi.yaml'
+        "https://raw.githubusercontent.com/openai/openai-openapi/master/openapi.yaml"
     ),
     *,
     refresh: bool = False,
@@ -59,16 +59,16 @@ def get_openapi_spec_dict(
 
 
 specs = get_openapi_spec_dict()
-schemas = specs['components']['schemas']
+schemas = specs["components"]["schemas"]
 
 # A mapping between the OpenAI API's schema names and the corresponding Python types.
 pytype_of_jstype = {
-    'string': str,
-    'boolean': bool,
-    'integer': int,
-    'number': float,
-    'array': list,
-    'object': dict,
+    "string": str,
+    "boolean": bool,
+    "integer": int,
+    "number": float,
+    "array": list,
+    "object": dict,
 }
 
 
@@ -85,8 +85,8 @@ Messages = List[Message]
 Model = str  # TODO: should be Literal parsed from the models list
 
 pytype_of_name = {
-    'messages': Messages,
-    'model': Model,
+    "messages": Messages,
+    "model": Model,
 }
 
 # Some arguments don't have defaults in the schema, but are secondary, so shouldn't be
@@ -97,10 +97,10 @@ pytype_of_name = {
 # their type, AND make the request fail. So we a mechanism to overwride the schema
 # default too.
 pre_defaults_of_name = {  # defaults that should override the schema
-    'max_tokens': None,
+    "max_tokens": None,
 }
 post_defaults_of_name = {  # defaults used if schema doesn't have a default
-    'user': None,
+    "user": None,
 }
 
 
@@ -108,10 +108,10 @@ def properties_to_annotation(name: str, props: dict):
     """Get annotations from a schema"""
     annotation = pytype_of_name.get(name, None)  # get type from name if exists
     if annotation is None:  # if not, fallback on schemas enum or type
-        if 'enum' in props:
-            annotation = Literal[tuple(props['enum'])]
+        if "enum" in props:
+            annotation = Literal[tuple(props["enum"])]
         else:
-            annotation = pytype_of_jstype.get(props.get('type', None), empty)
+            annotation = pytype_of_jstype.get(props.get("type", None), empty)
     return annotation
 
 
@@ -119,11 +119,11 @@ def properties_to_param_dict(name: str, props: dict):
     """Get all but kind fields of a Parameter object"""
     annotation = pytype_of_name.get(name, None)  # get type from name if exists
     if annotation is None:  # if not, fallback on schemas type
-        annotation = pytype_of_jstype.get(props.get('type', None), empty)
+        annotation = pytype_of_jstype.get(props.get("type", None), empty)
     if name in pre_defaults_of_name:
         default = pre_defaults_of_name[name]
     else:
-        default = props.get('default', post_defaults_of_name.get(name, empty))
+        default = props.get("default", post_defaults_of_name.get(name, empty))
     return dict(name=name, default=default, annotation=annotation)
 
 
@@ -138,8 +138,8 @@ def schema_to_signature(schema):
     """
 
     def gen():
-        required = schema.get('required', [])
-        for name, props in schema['properties'].items():
+        required = schema.get("required", [])
+        for name, props in schema["properties"].items():
             if name in required:
                 yield Param(
                     **properties_to_param_dict(name, props),
@@ -157,7 +157,7 @@ def _clean_up_whitespace(s):
     """Clean up whitespace in a string.
     Replace all whitespaces with single space, and strip.
     """
-    return re.sub(r'\s+', ' ', s).strip()
+    return re.sub(r"\s+", " ", s).strip()
 
 
 def schema_to_rst_argument_descriptions(
@@ -176,13 +176,16 @@ def schema_to_rst_argument_descriptions(
 
     """
     process_description = process_description or (lambda x: x)
-    for name, props in schema['properties'].items():
-        description = process_description(props.get('description', ''))
-        yield f':param {name}: {description}'
+    for name, props in schema["properties"].items():
+        description = process_description(props.get("description", ""))
+        yield f":param {name}: {description}"
 
 
 def schema_to_docs(
-    name, schema: dict, prefix='', line_prefix: str = '\t',
+    name,
+    schema: dict,
+    prefix="",
+    line_prefix: str = "\t",
 ):
     """Get the docs for a schema
 
@@ -196,14 +199,14 @@ def schema_to_docs(
     """
     s = schema_to_signature(schema)
     doc = prefix
-    doc += f'{name}(\n\t' + '\n\t'.join(str(s)[1:-1].split(', ')) + '\n)'
-    doc += '\n\n'
-    doc += '\n\n'.join(schema_to_rst_argument_descriptions(schema))
+    doc += f"{name}(\n\t" + "\n\t".join(str(s)[1:-1].split(", ")) + "\n)"
+    doc += "\n\n"
+    doc += "\n\n".join(schema_to_rst_argument_descriptions(schema))
     return _prefix_all_lines(doc, line_prefix)
 
 
-def _prefix_all_lines(string: str, prefix: str = '\t'):
-    return '\n'.join(map(lambda line: prefix + line, string.splitlines()))
+def _prefix_all_lines(string: str, prefix: str = "\t"):
+    return "\n".join(map(lambda line: prefix + line, string.splitlines()))
 
 
 from dol import path_filter, path_get
@@ -229,7 +232,7 @@ class SpecNames:
     @cached_property
     def op_paths(self):
         return list(
-            path_filter(lambda p, k, v: k == 'operationId' or v == 'operationId', specs)
+            path_filter(lambda p, k, v: k == "operationId" or v == "operationId", specs)
         )
 
     @cached_property
@@ -238,17 +241,17 @@ class SpecNames:
 
     @cached_property
     def create_route_and_op(self):
-        return list(filter(lambda x: x[1].startswith('create'), self.route_and_op))
+        return list(filter(lambda x: x[1].startswith("create"), self.route_and_op))
 
     @cached_property
     def sigs_ending_with_req(self):
-        return [x for x in vars(sig) if x.endswith('Request')]
+        return [x for x in vars(sig) if x.endswith("Request")]
 
     @cached_property
     def creation_actions(self):
         return set(
             map(
-                lambda x: x[len('create') : -len('request')].lower(),
+                lambda x: x[len("create") : -len("request")].lower(),
                 self.sigs_ending_with_req,
             )
         )
@@ -256,15 +259,16 @@ class SpecNames:
     @cached_property
     def attrs(self):
         import oa
-
-        return Attrs(oa.openai)
+        return vars(oa.openai)
+        # return Attrs(oa.openai)
 
     @cached_property
     def matched_names(self):
         return [
             x
             for x in list(self.attrs)
-            if 'create' in self.attrs[x] and x.lower() in self.creation_actions
+            if "create" in dir(self.attrs) and x.lower() in self.creation_actions
+            # if "create" in self.attrs[x] and x.lower() in self.creation_actions
         ]
 
     @cached_property
@@ -272,20 +276,20 @@ class SpecNames:
         import oa
 
         return {
-            op_name: (getattr(oa.openai, op_name).create.__doc__ or '').strip()
+            op_name: (getattr(oa.openai, op_name).create.__doc__ or "").strip()
             for op_name in self.matched_names
         }
 
     @cached_property
     def schema_for_name(self):
         return {
-            name: schemas[f'Create{name[0].upper()}{name[1:]}Request']
+            name: schemas[f"Create{name[0].upper()}{name[1:]}Request"]
             for name in self.matched_names
         }
 
     def _assert_that_everything_matches(self):
         assert set(
-            map(lambda x: x[: -len('request')].lower(), self.sigs_ending_with_req)
+            map(lambda x: x[: -len("request")].lower(), self.sigs_ending_with_req)
         ) == set(map(str.lower, [x[1] for x in self.create_route_and_op]))
 
 
@@ -314,7 +318,7 @@ def _mk_raw():
     def gen():
         for name in spec_names.matched_names:
             lo_name = name.lower()
-            func_sig = getattr(sig, f'Create{name}Request')
+            func_sig = getattr(sig, f"Create{name}Request")
 
             func = wrap(
                 getattr(oa.openai, name).create,
@@ -324,9 +328,11 @@ def _mk_raw():
             func.__doc__ = schema_to_docs(
                 lo_name,
                 spec_names.schema_for_name[name],
-                prefix=spec_names.doc_for_name[name] + '\n\n',
+                prefix=spec_names.doc_for_name[name] + "\n\n",
             )
             yield lo_name, func
+
+    from dol.sources import AttrContainer
 
     return AttrContainer(**dict(gen()))
 
@@ -342,15 +348,15 @@ def normalized_file_name(prompt: str) -> str:
     >>> normalized_file_name("This is: a PROMPT!  (with punctuation)")
     'this is a prompt with punctuation'
     """
-    return re.sub(r'\W+', ' ', prompt).lower().strip()
+    return re.sub(r"\W+", " ", prompt).lower().strip()
 
 
-def prompt_path(prompt, prefix=''):
+def prompt_path(prompt, prefix=""):
     filepath = os.path.join(prefix, normalized_file_name(prompt))
     return dol.ensure_dir(filepath)
 
 
-def merge_keys_to_values(d: dict, key_name='key'):
+def merge_keys_to_values(d: dict, key_name="key"):
     """Merge the keys of a dict into the values of the dict.
 
     >>> d = {'a': {'b': 1}, 'c': {'d': 2, 'e': 3}}
@@ -361,8 +367,8 @@ def merge_keys_to_values(d: dict, key_name='key'):
     """
     for k, v in d.items():
         assert key_name not in v, (
-            f'The key_name {key_name} was found in the value dict. Choose a different '
-            f'key_name.'
+            f"The key_name {key_name} was found in the value dict. Choose a different "
+            f"key_name."
         )
         yield k, dict({key_name: k}, **v)
 
@@ -370,6 +376,6 @@ def merge_keys_to_values(d: dict, key_name='key'):
 def schemas_df(schema: dict):
     import pandas as pd
 
-    print(pd.Series(schema['properties']))
-    print(schema['required'])
-    pd.DataFrame(schema['properties']).T.fillna('')
+    print(pd.Series(schema["properties"]))
+    print(schema["required"])
+    pd.DataFrame(schema["properties"]).T.fillna("")
