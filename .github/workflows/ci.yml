@@ -35,8 +35,11 @@ jobs:
           root-dir: ${{ env.PROJECT_NAME }}
           enable: C0114
 
+
       - name: Pytest Validation
         uses: i2mint/isee/actions/pytest-validation@master
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         with:
           root-dir: ${{ env.PROJECT_NAME }}
 
