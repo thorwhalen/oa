@@ -99,12 +99,21 @@ def prompt_function(
 
     # TODO: Same logic replicated in string_format_embodier (what can we do?)
     names = template_to_names(template)
-    # TODO: Too restrictive to require all names to be keyword only?
     arg_kinds = dict({name: Sig.KEYWORD_ONLY for name in names}, **(arg_kinds or {}))
-    sig = Sig(names).ch_kinds(**arg_kinds)
+    sig = Sig(names)
+
+    # Inject defaults
     sig = sig.ch_defaults(
         _allow_reordering=True, **{name: default for name, default in defaults.items()}
     )
+    # Handle kinds (make all but first keyword only)) and inject defaults
+    sig = sig.ch_kinds(**arg_kinds)
+    if sig.names:
+        # Change the first argument to position or keyword kind
+        first_arg_name = sig.names[0]
+        sig = sig.ch_kinds(**{first_arg_name: Sig.POSITIONAL_OR_KEYWORD})
+
+    sig = sig.sort_params()
 
     @sig
     def ask_oa(*ask_oa_args, **ask_oa_kwargs):
@@ -189,3 +198,17 @@ class PromptFuncs:
 
     def __len__(self):
         return len(self._functions)
+
+    def reload(self):
+        """Reload all functions"""
+        self._functions = dict(self._mk_functions())
+        self._inject_functions()
+        return self
+
+    def funcs_and_sigs(self):
+        """Return a mapping of function names to signatures"""
+        return {name: Sig(func) for name, func in self._functions.items()}
+
+    def print_signatures(self):
+        """Print signatures of all functions"""
+        print('\n'.join(f"{k}{v}" for k, v in self.funcs_and_sigs().items()))
