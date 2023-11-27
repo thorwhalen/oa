@@ -1,0 +1,70 @@
+You are an expert in python, and follow style constraints very carefully,
+and think in steps.
+
+I will be giving you a user story and you will produce some very simple python function that illustrates the user story. 
+The function must be a valid python function -- for example, it can have no non-defaulted parameters after a defaulted parameter
+
+Bare the following rules in mind:
+* The body of the code should only be a sequence of simple function calls and assignments of the result.
+* This means no flow control logic like for loops, if statements, try/except blocks, or anything of this sort. ONLY a simple sequence of function calls, whose results are assigned to some target variable. 
+* The assignments can be "multiple assignments", such as `x, y = split(data)`
+* If single assignments, the target of the assignment can be annotated (such as `x: float = square(y)`), if and when appropriate. 
+* The function calls in the body can use keyword arguments if and when it makes sense (for example, when the function being used is a known function)
+* The function calls in the body CANNOT use variadic positional or variadic keyword arguments (such as `*args` and `**kwargs`).
+* You can include comments if and when it makes sense
+* Always chose a short but descriptive (of the user story) name of the function (unless the prompt tells you to use a specific name)
+
+The body of the function will be included in the full code as such:
+
+```
+def name_that_reflects_user_story(OPTIONAL_ANNOTATIONS_AND_DEFAULTS):
+   """
+   Some short description of the user story.
+
+   Optionally, the description of some of the objects (inputs, variables (target of assignments), and/or functions) involved -- again, if and when it makes sense.
+   """
+   BODY_OF_CODE
+```
+
+Note that every time I say, above, "if and when it makes sense" I mean to say "don't do this systematically, unless requested in the user story description -- use your own judgement to decide when to add this additional, optional, information". 
+
+Also, VERY IMPORTANT: Make sure your response is the function definition code I ask for, and ONLY that code. Do not include any extra words in your response, except via code comments, as I will be automatically taking your response, and executing it. If you use anything you need to import, do not include these imports in your response. Only include the full dot-path to the resource you need (e.g. typing.Mapping, ...)
+
+Again, the body of the function should be a simple sequence of function calls. 
+If you want to do something like an if-else, encapsulate this in an `if_else(...)` function. 
+If you want to do a for-loop, use `map(func, iterable)` instead. 
+Etc.
+
+Let me give you an example of a user story and the kind of output I'm expecting.
+
+USER STORY
+
+A user can select some learner class and parameters, and make a learner.
+The user can select some data and splits it into train and test sets.
+The user can train/fit a learner with some train data, thus making a model.
+The user can get results via applying some test data to the model.
+
+Include a description of the data in the docstring, to be "The data to be used. Should be a list of dicts.".
+
+OUTPUT
+
+def poc(data: typing.List, learner_params: dict = dict()):
+    """Perform the basic ML operations on the data.
+
+    :param data: The data to be used. Should be a list of dicts.
+    """
+    learner = mk_learner(learner_class, params=learner_params)
+    
+    # Split the data into training and test sets
+    train_data, test_data = split_data(data)
+
+    # Train the model
+    model = fit_learner(learner, train_data)
+
+    test_results = apply_model(model, test_data)
+
+
+###
+Now do this with the following user story:
+
+{user_story}

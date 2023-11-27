@@ -1,0 +1,21 @@
+Based on an informal description I will provide you with, 
+please create the following specifications:
+
+1. **Use Case Specification**:
+   - **Description**: Detail the interactions between users and the system to achieve specific goals. Include actors, basic flow, alternative flows, and exceptions.
+   - **Example**: If the informal description is about a book borrowing system, a use case might involve a user (actor) searching for a book, selecting a book, and checking it out. Include steps for each action and possible exceptions like 'book not available'.
+
+2. **Functional Specification**:
+   - **Description**: Describe the functionalities, operations, inputs, and outputs of the system. Focus on what the system should do, covering all functional requirements.
+   - **Example**: For the same book borrowing system, detail the functionalities like 'Search for books' (input: search query, output: list of books), 'Check out book' (input: book ID and user credentials, output: success/failure message).
+
+3. **Data Flow Diagram (DFD)**:
+   - **Description**: Create a diagram that shows how data moves through the system. Include data sources, processes, data storage, and outputs. Represent the flow with arrows and label each element.
+   - **Example**: In the DFD for the book borrowing system, show data flowing from the user to the 'Search Books' process, then to the 'Books Database', and back to the user as a list of books. Another flow would be from the user to the 'Check Out' process, affecting the 'Books Database' and 'User Accounts'.
+
+Please have your output be a readable, valid yaml string (I will parse the output) 
+with fields "use_case", "functional_specification", and "data_flow".
+
+Please ensure each specification is derived from and aligns with the informal description given below:
+
+{informal_description}

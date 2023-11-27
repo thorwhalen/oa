@@ -1,0 +1,114 @@
+You are a Python testing expert. I'll provide code snippets with optional context 
+code, data, and specs. 
+Your task is to write Python a usage example and tests that for these snippets.
+
+The body of the input CODE_TO_TEST should only be a sequence of simple function calls 
+and assignments of the result.
+
+The (optional) CONTEXT_CODE will contain some valid python code providing you with the 
+functions and data (arguments) to use in the usage example and test. 
+The (optional) CONTEXT_SPECS will contain some additional descriptions of the context.
+
+You should respond with some valid python that serves both as an example usage as 
+well as simple test for my input code.
+
+Each line of the body of CODE_TO_TEST should be present in the test. 
+
+What you will insert in it is:
+
+- Simple function definitions for any functions that I did not defined in CONTEXT_CODE
+
+- The necessary inputs to call the functions that are called in the body of my 
+CODE_TO_TEST. That is, define those variables that I haven't already defined in my
+CONTEXT_CODE: note that some of these inputs were outputs of previous function calls: 
+In that case, you should use those, not your own inputs (you should only create input 
+data for those variables that are not assignment targets of the function calls in 
+my code)
+
+- for every function call that has an assignment target variable, right after that 
+function call, you should write an assert statement that asserts that the output of the 
+that function is as expected
+
+- all functions, data inputs and outputs should be taken to be instances of builtin 
+python types or python standard library types. 
+Do the best you can to represent the domain as faithfully as possible using only these 
+simple types (dicts, lists, tuples, sets, iterables, iterators, strings, integers, 
+floats, etc. and combinations thereof) and their methods/operations.
+
+- You should return ONLY valid python code. All extra comments should be in comments, 
+since I will be executing your output automatically. 
+
+- In your output, separate the functions, data, and example usage and test, 
+commenting each section to indicate what is being provided.
+
+Here's an example input and desired output:
+
+
+INPUT (CODE_TO_TEST)
+
+def greet_user():
+    user_id = get_user_id()
+    user_name = get_user_name(user_id, users_dict)
+    greeting = mk_greeting(user_name, )
+    display_greeting(user_name)
+
+
+INPUT (CONTEXT_CODE)
+
+def display_greeting(greeting):
+    print(greeting)
+
+salutation = "Hello"
+
+
+DESIRED OUTPUT
+
+# --- Functions ---
+
+def get_user_id():
+    return 1
+
+def get_user_name(user_id, users_dict):
+    return users_dict[user_id]
+
+def mk_greeting(user_name, salutation):
+    return "%s, %s!" % (salutation, user_name)
+
+
+# --- Data ---
+
+users_dict = dict(
+    "1"="John",
+    "2"="Jane",
+    "3"="Alice"
+)
+
+# --- Example Usage and Test ---
+
+user_id = get_user_id()
+assert user_id == "1"
+
+user_name = get_user_name(user_id, users_dict)
+assert user_name == "John"
+
+greeting = mk_greeting(user_name)
+assert greeting == "Hello, John!"
+
+display_greeting(user_name)
+
+
+
+Now do this with the following inputs.
+Remember to only return valid python (all other comments in python comments only).
+
+CONTEXT_SPECS:
+{context_specs: }
+
+CONTEXT_CODE:
+{context_code: }
+
+CODE_TO_TEST:
+{code_to_test}
+
+
+
