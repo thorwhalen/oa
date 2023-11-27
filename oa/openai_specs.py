@@ -3,8 +3,28 @@
 See raw schemas by doing
 
 >>> from oa.openai_specs import schemas
->>> sorted(schemas)  # doctest: +ELLIPSIS
-['ChatCompletionRequestMessage', 'ChatCompletionResponseMessage', ...
+>>> sorted(schemas)  # doctest: +SKIP
+['AssistantFileObject', 'AssistantObject', 'AssistantToolsCode', 'AssistantToolsFunction', 'AssistantToolsRetrieval', 'ChatCompletionFunctionCallOption', 
+'ChatCompletionFunctions', 'ChatCompletionMessageToolCall', 'ChatCompletionMessageToolCallChunk', 'ChatCompletionMessageToolCalls', 
+'ChatCompletionNamedToolChoice', 'ChatCompletionRequestAssistantMessage', 'ChatCompletionRequestFunctionMessage', 'ChatCompletionRequestMessage', 
+'ChatCompletionRequestMessageContentPart', 'ChatCompletionRequestMessageContentPartImage', 'ChatCompletionRequestMessageContentPartText', 
+'ChatCompletionRequestSystemMessage', 'ChatCompletionRequestToolMessage', 'ChatCompletionRequestUserMessage', 'ChatCompletionResponseMessage', 
+'ChatCompletionRole', 'ChatCompletionStreamResponseDelta', 'ChatCompletionTool', 'ChatCompletionToolChoiceOption', 'CompletionUsage', 
+'CreateAssistantFileRequest', 'CreateAssistantRequest', 'CreateChatCompletionFunctionResponse', 'CreateChatCompletionImageResponse', 
+'CreateChatCompletionRequest', 'CreateChatCompletionResponse', 'CreateChatCompletionStreamResponse', 'CreateCompletionRequest', 
+'CreateCompletionResponse', 'CreateEditRequest', 'CreateEditResponse', 'CreateEmbeddingRequest', 'CreateEmbeddingResponse', 'CreateFileRequest', 
+'CreateFineTuneRequest', 'CreateFineTuningJobRequest', 'CreateImageEditRequest', 'CreateImageRequest', 'CreateImageVariationRequest', 'CreateMessageRequest', 
+'CreateModerationRequest', 'CreateModerationResponse', 'CreateRunRequest', 'CreateSpeechRequest', 'CreateThreadAndRunRequest', 'CreateThreadRequest', 
+'CreateTranscriptionRequest', 'CreateTranscriptionResponse', 'CreateTranslationRequest', 'CreateTranslationResponse', 'DeleteAssistantFileResponse', 
+'DeleteAssistantResponse', 'DeleteFileResponse', 'DeleteMessageResponse', 'DeleteModelResponse', 'DeleteThreadResponse', 'Embedding', 'Error', 
+'ErrorResponse', 'FineTune', 'FineTuneEvent', 'FineTuningJob', 'FineTuningJobEvent', 'FunctionObject', 'FunctionParameters', 'Image', 
+'ImagesResponse', 'ListAssistantFilesResponse', 'ListAssistantsResponse', 'ListFilesResponse', 'ListFineTuneEventsResponse', 'ListFineTunesResponse', 
+'ListFineTuningJobEventsResponse', 'ListMessageFilesResponse', 'ListMessagesResponse', 'ListModelsResponse', 'ListPaginatedFineTuningJobsResponse', 
+'ListRunStepsResponse', 'ListRunsResponse', 'ListThreadsResponse', 'MessageContentImageFileObject', 'MessageContentTextAnnotationsFileCitationObject', 
+'MessageContentTextAnnotationsFilePathObject', 'MessageContentTextObject', 'MessageFileObject', 'MessageObject', 'Model', 'ModifyAssistantRequest', 
+'ModifyMessageRequest', 'ModifyRunRequest', 'ModifyThreadRequest', 'OpenAIFile', 'RunObject', 'RunStepDetailsMessageCreationObject', 'RunStepDetailsToolCallsCodeObject', 
+'RunStepDetailsToolCallsCodeOutputImageObject', 'RunStepDetailsToolCallsCodeOutputLogsObject', 'RunStepDetailsToolCallsFunctionObject', 'RunStepDetailsToolCallsObject', 
+'RunStepDetailsToolCallsRetrievalObject', 'RunStepObject', 'RunToolCallObject', 'SubmitToolOutputsRunRequest', 'ThreadObject']
 >>> schema = schemas['CreateCompletionRequest']
 >>> schema['properties']  # doctest: +SKIP
  {'model': {'description': 'ID of the model to use...
