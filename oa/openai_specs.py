@@ -32,7 +32,7 @@ See raw schemas by doing
 Get resulting signatures by doing.
 
 >>> from oa.openai_specs import sig
->>> sig.CreateCompletionRequest) # doctest: +SKIP
+>>> sig.CreateCompletionRequest)  # doctest: +SKIP
 <Sig (model: str, prompt='<|endoftext|>', *, seed: int, best_of: int = 1, echo: bool = False, 
 frequency_penalty: float = 0, logit_bias: dict = None, logprobs: int = None, max_tokens: int = None, 
 n: int = 1, presence_penalty: float = 0, stop=None, stream: bool = False, suffix: str = None, 
