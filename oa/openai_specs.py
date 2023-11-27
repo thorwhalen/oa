@@ -139,7 +139,7 @@ def schema_to_signature(schema):
 
     def gen():
         required = schema.get("required", [])
-        for name, props in schema["properties"].items():
+        for name, props in schema.get("properties", {}).items():
             if name in required:
                 yield Param(
                     **properties_to_param_dict(name, props),
@@ -176,7 +176,7 @@ def schema_to_rst_argument_descriptions(
 
     """
     process_description = process_description or (lambda x: x)
-    for name, props in schema["properties"].items():
+    for name, props in schema.get("properties", {}).items():
         description = process_description(props.get("description", ""))
         yield f":param {name}: {description}"
 
@@ -259,6 +259,7 @@ class SpecNames:
     @cached_property
     def attrs(self):
         import oa
+
         return vars(oa.openai)
         # return Attrs(oa.openai)
 
