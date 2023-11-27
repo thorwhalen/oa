@@ -33,15 +33,14 @@ jobs:
         uses: i2mint/isee/actions/pylint-validation@master
         with:
           root-dir: ${{ env.PROJECT_NAME }}
-          enable: C0114
-
+          enable: missing-module-docstring
+          ignore: tests,examples,scrap
 
       - name: Pytest Validation
         uses: i2mint/isee/actions/pytest-validation@master
-        env:
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         with:
           root-dir: ${{ env.PROJECT_NAME }}
+          paths-to-ignore: examples,scrap
 
   publish:
     name: Publish
