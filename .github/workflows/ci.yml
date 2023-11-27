@@ -41,6 +41,8 @@ jobs:
         with:
           root-dir: ${{ env.PROJECT_NAME }}
           paths-to-ignore: examples,scrap
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
 
   publish:
     name: Publish
