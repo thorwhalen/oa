@@ -29,7 +29,7 @@ from oa.ask import ai
 list(ai)
 ```
 
-    ['define_jargon', 'suggest_names']
+    ['define_jargon', 'suggest_names', ..., 'make_synopsis']
 
 
 These are the names of functions automatically generated from a (for now small) folder of prompt templates. 
@@ -47,7 +47,7 @@ print(inspect.signature(ai.suggest_names))
 ```python
 answer = ai.suggest_names(
     thing="""
-    A python package that provides propert python functions to do things,
+    A python package that provides python functions to do things,
     enabled by prompts sent to an OpenAI engine.
     """
 )
@@ -67,7 +67,7 @@ print(answer)
 
 
 
-### `PromptFuncs`
+### PromptFuncs
 
 Above, all we did was scan some local text files that specify prompt templates and make an object that contained the functions they define. We used `oa.PromptFuncs` for that. You can do the same. What `PromptFuncs` uses itself, is a convenient `oa.prompt_function` function that transforms a template into a function. See more details in the next "Functionalizing prompts" section.
 

@@ -120,7 +120,6 @@ def prompt_function(
         _kwargs = sig.kwargs_from_args_and_kwargs(
             ask_oa_args, ask_oa_kwargs, apply_defaults=True
         )
-        # print(f"kwargs: {_kwargs}")
         __args, __kwargs = Sig(template_embodier).args_and_kwargs_from_kwargs(_kwargs)
         embodied_template = template_embodier(*__args, **__kwargs)
         # embodied_template = _call_forgivingly(
@@ -136,14 +135,14 @@ def prompt_function(
     return ask_oa
 
 
-from typing import Mapping, Optional, KT
-from dol import TextFiles, filt_iter
-from oa.util import templates_files
+from typing import Mapping, Optional, KT, Union
+from dol import filt_iter
+from oa.util import mk_template_store, DFLT_TEMPLATES_SOURCE
 import os
 
-chatgpt_templates_dir = os.path.join(templates_files, "chatgpt")
-_ends_with_txt = lambda f: f.endswith(".txt")
-chatgpt_templates = filt_iter(TextFiles(chatgpt_templates_dir), filt=_ends_with_txt)
+# chatgpt_templates_dir = os.path.join(templates_files, "chatgpt")
+# _ends_with_txt = filt_iter.suffixes(".txt")
+# chatgpt_templates = filt_iter(TextFiles(chatgpt_templates_dir), filt=_ends_with_txt)
 dflt_function_key = lambda f: os.path.splitext(os.path.basename(f))[0]
 dflt_factory_key = lambda f: os.path.splitext(os.path.basename(f))[-1]
 _dflt_factories = {
@@ -151,6 +150,9 @@ _dflt_factories = {
     "": prompt_function,
 }
 dflt_factories = tuple(_dflt_factories.items())
+
+_suffixes_csv = ','.join(_dflt_factories.keys())
+DFLT_TEMPLATE_SOURCE_WITH_SUFFIXES = f"{DFLT_TEMPLATES_SOURCE}:{_suffixes_csv}"
 
 StoreKey = str
 FuncName = str
@@ -162,14 +164,14 @@ class PromptFuncs:
 
     def __init__(
         self,
-        template_store: Mapping = chatgpt_templates,
+        template_store: Union[Mapping, str] = DFLT_TEMPLATE_SOURCE_WITH_SUFFIXES,
         *,
         function_key: Callable[[StoreKey], FuncName] = dflt_function_key,
         factory_key: Callable[[StoreKey], FactoryKey] = dflt_factory_key,
         factories: Callable[[FactoryKey], Callable] = dflt_factories,
         extra_template_kwargs: Optional[Mapping[StoreKey, Mapping]] = None,
     ):
-        self._template_store = template_store
+        self._template_store = mk_template_store(template_store)
         self._function_key = function_key
         self._factory_key = factory_key
         self._factories = dict(factories)
