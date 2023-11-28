@@ -86,10 +86,10 @@ jobs:
           commit-message: "**CI** Formatted code + Updated version number and documentation. [skip ci]"
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - name: Tag Repository With New Version Number
-        uses: i2mint/isee/actions/tag-repository@master
-        with:
-          tag: $VERSION
+      # - name: Tag Repository With New Version Number
+      #   uses: i2mint/isee/actions/tag-repository@master
+      #   with:
+      #     tag: $VERSION
 
   github-pages:
     name: Publish GitHub Pages
