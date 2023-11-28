@@ -31,7 +31,6 @@ list(ai)
 
     ['define_jargon', 'suggest_names', ..., 'make_synopsis']
 
-
 These are the names of functions automatically generated from a (for now small) folder of prompt templates. 
 
 These functions all have propert signatures:
