@@ -41,8 +41,6 @@ jobs:
         with:
           root-dir: ${{ env.PROJECT_NAME }}
           paths-to-ignore: examples,scrap
-        env:
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
 
   publish:
     name: Publish
@@ -86,10 +84,10 @@ jobs:
           commit-message: "**CI** Formatted code + Updated version number and documentation. [skip ci]"
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      # - name: Tag Repository With New Version Number
-      #   uses: i2mint/isee/actions/tag-repository@master
-      #   with:
-      #     tag: $VERSION
+      - name: Tag Repository With New Version Number
+        uses: i2mint/isee/actions/tag-repository@master
+        with:
+          tag: $VERSION
 
   github-pages:
     name: Publish GitHub Pages
@@ -99,4 +97,6 @@ jobs:
     steps:
       - uses: i2mint/epythet/actions/publish-github-pages@master
         with:
+          # IMPORTANT Note: You don't need to specify GITHUB_TOKEN in your repo secrets.
+          # GITHUB_TOKEN is special & automatically provided to your workflow run.
           github-token: ${{ secrets.GITHUB_TOKEN }}
