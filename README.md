@@ -408,7 +408,6 @@ resp
     }
 
 
-
 ```python
 print(resp['choices'][0]['message']['content'])
 ```
