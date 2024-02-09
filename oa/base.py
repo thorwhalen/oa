@@ -72,3 +72,19 @@ def dalle(prompt, n=1, size='512x512', **image_create_params):
 def list_engine_ids():
     models_list = mk_client().models.list()
     return [x.id for x in models_list.data]
+
+
+def embeddings(texts, model="text-embedding-3-small", client=None):
+    if client is None:
+        client = mk_client()
+    if isinstance(texts, str):
+        texts = [texts]
+        return client.embeddings.create(input=texts, model=model).data[0].embedding
+    else:
+        return [
+            x.embedding for x in client.embeddings.create(input=texts, model=model).data
+        ]
+
+
+# df['ada_embedding'] = df.combined.apply(lambda x: get_embedding(x, model='text-embedding-3-small'))
+# df.to_csv('output/embedded_1k_reviews.csv', index=False)
