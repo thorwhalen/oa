@@ -2,7 +2,7 @@
 
 from importlib.resources import files
 import os
-from functools import partial
+from functools import partial, lru_cache
 from typing import Mapping, Union
 
 import i2
@@ -47,24 +47,33 @@ djoin = partial(os.path.join, app_data_dir)
 
 configs_local_store = get_configs_local_store(pkg_name)
 
-openai.api_key = get_config(
-    OPENAI_API_KEY_ENV_NAME,
-    sources=[
-        # Try to find it in oa config
-        configs_local_store,
-        # Try to find it in os.environ (environmental variables)
-        os.environ,
-        # If not, ask the user to input it
-        lambda k: ask_user_for_input(
-            f'Please set your OpenAI API key and press enter to continue. '
-            "If you don't have one, you can get one at "
-            'https://platform.openai.com/account/api-keys. ',
-            mask_input=True,
-            masking_toggle_str='',
-            egress=lambda v: configs_local_store.__setitem__(k, v),
-        ),
-    ],
-)
+@lru_cache
+def get_api_key_from_config():
+    return get_config(
+        OPENAI_API_KEY_ENV_NAME,
+        sources=[
+            # Try to find it in oa config
+            configs_local_store,
+            # Try to find it in os.environ (environmental variables)
+            os.environ,
+            # If not, ask the user to input it
+            lambda k: ask_user_for_input(
+                f'Please set your OpenAI API key and press enter to continue. '
+                "If you don't have one, you can get one at "
+                'https://platform.openai.com/account/api-keys. ',
+                mask_input=True,
+                masking_toggle_str='',
+                egress=lambda v: configs_local_store.__setitem__(k, v),
+            ),
+        ],
+    )
+
+openai.api_key = get_api_key_from_config()
+
+@lru_cache
+def mk_client(api_key=None, **client_kwargs):
+    api_key = api_key or get_api_key_from_config()
+    return openai.OpenAI(api_key=api_key, **client_kwargs)
 
 
 _grazed_dir = dol.ensure_dir(os.path.join(app_data_dir, 'grazed'))
