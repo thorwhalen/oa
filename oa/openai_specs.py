@@ -46,6 +46,7 @@ Or see argument descriptions in rst format by doing:
 ```
 
 """
+
 import os
 import re
 from functools import lru_cache
@@ -163,15 +164,23 @@ def schema_to_signature(schema):
     def gen():
         required = schema.get("required", [])
         for name, props in schema.get("properties", {}).items():
-            if name in required:
-                yield Param(
-                    **properties_to_param_dict(name, props),
-                    kind=Param.POSITIONAL_OR_KEYWORD,
-                )
-            else:
-                yield Param(
-                    **properties_to_param_dict(name, props), kind=Param.KEYWORD_ONLY
-                )
+            try:
+                if name in required:
+                    yield Param(
+                        **properties_to_param_dict(name, props),
+                        kind=Param.POSITIONAL_OR_KEYWORD,
+                    )
+                else:
+                    yield Param(
+                        **properties_to_param_dict(name, props), kind=Param.KEYWORD_ONLY
+                    )
+            except ValueError as e:
+                # TODO: protecting this with try/except because OpenAI changed
+                # it's schema and since then got a
+                # ValueError: 'timestamp_granularities[]' is not a valid parameter name
+                # error.
+                # I'd rather catch up... 
+                pass
 
     return Sig(sorted(gen()))
 
