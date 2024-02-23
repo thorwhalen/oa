@@ -4,7 +4,8 @@ from functools import partial
 from typing import Optional, Callable
 import string
 
-from i2 import Sig
+from i2 import Sig, Pipe
+from lkj import add_attr
 from oa.base import chat
 
 # -----------------------------------------------------------------------------
@@ -72,6 +73,10 @@ def string_format_embodier(template):
     return templated_string_embodier
 
 
+add_name = add_attr('__name__')
+add_doc = add_attr('__doc__')
+add_module = add_attr('__module__')
+
 # -----------------------------------------------------------------------------
 # The meat
 
@@ -84,12 +89,16 @@ def prompt_function(
     template_to_defaults: Callable = _extract_defaults_from_format_string,
     embodier: Callable = string_format_embodier,
     arg_kinds: Optional[dict] = None,
-    name=None,
+    name='prompt',
     prompt_func=chat,
     prompt_func_kwargs=None,
     egress=None,
+    doc="The function composes a prompt and asks an LLM to respond to it.",
+    module=__name__,
 ):
-    """Convert a string template to a function that will call"""
+    """Convert a string template to a function that will produce a prompt string
+    and ask an LLM (`prompt_func`) to respond to it.
+    """
 
     defaults = dict(template_to_defaults(template), **(defaults or {}))
     template = _template_without_specifiers(template)
@@ -114,25 +123,26 @@ def prompt_function(
         sig = sig.ch_kinds(**{first_arg_name: Sig.POSITIONAL_OR_KEYWORD})
 
     sig = sig.sort_params()
+    func_wrap = Pipe(sig, add_name(name), add_doc(doc), add_module(module))
 
-    @sig
-    def ask_oa(*ask_oa_args, **ask_oa_kwargs):
+    @func_wrap
+    def embody_prompt(*ask_oa_args, **ask_oa_kwargs):
         _kwargs = sig.kwargs_from_args_and_kwargs(
             ask_oa_args, ask_oa_kwargs, apply_defaults=True
         )
         __args, __kwargs = Sig(template_embodier).args_and_kwargs_from_kwargs(_kwargs)
         embodied_template = template_embodier(*__args, **__kwargs)
-        # embodied_template = _call_forgivingly(
-        #     template_embodier, args, kwargs #, enforce_sig=sig
-        # )
-        # embodied_template = call_forgivingly(template_embodier, *args, **kwargs)
+        return embodied_template
 
+    @func_wrap
+    def ask_oa(*ask_oa_args, **ask_oa_kwargs):
+        embodied_template = embody_prompt(*ask_oa_args, **ask_oa_kwargs)
         return egress(prompt_func(embodied_template, **prompt_func_kwargs))
 
-    if name is not None:
-        ask_oa.__name__ = name
-
-    return ask_oa
+    if prompt_func is not None:
+        return ask_oa
+    else:
+        return embody_prompt
 
 
 from typing import Mapping, Optional, KT, Union
