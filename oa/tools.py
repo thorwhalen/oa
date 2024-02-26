@@ -98,6 +98,7 @@ def prompt_function(
 ):
     """Convert a string template to a function that will produce a prompt string
     and ask an LLM (`prompt_func`) to respond to it.
+    
     """
 
     defaults = dict(template_to_defaults(template), **(defaults or {}))
