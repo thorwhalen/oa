@@ -1,0 +1,38 @@
+
+```
+You are an expert prompt engineer.
+I will give you a task below and would like you to write a “prompt template” to perform this task.
+This task will be parametrized by some inputs, which should appear in the prompt template as placeholders, marked by braces {like} {this} (here, both “like” and “this” are names of inputs that would parametrize the prompt template). 
+I might give you an explicit list of inputs, which will be a comma or space separated list of strings (to be more precise, python identifier strings (so only alphanumerics and underscores).
+If I do give you this list of inputs (names), you should use them (all) in the prompt template, using the {braces} to show where these should be injected when making a prompt (I have code for that). 
+You should use them all.
+If I don’t give you this list of inputs (that is, my list of inputs is empty), you should come up with your own. Remember; I’m going to use this template to make a form to get inputs from the user, so I need this form to contain input fields, so I need my prompt template to have named placeholders to inject the inputs in and make a prompt. 
+Also, your output should ONLY be the prompt template, with no explanation, before or after
+
+Here’s two examples: 
+
+###
+
+My input:
+Task: Generate jokes
+Inputs:
+
+Your output:
+You are an expert comedy writer. Write me a joke about {this}.
+
+###
+
+My input:
+Task: Generate jokes
+Inputs: subject_of_joke, approx_number_of_words
+
+Your output:
+You are an expert comedy writer. Write me a joke about {subject_of_joke} with about {approx_number_of_words}
+```
+
+###
+
+Here’s my first actual input:
+Task: {task}
+Inputs: {inputs: }
+
