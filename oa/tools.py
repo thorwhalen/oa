@@ -11,14 +11,17 @@ from oa.base import chat
 # -----------------------------------------------------------------------------
 # Helpers
 
-string_formatter = string.Formatter()
-
 import re
+from collections import namedtuple
+from typing import List, NamedTuple, Literal, Union, Optional
+
+Pattern = Union[re.Pattern, str]
+string_formatter = string.Formatter()
 
 DFLT_IGNORE_PATTERN = re.compile(r'```.*?```', re.DOTALL)
 
 
-def remove_pattern(string, pattern_to_remove=DFLT_IGNORE_PATTERN):
+def remove_pattern(string, pattern_to_remove: Optional[Pattern] = DFLT_IGNORE_PATTERN):
     """
     Returns a where a given regular expression pattern has been removed.
 
@@ -31,49 +34,69 @@ def remove_pattern(string, pattern_to_remove=DFLT_IGNORE_PATTERN):
     return pattern_to_remove.sub('', string)
 
 
-def process_string(func, string, ignore_pattern=DFLT_IGNORE_PATTERN):
+def extract_parts(string: str, pattern: Pattern) -> NamedTuple:
+    PartResult = namedtuple('PartResult', ['matched', 'unmatched'])
+    matched: List[str] = []
+    unmatched: List[str] = []
+    last_end = 0
+
+    for match in re.finditer(pattern, string):
+        start, end = match.span()
+        unmatched.append(string[last_end:start])
+        matched.append(string[start:end])
+        last_end = end
+
+    unmatched.append(string[last_end:])
+
+    return PartResult(matched=matched, unmatched=unmatched)
+
+
+def pattern_based_map(
+    func: Callable,
+    string: str,
+    pattern: Pattern,
+    apply_to: Literal["matched", "unmatched"] = "unmatched",
+):
     """
-    Applies a function to segments of a string that do not match a given regular expression pattern,
-    while leaving segments that do match the pattern unchanged.
-
-    Parameters:
-    - func: A function to apply to non-matching segments of the string.
-    - string: The input string to process.
-    - ignore_pattern: A regular expression pattern. Segments of `string` that match this pattern will not be altered.
-
-    Returns:
-    - A new string with `func` applied to non-matching segments.
+    Applies a function to parts of the string that are either matching or non-matching based on a regex pattern,
+    depending on the value of apply_to.
 
     Example:
     >>> func = str.upper
     >>> string = "the good the ```bad``` and the ugly"
     >>> ignore_pattern = r'```.*?```'
-    >>> process_string(func, string, ignore_pattern)
+    >>> pattern_based_map(func, string, ignore_pattern)
     'THE GOOD THE ```bad``` AND THE UGLY'
+    >>> pattern_based_map(func, string, ignore_pattern, 'matched')
+    'the good the ```BAD``` and the ugly'
     """
-    # Initialize an empty result string
+    parts = extract_parts(string, pattern)
     result = ''
-    # The end position of the last match
-    last_end = 0
 
-    # Find all matches of ignore_pattern in the string
-    for match in re.finditer(ignore_pattern, string):
-        # Get the start and end of the current match
-        start, end = match.span()
-        # Apply func to the substring from the end of the last match to the start of the current match
-        result += func(string[last_end:start])
-        # Add the current match unchanged
-        result += string[start:end]
-        # Update the end position of the last match
-        last_end = end
+    # Apply the function to the appropriate parts
+    if apply_to == 'matched':
+        transformed_matched = [func(part) for part in parts.matched]
+        # Interleave transformed matched parts with untouched unmatched parts
+        result_parts = sum(zip(parts.unmatched, transformed_matched), ())
+    else:
+        transformed_unmatched = [func(part) for part in parts.unmatched]
+        # Interleave untouched matched parts with transformed unmatched parts
+        result_parts = sum(zip(transformed_unmatched, parts.matched), ())
 
-    # Apply func to the remainder of the string after the last match
-    result += func(string[last_end:])
+    # Ensure all parts are added, including the last unmatched if unmatched is longer
+    result = ''.join(result_parts)
+    if len(parts.unmatched) > len(parts.matched):
+        result += (
+            transformed_unmatched[-1]
+            if apply_to == 'unmatched'
+            else parts.unmatched[-1]
+        )
+
     return result
 
 
 def _extract_names_from_format_string(
-    template: str, *, ignore_pattern=DFLT_IGNORE_PATTERN
+    template: str, *, ignore_pattern: Optional[Pattern] = DFLT_IGNORE_PATTERN
 ):
     """Extract names from a string format template
 
@@ -109,7 +132,7 @@ def _extract_defaults_from_format_string(
 
 
 def _template_without_specifiers(
-    template: str, *, ignore_pattern=DFLT_IGNORE_PATTERN
+    template: str, *, ignore_pattern: Optional[Pattern] = DFLT_IGNORE_PATTERN
 ) -> str:
     """Uses remove any extras from a template string, leaving only text and fields.
 
@@ -135,11 +158,24 @@ def _template_without_specifiers(
     if ignore_pattern is None:
         return rm_specifiers(template)
     else:
-        return process_string(rm_specifiers, template, ignore_pattern)
+        return pattern_based_map(rm_specifiers, template, ignore_pattern)
 
 
-def string_format_embodier(template):
-    names = _extract_names_from_format_string(template)
+def _template_with_double_braces_in_ignored_sections(
+    template, *, ignore_pattern: Optional[Pattern] = DFLT_IGNORE_PATTERN
+) -> str:
+    """double the braces of the parts of the template that should be ignored"""
+    double_braces = lambda string: string.replace("{", "{{").replace("}", "}}")
+    return pattern_based_map(
+        double_braces, template, ignore_pattern, apply_to='matched'
+    )
+
+
+def string_format_embodier(
+    template, *, ignore_pattern: Optional[Pattern] = DFLT_IGNORE_PATTERN
+):
+
+    names = _extract_names_from_format_string(template, ignore_pattern=ignore_pattern)
     sig = Sig(names).ch_kinds(**{name: Sig.KEYWORD_ONLY for name in names})
 
     @sig
@@ -157,6 +193,8 @@ add_module = add_attr('__module__')
 # The meat
 
 
+# TODO: template_to_names, template_to_defaults and embodier are implicitly bound by
+#   their ignore_pattern argument (set to DFLT_IGNORE_PATTERN). Find a cleaner way.
 def prompt_function(
     template,
     *,
@@ -183,7 +221,7 @@ def prompt_function(
         produce a prompt string.
     :param arg_kinds: A dictionary of argument kinds for the function.
     :param name: The name of the function.
-    :param prompt_func: The function that will be used to ask the LLM to respond to 
+    :param prompt_func: The function that will be used to ask the LLM to respond to
         the prompt. If None, the output function will only produce the prompt string,
         not ask the LLM to respond to it.
     :param prompt_func_kwargs: Keyword arguments to pass to `prompt_func`.
@@ -191,6 +229,12 @@ def prompt_function(
     :param doc: The docstring of the function.
     :param module: The module of the function.
 
+    In the following example, we'll use the `prompt_func=None` argument to get a 
+    function that simply injects inputs in a prompt template, without actually calling 
+    an AI-enabled `prompt_func`. 
+    Note in this example, how a block of the prompt template string is ignored for 
+    injection purposes, via a triple-backtick marker.
+    
     >>> prompt_template = '''
     ... ```
     ... In this block, all {placeholders} are {igno:red} so that they can appear in prompt.
@@ -200,11 +244,18 @@ def prompt_function(
     >>> f = prompt_function(prompt_template, prompt_func=None)
     >>> from inspect import signature
     >>> assert str(signature(f)) == "(inputs, *, injected='normally')"
+    >>> print(f('INPUTS', injected="INJECTED"))  # doctest: +NORMALIZE_WHITESPACE
+    ```
+    In this block, all {placeholders} are {igno:red} so that they can appear in prompt.
+    ```
+    But outside INPUTS are INJECTED
 
     """
+
     template_original = template
     defaults = dict(template_to_defaults(template), **(defaults or {}))
     template = _template_without_specifiers(template)
+    template = _template_with_double_braces_in_ignored_sections(template)
     template_embodier = embodier(template)
     prompt_func_kwargs = prompt_func_kwargs or {}
     egress = egress or (lambda x: x)
