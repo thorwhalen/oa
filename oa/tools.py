@@ -13,20 +13,84 @@ from oa.base import chat
 
 string_formatter = string.Formatter()
 
+import re
 
-def _extract_names_from_format_string(template: str):
+DFLT_IGNORE_PATTERN = re.compile(r'```.*?```', re.DOTALL)
+
+
+def remove_pattern(string, pattern_to_remove=DFLT_IGNORE_PATTERN):
+    """
+    Returns a where a given regular expression pattern has been removed.
+
+    >>> string = 'this ```is a``` string ```with several``` backticks'
+    >>> remove_pattern(string)
+    'this  string  backticks'
+
+    """
+    pattern_to_remove = re.compile(pattern_to_remove)
+    return pattern_to_remove.sub('', string)
+
+
+def process_string(func, string, ignore_pattern=DFLT_IGNORE_PATTERN):
+    """
+    Applies a function to segments of a string that do not match a given regular expression pattern,
+    while leaving segments that do match the pattern unchanged.
+
+    Parameters:
+    - func: A function to apply to non-matching segments of the string.
+    - string: The input string to process.
+    - ignore_pattern: A regular expression pattern. Segments of `string` that match this pattern will not be altered.
+
+    Returns:
+    - A new string with `func` applied to non-matching segments.
+
+    Example:
+    >>> func = str.upper
+    >>> string = "the good the ```bad``` and the ugly"
+    >>> ignore_pattern = r'```.*?```'
+    >>> process_string(func, string, ignore_pattern)
+    'THE GOOD THE ```bad``` AND THE UGLY'
+    """
+    # Initialize an empty result string
+    result = ''
+    # The end position of the last match
+    last_end = 0
+
+    # Find all matches of ignore_pattern in the string
+    for match in re.finditer(ignore_pattern, string):
+        # Get the start and end of the current match
+        start, end = match.span()
+        # Apply func to the substring from the end of the last match to the start of the current match
+        result += func(string[last_end:start])
+        # Add the current match unchanged
+        result += string[start:end]
+        # Update the end position of the last match
+        last_end = end
+
+    # Apply func to the remainder of the string after the last match
+    result += func(string[last_end:])
+    return result
+
+
+def _extract_names_from_format_string(
+    template: str, *, ignore_pattern=DFLT_IGNORE_PATTERN
+):
     """Extract names from a string format template
 
     >>> _extract_names_from_format_string("Hello {name}! I am {bot_name}.")
     ('name', 'bot_name')
 
     """
+    if ignore_pattern is not None:
+        template = remove_pattern(template, ignore_pattern)
     return tuple(
         name for _, name, _, _ in string_formatter.parse(template) if name is not None
     )
 
 
-def _extract_defaults_from_format_string(template: str) -> dict:
+def _extract_defaults_from_format_string(
+    template: str, *, ignore_pattern=DFLT_IGNORE_PATTERN
+) -> dict:
     """Extract (name, specifier) from a string format template.
 
     >>> _extract_defaults_from_format_string(
@@ -35,6 +99,8 @@ def _extract_defaults_from_format_string(template: str) -> dict:
     {'bot_name': 'chatGPT'}
 
     """
+    if ignore_pattern is not None:
+        template = remove_pattern(template, ignore_pattern)
     return dict(
         (name, specifier)
         for _, name, specifier, _ in string_formatter.parse(template)
@@ -42,16 +108,20 @@ def _extract_defaults_from_format_string(template: str) -> dict:
     )
 
 
-def _template_without_specifiers(template):
+def _template_without_specifiers(
+    template: str, *, ignore_pattern=DFLT_IGNORE_PATTERN
+) -> str:
     """Uses remove any extras from a template string, leaving only text and fields.
 
-    >>> _template_without_specifiers("A {normal}, {stra:nge} and an empty: {}.")
-    'A {normal}, {stra} and an empty: {}.'
+    >>> template = "A {normal}, {stra:nge}, an ```{igno:red}``` and an empty: {}."
+    >>> _template_without_specifiers(template, ignore_pattern=None)
+    'A {normal}, {stra}, an ```{igno}``` and an empty: {}.'
+    >>> _template_without_specifiers(template, ignore_pattern=r'```.*?```')
+    'A {normal}, {stra}, an ```{igno:red}``` and an empty: {}.'
 
     """
-    import string
 
-    def gen():
+    def gen(template):
         for text, field_name, *_ in string.Formatter().parse(template):
             text_ = text or ""
             if field_name is None:
@@ -59,7 +129,13 @@ def _template_without_specifiers(template):
             else:
                 yield text_ + "{" + field_name + "}"
 
-    return "".join(gen())
+    def rm_specifiers(template):
+        return "".join(gen(template))
+
+    if ignore_pattern is None:
+        return rm_specifiers(template)
+    else:
+        return process_string(rm_specifiers, template, ignore_pattern)
 
 
 def string_format_embodier(template):
@@ -96,11 +172,37 @@ def prompt_function(
     doc="The function composes a prompt and asks an LLM to respond to it.",
     module=__name__,
 ):
-    """Convert a string template to a function that will produce a prompt string
+    r"""Convert a string template to a function that will produce a prompt string
     and ask an LLM (`prompt_func`) to respond to it.
-    
-    """
 
+    :param template: A string template with placeholders.
+    :param defaults: A dictionary of default values for placeholders.
+    :param template_to_names: A function that extracts names from a template.
+    :param template_to_defaults: A function that extracts defaults from a template.
+    :param embodier: A function that converts a template to a function that will
+        produce a prompt string.
+    :param arg_kinds: A dictionary of argument kinds for the function.
+    :param name: The name of the function.
+    :param prompt_func: The function that will be used to ask the LLM to respond to 
+        the prompt. If None, the output function will only produce the prompt string,
+        not ask the LLM to respond to it.
+    :param prompt_func_kwargs: Keyword arguments to pass to `prompt_func`.
+    :param egress: A function to apply to the output of `prompt_func`.
+    :param doc: The docstring of the function.
+    :param module: The module of the function.
+
+    >>> prompt_template = '''
+    ... ```
+    ... In this block, all {placeholders} are {igno:red} so that they can appear in prompt.
+    ... ```
+    ... But outside {inputs} are {injected:normally}
+    ... '''
+    >>> f = prompt_function(prompt_template, prompt_func=None)
+    >>> from inspect import signature
+    >>> assert str(signature(f)) == "(inputs, *, injected='normally')"
+
+    """
+    template_original = template
     defaults = dict(template_to_defaults(template), **(defaults or {}))
     template = _template_without_specifiers(template)
     template_embodier = embodier(template)
@@ -141,9 +243,13 @@ def prompt_function(
         return egress(prompt_func(embodied_template, **prompt_func_kwargs))
 
     if prompt_func is not None:
-        return ask_oa
+        f = ask_oa
     else:
-        return embody_prompt
+        f = embody_prompt
+    f.template = template
+    f.template_original = template_original
+
+    return f
 
 
 from typing import Mapping, Optional, KT, Union
