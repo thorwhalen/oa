@@ -78,7 +78,7 @@ config_sources = [
 ]
 
 # The main config getter for this package
-config_getter = get_config(sources=config_sources)
+config_getter = get_config(sources=config_sources, egress=str.strip)
 
 
 # Get the OPENAI_API_KEY_ENV_NAME and DFLT_TEMPLATES_SOURCE_ENV_NAME
@@ -110,6 +110,7 @@ def get_api_key_from_config():
                 egress=lambda v: configs_local_store.__setitem__(k, v),
             ),
         ],
+        egress=str.strip,
     )
 
 
