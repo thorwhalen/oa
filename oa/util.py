@@ -8,12 +8,16 @@ from typing import Mapping, Union
 import i2
 import dol
 import graze
-from config2py import get_config, ask_user_for_input, get_configs_local_store
+from config2py import (
+    get_config,
+    ask_user_for_input,
+    get_configs_local_store,
+    simple_config_getter,
+    user_gettable,
+)
 
 import openai  # pip install openai (see https://pypi.org/project/openai/)
 
-OPENAI_API_KEY_ENV_NAME = 'OPENAI_API_KEY'
-DFLT_TEMPLATES_SOURCE_ENV_NAME = 'OA_DFLT_TEMPLATES_SOURCE'
 
 def get_package_name():
     """Return current package name"""
@@ -35,6 +39,11 @@ app_data_dir = os.environ.get(
 app_data_dir = dol.ensure_dir(app_data_dir, verbose=f'Making app dir: {app_data_dir}')
 djoin = partial(os.path.join, app_data_dir)
 
+# By default will look for configs in environment variables, then in the files
+# (on mac/linus, this would be in ~/.config/<pkg_name>/configs)
+# then ask the user.
+config_getter = simple_config_getter(pkg_name)
+
 # _open_api_key_env_name = 'OPENAI_API_KEY'
 # _api_key = os.environ.get(_open_api_key_env_name, None)
 # if _api_key is None:
@@ -47,6 +56,41 @@ djoin = partial(os.path.join, app_data_dir)
 
 configs_local_store = get_configs_local_store(pkg_name)
 
+_DFLT_CONFIGS = {
+    'OPENAI_API_KEY_ENV_NAME': 'OPENAI_API_KEY',
+    'OA_DFLT_TEMPLATES_SOURCE_ENV_NAME': 'OA_DFLT_TEMPLATES_SOURCE',
+    'OA_DFLT_ENGINE': 'gpt-3.5-turbo-instruct',
+    'OA_DFLT_MODEL': 'gpt-3.5-turbo',
+}
+
+# write the defaults to the local store, if key missing there
+for k, v in _DFLT_CONFIGS.items():
+    if k not in configs_local_store:
+        configs_local_store[k] = v
+
+
+config_sources = [
+    configs_local_store,  # look in the local store
+    os.environ,  # look in the environment variables
+    user_gettable(
+        configs_local_store
+    ),  # ask the user (and save response in local store)
+]
+
+# The main config getter for this package
+config_getter = get_config(sources=config_sources)
+
+
+# Get the OPENAI_API_KEY_ENV_NAME and DFLT_TEMPLATES_SOURCE_ENV_NAME
+OPENAI_API_KEY_ENV_NAME = config_getter('OPENAI_API_KEY_ENV_NAME')
+DFLT_TEMPLATES_SOURCE_ENV_NAME = config_getter('OA_DFLT_TEMPLATES_SOURCE_ENV_NAME')
+
+# TODO: Understand the model/engine thing better and merge defaults if possible
+DFLT_ENGINE = config_getter('OA_DFLT_ENGINE')
+DFLT_MODEL = config_getter('OA_DFLT_MODEL')
+
+
+# Have a particular way to get this api key
 @lru_cache
 def get_api_key_from_config():
     return get_config(
@@ -68,7 +112,9 @@ def get_api_key_from_config():
         ],
     )
 
+
 openai.api_key = get_api_key_from_config()
+
 
 @lru_cache
 def mk_client(api_key=None, **client_kwargs):
@@ -84,9 +130,10 @@ chatgpt_templates_dir = os.path.join(templates_files, "chatgpt")
 
 DFLT_TEMPLATES_SOURCE = get_config(
     DFLT_TEMPLATES_SOURCE_ENV_NAME,
-    sources=[os.environ], 
+    sources=[os.environ],
     default=f"{chatgpt_templates_dir}",
 )
+
 
 # TODO: This is general: Bring this in dol or dolx
 def _extract_folder_and_suffixes(

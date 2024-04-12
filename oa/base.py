@@ -6,7 +6,7 @@ from functools import partial
 from types import SimpleNamespace
 from i2 import Sig, Param
 
-from oa.util import openai, djoin, mk_client
+from oa.util import openai, djoin, mk_client, DFLT_ENGINE, DFLT_MODEL
 from oa.openai_specs import prompt_path, sig
 
 api = None
@@ -19,10 +19,6 @@ api = None
 
 prompt_dalle_path = partial(prompt_path, prefix=djoin('dalle'))
 prompt_davinci_path = partial(prompt_path, prefix=djoin('davinci'))
-
-# TODO: Understand the model/engine thing better and merge defaults if possible
-DFLT_ENGINE = 'gpt-3.5-turbo-instruct'
-DFLT_MODEL = 'gpt-3.5-turbo'
 
 # TODO: Use oa.openai_specs sig to provide good signatures
 
