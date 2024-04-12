@@ -79,7 +79,7 @@ config_sources = [
 
 
 def kv_strip_value(k, v):
-    return k, v.strip()
+    return v.strip()
 
 
 # The main config getter for this package
