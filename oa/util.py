@@ -77,8 +77,13 @@ config_sources = [
     ),  # ask the user (and save response in local store)
 ]
 
+
+def kv_strip_value(k, v):
+    return k, v.strip()
+
+
 # The main config getter for this package
-config_getter = get_config(sources=config_sources, egress=str.strip)
+config_getter = get_config(sources=config_sources, egress=kv_strip_value)
 
 
 # Get the OPENAI_API_KEY_ENV_NAME and DFLT_TEMPLATES_SOURCE_ENV_NAME
@@ -110,7 +115,7 @@ def get_api_key_from_config():
                 egress=lambda v: configs_local_store.__setitem__(k, v),
             ),
         ],
-        egress=str.strip,
+        egress=kv_strip_value,
     )
 
 
