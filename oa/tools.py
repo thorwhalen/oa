@@ -206,6 +206,7 @@ def prompt_function(
     name='prompt',
     prompt_func=chat,
     prompt_func_kwargs=None,
+    ingress=None,
     egress=None,
     doc="The function composes a prompt and asks an LLM to respond to it.",
     module=__name__,
@@ -259,6 +260,7 @@ def prompt_function(
     template_embodier = embodier(template)
     prompt_func_kwargs = prompt_func_kwargs or {}
     egress = egress or (lambda x: x)
+    ingress = ingress or (lambda x: x)
 
     # TODO: Same logic replicated in string_format_embodier (what can we do?)
     names = template_to_names(template)
@@ -284,6 +286,7 @@ def prompt_function(
         _kwargs = sig.kwargs_from_args_and_kwargs(
             ask_oa_args, ask_oa_kwargs, apply_defaults=True
         )
+        _kwargs = ingress(_kwargs)
         __args, __kwargs = Sig(template_embodier).args_and_kwargs_from_kwargs(_kwargs)
         embodied_template = template_embodier(*__args, **__kwargs)
         return embodied_template

@@ -39,11 +39,6 @@ app_data_dir = os.environ.get(
 app_data_dir = dol.ensure_dir(app_data_dir, verbose=f'Making app dir: {app_data_dir}')
 djoin = partial(os.path.join, app_data_dir)
 
-# By default will look for configs in environment variables, then in the files
-# (on mac/linus, this would be in ~/.config/<pkg_name>/configs)
-# then ask the user.
-config_getter = simple_config_getter(pkg_name)
-
 # _open_api_key_env_name = 'OPENAI_API_KEY'
 # _api_key = os.environ.get(_open_api_key_env_name, None)
 # if _api_key is None:
