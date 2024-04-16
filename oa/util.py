@@ -166,3 +166,12 @@ def mk_template_store(template_store: Union[Mapping, str]):
         raise TypeError(
             f"template_store must be a Mapping or a path to a directory of templates"
         )
+
+
+import tiktoken
+
+
+def num_tokens(text: str = None, model: str = DFLT_MODEL) -> int:
+    """Return the number of tokens in a string, under given model."""
+    encoding = tiktoken.encoding_for_model(model)
+    return len(encoding.encode(text))
