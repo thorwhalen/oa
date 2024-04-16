@@ -6,7 +6,14 @@ from functools import partial
 from types import SimpleNamespace
 from i2 import Sig, Param
 
-from oa.util import openai, djoin, mk_client, DFLT_ENGINE, DFLT_MODEL
+from oa.util import (
+    openai,
+    djoin,
+    mk_client,
+    DFLT_ENGINE,
+    DFLT_MODEL,
+    DFLT_EMBEDDINGS_MODEL,
+)
 from oa.openai_specs import prompt_path, sig
 
 api = None
@@ -70,7 +77,8 @@ def list_engine_ids():
     return [x.id for x in models_list.data]
 
 
-def embeddings(texts, model="text-embedding-3-small", client=None):
+def embeddings(texts, model=DFLT_EMBEDDINGS_MODEL, client=None):
+
     if client is None:
         client = mk_client()
     if isinstance(texts, str):

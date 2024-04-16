@@ -48,7 +48,6 @@ djoin = partial(os.path.join, app_data_dir)
 #     )
 # openai.api_key = _api_key
 
-
 configs_local_store = get_configs_local_store(pkg_name)
 
 _DFLT_CONFIGS = {
@@ -88,6 +87,7 @@ DFLT_TEMPLATES_SOURCE_ENV_NAME = config_getter('OA_DFLT_TEMPLATES_SOURCE_ENV_NAM
 # TODO: Understand the model/engine thing better and merge defaults if possible
 DFLT_ENGINE = config_getter('OA_DFLT_ENGINE')
 DFLT_MODEL = config_getter('OA_DFLT_MODEL')
+DFLT_EMBEDDINGS_MODEL = 'text-embedding-3-small'  # TODO: Add to config_getter mechanism
 
 
 # Have a particular way to get this api key
