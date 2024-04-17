@@ -87,7 +87,35 @@ DFLT_TEMPLATES_SOURCE_ENV_NAME = config_getter('OA_DFLT_TEMPLATES_SOURCE_ENV_NAM
 # TODO: Understand the model/engine thing better and merge defaults if possible
 DFLT_ENGINE = config_getter('OA_DFLT_ENGINE')
 DFLT_MODEL = config_getter('OA_DFLT_MODEL')
-DFLT_EMBEDDINGS_MODEL = 'text-embedding-3-small'  # TODO: Add to config_getter mechanism
+
+# TODO: Add the following to config_getter mechanism
+DFLT_EMBEDDINGS_MODEL = 'text-embedding-3-small'
+
+embeddings_models = {
+    "text-embedding-3-small": {
+        "price_per_million_tokens": 0.02,  # in dollars
+        "pages_per_dollar": 62500,  # to do: 
+        "performance_on_mteb_eval": 62.3,
+        "max_input": 8191,
+    },
+    "text-embedding-3-large": {
+        "price_per_million_tokens": 0.13,  # in dollars
+        "pages_per_dollar": 9615,
+        "performance_on_mteb_eval": 64.6,
+        "max_input": 8191,
+    },
+    "text-embedding-ada-002": {
+        "price_per_million_tokens": 0.20,  # in dollars
+        "pages_per_dollar": 12500,
+        "performance_on_mteb_eval": 61.0,
+        "max_input": 8191,
+    },
+}
+
+model_information = dict(
+    **embeddings_models,
+    # TODO: Add more model information dicts here
+)
 
 
 # Have a particular way to get this api key
@@ -174,4 +202,4 @@ import tiktoken
 def num_tokens(text: str = None, model: str = DFLT_MODEL) -> int:
     """Return the number of tokens in a string, under given model."""
     encoding = tiktoken.encoding_for_model(model)
-    return len(encoding.encode(text))
+    return len(encoding.encode(text, disallowed_special=()))
