@@ -112,8 +112,13 @@ embeddings_models = {
     },
 }
 
-model_information = dict(
+text_models = {
+
+}
+
+model_information_dict = dict(
     **embeddings_models,
+    **text_models
     # TODO: Add more model information dicts here
 )
 

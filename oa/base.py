@@ -12,7 +12,7 @@ from oa.util import (
     djoin,
     mk_client,
     num_tokens,
-    embeddings_models,
+    model_information_dict,
     DFLT_ENGINE,
     DFLT_MODEL,
     DFLT_EMBEDDINGS_MODEL,
@@ -52,7 +52,12 @@ def model_information(model, information):
     if information in _model_information_aliases:
         information = _model_information_aliases[information]
 
-    return embeddings_models[model][information]
+    if model is not model_information_dict:
+        raise ValueError(f'Unknown model: {model}')
+    if information not in model_information_dict[model]:
+        raise ValueError(f'Unknown information: {information}')
+
+    return model_information_dict[model][information]
 
 
 # TODO: Parse more info and complete this function
@@ -139,35 +144,43 @@ def _raise_if_any_invalid(
         raise ValueError('Some of the texts are invalid')
     return texts
 
-# TODO: Make a few useful validation_callback functions 
+
+# TODO: Make a few useful validation_callback functions
 #    (e.g. return list or dict where invalid texts are replaced with None)
 #    (e.g. return dict containing only valid texts (if input was list, uses indices as keys)
 def embeddings(
     texts: TextOrTexts,
     *,
     validate: Optional[Union[bool, Callable]] = True,
-    validation_callback=_raise_if_any_invalid,
+    valid_text_getter=_raise_if_any_invalid,
     model=DFLT_EMBEDDINGS_MODEL,
     client=None,
 ):
+    texts_was_single_string = False
+    if isinstance(texts, str):
+        texts_was_single_string = True
+        texts = [texts]
+
     if validate:
         if validate is True:
             validate = partial(text_is_valid, model=model)
         validation_vector = validate(texts)
-        texts = validation_callback(validation_vector, texts=texts)
+        texts = valid_text_getter(validation_vector, texts=texts)
 
     if client is None:
         client = mk_client()
-    if isinstance(texts, str):
-        texts = [texts]
-        return client.embeddings.create(input=texts, model=model).data[0].embedding
-    elif isinstance(texts, Mapping):
+
+    if isinstance(texts, Mapping):
         vectors = embeddings(texts.values(), model=model, client=client)
         return {k: v for k, v in zip(texts.keys(), vectors)}
     else:
-        return [
+        vectors = [
             x.embedding for x in client.embeddings.create(input=texts, model=model).data
         ]
+        if texts_was_single_string:
+            return vectors[0]
+        else:
+            return vectors
 
 
 def text_is_valid(
@@ -221,7 +234,7 @@ def text_is_valid(
         if not text:
             return False
         if token_count:
-            max_tokens = max_tokens or embeddings_models[model]['max_input']
+            max_tokens = max_tokens or model_information_dict[model]['max_input']
             if token_count is True:
                 token_count = num_tokens(text, model=model)
             return token_count <= max_tokens
@@ -229,11 +242,20 @@ def text_is_valid(
             return True
     elif isinstance(texts, Iterable):
         _text_is_valid = partial(text_is_valid, model=model, max_tokens=max_tokens)
-        if isinstance(token_count, Iterable):
-            return map(_text_is_valid, texts, token_count)
+        if isinstance(texts, Mapping):
+            vectors = map(
+                partial(text_is_valid, model=model, max_tokens=max_tokens),
+                texts.values(),
+                token_count,
+            )
+            return {k: v for k, v in zip(texts.keys(), vectors)}
         else:
-            __text_is_valid = partial(_text_is_valid, token_count=token_count)
-            return map(__text_is_valid, texts)
+            _text_is_valid = partial(text_is_valid, model=model, max_tokens=max_tokens)
+            if isinstance(token_count, Iterable):
+                return map(_text_is_valid, texts, token_count)
+            else:
+                __text_is_valid = partial(_text_is_valid, token_count=token_count)
+                return map(__text_is_valid, texts)
     else:
         raise TypeError('texts must be a str or an iterable of str')
 
