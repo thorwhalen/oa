@@ -161,6 +161,8 @@ def embeddings(
         texts_was_single_string = True
         texts = [texts]
 
+    # At this point, it's assumed that texts is an iterable of strings (list or dict)
+
     if validate:
         if validate is True:
             validate = partial(text_is_valid, model=model)
@@ -171,9 +173,9 @@ def embeddings(
         client = mk_client()
 
     if isinstance(texts, Mapping):
-        vectors = embeddings(texts.values(), model=model, client=client)
+        vectors = embeddings(texts.values(), model=model, client=client, validate=False)
         return {k: v for k, v in zip(texts.keys(), vectors)}
-    else:
+    else:  # is a non-Mapping iterable of strings
         vectors = [
             x.embedding for x in client.embeddings.create(input=texts, model=model).data
         ]
