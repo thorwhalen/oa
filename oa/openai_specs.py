@@ -59,11 +59,21 @@ from i2 import Sig, Param, empty_param_attr as empty
 from oa.util import grazed
 
 
+# OPENAPI_SPEC_URL = "https://raw.githubusercontent.com/openai/openai-openapi/master/openapi.yaml"
+# The above is the official openapi spec, but they updated it, breaking the yaml load with
+#  a "found duplicate anchor 'run_temperature_description';" error.
+# (see CI: https://github.com/thorwhalen/oa/actions/runs/8735713865/job/24017876818#step:7:452)
+# So I made a copy of the previous working one to use, and will update it when I have time.
+# TODO: Update openapi yaml def (or use )
+# See https://github.com/thorwhalen/oa/discussions/8#discussioncomment-9165753
+OPENAPI_SPEC_URL = (
+    'https://raw.githubusercontent.com/thorwhalen/oa/main/misc/openapi.yaml'
+)
+
+
 @lru_cache
 def get_openapi_spec_dict(
-    openapi_spec_url: str = (
-        "https://raw.githubusercontent.com/openai/openai-openapi/master/openapi.yaml"
-    ),
+    openapi_spec_url: str = OPENAPI_SPEC_URL,
     *,
     refresh: bool = False,
     expand_refs: bool = True,
@@ -179,7 +189,7 @@ def schema_to_signature(schema):
                 # it's schema and since then got a
                 # ValueError: 'timestamp_granularities[]' is not a valid parameter name
                 # error.
-                # I'd rather catch up... 
+                # I'd rather catch up...
                 pass
 
     return Sig(sorted(gen()))

@@ -131,7 +131,8 @@ def _raise_if_any_invalid(
     texts: Iterable[Text] = None,
     print_invalid_texts=True,
 ):
-    if any(validation_vector):
+    validation_vector = list(validation_vector)
+    if not all(validation_vector):
         if print_invalid_texts:
             print(
                 'Invalid text(s):\n',
