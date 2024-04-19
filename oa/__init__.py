@@ -1,4 +1,6 @@
-"""Python interface to OpenAi functionality"""
+"""
+Python facade to OpenAi functionality.
+"""
 
 from oa.util import openai, grazed, djoin, app_data_dir, num_tokens
 from oa.base import (
