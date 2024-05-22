@@ -70,7 +70,7 @@ def compute_price(
     if num_input_tokens is None:
         return partial(compute_price, model)
     price_per_million_tokens = model_information(model, 'price_per_million_tokens')
-    return price_per_million_tokens * (tokens / 1_000_000)
+    return price_per_million_tokens * (num_output_tokens / 1_000_000)
 
 
 prompt_dalle_path = partial(prompt_path, prefix=djoin('dalle'))
