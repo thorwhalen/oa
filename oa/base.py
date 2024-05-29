@@ -146,6 +146,9 @@ def _raise_if_any_invalid(
     return texts
 
 
+from openai import NOT_GIVEN
+
+
 # TODO: Make a few useful validation_callback functions
 #    (e.g. return list or dict where invalid texts are replaced with None)
 #    (e.g. return dict containing only valid texts (if input was list, uses indices as keys)
@@ -156,6 +159,8 @@ def embeddings(
     valid_text_getter=_raise_if_any_invalid,
     model=DFLT_EMBEDDINGS_MODEL,
     client=None,
+    dimensions=NOT_GIVEN,
+    **extra_embeddings_params,
 ):
     texts_was_single_string = False
     if isinstance(texts, str):
@@ -178,7 +183,13 @@ def embeddings(
         return {k: v for k, v in zip(texts.keys(), vectors)}
     else:  # is a non-Mapping iterable of strings
         vectors = [
-            x.embedding for x in client.embeddings.create(input=texts, model=model).data
+            x.embedding
+            for x in client.embeddings.create(
+                input=texts,
+                model=model,
+                dimensions=dimensions,
+                **extra_embeddings_params,
+            ).data
         ]
         if texts_was_single_string:
             return vectors[0]
