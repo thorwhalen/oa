@@ -94,7 +94,7 @@ DFLT_EMBEDDINGS_MODEL = 'text-embedding-3-small'
 embeddings_models = {
     "text-embedding-3-small": {
         "price_per_million_tokens": 0.02,  # in dollars
-        "pages_per_dollar": 62500,  # to do: 
+        "pages_per_dollar": 62500,  # to do:
         "performance_on_mteb_eval": 62.3,
         "max_input": 8191,
     },
@@ -105,20 +105,36 @@ embeddings_models = {
         "max_input": 8191,
     },
     "text-embedding-ada-002": {
-        "price_per_million_tokens": 0.20,  # in dollars
+        "price_per_million_tokens": 0.10,  # in dollars
         "pages_per_dollar": 12500,
         "performance_on_mteb_eval": 61.0,
         "max_input": 8191,
     },
 }
 
-text_models = {
 
-}
+# add batch-api models
+def _generate_batch_api_models_info(models_info_dict, batch_api_discount=0.5):
+    for model_name, model_info in models_info_dict.items():
+        m = model_info.copy()
+        m["price_per_million_tokens"] = round(
+            m["price_per_million_tokens"] * batch_api_discount, 4
+        )
+        m["pages_per_dollar"] = int(1 / m["price_per_million_tokens"])
+        # the rest remains the same
+        yield f"batch__{model_name}", m
+
+
+embeddings_models = dict(
+    embeddings_models,
+    **dict(_generate_batch_api_models_info(embeddings_models, batch_api_discount=0.5)),
+)
+
+text_models = {}
 
 model_information_dict = dict(
     **embeddings_models,
-    **text_models
+    **text_models,
     # TODO: Add more model information dicts here
 )
 
