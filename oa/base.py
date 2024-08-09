@@ -52,12 +52,14 @@ def model_information(model, information):
     if information in _model_information_aliases:
         information = _model_information_aliases[information]
 
-    if model is not model_information_dict:
+    if model not in model_information_dict:
         raise ValueError(f'Unknown model: {model}')
     if information not in model_information_dict[model]:
         raise ValueError(f'Unknown information: {information}')
 
     return model_information_dict[model][information]
+
+model_information.model_information_dict = model_information_dict
 
 
 # TODO: Parse more info and complete this function
@@ -70,8 +72,9 @@ def compute_price(
     if num_input_tokens is None:
         return partial(compute_price, model)
     price_per_million_tokens = model_information(model, 'price_per_million_tokens')
-    return price_per_million_tokens * (num_output_tokens / 1_000_000)
+    return price_per_million_tokens * (num_input_tokens / 1_000_000)
 
+compute_price.model_information_dict = model_information_dict
 
 prompt_dalle_path = partial(prompt_path, prefix=djoin('dalle'))
 prompt_davinci_path = partial(prompt_path, prefix=djoin('davinci'))
