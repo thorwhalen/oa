@@ -224,3 +224,20 @@ def num_tokens(text: str = None, model: str = DFLT_MODEL) -> int:
     """Return the number of tokens in a string, under given model."""
     encoding = tiktoken.encoding_for_model(model)
     return len(encoding.encode(text, disallowed_special=()))
+
+
+# --------------------------------------------------------------------------------------
+# misc utils
+
+
+# a function to translate utc time in 1723557717 format into a human readable format
+def utc_to_human(utc_time: int) -> str:
+    """
+    Convert utc time to human readable format.
+
+    >>> utc_to_human(1723471317)
+    '2024-08-12 15:01:57'
+    """
+    from datetime import datetime
+
+    return datetime.fromtimestamp(utc_time).strftime('%Y-%m-%d %H:%M:%S')
