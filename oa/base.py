@@ -59,6 +59,7 @@ def model_information(model, information):
 
     return model_information_dict[model][information]
 
+
 model_information.model_information_dict = model_information_dict
 
 
@@ -73,6 +74,7 @@ def compute_price(
         return partial(compute_price, model)
     price_per_million_tokens = model_information(model, 'price_per_million_tokens')
     return price_per_million_tokens * (num_input_tokens / 1_000_000)
+
 
 compute_price.model_information_dict = model_information_dict
 
@@ -150,6 +152,20 @@ def _raise_if_any_invalid(
 
 
 from openai import NOT_GIVEN
+from typing import Union
+# from collections.abc import Mapping, Iterable
+
+
+def normalize_text_input(texts: TextOrTexts) -> TextStrings:
+    """Ensures the type of texts is an iterable of strings"""
+    if isinstance(texts, str):
+        return [texts], str, None  # Single string case
+    elif isinstance(texts, Mapping):
+        return texts.values(), Mapping, list(texts.keys())
+    elif isinstance(texts, Iterable):
+        return texts, Iterable, None  # Iterable case
+    else:
+        raise ValueError("Input type not supported")
 
 
 # TODO: Make a few useful validation_callback functions
@@ -162,13 +178,67 @@ def embeddings(
     valid_text_getter=_raise_if_any_invalid,
     model=DFLT_EMBEDDINGS_MODEL,
     client=None,
-    dimensions=NOT_GIVEN,
+    dimensions: Optional[int] = NOT_GIVEN,
     **extra_embeddings_params,
 ):
-    texts_was_single_string = False
-    if isinstance(texts, str):
-        texts_was_single_string = True
-        texts = [texts]
+    """
+    Get embeddings for a text or texts.
+    
+    :param texts: A string, an iterable of strings, or a dictionary of strings
+    :param validate: If True, validate the text(s) before getting embeddings
+    :param valid_text_getter: A function that gets valid texts from the input texts
+    :param model: The model to use for embeddings
+    :param client: The OpenAI client to use
+    :param dimensions: If given will reduce the dimensions of the full size embedding 
+        vectors to that size
+    :param extra_embeddings_params: Extra parameters to pass to the embeddings API
+
+
+    >>> from functools import partial
+    >>> dimensions = 3
+    >>> embeddings_ = partial(embeddings, dimensions=dimensions, validate=True)
+
+    # Test with a single word
+    >>> text = "vector"
+    >>> result = embeddings_(text)
+    >>> result  # doctest: +SKIP
+    [-0.4096039831638336, 0.3794299364089966, -0.8296127915382385]
+    >>> isinstance(result, list)
+    True
+    >>> len(result) == dimensions == 3
+    True
+
+    # Test with a list of words
+    >>> texts = ["semantic", "vector"]
+    >>> result = embeddings_(texts)
+    >>> isinstance(result, list)
+    True
+    >>> len(result)
+    2
+    
+    Two vectors; one for each word. Note that the second vector is the vector of 
+    "vector", which we've seen before.
+    >>> result[1]  # doctest: +SKIP
+    [-0.4096039831638336, 0.3794299364089966, -0.8296127915382385]
+
+    >>> len(result[1]) == dimensions == 3
+    True
+
+
+    # Test with a dictionary of words
+    >>> texts = {"adj": "semantic", "noun": "vector"}
+    >>> result = embeddings_(texts)
+    >>> isinstance(result, dict)
+    True
+    >>> len(result)
+    2
+    >>> result["noun"]  # doctest: +SKIP
+    [-0.4096039831638336, 0.3794299364089966, -0.8296127915382385]
+    >>> len(result["adj"]) == len(result["noun"]) == dimensions == 3
+    True
+
+    """
+    texts, texts_type, keys = normalize_text_input(texts)
 
     # At this point, it's assumed that texts is an iterable of strings (list or dict)
 
@@ -181,23 +251,23 @@ def embeddings(
     if client is None:
         client = mk_client()
 
-    if isinstance(texts, Mapping):
-        vectors = embeddings(texts.values(), model=model, client=client, validate=False)
-        return {k: v for k, v in zip(texts.keys(), vectors)}
-    else:  # is a non-Mapping iterable of strings
-        vectors = [
-            x.embedding
-            for x in client.embeddings.create(
-                input=texts,
-                model=model,
-                dimensions=dimensions,
-                **extra_embeddings_params,
-            ).data
-        ]
-        if texts_was_single_string:
-            return vectors[0]
-        else:
-            return vectors
+    # Note: validate set to False, as we've already validated
+    vectors = [
+        x.embedding
+        for x in client.embeddings.create(
+            input=texts,
+            model=model,
+            dimensions=dimensions,
+            **extra_embeddings_params,
+        ).data
+    ]
+
+    if texts_type is Mapping:
+        return {k: v for k, v in zip(keys, vectors)}
+    elif texts_type is str:
+        return vectors[0]
+    else:
+        return vectors
 
 
 def text_is_valid(
@@ -246,36 +316,35 @@ def text_is_valid(
     [True, False, True]
 
     """
-    if isinstance(texts, str):
-        text = texts  # renaming to be clear it's a single text
+    # Normalize the input
+    texts, texts_type, keys = normalize_text_input(texts)
+
+    # Set the maximum tokens allowed if not provided
+    max_tokens = max_tokens or model_information_dict[model]['max_input']
+
+    # Define the validation logic for a single text
+    def is_text_valid(text, token_count):
         if not text:
             return False
         if token_count:
-            max_tokens = max_tokens or model_information_dict[model]['max_input']
             if token_count is True:
                 token_count = num_tokens(text, model=model)
             return token_count <= max_tokens
-        else:
-            return True
-    elif isinstance(texts, Iterable):
-        _text_is_valid = partial(text_is_valid, model=model, max_tokens=max_tokens)
-        if isinstance(texts, Mapping):
-            vectors = map(
-                partial(text_is_valid, model=model, max_tokens=max_tokens),
-                texts.values(),
-                token_count,
-            )
-            return {k: v for k, v in zip(texts.keys(), vectors)}
-        else:
-            _text_is_valid = partial(text_is_valid, model=model, max_tokens=max_tokens)
-            if isinstance(token_count, Iterable):
-                return map(_text_is_valid, texts, token_count)
-            else:
-                __text_is_valid = partial(_text_is_valid, token_count=token_count)
-                return map(__text_is_valid, texts)
-    else:
-        raise TypeError('texts must be a str or an iterable of str')
+        return True
 
+    # Handle the validation for different input types
+    if isinstance(token_count, Iterable):
+        results = map(is_text_valid, texts, token_count)
+    else:
+        results = map(partial(is_text_valid, token_count=token_count), texts)
+
+    if texts_type is Mapping:
+        return {k: v for k, v in zip(keys, results)}  # Return a mapping if input was a mapping
+    elif texts_type is str:
+        return next(results)  # Return the boolean directly if the input was a single string
+    else:
+        return list(results)  # Return the list of booleans for an iterable of strings
+     
 
 # df['ada_embedding'] = df.combined.apply(lambda x: get_embedding(x, model='text-embedding-3-small'))
 # df.to_csv('output/embedded_1k_reviews.csv', index=False)
