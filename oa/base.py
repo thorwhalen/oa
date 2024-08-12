@@ -136,7 +136,11 @@ def _raise_if_any_invalid(
     texts: Iterable[Text] = None,
     print_invalid_texts=True,
 ):
-    validation_vector = list(validation_vector)
+    if isinstance(validation_vector, bool):
+        # if it's a single validation boolean, make it a list of one boolean
+        validation_vector = [validation_vector]
+    else:
+        validation_vector = list(validation_vector)
     if not all(validation_vector):
         if print_invalid_texts:
             print(
@@ -153,19 +157,8 @@ def _raise_if_any_invalid(
 
 from openai import NOT_GIVEN
 from typing import Union
+
 # from collections.abc import Mapping, Iterable
-
-
-def normalize_text_input(texts: TextOrTexts) -> TextStrings:
-    """Ensures the type of texts is an iterable of strings"""
-    if isinstance(texts, str):
-        return [texts], str, None  # Single string case
-    elif isinstance(texts, Mapping):
-        return texts.values(), Mapping, list(texts.keys())
-    elif isinstance(texts, Iterable):
-        return texts, Iterable, None  # Iterable case
-    else:
-        raise ValueError("Input type not supported")
 
 
 # TODO: Make a few useful validation_callback functions
@@ -183,13 +176,13 @@ def embeddings(
 ):
     """
     Get embeddings for a text or texts.
-    
+
     :param texts: A string, an iterable of strings, or a dictionary of strings
     :param validate: If True, validate the text(s) before getting embeddings
     :param valid_text_getter: A function that gets valid texts from the input texts
     :param model: The model to use for embeddings
     :param client: The OpenAI client to use
-    :param dimensions: If given will reduce the dimensions of the full size embedding 
+    :param dimensions: If given will reduce the dimensions of the full size embedding
         vectors to that size
     :param extra_embeddings_params: Extra parameters to pass to the embeddings API
 
@@ -215,8 +208,8 @@ def embeddings(
     True
     >>> len(result)
     2
-    
-    Two vectors; one for each word. Note that the second vector is the vector of 
+
+    Two vectors; one for each word. Note that the second vector is the vector of
     "vector", which we've seen before.
     >>> result[1]  # doctest: +SKIP
     [-0.4096039831638336, 0.3794299364089966, -0.8296127915382385]
@@ -238,15 +231,9 @@ def embeddings(
     True
 
     """
-    texts, texts_type, keys = normalize_text_input(texts)
-
-    # At this point, it's assumed that texts is an iterable of strings (list or dict)
-
-    if validate:
-        if validate is True:
-            validate = partial(text_is_valid, model=model)
-        validation_vector = validate(texts)
-        texts = valid_text_getter(validation_vector, texts=texts)
+    texts, texts_type, keys = _prepare_embeddings_args(
+        validate, texts, valid_text_getter, model
+    )
 
     if client is None:
         client = mk_client()
@@ -268,6 +255,116 @@ def embeddings(
         return vectors[0]
     else:
         return vectors
+
+
+import time
+from dataclasses import dataclass
+
+
+def random_custom_id(prefix='custom_id-', suffix=''):
+    """Make a random custom_id by using the current time in nanoseconds"""
+    return f"{prefix}{int(time.time() * 1e9)}{suffix}"
+
+
+# @dataclass
+# class EmbeddingsMaker:
+#     texts: TextOrTexts,
+
+#     custom_id: str = None,
+#     validate: Optional[Union[bool, Callable]] = True,
+#     valid_text_getter=_raise_if_any_invalid,
+#     model=DFLT_EMBEDDINGS_MODEL,
+#     client=None,
+#     dimensions: Optional[int] = NOT_GIVEN,
+#     **extra_embeddings_params,
+
+
+def _rm_not_given_values(d):
+    return {k: v for k, v in d.items() if v is not NOT_GIVEN}
+
+
+def mk_batch_file_embeddings_task(
+    texts: TextOrTexts,
+    *,
+    custom_id: Optional[str] = None,
+    validate: Optional[Union[bool, Callable]] = True,
+    valid_text_getter=_raise_if_any_invalid,
+    # client=None,
+    model=DFLT_EMBEDDINGS_MODEL,
+    dimensions: Optional[int] = NOT_GIVEN,
+    **extra_embeddings_params,
+):
+    # Make a random custom_id if not provided
+    if custom_id is None:
+        custom_id = random_custom_id('embeddings_batch_id-')
+
+    texts, texts_type, keys = _prepare_embeddings_args(
+        validate, texts, valid_text_getter, model
+    )
+    body = _rm_not_given_values(
+        dict(
+            input=texts,
+            model=model,
+            dimensions=dimensions,
+        )
+    )
+    task = {
+        "custom_id": custom_id,
+        "method": "POST",
+        "url": "/v1/embeddings",
+        "body": body,
+    }
+    return task
+
+
+import tempfile
+from pathlib import Path
+import json
+
+
+def mk_embeddings_batch_file(
+    texts, *, purpose='batch', client=None, embeddings_params: Union[dict, tuple] = ()
+):
+    client = client or mk_client()
+
+    embeddings_params = dict(embeddings_params)
+    task_dict = mk_batch_file_embeddings_task(texts, **embeddings_params)
+    temp_file = tempfile.NamedTemporaryFile(delete=False, suffix='.jsonl', mode='w')
+    Path(temp_file.name).write_text(json.dumps(task_dict))
+    batch_input_file = client.files.create(file=open(temp_file.name, 'rb'), purpose=purpose)
+    batch_input_file._local_filepath = temp_file.name
+    batch_input_file._task_dict = task_dict
+    return batch_input_file
+
+
+def _prepare_embeddings_args(validate, texts, valid_text_getter, model):
+    if validate:
+        texts = validate_texts_for_embeddings(texts, valid_text_getter, model)
+
+    texts, texts_type, keys = normalize_text_input(texts)
+
+    return texts, texts_type, keys
+
+
+def validate_texts_for_embeddings(
+    texts, valid_text_getter, model=DFLT_EMBEDDINGS_MODEL
+):
+    validate = partial(text_is_valid, model=model)
+    validation_vector = validate(texts)
+    texts = valid_text_getter(validation_vector, texts=texts)
+    return texts
+
+
+def normalize_text_input(texts: TextOrTexts) -> TextStrings:
+    """Ensures the type of texts is an iterable of strings"""
+    if isinstance(texts, str):
+        return [texts], str, None  # Single string case
+    elif isinstance(texts, Mapping):
+        return texts.values(), Mapping, list(texts.keys())
+    elif isinstance(texts, Iterable):
+        return texts, Iterable, None  # Iterable case
+    else:
+        raise ValueError("Input type not supported")
 
 
 def text_is_valid(
@@ -339,12 +436,16 @@ def text_is_valid(
         results = map(partial(is_text_valid, token_count=token_count), texts)
 
     if texts_type is Mapping:
-        return {k: v for k, v in zip(keys, results)}  # Return a mapping if input was a mapping
+        return {
+            k: v for k, v in zip(keys, results)
+        }  # Return a mapping if input was a mapping
     elif texts_type is str:
-        return next(results)  # Return the boolean directly if the input was a single string
+        return next(
+            results
+        )  # Return the boolean directly if the input was a single string
     else:
         return list(results)  # Return the list of booleans for an iterable of strings
-     
+
 
 # df['ada_embedding'] = df.combined.apply(lambda x: get_embedding(x, model='text-embedding-3-small'))
 # df.to_csv('output/embedded_1k_reviews.csv', index=False)
