@@ -37,6 +37,10 @@ jobs:
           enable: missing-module-docstring
           ignore: tests,examples,scrap
 
+    # Add a step to list installed pip packages before running the validation
+      - name: List installed Python packages
+        run: pip list
+         
       - name: Pytest Validation
         uses: i2mint/isee/actions/pytest-validation@master
         with:
