@@ -263,22 +263,25 @@ print(json_schema_str[:500] + '...')
 ```
 
 ```
-from oa import prompt_function, chat
-from oa.util import data_files
-
-example_of_a_openai_json_schema = example_of_a_openai_json_schema = (
-    data_files.joinpath('json_schema_example.json').read_text()
-)
-
-json_schema_str = chat(
-    "Give me the json of a json_schema I can use different characteristics of "
-    "programming languages. This schema should be a valid schema to use as a "
-    "response_format in the OpenAI API. "
-    f"Here's an example:\n{example_of_a_openai_json_schema}", 
-    model='gpt-4o-mini',
-    response_format={'type': 'json_object'}
-)
-print(json_schema_str[:500] + '...')
+{
+  "name": "programming_language_characteristics",
+  "strict": false,
+  "schema": {
+    "type": "object",
+    "properties": {
+      "name": {
+        "type": "string",
+        "description": "The name of the programming language."
+      },
+      "paradigm": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "description": "Programming paradigms the language follows, e.g., 'object-oriented', 'functional', etc."
+        }
+      },
+      "designed_by": {
+        "t...
 ```
 
 Now we can use this schema to make an AI-enabled python function that will give 
