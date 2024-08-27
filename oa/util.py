@@ -252,6 +252,8 @@ def num_tokens(text: str = None, model: str = DFLT_MODEL) -> int:
 
 # --------------------------------------------------------------------------------------
 # misc utils
+from dateutil.parser import parse as parse_date
+from datetime import datetime, timezone
 
 
 # a function to translate utc time in 1723557717 format into a human readable format
@@ -261,11 +263,9 @@ def utc_int_to_iso_date(utc_time: int) -> str:
     Inverse of iso_date_to_utc_int.
 
     >>> utc_int_to_iso_date(1723471317)
-    '2024-08-12T15:01:57'
+    '2024-08-12T14:01:57+00:00'
     """
-    from datetime import datetime
-
-    return datetime.fromtimestamp(utc_time).isoformat()
+    return datetime.utcfromtimestamp(utc_time).replace(tzinfo=timezone.utc).isoformat()
 
 
 def iso_date_to_utc_int(iso_date: str) -> int:
@@ -273,12 +273,10 @@ def iso_date_to_utc_int(iso_date: str) -> int:
     Convert iso date string to utc integer timestamp.
     Inverse of utc_int_to_iso_date.
 
-    >>> iso_date_to_utc_int('2024-08-12T15:01:57')
+    >>> iso_date_to_utc_int('2024-08-12T14:01:57+00:00')
     1723471317
     """
-    from dateutil.parser import parse
-
-    return int(parse(iso_date).timestamp())
+    return int(parse_date(iso_date).timestamp())
 
 
 # just to have the inverse of a function close to the function itself:
