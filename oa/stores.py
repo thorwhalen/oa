@@ -1,7 +1,7 @@
 """Data object layers for openai resources"""
 
 from collections.abc import Mapping
-from operator import attrgetter
+from operator import attrgetter, methodcaller
 from typing import Optional, Union, Iterable, Callable, Any, List, Literal
 import json
 from functools import wraps, partial, cached_property
@@ -183,11 +183,34 @@ def is_task_dict_list(x):
 DFLT_ENCODING = 'utf-8'
 
 
-def to_jsonl_bytes(x: Iterable, encoding: str = DFLT_ENCODING) -> bytes:
+def jsonl_dumps(x: Iterable, encoding: str = DFLT_ENCODING) -> bytes:
+    r"""
+    Serialize an iterable as JSONL bytes
+
+    >>> jsonl_dumps([{'a': 1}, {'b': 2}])
+    b'{"a": 1}\n{"b": 2}'
+
+    """
     if isinstance(x, Mapping):
         return json.dumps(x).encode(encoding)
     else:
         return b'\n'.join(json.dumps(task).encode(encoding) for task in x)
+
+
+def jsonl_loads(bytes_: bytes, encoding: str = DFLT_ENCODING) -> List[dict]:
+    r"""
+    Deserialize JSONL bytes into a python iterable (dict or list of dicts)
+
+    >>> jsonl_loads(b'\n{"a": 1}\n\n{"b": 2}')
+    [{'a': 1}, {'b': 2}]
+
+    """
+
+    def gen():
+        for line in filter(None, map(methodcaller('strip'), bytes_.split(b'\n'))):
+            yield json.loads(line.decode(encoding))
+
+    return list(gen())
 
 
 class OaFilesBase(OaMapping):
@@ -233,7 +256,7 @@ class OaFilesBase(OaMapping):
     def append(self, file: Union[FileTypes, dict]) -> FileObject:
         # Note: self.client.create can be found in openai.resources.files.Files.create
         if is_task_dict(file) or is_task_dict_list(file):
-            file = to_jsonl_bytes(file, self.encoding)
+            file = json1_dumps(file, self.encoding)
         return self.client.files.create(
             file=file, purpose=self.purpose, **self.extra_kwargs
         )
@@ -401,7 +424,8 @@ class OaBatches(OaBatchesBase):
 class OaStores:
     def __init__(self, client: Optional[openai.Client] = None) -> None:
         if client is None:
-            self.client = mk_client()
+            client = mk_client()
+        self.client = client
 
     @cached_property
     def data_files(self):
@@ -426,3 +450,17 @@ class OaStores:
     @cached_property
     def files_metadata(self):
         return OaFilesMetadata(self.client)
+
+
+from oa.batches import get_output_file_data
+
+
+class OaDacc:
+    def __init__(self, client: Optional[openai.Client] = None) -> None:
+        if client is None:
+            client = mk_client()
+        self.client = client
+        self.s = OaStores(self.client)
+
+    def get_output_file_data(self, batch):
+        return get_output_file_data(batch, oa_stores=self.s)

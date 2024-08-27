@@ -193,19 +193,20 @@ class BatchFailedError(BatchError):
 
 # TODO: I do NOT like the dependency on oa_stores here!
 # TODO: Not sure if function or object with a "handle" __call__ method is better here
-def get_output_file_data(batch, *, oa_stores):
+def get_output_file_data(batch: 'Batch', *, oa_stores):
     """
     Get the output file data for a batch, if it has completed successfully.
 
     """
+    
     try:
-        batch_obj = oa_stores.batches[batch]
+        batch_obj = oa_stores.batches_base[batch]
     except KeyError:
         raise KeyError(f"Batch {batch} not found.")
 
     if batch_obj.status == 'completed':
         # Return the output file if the batch completed successfully
-        return oa_stores.files[batch_obj.output_file_id]
+        return oa_stores.files_base[batch_obj.output_file_id]
 
     else:
         if batch_obj.status == 'failed':
