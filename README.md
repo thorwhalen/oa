@@ -1,9 +1,16 @@
-
 # oa
 Python interface to OpenAi
 
-
 To install:	```pip install oa```
+
+- [oa](#oa)
+- [Usage](#usage)
+  - [A collection of prompt-enabled functions](#a-collection-of-prompt-enabled-functions)
+    - [PromptFuncs](#promptfuncs)
+  - [Functionalizing prompts](#functionalizing-prompts)
+  - [Enforcing json formatted outputs](#enforcing-json-formatted-outputs)
+  - [Just-do-it: A minimal-boilerplate facade to OpenAI stuff](#just-do-it-a-minimal-boilerplate-facade-to-openai-stuff)
+  - [Raw form - When you need to be closer to the metal](#raw-form---when-you-need-to-be-closer-to-the-metal)
 
 
 # Usage
@@ -314,26 +321,17 @@ pprint(info)
 ```
 
 ```
-import json
+type(info)=<class 'dict'>
 
-properties_of_language = prompt_function(
-    "Give me a json that describes characteristics of the programming language: {language}.",
-    prompt_func=chat, 
-    prompt_func_kwargs=dict(
-        model='gpt-4o-mini', 
-        response_format={
-            'type': 'json_schema',
-            'json_schema': json.loads(json_schema_str)
-        }
-    ),
-    egress=json.loads
-)
-
-info = properties_of_language('Python')
-print(f"{type(info)=}\n")
-
-from pprint import pprint
-pprint(info)
+{'designed_by': ['Guido van Rossum'],
+ 'first_appeared': 1991,
+ 'influenced_by': ['ABC', 'C', 'C++', 'Java', 'Modula-3', 'Lisp'],
+ 'influences': ['Ruby', 'Swift', 'Matlab', 'Go'],
+ 'latest_release': '3.11.5',
+ 'name': 'Python',
+ 'paradigm': ['object-oriented', 'imperative', 'functional', 'procedural'],
+ 'typing_discipline': 'dynamic',
+ 'website': 'https://www.python.org'}
 ```
 
 
