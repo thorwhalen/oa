@@ -23,6 +23,11 @@ Below are a few snippets from there.
 
 ## A collection of prompt-enabled functions
 
+One main functionality that `oa` offers is an easy way to define python functions based 
+on AI prompts. 
+In order to demo these, we've made a few ready-to-use ones, which you can access via
+`oa.ask.ai`:
+
 ```python
 from oa.ask import ai
 
@@ -223,6 +228,111 @@ str(inspect.signature(prompt_function)).split(', ')
      'prompt_func=<function chat at 0x128420af0>',
      'prompt_func_kwargs=None',
      'egress=None)']
+
+
+## Enforcing json formatted outputs
+
+With some newer models (example, "gpt4o-mini") you can request that only valid 
+json be given as a response, or even more: A json obeying a specific schema. 
+You control this via the `response_format` argument. 
+
+Let's first use AI to get a json schema for characteristics of a programming language.
+That's a json, so why not use the `response_format` with `{"type": "json_object"}` to 
+get that schema!
+
+
+```python
+from oa import chat
+from oa.util import data_files
+
+# To make sure we get a json schema that is openAI compliant, we'll use an example of 
+# one in our prompt to AI to give us one...
+example_of_a_openai_json_schema = example_of_a_openai_json_schema = (
+    data_files.joinpath('json_schema_example.json').read_text()
+)
+
+json_schema_str = chat(
+    "Give me the json of a json_schema I can use different characteristics of "
+    "programming languages. This schema should be a valid schema to use as a "
+    "response_format in the OpenAI API. "
+    f"Here's an example:\n{example_of_a_openai_json_schema}", 
+    model='gpt-4o-mini',
+    response_format={'type': 'json_object'}
+)
+print(json_schema_str[:500] + '...')
+```
+
+```
+from oa import prompt_function, chat
+from oa.util import data_files
+
+example_of_a_openai_json_schema = example_of_a_openai_json_schema = (
+    data_files.joinpath('json_schema_example.json').read_text()
+)
+
+json_schema_str = chat(
+    "Give me the json of a json_schema I can use different characteristics of "
+    "programming languages. This schema should be a valid schema to use as a "
+    "response_format in the OpenAI API. "
+    f"Here's an example:\n{example_of_a_openai_json_schema}", 
+    model='gpt-4o-mini',
+    response_format={'type': 'json_object'}
+)
+print(json_schema_str[:500] + '...')
+```
+
+Now we can use this schema to make an AI-enabled python function that will give 
+us characteristics of a language, but always using that fixed format.
+This also means we'll be able to stick an `egress` to our prompt function, so 
+that we always get our output in the form of an already decoded json (a `dict`).
+
+```python
+from oa import prompt_function
+import json
+
+properties_of_language = prompt_function(
+    "Give me a json that describes characteristics of the programming language: {language}.",
+    prompt_func=chat, 
+    prompt_func_kwargs=dict(
+        model='gpt-4o-mini', 
+        response_format={
+            'type': 'json_schema',
+            'json_schema': json.loads(json_schema_str)
+        }
+    ),
+    egress=json.loads
+)
+
+info = properties_of_language('Python')
+print(f"{type(info)=}\n")
+
+from pprint import pprint
+pprint(info)
+```
+
+```
+import json
+
+properties_of_language = prompt_function(
+    "Give me a json that describes characteristics of the programming language: {language}.",
+    prompt_func=chat, 
+    prompt_func_kwargs=dict(
+        model='gpt-4o-mini', 
+        response_format={
+            'type': 'json_schema',
+            'json_schema': json.loads(json_schema_str)
+        }
+    ),
+    egress=json.loads
+)
+
+info = properties_of_language('Python')
+print(f"{type(info)=}\n")
+
+from pprint import pprint
+pprint(info)
+```
+
 
 
 
