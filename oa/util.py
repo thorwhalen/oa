@@ -6,8 +6,7 @@ from functools import partial, lru_cache
 from typing import Mapping, Union, get_args, Literal
 from types import SimpleNamespace
 
-import i2
-from i2 import Sig
+from i2 import Sig, get_app_data_folder
 import dol
 import graze
 from config2py import (
@@ -35,7 +34,7 @@ def get_package_name():
 pkg_name = get_package_name()
 data_files = files(pkg_name) / 'data'
 templates_files = data_files / 'templates'
-_root_app_data_dir = i2.get_app_data_folder()
+_root_app_data_dir = get_app_data_folder()
 app_data_dir = os.environ.get(
     f'{pkg_name.upper()}_APP_DATA_DIR',
     os.path.join(_root_app_data_dir, pkg_name),
@@ -286,7 +285,6 @@ iso_date_to_utc_int.inverse = utc_int_to_iso_date
 
 from typing import Iterable
 import openai
-from i2 import Sig
 from i2.signatures import SignatureAble
 from inspect import Parameter
 
