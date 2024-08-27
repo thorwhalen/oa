@@ -17,7 +17,7 @@ from oa.util import (
     DFLT_MODEL,
     DFLT_EMBEDDINGS_MODEL,
 )
-from oa.openai_specs import prompt_path, sig
+from oa.openai_specs import prompt_path
 
 Text = str
 TextStrings = Iterable[Text]
@@ -84,6 +84,7 @@ prompt_davinci_path = partial(prompt_path, prefix=djoin('davinci'))
 # TODO: Use oa.openai_specs sig to provide good signatures
 
 
+@Sig.replace_kwargs_using(openai.completions.create)
 def complete(prompt, model=None, **complete_params):
     if 'engine' in complete_params:
         model = complete_params.pop('engine')
@@ -95,6 +96,7 @@ def complete(prompt, model=None, **complete_params):
 complete.engine = DFLT_ENGINE
 
 
+@Sig.replace_kwargs_using(openai.chat.completions.create)
 def _raw_chat(prompt=None, model=DFLT_MODEL, *, messages=None, **chat_params):
     if not ((prompt is None) ^ (messages is None)):
         raise ValueError('Either prompt or messages must be specified, but not both.')
@@ -108,6 +110,7 @@ def _raw_chat(prompt=None, model=DFLT_MODEL, *, messages=None, **chat_params):
 # chat_sig = Sig([Param(name='prompt', default=None, annotation=str), *chat_sig.params])
 
 
+@Sig.replace_kwargs_using(_raw_chat)
 def chat(prompt=None, model=DFLT_MODEL, *, messages=None, **chat_params):
     resp = _raw_chat(prompt=prompt, model=model, messages=messages, **chat_params)
     # TODO: Make attr and item getters more robust (use glom?)
@@ -117,10 +120,12 @@ def chat(prompt=None, model=DFLT_MODEL, *, messages=None, **chat_params):
 chat.raw = _raw_chat
 
 
+@Sig.replace_kwargs_using(openai.images.generate)
 def _raw_dalle(prompt, n=1, size='512x512', **image_create_params):
     return openai.images.generate(prompt=prompt, n=n, size=size, **image_create_params)
 
 
+@Sig.replace_kwargs_using(_raw_dalle)
 def dalle(prompt, n=1, size='512x512', **image_create_params):
     r = _raw_dalle(prompt=prompt, n=n, size=size, **image_create_params)
     return r.data[0].url
@@ -164,6 +169,7 @@ from typing import Union
 # TODO: Make a few useful validation_callback functions
 #    (e.g. return list or dict where invalid texts are replaced with None)
 #    (e.g. return dict containing only valid texts (if input was list, uses indices as keys)
+@Sig.replace_kwargs_using(openai.embeddings.create)
 def embeddings(
     texts: TextOrTexts,
     *,
@@ -257,84 +263,8 @@ def embeddings(
         return vectors
 
 
-import time
-from dataclasses import dataclass
-
-
-def random_custom_id(prefix='custom_id-', suffix=''):
-    """Make a random custom_id by using the current time in nanoseconds"""
-    return f"{prefix}{int(time.time() * 1e9)}{suffix}"
-
-
-# @dataclass
-# class EmbeddingsMaker:
-#     texts: TextOrTexts,
-
-#     custom_id: str = None,
-#     validate: Optional[Union[bool, Callable]] = True,
-#     valid_text_getter=_raise_if_any_invalid,
-#     model=DFLT_EMBEDDINGS_MODEL,
-#     client=None,
-#     dimensions: Optional[int] = NOT_GIVEN,
-#     **extra_embeddings_params,
-
-
-def _rm_not_given_values(d):
-    return {k: v for k, v in d.items() if v is not NOT_GIVEN}
-
-
-def mk_batch_file_embeddings_task(
-    texts: TextOrTexts,
-    *,
-    custom_id: Optional[str] = None,
-    validate: Optional[Union[bool, Callable]] = True,
-    valid_text_getter=_raise_if_any_invalid,
-    # client=None,
-    model=DFLT_EMBEDDINGS_MODEL,
-    dimensions: Optional[int] = NOT_GIVEN,
-    **extra_embeddings_params,
-):
-    # Make a random custom_id if not provided
-    if custom_id is None:
-        custom_id = random_custom_id('embeddings_batch_id-')
-
-    texts, texts_type, keys = _prepare_embeddings_args(
-        validate, texts, valid_text_getter, model
-    )
-    body = _rm_not_given_values(
-        dict(
-            input=texts,
-            model=model,
-            dimensions=dimensions,
-        )
-    )
-    task = {
-        "custom_id": custom_id,
-        "method": "POST",
-        "url": "/v1/embeddings",
-        "body": body,
-    }
-    return task
-
-
-import tempfile
-from pathlib import Path
-import json
-
-
-def mk_embeddings_batch_file(
-    texts, *, purpose='batch', client=None, embeddings_params: Union[dict, tuple] = ()
-):
-    client = client or mk_client()
-
-    embeddings_params = dict(embeddings_params)
-    task_dict = mk_batch_file_embeddings_task(texts, **embeddings_params)
-    temp_file = tempfile.NamedTemporaryFile(delete=False, suffix='.jsonl', mode='w')
-    Path(temp_file.name).write_text(json.dumps(task_dict))
-    batch_input_file = client.files.create(file=open(temp_file.name, 'rb'), purpose=purpose)
-    batch_input_file._local_filepath = temp_file.name
-    batch_input_file._task_dict = task_dict
-    return batch_input_file
+# --------------------------------------------------------------------------------------
+# embeddings utils
 
 
 def _prepare_embeddings_args(validate, texts, valid_text_getter, model):

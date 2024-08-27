@@ -3,9 +3,11 @@
 from importlib.resources import files
 import os
 from functools import partial, lru_cache
-from typing import Mapping, Union
+from typing import Mapping, Union, get_args, Literal
+from types import SimpleNamespace
 
 import i2
+from i2 import Sig
 import dol
 import graze
 from config2py import (
@@ -17,6 +19,8 @@ from config2py import (
 )
 
 import openai  # pip install openai (see https://pypi.org/project/openai/)
+from openai.resources.files import FileObject
+from openai.resources.batches import Batches as OaBatches
 
 
 def get_package_name():
@@ -90,6 +94,19 @@ DFLT_MODEL = config_getter('OA_DFLT_MODEL')
 
 # TODO: Add the following to config_getter mechanism
 DFLT_EMBEDDINGS_MODEL = 'text-embedding-3-small'
+
+
+Purpose = FileObject.model_fields['purpose'].annotation
+DFLT_PURPOSE = 'batch'
+BatchesEndpoint = eval(Sig(OaBatches.create).annotations['endpoint'])
+batch_endpoints_values = get_args(BatchesEndpoint)
+batch_endpoints_keys = [
+    k.replace('/v1/', '').replace('/', '_') for k in batch_endpoints_values
+]
+batch_endpoints = SimpleNamespace(
+    **dict(zip(batch_endpoints_keys, batch_endpoints_values))
+)
+
 
 embeddings_models = {
     "text-embedding-3-small": {
@@ -167,10 +184,17 @@ openai.api_key = get_api_key_from_config()
 
 
 @lru_cache
-def mk_client(api_key=None, **client_kwargs):
+def mk_client(api_key=None, **client_kwargs) -> openai.Client:
     api_key = api_key or get_api_key_from_config()
     return openai.OpenAI(api_key=api_key, **client_kwargs)
 
+
+# TODO: Pros and cons of using a default client
+#   Reason was that I was fed up of having to pass the client to every function
+try:
+    dflt_client = mk_client()
+except Exception as e:
+    dflt_client = None
 
 _grazed_dir = dol.ensure_dir(os.path.join(app_data_dir, 'grazed'))
 grazed = graze.Graze(rootdir=_grazed_dir)
@@ -231,13 +255,71 @@ def num_tokens(text: str = None, model: str = DFLT_MODEL) -> int:
 
 
 # a function to translate utc time in 1723557717 format into a human readable format
-def utc_to_human(utc_time: int) -> str:
+def utc_int_to_iso_date(utc_time: int) -> str:
     """
-    Convert utc time to human readable format.
+    Convert utc integer timestamp to more human readable iso format.
+    Inverse of iso_date_to_utc_int.
 
-    >>> utc_to_human(1723471317)
-    '2024-08-12 15:01:57'
+    >>> utc_int_to_iso_date(1723471317)
+    '2024-08-12T15:01:57'
     """
     from datetime import datetime
 
-    return datetime.fromtimestamp(utc_time).strftime('%Y-%m-%d %H:%M:%S')
+    return datetime.fromtimestamp(utc_time).isoformat()
+
+
+def iso_date_to_utc_int(iso_date: str) -> int:
+    """
+    Convert iso date string to utc integer timestamp.
+    Inverse of utc_int_to_iso_date.
+
+    >>> iso_date_to_utc_int('2024-08-12T15:01:57')
+    1723471317
+    """
+    from dateutil.parser import parse
+
+    return int(parse(iso_date).timestamp())
+
+
+# just to have the inverse of a function close to the function itself:
+utc_int_to_iso_date.inverse = iso_date_to_utc_int
+iso_date_to_utc_int.inverse = utc_int_to_iso_date
+
+
+from typing import Iterable
+import openai
+from i2 import Sig
+from i2.signatures import SignatureAble
+from inspect import Parameter
+
+
+@Sig.replace_kwargs_using(Sig.merge_with_sig)
+def merge_multiple_signatures(
+    iterable_of_sigs: Iterable[SignatureAble], **merge_with_sig_options
+):
+    sig = Sig()
+    for input_sig in map(Sig, iterable_of_sigs):
+        sig = sig.merge_with_sig(input_sig, **merge_with_sig_options)
+    return sig
+
+
+# TODO: Control whether to only overwrite if defaults and/or annotations don't already exist
+# TODO: Control if matching by name or annotation
+def source_parameter_props_from(parameters: Mapping[str, Parameter]):
+    """
+    A decorator that will change the annotation and default of the parameters of the
+    decorated function, sourcing them from `parameters`, matching them by name.
+    """
+
+    def decorator(func):
+        sig = Sig(func)
+        common_names = set(sig.names) & set(parameters.keys())
+        sig = sig.ch_defaults(
+            **{name: parameters[name].default for name in common_names}
+        )
+        sig = sig.ch_annotations(
+            **{name: parameters[name].annotation for name in common_names}
+        )
+        return sig(func)
+
+    return decorator
