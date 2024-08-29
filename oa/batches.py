@@ -146,12 +146,15 @@ create_at_within_range = value_in_interval(get_val=attrgetter('created_at'))
 
 
 def batches_within_range(batches_base, min_date, max_date=None):
-    return list(
-        filter(create_at_within_range(min_val=min_date, max_val=max_date), batches_base)
+    return filter(
+        create_at_within_range(min_val=min_date, max_val=max_date), batches_base
     )
 
 
 def request_counts(batch_list):
+    # pylint: disable=import-error
+    import pandas as pd
+
     t = pd.DataFrame([x.to_dict() for x in batch_list])
     tt = pd.DataFrame(t.request_counts.values.tolist())
     return tt.sum()
@@ -198,7 +201,7 @@ def get_output_file_data(batch: 'Batch', *, oa_stores):
     Get the output file data for a batch, if it has completed successfully.
 
     """
-    
+
     try:
         batch_obj = oa_stores.batches_base[batch]
     except KeyError:

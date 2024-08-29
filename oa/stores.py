@@ -2,7 +2,7 @@
 
 from collections.abc import Mapping
 from operator import attrgetter, methodcaller
-from typing import Optional, Union, Iterable, Callable, Any, List, Literal
+from typing import Optional, Union, Iterable, Callable, Any, List, Literal, T
 import json
 from functools import wraps, partial, cached_property
 
@@ -17,11 +17,13 @@ from oa.util import (
     utc_int_to_iso_date,
     Purpose,
     BatchesEndpoint,
+    DFLT_ENCODING,
+    jsonl_loads_iter,
 )
 from i2 import Sig
 from i2.signatures import SignatureAble, ParamsAble
 from i2 import postprocess
-from dol import wrap_kvs, KvReader
+from dol import wrap_kvs, KvReader, Pipe
 
 FilterFunc = Callable[[Any], bool]
 
@@ -180,39 +182,6 @@ def is_task_dict_list(x):
     return all(is_task_dict(item) for item in x)
 
 
-DFLT_ENCODING = 'utf-8'
-
-
-def jsonl_dumps(x: Iterable, encoding: str = DFLT_ENCODING) -> bytes:
-    r"""
-    Serialize an iterable as JSONL bytes
-
-    >>> jsonl_dumps([{'a': 1}, {'b': 2}])
-    b'{"a": 1}\n{"b": 2}'
-
-    """
-    if isinstance(x, Mapping):
-        return json.dumps(x).encode(encoding)
-    else:
-        return b'\n'.join(json.dumps(task).encode(encoding) for task in x)
-
-
-def jsonl_loads(bytes_: bytes, encoding: str = DFLT_ENCODING) -> List[dict]:
-    r"""
-    Deserialize JSONL bytes into a python iterable (dict or list of dicts)
-
-    >>> jsonl_loads(b'\n{"a": 1}\n\n{"b": 2}')
-    [{'a': 1}, {'b': 2}]
-
-    """
-
-    def gen():
-        for line in filter(None, map(methodcaller('strip'), bytes_.split(b'\n'))):
-            yield json.loads(line.decode(encoding))
-
-    return list(gen())
-
-
 class OaFilesBase(OaMapping):
     # @params_from_openai_files_cls
     @Sig.replace_kwargs_using(files_create_sig - 'purpose')
@@ -285,11 +254,20 @@ class OaFiles(OaFilesBase):
     """
 
 
+@wrap_kvs(key_decoder=attrgetter('id'), value_decoder=methodcaller('json'))
+class OaJsonFiles(OaFilesBase):
+    """
+    A key-value store for OpenAI files content data.
+    Keys are the file IDs.
+    """
+
+
+
 # TODO: Find a non-underscored place to import HttpxBinaryResponseContent from
 # Note: This is just used for annotation purposes
 from openai._legacy_response import HttpxBinaryResponseContent
 
-from typing import TypedDict
+from typing import TypedDict, TypeVar
 
 
 # TODO: Find some where to import this definition from
@@ -318,15 +296,21 @@ class EmbeddingsDataObject(TypedDict):
     embeddings: List[float]  # The third known field, 'embeddings'
 
 
-def jsonl_loads_iter(response: HttpxBinaryResponseContent) -> Iterable[ResponseDict]:
-    return map(json.loads, response.iter_lines())
+DataObjectValue = TypeVar('DataObjectValue')
+DataObjectValue.__doc__ = (
+    "The value that a DataObject holds in the field indicated by the object field"
+)
+
+jsonl_loads_response_lines = partial(
+    jsonl_loads_iter, get_lines=methodcaller('iter_lines')
+)
 
 
 def response_body_data(response_dict: ResponseDict) -> DataObject:
     return response_dict['response']['body']['data']
 
 
-def object_of_data(data: DataObject) -> Any:
+def object_of_data(data: DataObject) -> DataObjectValue:
     """
     This function extracts the object (value) from a {object: V, index: i, V} dict
     which is the format you'll find in the ['response']['body']['data'] of a response.
@@ -338,12 +322,20 @@ def object_of_data(data: DataObject) -> Any:
     return data[data['object']]
 
 
+def response_body_data_objects(
+    response_dict: ResponseDict,
+) -> Iterable[DataObjectValue]:
+    data = response_body_data(response_dict)
+    for d in data:
+        yield object_of_data(d)
+
+
 # Note: This is to be used as a content decoder
 # TODO: The looping logic is messy, consider refactoring
 @postprocess(dict)
 def get_json_data_from_response(response: HttpxBinaryResponseContent):
     """Extract the embeddings from a HttpxBinaryResponseContent object"""
-    for d in jsonl_loads_iter(response):
+    for d in jsonl_loads_response_lines(response):
         custom_id = d['custom_id']
         dd = response_body_data(d)
         if isinstance(dd, list):
@@ -430,6 +422,10 @@ class OaStores:
     @cached_property
     def data_files(self):
         return OaFilesJsonData(self.client)
+    
+    @cached_property
+    def json_files(self):
+        return OaJsonFiles(self.client)
 
     @cached_property
     def files(self):
@@ -464,3 +460,16 @@ class OaDacc:
 
     def get_output_file_data(self, batch):
         return get_output_file_data(batch, oa_stores=self.s)
+
+
+# --------------------------------------------------------------------------------------
+# debugging and diagnosis tools
+
+
+def print_some_jsonl_line_fields(line):
+    print(f"{list(line)=}")
+    print(f"{list(line['response'])=}")
+    print(f"{list(line['response']['body'])=}")
+    print(f"{line['response']['body']['object']=}")
+    print(f"{len(line['response']['body']['data'])=}")
+    print(f"{list(line['response']['body']['data'][0])=}")

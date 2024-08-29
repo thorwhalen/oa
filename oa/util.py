@@ -283,6 +283,50 @@ utc_int_to_iso_date.inverse = iso_date_to_utc_int
 iso_date_to_utc_int.inverse = utc_int_to_iso_date
 
 
+import json
+from operator import methodcaller
+from typing import Iterable, Callable, T
+from dol import Pipe
+
+DFLT_ENCODING = 'utf-8'
+
+
+def jsonl_dumps(x: Iterable, encoding: str = DFLT_ENCODING) -> bytes:
+    r"""
+    Serialize an iterable as JSONL bytes
+
+    >>> jsonl_dumps([{'a': 1}, {'b': 2}])
+    b'{"a": 1}\n{"b": 2}'
+
+    """
+    if isinstance(x, Mapping):
+        return json.dumps(x).encode(encoding)
+    else:
+        return b'\n'.join(json.dumps(line).encode(encoding) for line in x)
+
+
+def jsonl_loads_iter(
+    src: T,
+    *,
+    get_lines: Callable[[T], Iterable[bytes]] = bytes.splitlines,
+    line_egress: Callable = methodcaller('strip')
+) -> Iterable[dict]:
+    r"""
+    Deserialize JSONL bytes into a python iterable (dict or list of dicts)
+
+    >>> list(jsonl_loads(b'\n{"a": 1}\n\n{"b": 2}'))
+    [{'a': 1}, {'b': 2}]
+
+    """
+
+    for line in filter(None, map(line_egress, get_lines(src))):
+        yield json.loads(line)
+
+
+jsonl_loads = Pipe(jsonl_loads_iter, list)
+jsonl_loads.__doc__ = jsonl_loads_iter.__doc__
+
+
 from typing import Iterable
 import openai
 from i2.signatures import SignatureAble
