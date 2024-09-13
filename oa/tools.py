@@ -226,6 +226,7 @@ def prompt_function(
         the prompt. If None, the output function will only produce the prompt string,
         not ask the LLM to respond to it.
     :param prompt_func_kwargs: Keyword arguments to pass to `prompt_func`.
+    :param ingress: A function to apply to the input of `prompt_func`.
     :param egress: A function to apply to the output of `prompt_func`.
     :param doc: The docstring of the function.
     :param module: The module of the function.
