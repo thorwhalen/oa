@@ -146,11 +146,61 @@ embeddings_models = dict(
     **dict(_generate_batch_api_models_info(embeddings_models, batch_api_discount=0.5)),
 )
 
-text_models = {}
+
+chat_models = {
+    "gpt-4": {
+        "price_per_million_tokens": 30.00,  # in dollars
+        "pages_per_dollar": 134,  # approximately
+        "performance_on_eval": "Advanced reasoning for complex tasks",
+        "max_input": 8192,  # tokens
+    },
+    "gpt-4-32k": {
+        "price_per_million_tokens": 60.00,  # in dollars
+        "pages_per_dollar": 67,
+        "performance_on_eval": "Extended context window for long documents",
+        "max_input": 32768,  # tokens
+    },
+    "gpt-4-turbo": {
+        "price_per_million_tokens": 10.00,  # in dollars
+        "pages_per_dollar": 402,
+        "performance_on_eval": "Cost-effective version of GPT-4",
+        "max_input": 8192,  # tokens
+    },
+    "gpt-3.5-turbo": {
+        "price_per_million_tokens": 0.50,  # in dollars
+        "pages_per_dollar": 8048,
+        "performance_on_eval": "Highly cost-effective for general tasks",
+        "max_input": 4096,  # tokens
+    },
+    "o1-preview": {
+        "price_per_million_tokens": 15.00,  # in dollars
+        "pages_per_dollar": 268,
+        "performance_on_eval": "Optimized for complex reasoning in STEM fields",
+        "max_input": 8192,  # tokens
+    },
+    "o1-mini": {
+        "price_per_million_tokens": 3.00,  # in dollars
+        "pages_per_dollar": 1341,
+        "performance_on_eval": "Cost-effective reasoning for simpler tasks",
+        "max_input": 8192,  # tokens
+    },
+    "gpt-4o": {
+        "price_per_million_tokens": 5.00,  # in dollars
+        "pages_per_dollar": 804,  # approximately
+        "performance_on_eval": "Efficiency-optimized version of GPT-4 for better performance on reasoning tasks",
+        "max_input": 8192,  # tokens
+    },
+    "gpt-4o-mini": {
+        "price_per_million_tokens": 0.30,  # in dollars
+        "pages_per_dollar": 13410,
+        "performance_on_eval": "Highly cost-effective, optimized for simple tasks with faster response times",
+        "max_input": 8192,  # tokens
+    },
+}
 
 model_information_dict = dict(
     **embeddings_models,
-    **text_models,
+    **chat_models,
     # TODO: Add more model information dicts here
 )
 
