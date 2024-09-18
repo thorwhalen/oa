@@ -250,6 +250,17 @@ def num_tokens(text: str = None, model: str = DFLT_MODEL) -> int:
 
 
 # --------------------------------------------------------------------------------------
+# Extraction
+
+from oa.oa_types import BatchRequest, EmbeddingResponse, InputDataJsonL
+from ju import ModelExtractor
+from dol import add_ipython_key_completions, Pipe
+
+models = [BatchRequest, EmbeddingResponse, InputDataJsonL]
+
+oa_extractor = Pipe(ModelExtractor(models), add_ipython_key_completions)
+
+# --------------------------------------------------------------------------------------
 # misc utils
 from dateutil.parser import parse as parse_date
 from datetime import datetime, timezone
@@ -283,6 +294,19 @@ utc_int_to_iso_date.inverse = iso_date_to_utc_int
 iso_date_to_utc_int.inverse = utc_int_to_iso_date
 
 
+import itertools
+
+
+def transpose_iterable(iterable_of_tuples):
+    return zip(*iterable_of_tuples)
+
+
+def transpose_and_concatenate(iterable_of_tuples):
+    return map(
+        list, map(itertools.chain.from_iterable, transpose_iterable(iterable_of_tuples))
+    )
+
+
 import json
 from operator import methodcaller
 from typing import Iterable, Callable, T
@@ -309,7 +333,7 @@ def jsonl_loads_iter(
     src: T,
     *,
     get_lines: Callable[[T], Iterable[bytes]] = bytes.splitlines,
-    line_egress: Callable = methodcaller('strip')
+    line_egress: Callable = methodcaller('strip'),
 ) -> Iterable[dict]:
     r"""
     Deserialize JSONL bytes into a python iterable (dict or list of dicts)

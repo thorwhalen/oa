@@ -19,6 +19,8 @@ from oa.util import (
     BatchesEndpoint,
     DFLT_ENCODING,
     jsonl_loads_iter,
+    jsonl_dumps,
+    jsonl_loads,
 )
 from i2 import Sig
 from i2.signatures import SignatureAble, ParamsAble
@@ -225,7 +227,7 @@ class OaFilesBase(OaMapping):
     def append(self, file: Union[FileTypes, dict]) -> FileObject:
         # Note: self.client.create can be found in openai.resources.files.Files.create
         if is_task_dict(file) or is_task_dict_list(file):
-            file = json1_dumps(file, self.encoding)
+            file = jsonl_dumps(file, self.encoding)
         return self.client.files.create(
             file=file, purpose=self.purpose, **self.extra_kwargs
         )
@@ -254,13 +256,28 @@ class OaFiles(OaFilesBase):
     """
 
 
-@wrap_kvs(key_decoder=attrgetter('id'), value_decoder=methodcaller('json'))
-class OaJsonFiles(OaFilesBase):
+@wrap_kvs(key_decoder=attrgetter('id'), value_decoder=jsonl_loads)
+class OaJsonLFiles(OaFilesBase):
     """
     A key-value store for OpenAI files content data.
     Keys are the file IDs.
     """
 
+
+def get_json_or_jsonl_data(response):
+    """Extract the json data from a response"""
+    try:
+        return response.json()
+    except json.JSONDecodeError:
+        return jsonl_loads(response.content)
+
+
+@wrap_kvs(key_decoder=attrgetter('id'), value_decoder=get_json_or_jsonl_data)
+class OaJsonFiles(OaFilesBase):
+    """
+    A key-value store for OpenAI files content data.
+    Keys are the file IDs.
+    """
 
 
 # TODO: Find a non-underscored place to import HttpxBinaryResponseContent from
@@ -304,6 +321,8 @@ DataObjectValue.__doc__ = (
 jsonl_loads_response_lines = partial(
     jsonl_loads_iter, get_lines=methodcaller('iter_lines')
 )
+
+jsonl_loads_list = Pipe(jsonl_loads_response_lines, list)
 
 
 def response_body_data(response_dict: ResponseDict) -> DataObject:
@@ -422,9 +441,13 @@ class OaStores:
     @cached_property
     def data_files(self):
         return OaFilesJsonData(self.client)
-    
+
     @cached_property
     def json_files(self):
+        return OaJsonFiles(self.client)
+
+    @cached_property
+    def jsonl_files(self):
         return OaJsonFiles(self.client)
 
     @cached_property

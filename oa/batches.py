@@ -1,4 +1,11 @@
-"""Batch functionality """
+"""
+Batch functionality
+
+Useful links:
+- Web tool: https://platform.openai.com/batches/
+- API docs: https://platform.openai.com/docs/api-reference/batch
+
+"""
 
 from typing import Optional, Union, Callable, List
 from functools import partial
@@ -138,6 +145,32 @@ def mk_batch_file_embeddings_task(
         return _task(_body(texts))
 
 
+from oa.util import oa_extractor
+
+
+def batch_info_to_segments_and_embeddings(jsonl_store, batch_info):
+    output_data_dict = jsonl_store[batch_info.output_file_id]
+    output_data = oa_extractor(output_data_dict)
+    if (
+        'response.body.data.*.embedding' in output_data
+        and output_data['response.status_code'] == 200
+    ):
+        embedding_vectors = output_data['response.body.data.*.embedding']
+        input_file_data = oa_extractor(jsonl_store[batch_info.input_file_id])
+        segments = input_file_data['body.input']
+        return segments, embedding_vectors
+    else:
+        return None
+
+
+def get_segments_and_embeddings(batch_store, jsonl_store):
+    for batch_info in batch_store.values():
+        if batch_info.endpoint == '/v1/embeddings' and batch_info.status == 'completed':
+            yield batch_info_to_segments_and_embeddings(jsonl_store, batch_info)
+
+
+# --------------------------------------------------------------------------------------
+# Misc
 from operator import attrgetter
 from lkj import value_in_interval
 from dol import Pipe

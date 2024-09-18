@@ -111,7 +111,7 @@ def _raw_chat(prompt=None, model=DFLT_MODEL, *, messages=None, **chat_params):
 
 
 @Sig.replace_kwargs_using(_raw_chat)
-def chat(prompt=None, model=DFLT_MODEL, *, messages=None, **chat_params):
+def chat(prompt=None, *, model=DFLT_MODEL, messages=None, **chat_params):
     resp = _raw_chat(prompt=prompt, model=model, messages=messages, **chat_params)
     # TODO: Make attr and item getters more robust (use glom?)
     return resp.choices[0].message.content
