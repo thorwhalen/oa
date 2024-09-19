@@ -160,6 +160,25 @@ def _raise_if_any_invalid(
     return texts
 
 
+# --------------------------------------------------------------------------------------
+# Embeddings
+"""
+There are (at least) three ways to compute embeddings, which are more or less ideal 
+depending on the situation.
+
+* One by one, locally and serially (that is, we wait for the response of the request 
+    before sending another). This is **VERY** slow, and you don't want to do this with 
+    a lot of data. But it has the advantage of being simple and straightforward, and, 
+    if one of your segments has a problem, you'll know easily exactly which one does.
+* In batches, locally and serially. 
+* In batches, remotely, in parallel, asynchronously. Advantages here are that it's 
+    remote, so you're not hogging down the resources of your computer, and the remote 
+    server will manage the persistence, status, etc. It's also cheaper (with OpenAI, 
+    at the time of writing this, half the price). But it's more complex, and though 
+    often faster to get your response every time I've ever tried, you are "only" 
+    guaranteed getting your batch jobs within 24h of launching them.
+"""
+
 from openai import NOT_GIVEN
 from typing import Union
 
