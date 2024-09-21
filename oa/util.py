@@ -294,7 +294,10 @@ import tiktoken
 
 
 def num_tokens(text: str = None, model: str = DFLT_MODEL) -> int:
-    """Return the number of tokens in a string, under given model."""
+    """Return the number of tokens in a string, under given model.
+
+    keywords: token count, number of tokens
+    """
     encoding = tiktoken.encoding_for_model(model)
     return len(encoding.encode(text, disallowed_special=()))
 
