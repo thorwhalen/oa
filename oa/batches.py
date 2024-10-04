@@ -85,6 +85,7 @@ def _rm_not_given_values(d):
 def _mk_embeddings_request_body(
     text_or_texts,
     model=DFLT_EMBEDDINGS_MODEL,
+    user = NOT_GIVEN,
     dimensions: Optional[int] = NOT_GIVEN,
     **extra_embeddings_params,
 ):
@@ -92,6 +93,7 @@ def _mk_embeddings_request_body(
         dict(
             input=text_or_texts,
             model=model,
+            user=user,
             dimensions=dimensions,
             **extra_embeddings_params,
         )
