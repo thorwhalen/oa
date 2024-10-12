@@ -231,12 +231,12 @@ def prompt_function(
     :param doc: The docstring of the function.
     :param module: The module of the function.
 
-    In the following example, we'll use the `prompt_func=None` argument to get a 
-    function that simply injects inputs in a prompt template, without actually calling 
-    an AI-enabled `prompt_func`. 
-    Note in this example, how a block of the prompt template string is ignored for 
+    In the following example, we'll use the `prompt_func=None` argument to get a
+    function that simply injects inputs in a prompt template, without actually calling
+    an AI-enabled `prompt_func`.
+    Note in this example, how a block of the prompt template string is ignored for
     injection purposes, via a triple-backtick marker.
-    
+
     >>> prompt_template = '''
     ... ```
     ... In this block, all {placeholders} are {igno:red} so that they can appear in prompt.
@@ -305,6 +305,85 @@ def prompt_function(
     f.template_original = template_original
 
     return f
+
+
+import json
+from i2 import Sig, Pipe
+from typing import Mapping
+
+
+def identity(x):
+    return x
+
+
+def _ensure_json_schema(json_schema: Union[str, bytes, Mapping]) -> dict:
+    """
+    A few things to make it more probable that the input is a oa valid json schema
+    """
+    if isinstance(json_schema, str):
+        json_schema = json.loads(json_schema)
+
+    if 'schema' not in json_schema:  # the schema actually has to be under a schema key
+        json_schema = {'schema': json_schema}
+
+    if 'name' not in json_schema:  # OpenAI forces you to put a name
+        json_schema['name'] = 'json_schema'
+
+    if 'type' not in json_schema:  # OpenAI forces you to put a type
+        json_schema['type'] = 'object'
+
+    return json_schema
+
+
+def prompt_json_function(
+    template,
+    json_schema: Union[str, bytes, Mapping],
+    *,
+    defaults: Optional[dict] = None,
+    embodier: Callable = string_format_embodier,
+    arg_kinds: Optional[dict] = None,
+    name='prompt',
+    prompt_func=chat,
+    prompt_func_kwargs=None,
+    ingress=None,
+    egress=None,
+    doc="The function composes a prompt and asks an LLM to respond to it with json.",
+    module=__name__,
+) -> dict:
+    """
+    Make prompt functions that return jsons (dicts) with a given schema.
+    """
+
+    json_schema = _ensure_json_schema(json_schema)
+
+    assert isinstance(json_schema, Mapping)
+
+    prompt_func_kwargs = dict(
+        dict(
+            model='gpt-4o-mini',
+            response_format={
+                'type': 'json_schema',
+                'json_schema': json_schema,
+            },
+        ),
+        **(prompt_func_kwargs or {}),
+    )
+
+    egress = Pipe(json.loads, egress or identity)
+
+    return prompt_function(
+        template,
+        defaults=defaults,
+        embodier=embodier,
+        arg_kinds=arg_kinds,
+        name=name,
+        prompt_func=prompt_func,
+        prompt_func_kwargs=prompt_func_kwargs,
+        ingress=ingress,
+        egress=egress,
+        doc=doc,
+        module=module,
+    )
 
 
 from typing import Mapping, Optional, KT, Union
