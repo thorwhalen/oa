@@ -25,6 +25,6 @@ from oa.base import (
     text_is_valid,
 )
 from oa.openai_specs import raw
-from oa.tools import prompt_function, PromptFuncs
+from oa.tools import prompt_function, PromptFuncs, prompt_json_function
 from oa import ask
 from oa.stores import OaStores

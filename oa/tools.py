@@ -335,9 +335,20 @@ def _ensure_json_schema(json_schema: Union[str, bytes, Mapping]) -> dict:
     return json_schema
 
 
+generic_json_schema = {
+    "name": "generic_json_schema",
+    "type": "object",
+    "schema": {
+        "type": "object",
+        "properties": {"name": "response", "type": "string"},
+        "required": ["response"],
+    },
+}
+
+
 def prompt_json_function(
     template,
-    json_schema: Union[str, bytes, Mapping],
+    json_schema: Union[str, bytes, Mapping] = generic_json_schema,
     *,
     defaults: Optional[dict] = None,
     embodier: Callable = string_format_embodier,
@@ -360,7 +371,7 @@ def prompt_json_function(
 
     prompt_func_kwargs = dict(
         dict(
-            model='gpt-4o-mini',
+            model='gpt-4o-mini',  # TODO: Change to just ensure model is compatible
             response_format={
                 'type': 'json_schema',
                 'json_schema': json_schema,
