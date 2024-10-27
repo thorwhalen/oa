@@ -439,6 +439,8 @@ _generic_json_schema = {
 }
 
 
+# TODO: model could be present in prompt_func_kwargs or in partial of prompt_func
+#   --> need to ensure that all work well together (no obfuscated conflicts)
 def prompt_json_function(
     template,
     json_schema: Union[str, bytes, Mapping] = "string",
@@ -449,6 +451,7 @@ def prompt_json_function(
     name='prompt',
     prompt_func=chat,
     prompt_func_kwargs=None,
+    model='gpt-4o-mini',
     ingress=None,
     egress=None,
     doc="The function composes a prompt and asks an LLM to respond to it with json.",
@@ -464,7 +467,7 @@ def prompt_json_function(
 
     prompt_func_kwargs = dict(
         dict(
-            model='gpt-4o-mini',  # TODO: Change to just ensure model is compatible
+            model=model,  # TODO: Change to just ensure model is compatible
             response_format={
                 'type': 'json_schema',
                 'json_schema': json_schema,
