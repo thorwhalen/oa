@@ -316,39 +316,132 @@ def identity(x):
     return x
 
 
+json_types = {
+    'object': dict,
+    'array': list,
+    'string': str,
+    'number': float,
+    'integer': int,
+    'boolean': bool,
+    'null': type(None),
+}
+
+py_to_json_types = {v: k for k, v in json_types.items()}
+
+json_type_specs = json_types.keys() | py_to_json_types.keys()
+
+# TODO: Define from json_type_specs when possible (e.g. in python 3.11 it will be)
+# JsonTypes = Literal[
+#     'object', 'array', 'string', 'number', 'integer', 'boolean', 'null',
+#     dict, list, str, float, int, bool, type(None),
+# ]
+
+from enum import Enum
+
+
+class JsonTypes(Enum):
+    string = "string"
+    number = "number"
+    object = "object"
+    array = "array"
+    boolean = "boolean"
+    null = "null"
+    dict = dict
+    list = list
+    float = float
+    int = int
+    bool = bool
+    none = type(None)
+
+
+def ensure_json_type(json_type: JsonTypes) -> str:
+    """
+    Ensure that the json type is a string that is a valid json type
+
+    >>> ensure_json_type('string')
+    'string'
+    >>> ensure_json_type(str)
+    'string'
+    >>> ensure_json_type(object)  # doctest: +ELLIPSIS
+    Traceback (most recent call last):
+    ...
+    ValueError: Cannot convert ...
+
+    """
+    # Get the string representation of the json type, given as a python type
+    if isinstance(json_type, type):
+        if json_type in py_to_json_types:
+            return py_to_json_types[json_type]
+        else:
+            raise ValueError(
+                f"Cannot convert {json_type} to a json type. "
+                f"Should be one of {json_type_specs}"
+            )
+    # ensure that the json type is a string that is listed in json_types
+    if not isinstance(json_type, str) or json_type not in json_types:
+        raise ValueError(
+            f"json_type should be a string or a type, not {type(json_type)}"
+        )
+    return json_type
+
+
+def make_generic_json_schema(json_type: JsonTypes) -> dict:
+    """
+    Make a generic json schema for a given json type.
+
+    >>> make_generic_json_schema('string')
+    {'name': 'generic_string_schema', 'schema': {'type': 'string'}, 'required': ['result']}
+    """
+
+    json_type = ensure_json_type(json_type)
+    return {
+        "name": f"generic_{json_type}_schema",
+        "schema": {
+            "properties": {"result": {"type": json_type}},
+            "required": ["result"],
+        },   
+    }
+
+
 def _ensure_json_schema(json_schema: Union[str, bytes, Mapping]) -> dict:
     """
     A few things to make it more probable that the input is a oa valid json schema
     """
-    if isinstance(json_schema, str):
-        json_schema = json.loads(json_schema)
-
-    if 'schema' not in json_schema:  # the schema actually has to be under a schema key
-        json_schema = {'schema': json_schema}
+    if isinstance(json_schema, type):
+        json_schema = make_generic_json_schema(json_schema)
+    elif isinstance(json_schema, str):
+        if json_schema in json_types:  # make a generic json schema for that type
+            json_schema = make_generic_json_schema(json_schema)
+        else:  # assume it is a json string
+            json_schema = json.loads(json_schema)
 
     if 'name' not in json_schema:  # OpenAI forces you to put a name
         json_schema['name'] = 'json_schema'
 
-    if 'type' not in json_schema:  # OpenAI forces you to put a type
-        json_schema['type'] = 'object'
+    if 'schema' not in json_schema:  # the schema actually has to be under a schema key
+        json_schema = {'schema': json_schema}
+
+    if 'type' not in json_schema['schema']:  # OpenAI forces you to put a type
+        json_schema['schema']['type'] = 'object'
 
     return json_schema
 
 
-generic_json_schema = {
+# Note: Keeping around for reference
+_generic_json_schema = {
     "name": "generic_json_schema",
-    "type": "object",
     "schema": {
-        "type": "object",
-        "properties": {"name": "response", "type": "string"},
-        "required": ["response"],
+        "properties": {"result": {"type": "string"}},
+        "required": ["result"],
+        #  "additionalProperties": True,
     },
+#     "strict": False,
 }
 
 
 def prompt_json_function(
     template,
-    json_schema: Union[str, bytes, Mapping] = generic_json_schema,
+    json_schema: Union[str, bytes, Mapping] = "string",
     *,
     defaults: Optional[dict] = None,
     embodier: Callable = string_format_embodier,
