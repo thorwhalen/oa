@@ -9,7 +9,7 @@ Useful links:
 
 from typing import Optional, Union, Callable, List
 from functools import partial
-
+import itertools
 from oa.util import batch_endpoints
 from oa.base import (
     _prepare_embeddings_args,
@@ -85,7 +85,7 @@ def _rm_not_given_values(d):
 def _mk_embeddings_request_body(
     text_or_texts,
     model=DFLT_EMBEDDINGS_MODEL,
-    user = NOT_GIVEN,
+    user=NOT_GIVEN,
     dimensions: Optional[int] = NOT_GIVEN,
     **extra_embeddings_params,
 ):
@@ -124,8 +124,98 @@ def mk_batch_file_embeddings_task(
     # client=None,
     model=DFLT_EMBEDDINGS_MODEL,
     dimensions: Optional[int] = NOT_GIVEN,
+    custom_id_per_text=None,
     **extra_embeddings_params,
 ) -> Union[dict, List[dict]]:
+    """
+    Create a batch task (json-)dicts for generating embeddings.
+
+    These dictionaries (or list thereof) are destined to be used as input for the
+    OpenAI API batch endpoint. The endpoint will then generate embeddings for the
+    provided texts.
+
+    Args:
+        texts (TextOrTexts): The text or list of texts to generate embeddings for.
+        custom_id (Optional[str], optional): A custom identifier for the batch task. Defaults to None.
+        validate (Optional[Union[bool, Callable]], optional): Whether to validate the texts. Defaults to True.
+        valid_text_getter (Optional[Callable], optional): Function to retrieve valid texts. Defaults to _raise_if_any_invalid.
+        model (str, optional): The embeddings model to use. Defaults to DFLT_EMBEDDINGS_MODEL.
+        dimensions (Optional[int], optional): The dimensions for the embeddings. Defaults to NOT_GIVEN.
+        custom_id_per_text (Optional[bool], optional): Whether to include a custom ID per text item. Defaults to None.
+        **extra_embeddings_params: Additional parameters for embeddings.
+
+    Returns:
+        Union[dict, List[dict]]: A single task dictionary or a list of task dictionaries.
+
+    Examples:
+
+    With a single text:
+
+    >>> mk_batch_file_embeddings_task("Example text")  # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
+    {'custom_id': '...',
+     'method': 'POST',
+     'url': '/v1/embeddings',
+     'body': {'input': ['Example text'], 'model': 'text-embedding-3-small'}}
+
+    With a list of texts:
+
+    >>> mk_batch_file_embeddings_task(["Text1", "Text2"])  # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
+    {'custom_id': '...',
+     'method': 'POST',
+     'url': '/v1/embeddings',
+     'body': {'input': ['Text1', 'Text2'], 'model': 'text-embedding-3-small'}}
+
+    With a dictionary of texts:
+
+    >>> mk_batch_file_embeddings_task({"key1": "Text1", "key2": "Text2"})   # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
+    [{'custom_id': 'key1',
+      'method': 'POST',
+      'url': '/v1/embeddings',
+      'body': {'input': 'Text1', 'model': 'text-embedding-3-small'}},
+     {'custom_id': 'key2',
+      'method': 'POST',
+      'url': '/v1/embeddings',
+      'body': {'input': 'Text2', 'model': 'text-embedding-3-small'}}]
+
+    As you see, when a list is given, the batch task is created with a single custom_id,
+    with a list of texts as input.
+    When a dictionary is given, the batch task is created with
+    a custom_id per text item, and the input is a dictionary of key-value pairs.
+
+    The usefulness of giving a dictionary is that the tasks will contain the same keys
+    as your dictionary, which can be useful when having to link the results back to
+    the original data. But it comes with a disadvantage: it's much faster to process
+    a list of texts than multiple tasks with a single text each.
+
+    When efficiency is a concern, you can keep a texts dictionary on the client side,
+    ask to embed list(texts.values()), and then use the keys to link the results back
+    to the original data.
+    You can force the function to ignore the type of the texts input and do it the way
+    you want it, by setting custom_id_per_text to True or False.
+
+    >>> mk_batch_file_embeddings_task(
+    ...     {"key1": "Text1", "key2": "Text2"}, custom_id_per_text=False
+    ... )  # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
+    {'custom_id': '...',
+     'method': 'POST',
+     'url': '/v1/embeddings',
+     'body': {'input': dict_values(['Text1', 'Text2']), 'model': 'text-embedding-3-small'}}
+
+    >>> mk_batch_file_embeddings_task(
+    ...     ["Text1", "Text2"], custom_id_per_text=True
+    ... )  # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
+    [{'custom_id': 0,
+      'method': 'POST',
+      'url': '/v1/embeddings',
+      'body': {'input': 'Text1', 'model': 'text-embedding-3-small'}},
+     {'custom_id': 1,
+      'method': 'POST',
+      'url': '/v1/embeddings',
+      'body': {'input': 'Text2', 'model': 'text-embedding-3-small'}}]
+
+
+    """
+
     texts, texts_type, keys = _prepare_embeddings_args(
         validate, texts, valid_text_getter, model
     )
@@ -140,11 +230,16 @@ def mk_batch_file_embeddings_task(
         _mk_task_request_dict, custom_id=custom_id, endpoint=batch_endpoints.embeddings
     )
 
-    if keys is not None:
+    if custom_id_per_text is None:
+        custom_id_per_text = bool(keys)  # if keys is not None, do it
+
+    if custom_id_per_text:
+        if keys is None:
+            keys = itertools.count()
         # return a list of tasks, using the keys as custom_ids
         return [_task(_body(text), custom_id=key) for key, text in zip(keys, texts)]
     else:
-        return _task(_body(texts))
+        return _task(_body(list(texts)))
 
 
 from oa.util import oa_extractor

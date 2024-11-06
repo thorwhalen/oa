@@ -232,7 +232,6 @@ class OaFilesBase(OaMapping):
             file=file, purpose=self.purpose, **self.extra_kwargs
         )
 
-    # TODO: Inject signature from mk_batch_file_embeddings_task
     @Sig.replace_kwargs_using(mk_batch_file_embeddings_task)
     def create_embedding_task(self, texts: TextOrTexts, **extra_kwargs):
         # Note: self.client.create can be found in openai.resources.files.Files.create
