@@ -7,14 +7,23 @@ import json
 from functools import wraps, partial, cached_property
 
 import openai  # TODO: Import from oa.util instead?
+
+# TODO: Move openai imports to go through oa.util
 from openai.resources.files import Files as OpenaiFiles, FileTypes, FileObject
-from openai.types import FileObject, Batch
+from openai.types import FileObject
+
 from oa.base import mk_client, TextOrTexts
-from oa.batches import mk_batch_file_embeddings_task
+from oa.batches import (
+    mk_batch_file_embeddings_task,
+    BatchSpec,
+    BatchObj,
+    BatchId,
+)
 from oa.util import (
     merge_multiple_signatures,
     source_parameter_props_from,
     utc_int_to_iso_date,
+    iso_date_to_utc_int,
     Purpose,
     BatchesEndpoint,
     DFLT_ENCODING,
@@ -388,12 +397,12 @@ class OaBatchesBase(OaMapping):
         self.client = client
         self.extra_kwargs = extra_kwargs
 
-    def _iter(self) -> Iterable[Batch]:
+    def _iter(self) -> Iterable[BatchObj]:
         """Return an iterator over batch IDs"""
         return self.client.batches.list(**self._list_kwargs)
 
     @extract_id
-    def metadata(self, batch_id: str) -> Batch:
+    def metadata(self, batch_id: str) -> BatchObj:
         """Retrieve metadata for a batch."""
         return self.client.batches.retrieve(batch_id, **self.extra_kwargs)
 
@@ -429,6 +438,64 @@ class OaBatches(OaBatchesBase):
     A key-value store for OpenAI batches metadata.
     Keys are the batch IDs.
     """
+
+
+# --------------------------------------------------------------------------------------
+# Batches/Files API utilities
+
+origin_date = 0
+end_of_times_date = iso_date_to_utc_int('9999-12-31T23:59:59Z')
+DateSpec = Optional[Union[str, int]]
+
+NotGiven = type('NotGiven', (), {})()
+
+
+def ensure_utc_date(x, *, val_if_none=NotGiven):
+    if isinstance(x, str):
+        return iso_date_to_utc_int(x)
+    elif isinstance(x, int):
+        return x
+    elif val_if_none is not NotGiven and x is None:
+        return val_if_none
+    else:
+        raise TypeError(f"Expected a date string or int, got {x}")
+
+
+def date_filter(
+    objs,  # Iterable of file/batch API objects
+    min_date: DateSpec = None,
+    max_date: DateSpec = None,
+    *,
+    date_extractor: Union[str, Callable] = 'created_at',
+    stop_on_first_out_of_range=False,
+):
+    """
+    Filter objects by date.
+
+    Args:
+        objs: The objects to filter (must have a)
+        min_date: The minimum date (inclusive)
+        max_date: The maximum date (inclusive)
+        date_attr: The attribute to get the date from
+        stop_on_first_out_of_range: If True, stop iteration on first out-of-range date
+    """
+    if isinstance(date_extractor, str):
+        date_attr = date_extractor
+        date_extractor = attrgetter(date_attr)
+
+    min_date = ensure_utc_date(min_date, val_if_none=origin_date)
+    max_date = ensure_utc_date(max_date, val_if_none=end_of_times_date)
+
+    for obj in objs:
+        date = date_extractor(obj)
+        if min_date <= date <= max_date:
+            yield obj
+        elif stop_on_first_out_of_range:
+            break
+
+
+# --------------------------------------------------------------------------------------
+# General classes that tie everything together
 
 
 class OaStores:
@@ -470,7 +537,14 @@ class OaStores:
         return OaFilesMetadata(self.client)
 
 
-from oa.batches import get_output_file_data
+# TODO: There's a lot of functions in stores and batch that take an oa_stores argument.
+#    Perhaps it's better for them to just be here in the OaDacc class instead?
+from typing import Tuple
+from oa.batches import get_output_file_data, get_batch_id_and_obj, get_batch_obj
+from oa.util import concat_lists, extractors
+
+Segment = str  # TODO: Replace by more specific, global type
+Vector = List[float]  # TODO: Replace by more specific, global type
 
 
 class OaDacc:
@@ -480,8 +554,105 @@ class OaDacc:
         self.client = client
         self.s = OaStores(self.client)
 
+    extractors = extractors
+
+    @property
+    def files(self):
+        return self.s.files
+
+    @property
+    def json_files(self):
+        return self.s.json_files
+    
+    @property
+    def batches(self):
+        return self.s.batches
+
+    def ensure_batch_obj(self, batch) -> BatchObj:
+        return get_batch_obj(self.s, batch)
+
+    def batch_id_and_obj(self, batch) -> Tuple[BatchId, BatchObj]:
+        batch_id, batch_obj = get_batch_id_and_obj(self.s, batch)
+        return batch_id, batch_obj
+
     def get_output_file_data(self, batch):
         return get_output_file_data(batch, oa_stores=self.s)
+
+    def check_status(self, batch: BatchSpec) -> str:
+        """Check the status of a batch process."""
+        batch_obj = self.ensure_batch_obj(batch)
+        return batch_obj.status
+
+    def retrieve_embeddings(self, batch: BatchSpec) -> List[Vector]:
+        """Retrieve output embeddings for a completed batch."""
+        output_data_obj = self.get_output_file_data(batch)
+
+        # batch = self.s.batches[batch_id]
+
+        return concat_lists(
+            map(
+                extractors.embeddings_from_output_data,
+                jsonl_loads_iter(output_data_obj.content),
+            )
+        )
+
+    def segments_from_file(self, file) -> List[Segment]:
+        """
+        Retrieve output embeddings for a completed batch, from the file it's stored in.
+        """
+        input_data = self.json_files[file]
+        return extractors.inputs_from_file_obj(input_data)
+
+    def segments_from_batch(self, batch: BatchSpec) -> List[Segment]:
+        """
+        Retrieve output embeddings for a completed batch, given the batch object or id.
+        """
+        batch_obj = self.ensure_batch_obj(batch)
+        input_data_file_id = batch_obj.input_file_id
+        return self.segments_from_file(input_data_file_id)
+
+    def embeddings_from_file(self, file) -> List[Vector]:
+        """
+        Retrieve output embeddings for a completed batch, from the file it's stored in.
+        """
+        output_data_obj = self.s.files_base[file]
+        return concat_lists(
+            map(
+                extractors.embeddings_from_output_data,
+                jsonl_loads_iter(output_data_obj.content),
+            )
+        )
+
+    def embeddings_from_batch(self, batch: BatchSpec) -> List[Vector]:
+        """
+        Retrieve output embeddings for a completed batch, given the batch object or id.
+        """
+        batch_obj = self.ensure_batch_obj(batch)
+        return self.embeddings_from_file(batch_obj.output_file_id)
+
+    def segments_and_embeddings(
+        self, batch: BatchSpec
+    ) -> Tuple[List[Segment], List[Vector]]:
+        """Retrieve segments nad embeddings for a completed batch."""
+        batch_obj = self.ensure_batch_obj(batch)
+        return (
+            self.segments_from_batch(batch_obj),
+            self.embeddings_from_batch(batch_obj),
+        )
+
+    def launch_embedding_task(
+        self, segments: Iterable[Segment], **imbed_task_dict_kwargs
+    ):
+        # Upload files and get input file IDs
+        input_file_id = self.files.create_embedding_task(
+            segments, **imbed_task_dict_kwargs
+        )
+        batch = self.batches.append(input_file_id, endpoint="/v1/embeddings")
+        return batch
+        
+
+
+    date_filter = staticmethod(date_filter)
 
 
 # --------------------------------------------------------------------------------------

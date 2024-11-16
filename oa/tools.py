@@ -390,7 +390,7 @@ def make_generic_json_schema(json_type: JsonTypes) -> dict:
     Make a generic json schema for a given json type.
 
     >>> make_generic_json_schema('string')
-    {'name': 'generic_string_schema', 'schema': {'type': 'string'}, 'required': ['result']}
+    {'name': 'generic_string_schema', 'schema': {'properties': {'result': {'type': 'string'}}, 'required': ['result']}}
     """
 
     json_type = ensure_json_type(json_type)

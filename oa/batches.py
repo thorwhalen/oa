@@ -7,10 +7,10 @@ Useful links:
 
 """
 
-from typing import Optional, Union, Callable, List
+from typing import Optional, Union, Callable, List, Any, Tuple
 from functools import partial
 import itertools
-from oa.util import batch_endpoints
+from oa.util import batch_endpoints, BatchObj
 from oa.base import (
     _prepare_embeddings_args,
     _raise_if_any_invalid,
@@ -19,6 +19,10 @@ from oa.base import (
     TextOrTexts,
     mk_client,
 )
+
+
+BatchId = str
+BatchSpec = Union[BatchObj, BatchId]
 
 # --------------------------------------------------------------------------------------
 # useful information
@@ -196,10 +200,11 @@ def mk_batch_file_embeddings_task(
     >>> mk_batch_file_embeddings_task(
     ...     {"key1": "Text1", "key2": "Text2"}, custom_id_per_text=False
     ... )  # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
-    {'custom_id': '...',
-     'method': 'POST',
-     'url': '/v1/embeddings',
-     'body': {'input': dict_values(['Text1', 'Text2']), 'model': 'text-embedding-3-small'}}
+    {'custom_id': '...', 
+    'method': 'POST', 
+    'url': '/v1/embeddings', 
+    'body': {'input': ['Text1', 'Text2'], 
+    'model': 'text-embedding-3-small'}}
 
     >>> mk_batch_file_embeddings_task(
     ...     ["Text1", "Text2"], custom_id_per_text=True
@@ -324,13 +329,47 @@ class BatchFailedError(BatchError):
     pass
 
 
+def get_batch_obj(oa_stores, batch: BatchSpec) -> BatchObj:
+    try:
+        return oa_stores.batches_base[batch]
+    except KeyError:
+        raise KeyError(f"Batch {batch} not found.")
+    
+
+def get_batch_id_and_obj(oa_stores, batch: BatchSpec) -> Tuple[BatchId, BatchObj]:
+    try:
+        batch_obj = oa_stores.batches_base[batch]
+        batch_id = batch_obj.id
+        return batch_id, batch_obj
+    except KeyError:
+        raise KeyError(f"Batch {batch} not found.")
+
+
+def on_complete(oa_stores, batch_obj: BatchObj):
+    """Return the output file if the batch completed successfully"""
+    return oa_stores.files_base[batch_obj.output_file_id]
+
+
+def raise_error(error_obj: BaseException):
+    raise error_obj
+
+
 # TODO: I do NOT like the dependency on oa_stores here!
 # TODO: Not sure if function or object with a "handle" __call__ method is better here
-def get_output_file_data(batch: 'Batch', *, oa_stores):
+def get_output_file_data(
+    batch: BatchSpec,
+    *,
+    oa_stores,
+    get_batch_obj: Callable = get_batch_obj,
+    on_complete: Callable = on_complete,
+    on_error: Callable[[BaseException], Any] = raise_error,
+):
     """
     Get the output file data for a batch, if it has completed successfully.
 
     """
+
+    batch_obj = get_batch_obj(oa_stores, batch)
 
     try:
         batch_obj = oa_stores.batches_base[batch]
@@ -338,10 +377,9 @@ def get_output_file_data(batch: 'Batch', *, oa_stores):
         raise KeyError(f"Batch {batch} not found.")
 
     if batch_obj.status == 'completed':
-        # Return the output file if the batch completed successfully
-        return oa_stores.files_base[batch_obj.output_file_id]
-
+        return on_complete(oa_stores, batch_obj)
     else:
+
         if batch_obj.status == 'failed':
             # Raise an error if the batch failed
             error_obj = BatchFailedError(
@@ -386,7 +424,8 @@ def get_output_file_data(batch: 'Batch', *, oa_stores):
 
         # Attach the batch object to the error for debugging/context purposes
         error_obj.batch_obj = batch_obj
-        raise error_obj
+        # Do what you got to do with the error
+        return on_error(error_obj)
 
 
 # --------------------------------------------------------------------------------------
