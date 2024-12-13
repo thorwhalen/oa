@@ -341,12 +341,85 @@ extractors = oa_extractors_obj(
 from typing import Iterable
 from dateutil.parser import parse as parse_date
 from datetime import datetime, timezone
-from itertools import chain
+from itertools import chain, islice
+import itertools
+from typing import (
+    Iterable,
+    Union,
+    Dict,
+    List,
+    Tuple,
+    Mapping,
+    TypeVar,
+    Iterator,
+    Callable,
+    Optional,
+    T,
+)
+
+KT = TypeVar('KT')  # there's a typing.KT, but pylance won't allow me to use it!
+VT = TypeVar('VT')  # there's a typing.VT, but pylance won't allow me to use it!
+
+
+def chunk_iterable(
+    iterable: Union[Iterable[T], Mapping[KT, VT]],
+    chk_size: int,
+    *,
+    chunk_type: Optional[Callable[..., Union[Iterable[T], Mapping[KT, VT]]]] = None,
+) -> Iterator[Union[List[T], Tuple[T, ...], Dict[KT, VT]]]:
+    """
+    Divide an iterable into chunks/batches of a specific size.
+
+    Handles both mappings (e.g. dicts) and non-mappings (lists, tuples, sets...)
+    as you probably expect it to (if you give a dict input, it will chunk on the
+    (key, value) items and return dicts of these).
+    Thought note that you always can control the type of the chunks with the
+    `chunk_type` argument.
+
+    Args:
+        iterable: The iterable or mapping to divide.
+        chk_size: The size of each chunk.
+        chunk_type: The type of the chunks (list, tuple, set, dict...).
+
+    Returns:
+        An iterator of dicts if the input is a Mapping, otherwise an iterator
+        of collections (list, tuple, set...).
+
+    Examples:
+        >>> list(chunk_iterable([1, 2, 3, 4, 5], 2))
+        [[1, 2], [3, 4], [5]]
+
+        >>> list(chunk_iterable((1, 2, 3, 4, 5), 3, chunk_type=tuple))
+        [(1, 2, 3), (4, 5)]
+
+        >>> list(chunk_iterable({"a": 1, "b": 2, "c": 3}, 2))
+        [{'a': 1, 'b': 2}, {'c': 3}]
+
+        >>> list(chunk_iterable({"x": 1, "y": 2, "z": 3}, 1, chunk_type=dict))
+        [{'x': 1}, {'y': 2}, {'z': 3}]
+    """
+    if isinstance(iterable, Mapping):
+        if chunk_type is None:
+            chunk_type = dict
+        it = iter(iterable.items())
+        for first in it:
+            yield {
+                key: value for key, value in chain([first], islice(it, chk_size - 1))
+            }
+    else:
+        if chunk_type is None:
+            if isinstance(iterable, (list, tuple, set)):
+                chunk_type = type(iterable)
+            else:
+                chunk_type = list
+        it = iter(iterable)
+        for first in it:
+            yield chunk_type(chain([first], islice(it, chk_size - 1)))
 
 
 def concat_lists(lists: Iterable[Iterable]):
     """Concatenate a list of lists into a single list.
-    
+
     >>> concat_lists([[1, 2], [3, 4], [5, 6]])
     [1, 2, 3, 4, 5, 6]
     """
