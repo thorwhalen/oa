@@ -180,11 +180,16 @@ depending on the situation.
 """
 
 from openai import NOT_GIVEN
-from typing import Union
+from typing import Union, List, Any
+from oa.util import chunk_iterable, mk_local_files_saves_callback
 
 # from collections.abc import Mapping, Iterable
 
 
+# TODO: Added a lot of options, but not really clean. Should be cleaned up.
+# TODO: The dict-versus-list types should be handled more cleanly!
+# TODO: Integrate the batch API way of doing embeddings
+# TODO: Batches should be able to be done in paralel, with async/await
 # TODO: Make a few useful validation_callback functions
 #    (e.g. return list or dict where invalid texts are replaced with None)
 #    (e.g. return dict containing only valid texts (if input was list, uses indices as keys)
@@ -192,6 +197,9 @@ from typing import Union
 def embeddings(
     texts: TextOrTexts,
     *,
+    batch_size: Optional[int] = 2048,  # found on unofficial OpenAI API docs
+    egress: Optional[str] = None,
+    batch_callback: Optional[Callable[[int, List[list]], Any]] = None,
     validate: Optional[Union[bool, Callable]] = True,
     valid_text_getter=_raise_if_any_invalid,
     model=DFLT_EMBEDDINGS_MODEL,
@@ -203,20 +211,33 @@ def embeddings(
     Get embeddings for a text or texts.
 
     :param texts: A string, an iterable of strings, or a dictionary of strings
+    :param egress: A function that takes the embeddings and returns the desired output.
+        If None, the output will be a list of embeddings. If False, no output will be
+        returned, so the batch_callback had better be set to accumulate the results.
+    :param batch_callback: A function that is called after each batch of embeddings is
+        computed. This can be used for logging, saving, etc.
+        One common use case is to save the intermediate results, in files, database,
+        or in a list. This can be useful if you're worried about the process failing
+        and want to be able to resume from where you left off instead of having
+        to start over (wasting time, and money).
+        To accumulate the results in a list, you can set `results = []` and then
+        use a lambda function like this:
+        `batch_callback = lambda i, batch: results.extend(batch)`.
     :param validate: If True, validate the text(s) before getting embeddings
     :param valid_text_getter: A function that gets valid texts from the input texts
     :param model: The model to use for embeddings
     :param client: The OpenAI client to use
     :param dimensions: If given will reduce the dimensions of the full size embedding
         vectors to that size
+    :param batch_size: The maximum number of texts to send in a single request
     :param extra_embeddings_params: Extra parameters to pass to the embeddings API
-
 
     >>> from functools import partial
     >>> dimensions = 3
     >>> embeddings_ = partial(embeddings, dimensions=dimensions, validate=True)
 
-    # Test with a single word
+    Test with a single word:
+
     >>> text = "vector"
     >>> result = embeddings_(text)
     >>> result  # doctest: +SKIP
@@ -256,15 +277,72 @@ def embeddings(
     True
 
     """
+    if egress is False:
+        assert batch_callback, (
+            "batch_callback must be provided if egress is False: "
+            "It will be the batch_callback's responsibility to accumulate the batches "
+            "of embeddings!"
+        )
+
+    if batch_callback == 'temp_files':  # an extra not annotated or documented
+        # convenience to get intermediary results saved to file
+        batch_callback = mk_local_files_saves_callback()
+    batch_callback = batch_callback or (lambda i, batch: None)
+    assert callable(batch_callback) & (
+        len(Sig(batch_callback)) >= 2
+    ), 'batch_callback must be callable with at least two arguments (i, batch)'
     texts, texts_type, keys = _prepare_embeddings_args(
         validate, texts, valid_text_getter, model
     )
 
+    if texts_type is str and egress is not None:
+        raise ValueError('egress should be None if texts is a single string')
+
     if client is None:
         client = mk_client()
 
+    def _embeddings_batches():
+        for i, batch in enumerate(chunk_iterable(texts, batch_size)):
+            batch_result = _embeddings_batch(
+                batch,
+                model=model,
+                client=client,
+                dimensions=dimensions,
+                **extra_embeddings_params,
+            )
+            batch_callback(i, batch_result)
+            yield from batch_result
+
+    # vectors = chain.from_iterable(_embeddings_batches())
+    vectors = _embeddings_batches()
+
+    if egress is False:
+        # the batch
+        for _ in vectors:
+            pass
+    else:
+        if egress is None:
+            if issubclass(texts_type, Mapping):
+                egress = lambda vectors: {k: v for k, v in zip(keys, vectors)}
+            else:
+                egress = list
+
+        if texts_type is str:
+            return next(iter(vectors))  # there's one and only one (note: no egress)
+        else:
+            return egress(vectors)
+
+
+def _embeddings_batch(
+    texts: TextOrTexts,
+    model=DFLT_EMBEDDINGS_MODEL,
+    client=None,
+    dimensions: Optional[int] = NOT_GIVEN,
+    **extra_embeddings_params,
+):
+
     # Note: validate set to False, as we've already validated
-    vectors = [
+    return [
         x.embedding
         for x in client.embeddings.create(
             input=texts,
@@ -273,13 +351,6 @@ def embeddings(
             **extra_embeddings_params,
         ).data
     ]
-
-    if texts_type is Mapping:
-        return {k: v for k, v in zip(keys, vectors)}
-    elif texts_type is str:
-        return vectors[0]
-    else:
-        return vectors
 
 
 # --------------------------------------------------------------------------------------

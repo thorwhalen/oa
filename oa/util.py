@@ -311,6 +311,9 @@ from oa.oa_types import BatchRequest, EmbeddingResponse, InputDataJsonL
 from ju import ModelExtractor
 from types import SimpleNamespace
 from operator import itemgetter
+import pickle
+import tempfile
+
 from dol import add_ipython_key_completions, Pipe
 
 models = [BatchRequest, EmbeddingResponse, InputDataJsonL]
@@ -342,7 +345,6 @@ from typing import Iterable
 from dateutil.parser import parse as parse_date
 from datetime import datetime, timezone
 from itertools import chain, islice
-import itertools
 from typing import (
     Iterable,
     Union,
@@ -454,17 +456,49 @@ utc_int_to_iso_date.inverse = iso_date_to_utc_int
 iso_date_to_utc_int.inverse = utc_int_to_iso_date
 
 
-import itertools
-
-
 def transpose_iterable(iterable_of_tuples):
     return zip(*iterable_of_tuples)
 
 
 def transpose_and_concatenate(iterable_of_tuples):
-    return map(
-        list, map(itertools.chain.from_iterable, transpose_iterable(iterable_of_tuples))
-    )
+    return map(list, map(chain.from_iterable, transpose_iterable(iterable_of_tuples)))
+
+
+def save_in_temp_dir(obj, serializer=pickle.dumps):
+    """
+    Saves obj in a temp file, using serializer to serialize it, and returns its path.
+    """
+    with tempfile.NamedTemporaryFile(delete=False) as f:
+        f.write(serializer(obj))
+    return f.name
+
+
+from typing import Any, Optional, Callable
+
+
+def mk_local_files_saves_callback(
+    rootdir: Optional[str] = None,
+    *,
+    serializer: Callable[[Any], bytes] = pickle.dumps,
+    index_to_filename: Callable[[int], str] = '{:05.0f}'.format,
+    print_dir_path: bool = True,
+):
+    """
+    Returns a function that takes two inputs (i: int, obj: Any) and saves the
+    serializer(obj) bytes in a file named index_to_filename(i) in the rootdir.
+    If rootdir, a temp dir is used.
+    """
+    if rootdir is None:
+        rootdir = tempfile.mkdtemp()
+    assert os.path.isdir(rootdir), f"rootdir {rootdir} is not a directory"
+    if print_dir_path:
+        print(f"Files will be saved in {rootdir}")
+
+    def save_to_file(i, obj):
+        with open(os.path.join(rootdir, index_to_filename(i)), 'wb') as f:
+            f.write(serializer(obj))
+
+    return save_to_file
 
 
 import json
