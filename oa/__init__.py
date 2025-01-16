@@ -28,3 +28,4 @@ from oa.openai_specs import raw
 from oa.tools import prompt_function, PromptFuncs, prompt_json_function
 from oa import ask
 from oa.stores import OaStores
+from oa.chats import ChatDacc
