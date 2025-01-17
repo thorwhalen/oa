@@ -284,11 +284,11 @@ def prompt_function(
 
     @func_wrap
     def embody_prompt(*ask_oa_args, **ask_oa_kwargs):
-        _kwargs = sig.kwargs_from_args_and_kwargs(
+        _kwargs = sig.map_arguments(
             ask_oa_args, ask_oa_kwargs, apply_defaults=True
         )
         _kwargs = ingress(_kwargs)
-        __args, __kwargs = Sig(template_embodier).args_and_kwargs_from_kwargs(_kwargs)
+        __args, __kwargs = Sig(template_embodier).mk_args_and_kwargs(_kwargs)
         embodied_template = template_embodier(*__args, **__kwargs)
         return embodied_template
 
