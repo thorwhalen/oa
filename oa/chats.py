@@ -290,7 +290,7 @@ class ChatDacc:
                 if turn.get('role', None) is None or turn.get('content', None) is None:
                     continue
                 if 'content' in turn:
-                    turn['content'] = '\n'.join(turn['content'])
+                    turn['content'] = '\n'.join(map(str, turn['content']))
                 yield turn
 
         return list(gen())
@@ -315,116 +315,109 @@ class ChatDacc:
 # SSOT and other data
 
 turns_data_ssot = {
-    'id': {
-        'description': 'The unique identifier for a message or turn in the conversation.',
-        'example': 'adff303b-75cc-493c-b757-605adadb8e56',
+    'continue_conversation_url': {
+        'description': 'A URL that allows users to '
+        'continue the conversation from '
+        'its current state.',
+        'example': 'https://chatgpt.com/share/6788d539-0f2c-8013-9535-889bf344d7d5/continue',
     },
-    'children': {
-        'description': 'An array of identifiers for the child messages that are part of this turn.',
-        'example': ['1473f2d9-ba09-4cd7-90c4-1452898676de'],
-    },
-    'message': {
-        'description': 'An object containing details about the message sent during this turn.',
-        'example': {
-            'id': '1473f2d9-ba09-4cd7-90c4-1452898676de',
-            'author': {'role': 'system', 'metadata': {}},
-            'content': {'content_type': 'text', 'parts': ['']},
-            'status': 'finished_successfully',
-            'end_turn': True,
-            'weight': 0,
-            'metadata': {
-                'is_visually_hidden_from_conversation': True,
-                'shared_conversation_id': '6788d539-0f2c-8013-9535-889bf344d7d5',
-            },
-            'recipient': 'all',
-        },
-    },
-    'parent': {
-        'description': 'The identifier of the parent message in the conversation tree.',
-        'example': 'adff303b-75cc-493c-b757-605adadb8e56',
-    },
-    'create_time': {
-        'description': 'Timestamp indicating when the message was created, typically represented as a Unix timestamp.',
-        'example': 1737020650.866734,
-    },
-    'author': {
-        'description': 'An object containing details about the author of the message, including role and any additional metadata.',
-        'example': {'role': 'system', 'metadata': {}},
-    },
-    'content_type': {
-        'description': 'The type of content included in the message (e.g., text, model_editable_context).',
-        'example': 'text',
-    },
-    'parts': {
-        'description': 'An array containing the actual message content as individual parts.',
-        'example': ['Original custom instructions no longer available'],
-    },
-    'status': {
-        'description': 'The status of the message processing (e.g., finished_successfully, error).',
-        'example': 'finished_successfully',
-    },
-    'end_turn': {
-        'description': 'Indicates whether this message concludes the current turn in the conversation.',
-        'example': True,
-    },
-    'weight': {
-        'description': 'A numeric value representing the weight or importance of the message.',
-        'example': 0,
-    },
-    'metadata': {
-        'description': 'An object containing additional metadata about the message, such as visibility and contextual data.',
-        'example': {
-            'is_visually_hidden_from_conversation': True,
-            'shared_conversation_id': '6788d539-0f2c-8013-9535-889bf344d7d5',
-        },
-    },
-    'recipient': {
-        'description': 'Indicates who the recipient of the message is (e.g., all, specific user).',
-        'example': 'all',
-    },
-    'finish_details': {
-        'description': 'An object detailing how the message processing finished, including any stop tokens that could affect subsequent content.',
-        'example': {'type': 'stop', 'stop_tokens': [200002]},
-    },
-    'is_complete': {
-        'description': 'Indicates whether the message processing is complete.',
-        'example': True,
-    },
-    'citations': {
-        'description': 'An array of citations (if any) included with the message.',
-        'example': [],
-    },
-    'content_references': {
-        'description': 'An array of content references associated with the message, can be empty.',
-        'example': [],
-    },
-    'model_slug': {
-        'description': 'Indicates the model used to generate the response, if applicable.',
-        'example': 'gpt-4o',
-    },
-    'default_model_slug': {
-        'description': 'The default model slug that was utilized for generating responses.',
-        'example': 'gpt-4o',
-    },
-    'parent_id': {
-        'description': 'Identifier of the parent message for hierarchical relationships in the conversation.',
-        'example': '3b469b70-b069-4640-98af-5417491bb626',
-    },
-    'request_id': {
-        'description': 'Unique identifier for the request made to the model during the interaction.',
-        'example': '902d2b91cd44e15c-MRS',
-    },
-    'timestamp_': {
-        'description': 'Timestamp type indicating whether it is relative or absolute, often used for synchronization purposes.',
-        'example': 'absolute',
-    },
-    'shared_conversation_id': {
-        'description': 'Identifier for the shared conversation session to track context.',
+    'conversation_id': {
+        'description': 'A unique identifier for the entire ' 'conversation.',
         'example': '6788d539-0f2c-8013-9535-889bf344d7d5',
     },
-    'is_redacted': {
-        'description': 'Indicates whether the message content has been redacted for privacy or security reasons.',
+    'create_time': {
+        'description': 'The timestamp (in seconds since epoch) when '
+        'the conversation was created.',
+        'example': 1737020729.060687,
+    },
+    'current_node': {
+        'description': 'The unique identifier of the current node in '
+        'the conversation flow.',
+        'example': 'be4486db-894f-4e6f-bd0a-22d9d2facf69',
+    },
+    'default_model_slug': {
+        'description': 'The identifier for the default model '
+        'used in the conversation.',
+        'example': 'gpt-4o',
+    },
+    'disabled_tool_ids': {
+        'description': 'An array of tool identifiers that have '
+        'been disabled for this conversation. It '
+        'is empty if no tools are disabled.',
+        'example': [],
+    },
+    'has_user_editable_context': {
+        'description': 'A boolean indicating if the '
+        'user can edit the context of '
+        'the conversation.',
+        'example': False,
+    },
+    'is_archived': {
+        'description': 'A boolean indicating whether the conversation ' 'is archived.',
+        'example': False,
+    },
+    'is_better_metatags_enabled': {
+        'description': 'A boolean indicating if better '
+        'metatags are enabled for this '
+        'conversation.',
         'example': True,
+    },
+    'is_indexable': {
+        'description': 'A boolean indicating if this conversation '
+        'can be indexed by search engines or other '
+        'indexing tools.',
+        'example': False,
+    },
+    'is_public': {
+        'description': 'A boolean indicating whether the conversation '
+        'is accessible to the public.',
+        'example': True,
+    },
+    'linear_conversation': {
+        'description': 'An array representing the sequential '
+        'flow of the conversation, where each '
+        'object contains an id and its '
+        'children (sub-sequent nodes).',
+        'example': [
+            {
+                'children': ['1473f2d9-ba09-4cd7-90c4-1452898676de'],
+                'id': 'adff303b-75cc-493c-b757-605adadb8e56',
+            }
+        ],
+    },
+    'moderation_results': {
+        'description': 'An array that holds results from any '
+        'moderation applied to the '
+        'conversation. It is empty if no '
+        'moderation has been done.',
+        'example': [],
+    },
+    'moderation_state': {
+        'description': 'An object that encapsulates the '
+        'moderation status of the conversation, '
+        'detailing various moderation flags.',
+        'example': {
+            'has_been_accepted': False,
+            'has_been_auto_blocked': False,
+            'has_been_auto_moderated': False,
+            'has_been_blocked': False,
+            'has_been_moderated': False,
+        },
+    },
+    'safe_urls': {
+        'description': 'An array of URLs deemed safe within the context '
+        'of the conversation. It is empty if there are '
+        'no safe URLs.',
+        'example': [],
+    },
+    'title': {
+        'description': 'The title of the conversation.',
+        'example': 'Test Chat 1',
+    },
+    'update_time': {
+        'description': 'The timestamp (in seconds since epoch) when '
+        'the conversation was last updated.',
+        'example': 1737020733.031014,
     },
 }
 
@@ -516,7 +509,8 @@ ChatDacc.metadata_ssot = metadata_ssot
 
 # --------------------------------------------------------------------------------------
 # Tools for parser maintenance
-
+# See https://github.com/thorwhalen/oa/blob/main/misc/oa%20-%20chats%20acquisition%20and%20parsing.ipynb
+# for more info (namely how to use mk_json_field_documentation to make descriptions)
 """
 Notes:
 
@@ -537,5 +531,28 @@ The context is:
 Here's an example json object:
 
 {example_json}
-"""
+""",
+    egress=lambda x: x['result'],
 )
+
+
+def mk_merged_turn_data():
+    """
+    Make a merged turn data dict from a selection of shared chats,
+    to feed to mk_json_field_documentation
+    """
+    from lkj import merge_dicts
+
+    # A selection of shared chats with a variety of features
+    urls = dict(
+        simple_url='https://chatgpt.com/share/6788d539-0f2c-8013-9535-889bf344d7d5',
+        url_with_searches='https://chatgpt.com/share/67877101-6708-8013-ba9e-2e770186db58',
+        url_with_image_gen='https://chatgpt.com/share/678a1339-d14c-8013-bfcb-288d367a9079',
+    )
+
+    # Note, the turns_data is a dict whose keys are "turn ids" and values are the metadata for that turn, so we want to merge those
+    turn_datas = {
+        k: merge_dicts(*ChatDacc(url).turns_data.values()) for k, url in urls.items()
+    }
+    merge_turn_data = merge_dicts(*turn_datas.values())
+    return truncate_dict_values(merge_turn_data)
