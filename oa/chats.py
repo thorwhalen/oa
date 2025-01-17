@@ -1,4 +1,4 @@
-"""
+r"""
 Tools to work with shared chats (conversations).
 
 For instance: Extract information from them.
@@ -19,22 +19,22 @@ you to access the data in a shared chat in a structured way.
 True
 >>> list(first_turn)
 ['id', 'role', 'content', 'time']
->>> print(first_turn['content'])
-This conversation is meant to be used as an example, for testing, and/or for figuring out how to parse the html and json of a conversation.
+>>> print(first_turn['content'])  # doctest: +NORMALIZE_WHITESPACE
+This conversation is meant to be used as an example, for testing, and/or for figuring out how to parse the html and json of a conversation. 
 <BLANKLINE>
-As such, we'd like to keep it short.
+As such, we'd like to keep it short. 
 <BLANKLINE>
-Just say "Hello World!" back to me for now, and then in a second line write 10 random words.
+Just say "Hello World!" back to me for now, and then in a second line write 10 random words. 
 >>>
 >>> from pprint import pprint
 >>> first_response = basic_turns_data[1]
->>> pprint(first_response)
+>>> pprint(first_response)  # doctest: +NORMALIZE_WHITESPACE
 {'content': 'Hello World!  \n'
             'apple, river, galaxy, chair, melody, shadow, cloud, puzzle, '
             'flame, whisper.',
- 'id': '38ee4a3f-8487-4b35-9f92-ddee57c25d0a',
- 'role': 'assistant',
- 'time': 1737020652.436654}
+    'id': '38ee4a3f-8487-4b35-9f92-ddee57c25d0a',
+    'role': 'assistant',
+    'time': 1737020652.436654}
 
 
 In the example above, we just extracted the basic turn data. 
@@ -119,7 +119,8 @@ def ensure_filter_func(target: Union[str, Callable]) -> Callable:
     if isinstance(target, str):
         target_pattern = re.compile(target, re.DOTALL)
         return lambda x: isinstance(x, str) and target_pattern.search(x)
-    assert callable(target), "target must be a string or a callable"
+    assert callable(target), f"target must be a string or a callable: {target=}"
+    return target
 
 
 def parse_shared_chatGPT_chat(
