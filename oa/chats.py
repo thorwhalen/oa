@@ -54,7 +54,7 @@ And for you contributors out there, there are also tools to help you maintain th
 
 import re
 import json
-from typing import Callable, Optional, Union
+from typing import Callable, Optional, Union, Iterable
 from functools import partial, cached_property
 
 import requests
@@ -277,12 +277,21 @@ class ChatDacc:
         return list(self.turns_data.keys())
 
     def extract_turns(
-        self, paths, *, filter_turns: Callable = turn_is_not_visually_hidden
+        self,
+        paths: Optional[Iterable[str]] = None,
+        *,
+        filter_turns: Callable = turn_is_not_visually_hidden,
+        egress: Callable = lambda turns: turns
     ):
-        for id_, turn in self.turns_data.items():
-            if filter_turns(turn):
-                yield paths_get_or_none(paths, turn)
-
+        def gen():
+            for id_, turn in self.turns_data.items():
+                if filter_turns(turn):
+                    if paths:
+                        yield paths_get_or_none(paths, turn)
+                    else:
+                        yield turn
+        return egress(gen())
+        
     @cached_property
     def basic_turns_data(self):
         # same as turns_df, but list of dicts
@@ -307,9 +316,17 @@ class ChatDacc:
             # t['time'] = t['time'].dt.floor('s')
         return t
 
-    def extract_metadata(self, paths):
-        extractor = self.make_extractor(paths, source='metadata')
-        return extractor()
+    def copy_turns_json(
+        self,
+        paths: Optional[Iterable[str]] = None,
+        *,
+        filter_turns: Callable = turn_is_not_visually_hidden,
+    ):
+        from pyperclip import copy  # pip install pyperclip
+
+        t = list(self.extract_turns(paths, filter_turns=filter_turns))
+        return copy(json.dumps(t, indent=4))
+
 
 
 # --------------------------------------------------------------------------------------
@@ -557,3 +574,66 @@ def mk_merged_turn_data():
     }
     merge_turn_data = merge_dicts(*turn_datas.values())
     return truncate_dict_values(merge_turn_data)
+
+
+# In order to write a "link extractor" I want to see where links (in searches, 
+# in citations, etc.) are found in the JSON
+# The following code helps
+# Note: Could have used dol.paths.path_filter here
+# TODO: Refactor this to use dol.paths.path_filter
+def find_url_keys(data, current_path=""):
+    """
+    Recursively finds all paths in a JSON-like object (nested dicts/lists) where URL strings are present.
+
+    This is a generator function that yields each path as a dot-separated string. Supports paths through
+    both dictionaries and lists.
+
+    Args:
+        data (dict or list): The JSON-like object to search.
+        current_path (str): The current path being traversed, used internally during recursion.
+
+    Yields:
+        str: Dot-separated path to a value containing a URL.
+
+    Example:
+        >>> example_data = {
+        ...     "key1": {
+        ...         "nested": [
+        ...             {"url": "http://example.com"},
+        ...             {"url": "https://example.org"}
+        ...         ]
+        ...     },
+        ...     "key2": "http://another-example.com"
+        ... }
+        >>> list(find_url_keys(example_data))
+        ['key1.nested[0].url', 'key1.nested[1].url', 'key2']
+
+        One thing you'll probably want to do sometimes is transform, filter, and 
+        aggregate these paths. Here's an example of how you might get a list of 
+        unique paths, with all array indices replaced with a wildcard, so thay 
+        don't appear as separate paths:
+
+        >>> from functools import partial
+        >>> import re
+        >>> paths = find_url_keys(example_data)
+        >>> transform = partial(re.sub, '\[\d+\]', '[*]')
+        >>> unique_paths = set(map(transform, paths))
+        >>> sorted(unique_paths)
+        ['key1.nested[*].url', 'key2']
+    """
+
+    def _is_url(x):
+        return isinstance(x, str) and ("http://" in x or "https://" in x)
+
+    if isinstance(data, dict):
+        for key, value in data.items():
+            new_path = f"{current_path}.{key}" if current_path else key
+            if isinstance(value, (dict, list)):
+                yield from find_url_keys(value, new_path)
+            elif _is_url(value):
+                yield new_path
+    elif isinstance(data, list):
+        for index, item in enumerate(data):
+            new_path = f"{current_path}[{index}]"
+            yield from find_url_keys(item, new_path)
+
