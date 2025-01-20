@@ -535,3 +535,82 @@ print(resp['choices'][0]['message']['content'])
     
     5. Test and Refine: Experiment with different prompts and evaluate the responses from chatGPT. Refine your prompts based on the quality of the responses and continue to test and improve over time.
 
+
+
+# ChatDacc: Shared chats parser
+
+The `ChatDacc` class gives you access of the main functionalities of the `chats.py` module.
+It provides tools for analyzing and extracting data from shared ChatGPT conversations. 
+Here’s an overview of its main features, for more details, see 
+[this demo notebook](https://github.com/thorwhalen/oa/blob/main/misc/oa%20-%20chats%20acquisition%20and%20parsing.ipynb)
+
+
+## Initialize with a URL
+
+Begin by creating a ChatDacc object with a conversation’s shared URL:
+
+```python
+from oa.chats import ChatDacc
+
+url = 'https://chatgpt.com/share/6788d539-0f2c-8013-9535-889bf344d7d5'
+dacc = ChatDacc(url)
+```
+
+## Access Basic Conversation Data
+
+Retrieve minimal metadata (e.g., roles, timestamps, and content):
+
+```python
+dacc.basic_turns_data
+```
+
+Or directly get it as a Pandas DataFrame:
+
+```python
+dacc.basic_turns_df
+```
+
+## Explore Full Turn Data
+
+Access all available fields for each message in the conversation:
+
+```python
+dacc.turns_data
+```
+
+Indexed access simplifies specific turn retrieval:
+
+```python
+dacc.turns_data_keys
+turn_data = dacc.turns_data[dacc.turns_data_keys[3]]
+```
+
+## Extract Metadata
+
+Metadata summarizing the conversation is available through:
+
+```python
+dacc.metadata
+```
+
+## Extract and Analyze URLs
+
+Identify all URLs referenced within the conversation, including quoted and embedded sources:
+
+```python
+urls = dacc.url_data()
+```
+
+For richer context, you can include prior levels or retain tracking parameters:
+
+urls_in_context = dacc.url_data(prior_levels_to_include=1, remove_chatgpt_utm=False)
+
+## Get Full JSON
+
+The raw JSON for the entire conversation can be accessed for in-depth analysis:
+
+```python
+dacc.full_json_dict
+```
+
+This tool simplifies data extraction and analysis from ChatGPT shared conversations, making it ideal for developers, researchers, and data analysts.
