@@ -228,6 +228,38 @@ def turn_is_not_visually_hidden(turn):
     )
 
 
+def remove_utm_source(text):
+    """
+    Removes the "?utm_source=chatgpt.com" suffix from all URLs in the given text.
+
+    Args:
+        text (str): The input text containing URLs.
+
+    Returns:
+        str: The text with the specified query parameter removed from all URLs.
+
+    Example:
+
+        >>> input_text = (
+        ...     "not_a_url "  # not even a url (won't be touched)
+        ...     "http://abc?utm_source=chatgpt.com_not_at_the_end "  # target not at the end
+        ...     "https://abc?utm_source=chatgpt.com "  # with ?
+        ...     "https://abc&utm_source=chatgpt.com "  # with &
+        ...     "http://abc?utm_source=chatgpt.com"  # with http instead of https
+        ... )
+        >>> remove_utm_source(input_text)
+        'not_a_url http://abc_not_at_the_end https://abc https://abc http://abc'
+
+    """
+    pattern = r'(https?://[^\s]+)[&\?]utm_source=chatgpt\.com'
+    cleaned_text = re.sub(pattern, r'\1', text)
+    return cleaned_text
+
+
+# --------------------------------------------------------------------------------------
+# A manager class that operates on a shared chat
+
+
 class ChatDacc:
     metadata_path = (
         'state',
@@ -265,7 +297,7 @@ class ChatDacc:
 
     @cached_property
     def metadata(self):
-        d = path_get(self.full_json_dict, self.chat_data_path)
+        d = path_get(self.full_json_dict, self.metadata_path)
         return {k: v for k, v in d.items() if k not in self._matadata_exclude_fields}
 
     @cached_property
@@ -281,7 +313,7 @@ class ChatDacc:
         paths: Optional[Iterable[str]] = None,
         *,
         filter_turns: Callable = turn_is_not_visually_hidden,
-        egress: Callable = lambda turns: turns
+        egress: Callable = lambda turns: turns,
     ):
         def gen():
             for id_, turn in self.turns_data.items():
@@ -290,8 +322,9 @@ class ChatDacc:
                         yield paths_get_or_none(paths, turn)
                     else:
                         yield turn
+
         return egress(gen())
-        
+
     @cached_property
     def basic_turns_data(self):
         # same as turns_df, but list of dicts
@@ -327,200 +360,59 @@ class ChatDacc:
         t = list(self.extract_turns(paths, filter_turns=filter_turns))
         return copy(json.dumps(t, indent=4))
 
+    @cached_property
+    def url_paths(self):
+        return list(find_url_keys(self.turns_data))
+
+    @cached_property
+    def paths_containing_urls(self):
+        replace_array_index_with_star = partial(re.sub, '\[\d+\]', '[*]')
+        ignore_first_part_of_path = lambda x: '.'.join(x.split('.')[1:])
+        transform = Pipe(replace_array_index_with_star, ignore_first_part_of_path)
+        return sorted(set(map(transform, self.url_paths)))
+
+    def url_data(
+        self, prior_levels_to_include=0, *, only_values=True, remove_chatgpt_utm=True
+    ):
+        """
+        Get the urls, and optionally, the data associated with them.
+
+        Note: More levels you ask for, more you might get several urls under a same path
+        so you'll get less output items (since this method works on paths).
+        For example, if both 'a.b' and 'a.c' are urls, then asking for prior_levels_to_include=1
+        will give the data under 'a' only (with two urls).
+
+        Args:
+            prior_levels_to_include (int): If 0, returns the urls. If >0, returns the data associated with the urls, but only up to the specified level.
+            only_values (bool): If True, only returns the values associated with the urls. If False, returns the full data associated with the urls.
+        """
+        if prior_levels_to_include == 0:
+            _url_paths = self.url_paths
+        else:
+            _url_paths = map(lambda x: x.split('.'), self.url_paths)
+            _url_paths = list(
+                map(lambda x: '.'.join(x[:-prior_levels_to_include]), _url_paths)
+            )
+
+        d = paths_getter(
+            paths=_url_paths,
+            obj=self.turns_data,
+            sep=path_get.keys_and_indices_path,
+        )
+
+
+        if remove_chatgpt_utm:
+            for k, v in d.items():
+                if isinstance(v, str):
+                    d[k] = remove_utm_source(v)
+        if only_values:
+            d = list(d.values())
+        return d
 
 
 # --------------------------------------------------------------------------------------
 # SSOT and other data
-
-turns_data_ssot = {
-    'continue_conversation_url': {
-        'description': 'A URL that allows users to '
-        'continue the conversation from '
-        'its current state.',
-        'example': 'https://chatgpt.com/share/6788d539-0f2c-8013-9535-889bf344d7d5/continue',
-    },
-    'conversation_id': {
-        'description': 'A unique identifier for the entire ' 'conversation.',
-        'example': '6788d539-0f2c-8013-9535-889bf344d7d5',
-    },
-    'create_time': {
-        'description': 'The timestamp (in seconds since epoch) when '
-        'the conversation was created.',
-        'example': 1737020729.060687,
-    },
-    'current_node': {
-        'description': 'The unique identifier of the current node in '
-        'the conversation flow.',
-        'example': 'be4486db-894f-4e6f-bd0a-22d9d2facf69',
-    },
-    'default_model_slug': {
-        'description': 'The identifier for the default model '
-        'used in the conversation.',
-        'example': 'gpt-4o',
-    },
-    'disabled_tool_ids': {
-        'description': 'An array of tool identifiers that have '
-        'been disabled for this conversation. It '
-        'is empty if no tools are disabled.',
-        'example': [],
-    },
-    'has_user_editable_context': {
-        'description': 'A boolean indicating if the '
-        'user can edit the context of '
-        'the conversation.',
-        'example': False,
-    },
-    'is_archived': {
-        'description': 'A boolean indicating whether the conversation ' 'is archived.',
-        'example': False,
-    },
-    'is_better_metatags_enabled': {
-        'description': 'A boolean indicating if better '
-        'metatags are enabled for this '
-        'conversation.',
-        'example': True,
-    },
-    'is_indexable': {
-        'description': 'A boolean indicating if this conversation '
-        'can be indexed by search engines or other '
-        'indexing tools.',
-        'example': False,
-    },
-    'is_public': {
-        'description': 'A boolean indicating whether the conversation '
-        'is accessible to the public.',
-        'example': True,
-    },
-    'linear_conversation': {
-        'description': 'An array representing the sequential '
-        'flow of the conversation, where each '
-        'object contains an id and its '
-        'children (sub-sequent nodes).',
-        'example': [
-            {
-                'children': ['1473f2d9-ba09-4cd7-90c4-1452898676de'],
-                'id': 'adff303b-75cc-493c-b757-605adadb8e56',
-            }
-        ],
-    },
-    'moderation_results': {
-        'description': 'An array that holds results from any '
-        'moderation applied to the '
-        'conversation. It is empty if no '
-        'moderation has been done.',
-        'example': [],
-    },
-    'moderation_state': {
-        'description': 'An object that encapsulates the '
-        'moderation status of the conversation, '
-        'detailing various moderation flags.',
-        'example': {
-            'has_been_accepted': False,
-            'has_been_auto_blocked': False,
-            'has_been_auto_moderated': False,
-            'has_been_blocked': False,
-            'has_been_moderated': False,
-        },
-    },
-    'safe_urls': {
-        'description': 'An array of URLs deemed safe within the context '
-        'of the conversation. It is empty if there are '
-        'no safe URLs.',
-        'example': [],
-    },
-    'title': {
-        'description': 'The title of the conversation.',
-        'example': 'Test Chat 1',
-    },
-    'update_time': {
-        'description': 'The timestamp (in seconds since epoch) when '
-        'the conversation was last updated.',
-        'example': 1737020733.031014,
-    },
-}
-
-metadata_ssot = {
-    'title': {
-        'description': 'The title of the conversation.',
-        'example': 'Test Chat 1',
-    },
-    'create_time': {
-        'description': 'The timestamp (in seconds since epoch) when the conversation was created.',
-        'example': 1737020729.060687,
-    },
-    'update_time': {
-        'description': 'The timestamp (in seconds since epoch) when the conversation was last updated.',
-        'example': 1737020733.031014,
-    },
-    'moderation_results': {
-        'description': 'An array that holds results from any moderation applied to the conversation. It is empty if no moderation has been done.',
-        'example': [],
-    },
-    'current_node': {
-        'description': 'The unique identifier of the current node in the conversation flow.',
-        'example': 'be4486db-894f-4e6f-bd0a-22d9d2facf69',
-    },
-    'conversation_id': {
-        'description': 'A unique identifier for the entire conversation.',
-        'example': '6788d539-0f2c-8013-9535-889bf344d7d5',
-    },
-    'is_archived': {
-        'description': 'A boolean indicating whether the conversation is archived.',
-        'example': False,
-    },
-    'safe_urls': {
-        'description': 'An array of URLs deemed safe within the context of the conversation. It is empty if there are no safe URLs.',
-        'example': [],
-    },
-    'default_model_slug': {
-        'description': 'The identifier for the default model used in the conversation.',
-        'example': 'gpt-4o',
-    },
-    'disabled_tool_ids': {
-        'description': 'An array of tool identifiers that have been disabled for this conversation. It is empty if no tools are disabled.',
-        'example': [],
-    },
-    'is_public': {
-        'description': 'A boolean indicating whether the conversation is accessible to the public.',
-        'example': True,
-    },
-    'linear_conversation': {
-        'description': 'An array representing the sequential flow of the conversation, where each object contains an id and its children (sub-sequent nodes).',
-        'example': [
-            {
-                'id': 'adff303b-75cc-493c-b757-605adadb8e56',
-                'children': ['1473f2d9-ba09-4cd7-90c4-1452898676de'],
-            }
-        ],
-    },
-    'has_user_editable_context': {
-        'description': 'A boolean indicating if the user can edit the context of the conversation.',
-        'example': False,
-    },
-    'continue_conversation_url': {
-        'description': 'A URL that allows users to continue the conversation from its current state.',
-        'example': 'https://chatgpt.com/share/6788d539-0f2c-8013-9535-889bf344d7d5/continue',
-    },
-    'moderation_state': {
-        'description': 'An object that encapsulates the moderation status of the conversation, detailing various moderation flags.',
-        'example': {
-            'has_been_moderated': False,
-            'has_been_blocked': False,
-            'has_been_accepted': False,
-            'has_been_auto_blocked': False,
-            'has_been_auto_moderated': False,
-        },
-    },
-    'is_indexable': {
-        'description': 'A boolean indicating if this conversation can be indexed by search engines or other indexing tools.',
-        'example': False,
-    },
-    'is_better_metatags_enabled': {
-        'description': 'A boolean indicating if better metatags are enabled for this conversation.',
-        'example': True,
-    },
-}
-
+from oa._params import turns_data_ssot, metadata_ssot
 
 ChatDacc.turns_data_ssot = turns_data_ssot
 ChatDacc.metadata_ssot = metadata_ssot
@@ -576,7 +468,7 @@ def mk_merged_turn_data():
     return truncate_dict_values(merge_turn_data)
 
 
-# In order to write a "link extractor" I want to see where links (in searches, 
+# In order to write a "link extractor" I want to see where links (in searches,
 # in citations, etc.) are found in the JSON
 # The following code helps
 # Note: Could have used dol.paths.path_filter here
@@ -608,9 +500,9 @@ def find_url_keys(data, current_path=""):
         >>> list(find_url_keys(example_data))
         ['key1.nested[0].url', 'key1.nested[1].url', 'key2']
 
-        One thing you'll probably want to do sometimes is transform, filter, and 
-        aggregate these paths. Here's an example of how you might get a list of 
-        unique paths, with all array indices replaced with a wildcard, so thay 
+        One thing you'll probably want to do sometimes is transform, filter, and
+        aggregate these paths. Here's an example of how you might get a list of
+        unique paths, with all array indices replaced with a wildcard, so thay
         don't appear as separate paths:
 
         >>> from functools import partial
@@ -636,4 +528,3 @@ def find_url_keys(data, current_path=""):
         for index, item in enumerate(data):
             new_path = f"{current_path}[{index}]"
             yield from find_url_keys(item, new_path)
-
