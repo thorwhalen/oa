@@ -284,9 +284,7 @@ def prompt_function(
 
     @func_wrap
     def embody_prompt(*ask_oa_args, **ask_oa_kwargs):
-        _kwargs = sig.map_arguments(
-            ask_oa_args, ask_oa_kwargs, apply_defaults=True
-        )
+        _kwargs = sig.map_arguments(ask_oa_args, ask_oa_kwargs, apply_defaults=True)
         _kwargs = ingress(_kwargs)
         __args, __kwargs = Sig(template_embodier).mk_args_and_kwargs(_kwargs)
         embodied_template = template_embodier(*__args, **__kwargs)
@@ -399,8 +397,36 @@ def make_generic_json_schema(json_type: JsonTypes) -> dict:
         "schema": {
             "properties": {"result": {"type": json_type}},
             "required": ["result"],
-        },   
+        },
     }
+
+
+# Note: Deprecated, but Keeping around for reference
+_generic_json_schema = {
+    "name": "generic_json_schema",
+    "schema": {
+        "properties": {"result": {"type": "string"}},
+        "required": ["result"],
+        #  "additionalProperties": True,
+    },
+    #     "strict": False,
+}
+
+
+def _might_be_a_json_string(string):
+    """
+    Returns True if the string might have a chance of being decoded by `json.loads`.
+
+    More precisely, will check if the first non-whitespace character is a '{' or a '['.
+
+    >>> _might_be_a_json_string('   {"a": 1}  ')
+    True
+    >>> _might_be_a_json_string('    ["lists", "of", "stuff"]  ')
+    True
+    >>> _might_be_a_json_string('    not a json string  ')
+    False
+    """
+    return re.compile(r'^\s*[\[\{]').match(string) is not None
 
 
 def _ensure_json_schema(json_schema: Union[str, bytes, Mapping]) -> dict:
@@ -412,31 +438,23 @@ def _ensure_json_schema(json_schema: Union[str, bytes, Mapping]) -> dict:
     elif isinstance(json_schema, str):
         if json_schema in json_types:  # make a generic json schema for that type
             json_schema = make_generic_json_schema(json_schema)
-        else:  # assume it is a json string
+        elif _might_be_a_json_string(json_schema):  # assume it is a json string
             json_schema = json.loads(json_schema)
+        else:  # assume it's free text, from which AI will try to infer a schema
+            verbal_description = json_schema
+            _json_schema = infer_schema_from_verbal_description(verbal_description)
+            json_schema = _json_schema  # ["json_schema"]
 
     if 'name' not in json_schema:  # OpenAI forces you to put a name
         json_schema['name'] = 'json_schema'
 
     if 'schema' not in json_schema:  # the schema actually has to be under a schema key
-        json_schema = {'schema': json_schema}
+        json_schema = {'schema': json_schema, 'name': 'json_schema'}
 
     if 'type' not in json_schema['schema']:  # OpenAI forces you to put a type
         json_schema['schema']['type'] = 'object'
 
     return json_schema
-
-
-# Note: Keeping around for reference
-_generic_json_schema = {
-    "name": "generic_json_schema",
-    "schema": {
-        "properties": {"result": {"type": "string"}},
-        "required": ["result"],
-        #  "additionalProperties": True,
-    },
-#     "strict": False,
-}
 
 
 # TODO: model could be present in prompt_func_kwargs or in partial of prompt_func
@@ -491,6 +509,35 @@ def prompt_json_function(
         doc=doc,
         module=module,
     )
+
+
+def infer_schema_from_verbal_description(verbal_description: str):
+    template = """
+    Generate a valid JSON Schema based on the the verbal description of the desired 
+    JSON output below. 
+    The schema must be properly formatted for use with OpenAI’s Chat API 
+    in "JSON mode" and should accurately define the structure, 
+    data types, required fields, and any constraints specified by the user. 
+    Ensure correctness and completeness.
+
+    Note that you need to provide not only a valid schema but also a valid name for it.
+
+    Here is the verbal description of the desired JSON output:
+    {verbal_description}
+    """
+    output_schema = {
+        "name": "infered_json_schema",
+        "schema": {
+            "properties": {
+                "name": {"type": "string"},
+                "properties": {"type": "object"},
+                "type": {"type": "string"},
+            },
+            "required": ["name", "properties"],
+        },
+    }
+    f = prompt_json_function(template, output_schema)
+    return f(verbal_description=verbal_description)
 
 
 from typing import Mapping, Optional, KT, Union
