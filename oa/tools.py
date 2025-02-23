@@ -18,7 +18,7 @@ from typing import List, NamedTuple, Literal, Union, Optional
 Pattern = Union[re.Pattern, str]
 string_formatter = string.Formatter()
 
-DFLT_IGNORE_PATTERN = re.compile(r'```.*?```', re.DOTALL)
+DFLT_IGNORE_PATTERN = re.compile(r"```.*?```", re.DOTALL)
 
 
 def remove_pattern(string, pattern_to_remove: Optional[Pattern] = DFLT_IGNORE_PATTERN):
@@ -31,11 +31,11 @@ def remove_pattern(string, pattern_to_remove: Optional[Pattern] = DFLT_IGNORE_PA
 
     """
     pattern_to_remove = re.compile(pattern_to_remove)
-    return pattern_to_remove.sub('', string)
+    return pattern_to_remove.sub("", string)
 
 
 def extract_parts(string: str, pattern: Pattern) -> NamedTuple:
-    PartResult = namedtuple('PartResult', ['matched', 'unmatched'])
+    PartResult = namedtuple("PartResult", ["matched", "unmatched"])
     matched: List[str] = []
     unmatched: List[str] = []
     last_end = 0
@@ -71,10 +71,10 @@ def pattern_based_map(
     'the good the ```BAD``` and the ugly'
     """
     parts = extract_parts(string, pattern)
-    result = ''
+    result = ""
 
     # Apply the function to the appropriate parts
-    if apply_to == 'matched':
+    if apply_to == "matched":
         transformed_matched = [func(part) for part in parts.matched]
         # Interleave transformed matched parts with untouched unmatched parts
         result_parts = sum(zip(parts.unmatched, transformed_matched), ())
@@ -84,11 +84,11 @@ def pattern_based_map(
         result_parts = sum(zip(transformed_unmatched, parts.matched), ())
 
     # Ensure all parts are added, including the last unmatched if unmatched is longer
-    result = ''.join(result_parts)
+    result = "".join(result_parts)
     if len(parts.unmatched) > len(parts.matched):
         result += (
             transformed_unmatched[-1]
-            if apply_to == 'unmatched'
+            if apply_to == "unmatched"
             else parts.unmatched[-1]
         )
 
@@ -167,7 +167,7 @@ def _template_with_double_braces_in_ignored_sections(
     """double the braces of the parts of the template that should be ignored"""
     double_braces = lambda string: string.replace("{", "{{").replace("}", "}}")
     return pattern_based_map(
-        double_braces, template, ignore_pattern, apply_to='matched'
+        double_braces, template, ignore_pattern, apply_to="matched"
     )
 
 
@@ -185,9 +185,9 @@ def string_format_embodier(
     return templated_string_embodier
 
 
-add_name = add_attr('__name__')
-add_doc = add_attr('__doc__')
-add_module = add_attr('__module__')
+add_name = add_attr("__name__")
+add_doc = add_attr("__doc__")
+add_module = add_attr("__module__")
 
 # -----------------------------------------------------------------------------
 # The meat
@@ -203,7 +203,7 @@ def prompt_function(
     template_to_defaults: Callable = _extract_defaults_from_format_string,
     embodier: Callable = string_format_embodier,
     arg_kinds: Optional[dict] = None,
-    name='prompt',
+    name="prompt",
     prompt_func=chat,
     prompt_func_kwargs=None,
     ingress=None,
@@ -315,13 +315,13 @@ def identity(x):
 
 
 json_types = {
-    'object': dict,
-    'array': list,
-    'string': str,
-    'number': float,
-    'integer': int,
-    'boolean': bool,
-    'null': type(None),
+    "object": dict,
+    "array": list,
+    "string": str,
+    "number": float,
+    "integer": int,
+    "boolean": bool,
+    "null": type(None),
 }
 
 py_to_json_types = {v: k for k, v in json_types.items()}
@@ -426,7 +426,7 @@ def _might_be_a_json_string(string):
     >>> _might_be_a_json_string('    not a json string  ')
     False
     """
-    return re.compile(r'^\s*[\[\{]').match(string) is not None
+    return re.compile(r"^\s*[\[\{]").match(string) is not None
 
 
 def _ensure_json_schema(json_schema: Union[str, bytes, Mapping]) -> dict:
@@ -445,14 +445,14 @@ def _ensure_json_schema(json_schema: Union[str, bytes, Mapping]) -> dict:
             _json_schema = infer_schema_from_verbal_description(verbal_description)
             json_schema = _json_schema  # ["json_schema"]
 
-    if 'name' not in json_schema:  # OpenAI forces you to put a name
-        json_schema['name'] = 'json_schema'
+    if "name" not in json_schema:  # OpenAI forces you to put a name
+        json_schema["name"] = "json_schema"
 
-    if 'schema' not in json_schema:  # the schema actually has to be under a schema key
-        json_schema = {'schema': json_schema, 'name': 'json_schema'}
+    if "schema" not in json_schema:  # the schema actually has to be under a schema key
+        json_schema = {"schema": json_schema, "name": "json_schema"}
 
-    if 'type' not in json_schema['schema']:  # OpenAI forces you to put a type
-        json_schema['schema']['type'] = 'object'
+    if "type" not in json_schema["schema"]:  # OpenAI forces you to put a type
+        json_schema["schema"]["type"] = "object"
 
     return json_schema
 
@@ -466,10 +466,10 @@ def prompt_json_function(
     defaults: Optional[dict] = None,
     embodier: Callable = string_format_embodier,
     arg_kinds: Optional[dict] = None,
-    name='prompt',
+    name="prompt",
     prompt_func=chat,
     prompt_func_kwargs=None,
-    model='gpt-4o-mini',
+    model="gpt-4o-mini",
     ingress=None,
     egress=None,
     doc="The function composes a prompt and asks an LLM to respond to it with json.",
@@ -487,8 +487,8 @@ def prompt_json_function(
         dict(
             model=model,  # TODO: Change to just ensure model is compatible
             response_format={
-                'type': 'json_schema',
-                'json_schema': json_schema,
+                "type": "json_schema",
+                "json_schema": json_schema,
             },
         ),
         **(prompt_func_kwargs or {}),
@@ -556,7 +556,7 @@ _dflt_factories = {
 }
 dflt_factories = tuple(_dflt_factories.items())
 
-_suffixes_csv = ','.join(_dflt_factories.keys())
+_suffixes_csv = ",".join(_dflt_factories.keys())
 DFLT_TEMPLATE_SOURCE_WITH_SUFFIXES = f"{DFLT_TEMPLATES_SOURCE}:{_suffixes_csv}"
 
 StoreKey = str
@@ -618,4 +618,4 @@ class PromptFuncs:
 
     def print_signatures(self):
         """Print signatures of all functions"""
-        print('\n'.join(f"{k}{v}" for k, v in self.funcs_and_sigs().items()))
+        print("\n".join(f"{k}{v}" for k, v in self.funcs_and_sigs().items()))

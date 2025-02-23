@@ -6,7 +6,7 @@ For instance: Extract information from them.
 The main object here is `ChatDacc` (Chat Data Accessor), which is a class that allows
 you to access the data in a shared chat in a structured way.
 
-## TODO: Temporarily commenting out tests, since html structure of chats has changed. 
+## TODO: Temporarily commenting out tests, since html structure of chats has changed.
 # >>> from oa.chats import ChatDacc
 # >>>
 # >>> url = 'https://chatgpt.com/share/6788d539-0f2c-8013-9535-889bf344d7d5'
@@ -21,11 +21,11 @@ you to access the data in a shared chat in a structured way.
 # >>> list(first_turn)
 # ['id', 'role', 'content', 'time']
 # >>> print(first_turn['content'])  # doctest: +NORMALIZE_WHITESPACE
-# This conversation is meant to be used as an example, for testing, and/or for figuring out how to parse the html and json of a conversation. 
+# This conversation is meant to be used as an example, for testing, and/or for figuring out how to parse the html and json of a conversation.
 # <BLANKLINE>
-# As such, we'd like to keep it short. 
+# As such, we'd like to keep it short.
 # <BLANKLINE>
-# Just say "Hello World!" back to me for now, and then in a second line write 10 random words. 
+# Just say "Hello World!" back to me for now, and then in a second line write 10 random words.
 # >>>
 # >>> from pprint import pprint
 # >>> first_response = basic_turns_data[1]
@@ -38,7 +38,7 @@ you to access the data in a shared chat in a structured way.
 #     'time': 1737020652.436654}
 
 
-In the example above, we just extracted the basic turn data. 
+In the example above, we just extracted the basic turn data.
 But there's a lot more in the conversation data that you can access.
 
 See this notebook for plenty more:
@@ -109,11 +109,11 @@ def extract_json_dict(
 
 
 # NOTE: This is one of the fragile parts of the parsing. Who knows if this is consistent now, or will be in the future!
-DFLT_VARIABLE_NAME = 'window.__remixContext'
+DFLT_VARIABLE_NAME = "window.__remixContext"
 
 DFLT_JSON_PATTERN = r"(\{.*?\});"
 
-DFLT_TARGET_DATA_PATTERN_STR = r'data.*mapping.*message'
+DFLT_TARGET_DATA_PATTERN_STR = r"data.*mapping.*message"
 
 
 def ensure_filter_func(target: Union[str, Callable]) -> Callable:
@@ -220,12 +220,12 @@ paths_get_or_none = partial(
 
 def turn_is_not_visually_hidden(turn):
     visually_hidden = paths_get_or_none(
-        {'visually_hidden': 'message.metadata.is_visually_hidden_from_conversation'},
+        {"visually_hidden": "message.metadata.is_visually_hidden_from_conversation"},
         turn,
     )
     return (
         visually_hidden is not None
-        and visually_hidden.get('visually_hidden') is not True
+        and visually_hidden.get("visually_hidden") is not True
     )
 
 
@@ -252,8 +252,8 @@ def remove_utm_source(text):
         'not_a_url http://abc_not_at_the_end https://abc https://abc http://abc'
 
     """
-    pattern = r'(https?://[^\s]+)[&\?]utm_source=chatgpt\.com'
-    cleaned_text = re.sub(pattern, r'\1', text)
+    pattern = r"(https?://[^\s]+)[&\?]utm_source=chatgpt\.com"
+    cleaned_text = re.sub(pattern, r"\1", text)
     return cleaned_text
 
 
@@ -263,21 +263,21 @@ def remove_utm_source(text):
 
 class ChatDacc:
     metadata_path = (
-        'state',
-        'loaderData',
-        'routes/share.$shareId.($action)',
-        'serverResponse',
-        'data',
+        "state",
+        "loaderData",
+        "routes/share.$shareId.($action)",
+        "serverResponse",
+        "data",
     )
-    turns_field = 'mapping'
-    turns_path = metadata_path + ('mapping',)
+    turns_field = "mapping"
+    turns_path = metadata_path + ("mapping",)
     turns_df_paths = {
-        'id': 'id',
-        'role': 'message.author.role',
-        'content': 'message.content.parts',
-        'time': 'message.create_time',
+        "id": "id",
+        "role": "message.author.role",
+        "content": "message.content.parts",
+        "time": "message.create_time",
     }
-    _matadata_exclude_fields = {'mapping', 'linear_conversation'}
+    _matadata_exclude_fields = {"mapping", "linear_conversation"}
 
     def __init__(
         self,
@@ -331,10 +331,10 @@ class ChatDacc:
         # same as turns_df, but list of dicts
         def gen():
             for turn in self.extract_turns(self.turns_df_paths):
-                if turn.get('role', None) is None or turn.get('content', None) is None:
+                if turn.get("role", None) is None or turn.get("content", None) is None:
                     continue
-                if 'content' in turn:
-                    turn['content'] = '\n'.join(map(str, turn['content']))
+                if "content" in turn:
+                    turn["content"] = "\n".join(map(str, turn["content"]))
                 yield turn
 
         return list(gen())
@@ -344,8 +344,8 @@ class ChatDacc:
         import pandas as pd  # pip install pandas
 
         t = pd.DataFrame(self.basic_turns_data)
-        if 'time' in t:
-            t['time'] = pd.to_datetime(t['time'], unit='s').dt.floor('s')
+        if "time" in t:
+            t["time"] = pd.to_datetime(t["time"], unit="s").dt.floor("s")
             # # take the time up to seconds only
             # t['time'] = t['time'].dt.floor('s')
         return t
@@ -367,8 +367,8 @@ class ChatDacc:
 
     @cached_property
     def paths_containing_urls(self):
-        replace_array_index_with_star = partial(re.sub, '\[\d+\]', '[*]')
-        ignore_first_part_of_path = lambda x: '.'.join(x.split('.')[1:])
+        replace_array_index_with_star = partial(re.sub, "\[\d+\]", "[*]")
+        ignore_first_part_of_path = lambda x: ".".join(x.split(".")[1:])
         transform = Pipe(replace_array_index_with_star, ignore_first_part_of_path)
         return sorted(set(map(transform, self.url_paths)))
 
@@ -390,9 +390,9 @@ class ChatDacc:
         if prior_levels_to_include == 0:
             _url_paths = self.url_paths
         else:
-            _url_paths = map(lambda x: x.split('.'), self.url_paths)
+            _url_paths = map(lambda x: x.split("."), self.url_paths)
             _url_paths = list(
-                map(lambda x: '.'.join(x[:-prior_levels_to_include]), _url_paths)
+                map(lambda x: ".".join(x[:-prior_levels_to_include]), _url_paths)
             )
 
         d = paths_getter(
@@ -400,7 +400,6 @@ class ChatDacc:
             obj=self.turns_data,
             sep=path_get.keys_and_indices_path,
         )
-
 
         if remove_chatgpt_utm:
             for k, v in d.items():
@@ -443,7 +442,7 @@ Here's an example json object:
 
 {example_json}
 """,
-    egress=lambda x: x['result'],
+    egress=lambda x: x["result"],
 )
 
 
@@ -456,9 +455,9 @@ def mk_merged_turn_data():
 
     # A selection of shared chats with a variety of features
     urls = dict(
-        simple_url='https://chatgpt.com/share/6788d539-0f2c-8013-9535-889bf344d7d5',
-        url_with_searches='https://chatgpt.com/share/67877101-6708-8013-ba9e-2e770186db58',
-        url_with_image_gen='https://chatgpt.com/share/678a1339-d14c-8013-bfcb-288d367a9079',
+        simple_url="https://chatgpt.com/share/6788d539-0f2c-8013-9535-889bf344d7d5",
+        url_with_searches="https://chatgpt.com/share/67877101-6708-8013-ba9e-2e770186db58",
+        url_with_image_gen="https://chatgpt.com/share/678a1339-d14c-8013-bfcb-288d367a9079",
     )
 
     # Note, the turns_data is a dict whose keys are "turn ids" and values are the metadata for that turn, so we want to merge those

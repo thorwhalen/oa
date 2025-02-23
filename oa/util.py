@@ -29,19 +29,19 @@ def get_package_name():
     # return __name__.split('.')[0]
     # TODO: See if this works in all cases where module is in highest level of package
     #  but meanwhile, hardcode it:
-    return 'oa'
+    return "oa"
 
 
 # get app data dir path and ensure it exists
 pkg_name = get_package_name()
-data_files = files(pkg_name) / 'data'
-templates_files = data_files / 'templates'
+data_files = files(pkg_name) / "data"
+templates_files = data_files / "templates"
 _root_app_data_dir = get_app_data_folder()
 app_data_dir = os.environ.get(
-    f'{pkg_name.upper()}_APP_DATA_DIR',
+    f"{pkg_name.upper()}_APP_DATA_DIR",
     os.path.join(_root_app_data_dir, pkg_name),
 )
-app_data_dir = dol.ensure_dir(app_data_dir, verbose=f'Making app dir: {app_data_dir}')
+app_data_dir = dol.ensure_dir(app_data_dir, verbose=f"Making app dir: {app_data_dir}")
 djoin = partial(os.path.join, app_data_dir)
 
 # _open_api_key_env_name = 'OPENAI_API_KEY'
@@ -56,10 +56,10 @@ djoin = partial(os.path.join, app_data_dir)
 configs_local_store = get_configs_local_store(pkg_name)
 
 _DFLT_CONFIGS = {
-    'OPENAI_API_KEY_ENV_NAME': 'OPENAI_API_KEY',
-    'OA_DFLT_TEMPLATES_SOURCE_ENV_NAME': 'OA_DFLT_TEMPLATES_SOURCE',
-    'OA_DFLT_ENGINE': 'gpt-3.5-turbo-instruct',
-    'OA_DFLT_MODEL': 'gpt-3.5-turbo',
+    "OPENAI_API_KEY_ENV_NAME": "OPENAI_API_KEY",
+    "OA_DFLT_TEMPLATES_SOURCE_ENV_NAME": "OA_DFLT_TEMPLATES_SOURCE",
+    "OA_DFLT_ENGINE": "gpt-3.5-turbo-instruct",
+    "OA_DFLT_MODEL": "gpt-3.5-turbo",
 }
 
 # write the defaults to the local store, if key missing there
@@ -86,23 +86,23 @@ config_getter = get_config(sources=config_sources, egress=kv_strip_value)
 
 
 # Get the OPENAI_API_KEY_ENV_NAME and DFLT_TEMPLATES_SOURCE_ENV_NAME
-OPENAI_API_KEY_ENV_NAME = config_getter('OPENAI_API_KEY_ENV_NAME')
-DFLT_TEMPLATES_SOURCE_ENV_NAME = config_getter('OA_DFLT_TEMPLATES_SOURCE_ENV_NAME')
+OPENAI_API_KEY_ENV_NAME = config_getter("OPENAI_API_KEY_ENV_NAME")
+DFLT_TEMPLATES_SOURCE_ENV_NAME = config_getter("OA_DFLT_TEMPLATES_SOURCE_ENV_NAME")
 
 # TODO: Understand the model/engine thing better and merge defaults if possible
-DFLT_ENGINE = config_getter('OA_DFLT_ENGINE')
-DFLT_MODEL = config_getter('OA_DFLT_MODEL')
+DFLT_ENGINE = config_getter("OA_DFLT_ENGINE")
+DFLT_MODEL = config_getter("OA_DFLT_MODEL")
 
 # TODO: Add the following to config_getter mechanism
-DFLT_EMBEDDINGS_MODEL = 'text-embedding-3-small'
+DFLT_EMBEDDINGS_MODEL = "text-embedding-3-small"
 
 
-Purpose = FileObject.model_fields['purpose'].annotation
-DFLT_PURPOSE = 'batch'
-BatchesEndpoint = eval(Sig(OpenaiBatches.create).annotations['endpoint'])
+Purpose = FileObject.model_fields["purpose"].annotation
+DFLT_PURPOSE = "batch"
+BatchesEndpoint = eval(Sig(OpenaiBatches.create).annotations["endpoint"])
 batch_endpoints_values = get_args(BatchesEndpoint)
 batch_endpoints_keys = [
-    k.replace('/v1/', '').replace('/', '_') for k in batch_endpoints_values
+    k.replace("/v1/", "").replace("/", "_") for k in batch_endpoints_values
 ]
 batch_endpoints = SimpleNamespace(
     **dict(zip(batch_endpoints_keys, batch_endpoints_values))
@@ -219,11 +219,11 @@ def get_api_key_from_config():
             os.environ,
             # If not, ask the user to input it
             lambda k: ask_user_for_input(
-                f'Please set your OpenAI API key and press enter to continue. '
+                f"Please set your OpenAI API key and press enter to continue. "
                 "If you don't have one, you can get one at "
-                'https://platform.openai.com/account/api-keys. ',
+                "https://platform.openai.com/account/api-keys. ",
                 mask_input=True,
-                masking_toggle_str='',
+                masking_toggle_str="",
                 egress=lambda v: configs_local_store.__setitem__(k, v),
             ),
         ],
@@ -247,7 +247,7 @@ try:
 except Exception as e:
     dflt_client = None
 
-_grazed_dir = dol.ensure_dir(os.path.join(app_data_dir, 'grazed'))
+_grazed_dir = dol.ensure_dir(os.path.join(app_data_dir, "grazed"))
 grazed = graze.Graze(rootdir=_grazed_dir)
 
 
@@ -262,7 +262,7 @@ DFLT_TEMPLATES_SOURCE = get_config(
 
 # TODO: This is general: Bring this in dol or dolx
 def _extract_folder_and_suffixes(
-    string: str, default_suffixes=(), *, default_folder='', root_sep=':', suffix_sep=','
+    string: str, default_suffixes=(), *, default_folder="", root_sep=":", suffix_sep=","
 ):
     root_folder, *suffixes = string.split(root_sep)
     if root_folder == "":
@@ -334,8 +334,8 @@ def oa_extractors_obj(**named_paths):
 
 
 extractors = oa_extractors_obj(
-    embeddings_from_output_data='response.body.data.*.embedding',
-    inputs_from_file_obj='body.input',
+    embeddings_from_output_data="response.body.data.*.embedding",
+    inputs_from_file_obj="body.input",
 )
 
 
@@ -359,8 +359,8 @@ from typing import (
     T,
 )
 
-KT = TypeVar('KT')  # there's a typing.KT, but pylance won't allow me to use it!
-VT = TypeVar('VT')  # there's a typing.VT, but pylance won't allow me to use it!
+KT = TypeVar("KT")  # there's a typing.KT, but pylance won't allow me to use it!
+VT = TypeVar("VT")  # there's a typing.VT, but pylance won't allow me to use it!
 
 
 def chunk_iterable(
@@ -480,7 +480,7 @@ def mk_local_files_saves_callback(
     rootdir: Optional[str] = None,
     *,
     serializer: Callable[[Any], bytes] = pickle.dumps,
-    index_to_filename: Callable[[int], str] = '{:05.0f}'.format,
+    index_to_filename: Callable[[int], str] = "{:05.0f}".format,
     print_dir_path: bool = True,
 ):
     """
@@ -495,7 +495,7 @@ def mk_local_files_saves_callback(
         print(f"Files will be saved in {rootdir}")
 
     def save_to_file(i, obj):
-        with open(os.path.join(rootdir, index_to_filename(i)), 'wb') as f:
+        with open(os.path.join(rootdir, index_to_filename(i)), "wb") as f:
             f.write(serializer(obj))
 
     return save_to_file
@@ -506,7 +506,7 @@ from operator import methodcaller
 from typing import Iterable, Callable, T
 from dol import Pipe
 
-DFLT_ENCODING = 'utf-8'
+DFLT_ENCODING = "utf-8"
 
 
 def jsonl_dumps(x: Iterable, encoding: str = DFLT_ENCODING) -> bytes:
@@ -520,14 +520,14 @@ def jsonl_dumps(x: Iterable, encoding: str = DFLT_ENCODING) -> bytes:
     if isinstance(x, Mapping):
         return json.dumps(x).encode(encoding)
     else:
-        return b'\n'.join(json.dumps(line).encode(encoding) for line in x)
+        return b"\n".join(json.dumps(line).encode(encoding) for line in x)
 
 
 def jsonl_loads_iter(
     src: T,
     *,
     get_lines: Callable[[T], Iterable[bytes]] = bytes.splitlines,
-    line_egress: Callable = methodcaller('strip'),
+    line_egress: Callable = methodcaller("strip"),
 ) -> Iterable[dict]:
     r"""
     Deserialize JSONL bytes into a python iterable (dict or list of dicts)
@@ -603,9 +603,9 @@ from typing import (
 )
 
 # Define type variables and aliases
-KT = TypeVar('KT')  # Key type
-VT = TypeVar('VT')  # Value type (pending item type)
-Result = TypeVar('Result')  # Result type returned by processing_function
+KT = TypeVar("KT")  # Key type
+VT = TypeVar("VT")  # Value type (pending item type)
+Result = TypeVar("Result")  # Result type returned by processing_function
 Status = str  # Could be an Enum in future
 
 
@@ -710,7 +710,7 @@ class ProcessingManager(Generic[KT, VT, Result]):
         - The number of cycles reaches `max_cycles`, if specified.
         """
         # Continue looping while there are pending items and the cycle limit hasn't been reached
-        while not self.status and self.cycles < (self.max_cycles or float('inf')):
+        while not self.status and self.cycles < (self.max_cycles or float("inf")):
             # Record the start time of the cycle
             cycle_start_time = time.time()
 

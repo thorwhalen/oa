@@ -1,4 +1,4 @@
-"""Types for oa """
+"""Types for oa"""
 
 from typing import Any, List, Optional, TypeVar, Generic
 
@@ -12,7 +12,7 @@ pydantic_models = {k: v for k, v in vars(oat).items() if is_pydantic_model(v)}
 type_hints = {k: v for k, v in vars(oat).items() if is_type_hint(v)}
 
 
-T = TypeVar('T', bound=BaseModel)
+T = TypeVar("T", bound=BaseModel)
 
 # --------------------------------------------------------------------------------------
 # JsonL (lists of dicts)
@@ -56,7 +56,7 @@ from pydantic import BaseModel, Field
 from typing import List, TypeVar, Generic, Any
 
 # Define a generic type for Datum
-DatumT = TypeVar('DatumT')
+DatumT = TypeVar("DatumT")
 
 
 # Usage model remains the same
@@ -89,7 +89,7 @@ class Response(BaseModel, Generic[DatumT]):
 from openai.types import Embedding as EmbeddingT
 
 EmbeddingResponse = Response[EmbeddingT]
-EmbeddingResponse.__name__ = 'EmbeddingResponse'
+EmbeddingResponse.__name__ = "EmbeddingResponse"
 
 # --------------------------------------------------------------------------------------
 # Extras

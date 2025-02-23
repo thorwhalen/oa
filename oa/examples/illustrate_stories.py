@@ -1,4 +1,5 @@
 """Illustrate stories with OpenAI's DALL-E model."""
+
 import html
 
 import oa
@@ -12,22 +13,22 @@ from i2 import postprocess
 #     image = get_illustration(story_text, image_style)
 #     page = aggregate_story_and_image(image, rhyming_story)
 
-make_it_rhyming_prompt = '''Act as a children's book author. 
+make_it_rhyming_prompt = """Act as a children's book author. 
 Write a rhyming story about the following text:
 ###
-{story}'''
+{story}"""
 
-illustrate_prompt = '''Act as an illustrator, expert in the style: {image_style}.
+illustrate_prompt = """Act as an illustrator, expert in the style: {image_style}.
 Describe an image that would illustrate the following text:
 ###
 {text}
-'''
+"""
 
-dalle_prompt = '''Image style: {image_style}
+dalle_prompt = """Image style: {image_style}
 {image_description}
-'''
+"""
 
-topic_points_prompt = '''
+topic_points_prompt = """
 I will give you a topic/subject and you will list {n_talking_points} talking points of 
 the main ideas/subtopics/points of this topic.
 Each talking point should be between {min_n_words} and {max_n_words} words. 
@@ -38,9 +39,9 @@ and nothing but a bullet point list. Each bullet point contains the talking poin
 The topic is: 
 
 {topic}
-'''
+"""
 
-topic_points_json_prompt = '''
+topic_points_json_prompt = """
 I will give you a topic/subject and you will list {n_talking_points} of the main 
 ideas/subtopics/points of this topic, 
 including a`title` and {min_n_words} to {max_n_words} word `description` of the topic. 
@@ -51,9 +52,9 @@ The JSON should have the format `{{title: description, title: description, ...}}
 The topic is: 
 
 {topic}
-'''
+"""
 
-DFLT_IMAGE_STYLE = 'drawing'
+DFLT_IMAGE_STYLE = "drawing"
 
 
 def extract_first_text_choice(response) -> str:
@@ -65,7 +66,7 @@ def extract_first_text_choice(response) -> str:
 #  mentioned by the FuncNodes, and auto-editing FuncNode binds.
 @postprocess(extract_first_text_choice)
 def topic_points(topic, n_talking_points=3) -> str:
-    print(f'topic_points: topic={topic}, n_talking_points={n_talking_points}')
+    print(f"topic_points: topic={topic}, n_talking_points={n_talking_points}")
     min_n_words = 5
     max_n_words = 20
     prompt = topic_points_prompt.format(
@@ -74,14 +75,14 @@ def topic_points(topic, n_talking_points=3) -> str:
         min_n_words=min_n_words,
         max_n_words=max_n_words,
     )
-    return oa.complete(prompt, max_tokens=2048, n=1, engine='text-davinci-003')
+    return oa.complete(prompt, max_tokens=2048, n=1, engine="text-davinci-003")
 
 
 def _repair_json(json_str):
     t = json_str
-    if t.startswith('`'):
+    if t.startswith("`"):
         t = t[1:]
-    if t.endswith('`'):
+    if t.endswith("`"):
         t = t[:-1]
     return t
 
@@ -93,7 +94,7 @@ def topic_points_json(topic, n_talking_points=3, min_n_words=15, max_n_words=40)
         min_n_words=min_n_words,
         max_n_words=max_n_words,
     )
-    t = oa.complete(prompt, max_tokens=2048, n=1, engine='text-davinci-003')
+    t = oa.complete(prompt, max_tokens=2048, n=1, engine="text-davinci-003")
     t = extract_first_text_choice(t)
     return _repair_json(t)
 
@@ -127,8 +128,8 @@ def get_illustration(story_text: str, image_style=DFLT_IMAGE_STYLE):
 
 def _format_for_html_display(input_string: str) -> str:
     escaped_string = html.escape(input_string)
-    newline_replaced_string = escaped_string.replace('\n', '<br>')
-    html_formatted_string = f'<p>{newline_replaced_string}</p>'
+    newline_replaced_string = escaped_string.replace("\n", "<br>")
+    html_formatted_string = f"<p>{newline_replaced_string}</p>"
     return html_formatted_string
 
 
@@ -136,11 +137,11 @@ def aggregate_story_and_image(image_url, story_text):
     """Produces an html page with the image and story text"""
 
     story_text = _format_for_html_display(story_text)
-    html = f'''<html>
+    html = f"""<html>
     <body>
     <img src="{image_url}" />
     <p>{story_text}</p>
     </body>
-    </html>'''
+    </html>"""
 
     return html

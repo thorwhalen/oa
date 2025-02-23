@@ -64,7 +64,7 @@ import time
 from dataclasses import dataclass
 
 
-def random_custom_id(prefix='custom_id-', suffix=''):
+def random_custom_id(prefix="custom_id-", suffix=""):
     """Make a random custom_id by using the current time in nanoseconds"""
     return f"{prefix}{int(time.time() * 1e9)}{suffix}"
 
@@ -105,11 +105,11 @@ def _mk_embeddings_request_body(
 
 
 def _mk_task_request_dict(
-    body, custom_id=None, *, endpoint=DFLT_EMBEDDINGS_MODEL, method='POST'
+    body, custom_id=None, *, endpoint=DFLT_EMBEDDINGS_MODEL, method="POST"
 ):
 
     if custom_id is None:
-        custom_id = random_custom_id('embeddings_batch_id-')
+        custom_id = random_custom_id("embeddings_batch_id-")
 
     return {
         "custom_id": custom_id,
@@ -200,10 +200,10 @@ def mk_batch_file_embeddings_task(
     >>> mk_batch_file_embeddings_task(
     ...     {"key1": "Text1", "key2": "Text2"}, custom_id_per_text=False
     ... )  # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
-    {'custom_id': '...', 
-    'method': 'POST', 
-    'url': '/v1/embeddings', 
-    'body': {'input': ['Text1', 'Text2'], 
+    {'custom_id': '...',
+    'method': 'POST',
+    'url': '/v1/embeddings',
+    'body': {'input': ['Text1', 'Text2'],
     'model': 'text-embedding-3-small'}}
 
     >>> mk_batch_file_embeddings_task(
@@ -254,12 +254,12 @@ def batch_info_to_segments_and_embeddings(jsonl_store, batch_info):
     output_data_dict = jsonl_store[batch_info.output_file_id]
     output_data = oa_extractor(output_data_dict)
     if (
-        'response.body.data.*.embedding' in output_data
-        and output_data['response.status_code'] == 200
+        "response.body.data.*.embedding" in output_data
+        and output_data["response.status_code"] == 200
     ):
-        embedding_vectors = output_data['response.body.data.*.embedding']
+        embedding_vectors = output_data["response.body.data.*.embedding"]
         input_file_data = oa_extractor(jsonl_store[batch_info.input_file_id])
-        segments = input_file_data['body.input']
+        segments = input_file_data["body.input"]
         return segments, embedding_vectors
     else:
         return None
@@ -267,7 +267,7 @@ def batch_info_to_segments_and_embeddings(jsonl_store, batch_info):
 
 def get_segments_and_embeddings(batch_store, jsonl_store):
     for batch_info in batch_store.values():
-        if batch_info.endpoint == '/v1/embeddings' and batch_info.status == 'completed':
+        if batch_info.endpoint == "/v1/embeddings" and batch_info.status == "completed":
             yield batch_info_to_segments_and_embeddings(jsonl_store, batch_info)
 
 
@@ -277,7 +277,7 @@ from operator import attrgetter
 from lkj import value_in_interval
 from dol import Pipe
 
-create_at_within_range = value_in_interval(get_val=attrgetter('created_at'))
+create_at_within_range = value_in_interval(get_val=attrgetter("created_at"))
 
 
 def batches_within_range(batches_base, min_date, max_date=None):
@@ -334,7 +334,7 @@ def get_batch_obj(oa_stores, batch: BatchSpec) -> BatchObj:
         return oa_stores.batches_base[batch]
     except KeyError:
         raise KeyError(f"Batch {batch} not found.")
-    
+
 
 def get_batch_id_and_obj(oa_stores, batch: BatchSpec) -> Tuple[BatchId, BatchObj]:
     try:
@@ -376,11 +376,11 @@ def get_output_file_data(
     except KeyError:
         raise KeyError(f"Batch {batch} not found.")
 
-    if batch_obj.status == 'completed':
+    if batch_obj.status == "completed":
         return on_complete(oa_stores, batch_obj)
     else:
 
-        if batch_obj.status == 'failed':
+        if batch_obj.status == "failed":
             # Raise an error if the batch failed
             error_obj = BatchFailedError(
                 f"Batch {batch} failed "
@@ -388,7 +388,7 @@ def get_output_file_data(
                 f"Check out {batch_obj.error_file_id} for more information."
             )
 
-        elif batch_obj.status == 'in_progress':
+        elif batch_obj.status == "in_progress":
             # Calculate the time elapsed between creation and when it started processing
             time_elapsed = timedelta(
                 seconds=(batch_obj.in_progress_at - batch_obj.created_at)
@@ -400,21 +400,21 @@ def get_output_file_data(
                 f"{(time_elapsed.total_seconds() % 3600) // 60:.0f} minutes after it was created."
             )
 
-        elif batch_obj.status == 'cancelled':
+        elif batch_obj.status == "cancelled":
             # Provide information when the batch was cancelled
             error_obj = BatchCancelledError(
                 f"Batch {batch} was cancelled "
                 f"at {utc_int_to_iso_date(batch_obj.cancelled_at)}."
             )
 
-        elif batch_obj.status == 'expired':
+        elif batch_obj.status == "expired":
             # Notify that the batch expired and provide timestamps
             error_obj = BatchExpiredError(
                 f"Batch {batch} expired at {utc_int_to_iso_date(batch_obj.expired_at)}. "
                 f"Completion window was {batch_obj.completion_window} hours."
             )
 
-        elif batch_obj.status == 'finalizing':
+        elif batch_obj.status == "finalizing":
             # Provide information when the batch entered the finalizing stage
             error_obj = BatchFinalizingError(
                 f"Batch {batch} is in the finalizing stage as of "

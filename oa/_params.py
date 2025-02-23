@@ -1,198 +1,198 @@
 """Parameters, configuration, and constants for the OpenAI Gym environment."""
 
 turns_data_ssot = {
-    'id': {
-        'description': 'A unique identifier for the conversation turn.',
-        'example': '1fc35aa7-6b7a-4dae-9838-ead52c6d4793',
+    "id": {
+        "description": "A unique identifier for the conversation turn.",
+        "example": "1fc35aa7-6b7a-4dae-9838-ead52c6d4793",
     },
-    'children': {
-        'description': 'An array of child conversation turns, which can hold additional messages in the conversation thread.',
-        'example': '[]',
+    "children": {
+        "description": "An array of child conversation turns, which can hold additional messages in the conversation thread.",
+        "example": "[]",
     },
-    'message.id': {
-        'description': 'A unique identifier for the message within the conversation turn.',
-        'example': '1fc35aa7-6b7a-4dae-9838-ead52c6d4793',
+    "message.id": {
+        "description": "A unique identifier for the message within the conversation turn.",
+        "example": "1fc35aa7-6b7a-4dae-9838-ead52c6d4793",
     },
-    'message.author.role': {
-        'description': 'The role of the author of the message (e.g., user, assistant).',
-        'example': 'assistant',
+    "message.author.role": {
+        "description": "The role of the author of the message (e.g., user, assistant).",
+        "example": "assistant",
     },
-    'message.author.metadata.real_author': {
-        'description': 'Metadata indicating the real author or source of the message.',
-        'example': 'tool:web',
+    "message.author.metadata.real_author": {
+        "description": "Metadata indicating the real author or source of the message.",
+        "example": "tool:web",
     },
-    'message.author.name': {
-        'description': 'The name of the author of the message.',
-        'example': 'dalle.text2im',
+    "message.author.name": {
+        "description": "The name of the author of the message.",
+        "example": "dalle.text2im",
     },
-    'message.content.content_type': {
-        'description': 'The type of content in the message (e.g., text, image, etc.).',
-        'example': 'text',
+    "message.content.content_type": {
+        "description": "The type of content in the message (e.g., text, image, etc.).",
+        "example": "text",
     },
-    'message.content.parts': {
-        'description': 'An array containing parts or segments of the message content, typically for handling long messages.',
-        'example': [
-            'The generated image visually ca...lements in a futuristic design.'
+    "message.content.parts": {
+        "description": "An array containing parts or segments of the message content, typically for handling long messages.",
+        "example": [
+            "The generated image visually ca...lements in a futuristic design."
         ],
     },
-    'message.content.model_set_context': {
-        'description': 'Context information related to the model used for content generation.',
-        'example': '',
+    "message.content.model_set_context": {
+        "description": "Context information related to the model used for content generation.",
+        "example": "",
     },
-    'message.content.language': {
-        'description': 'The language of the message content, represented in standard language codes.',
-        'example': 'unknown',
+    "message.content.language": {
+        "description": "The language of the message content, represented in standard language codes.",
+        "example": "unknown",
     },
-    'message.content.text': {
-        'description': 'The actual text of the message.',
-        'example': 'search("Please give me an estim...rian diet and a omnivore diet")',
+    "message.content.text": {
+        "description": "The actual text of the message.",
+        "example": 'search("Please give me an estim...rian diet and a omnivore diet")',
     },
-    'message.status': {
-        'description': 'The processing status of the message (e.g., finished, in-progress).',
-        'example': 'finished_successfully',
+    "message.status": {
+        "description": "The processing status of the message (e.g., finished, in-progress).",
+        "example": "finished_successfully",
     },
-    'message.end_turn': {
-        'description': 'A boolean indicating if this is the last message in the conversation turn.',
-        'example': True,
+    "message.end_turn": {
+        "description": "A boolean indicating if this is the last message in the conversation turn.",
+        "example": True,
     },
-    'message.weight': {
-        'description': "A numeric value representing the message's importance or relevance in the conversation.",
-        'example': 1,
+    "message.weight": {
+        "description": "A numeric value representing the message's importance or relevance in the conversation.",
+        "example": 1,
     },
-    'message.metadata.is_visually_hidden_from_conversation': {
-        'description': 'A boolean indicating if the message is hidden from the visible conversation stream.',
-        'example': True,
+    "message.metadata.is_visually_hidden_from_conversation": {
+        "description": "A boolean indicating if the message is hidden from the visible conversation stream.",
+        "example": True,
     },
-    'message.metadata.shared_conversation_id': {
-        'description': 'An identifier for the shared context of the conversation, if applicable.',
-        'example': '678a1339-d14c-8013-bfcb-288d367a9079',
+    "message.metadata.shared_conversation_id": {
+        "description": "An identifier for the shared context of the conversation, if applicable.",
+        "example": "678a1339-d14c-8013-bfcb-288d367a9079",
     },
-    'message.metadata.user_context_message_data': {
-        'description': "Contextual data related to the user's message, if applicable.",
-        'example': None,
+    "message.metadata.user_context_message_data": {
+        "description": "Contextual data related to the user's message, if applicable.",
+        "example": None,
     },
-    'message.metadata.is_user_system_message': {
-        'description': 'A boolean indicating if the message is generated as a system message for the user.',
-        'example': True,
+    "message.metadata.is_user_system_message": {
+        "description": "A boolean indicating if the message is generated as a system message for the user.",
+        "example": True,
     },
-    'message.metadata.is_redacted': {
-        'description': 'A boolean indicating if the message content has been redacted for privacy or security reasons.',
-        'example': True,
+    "message.metadata.is_redacted": {
+        "description": "A boolean indicating if the message content has been redacted for privacy or security reasons.",
+        "example": True,
     },
-    'message.metadata.request_id': {
-        'description': 'An identifier for the request associated with the message, useful for debugging.',
-        'example': '9034eeef6e62e209-MRS',
+    "message.metadata.request_id": {
+        "description": "An identifier for the request associated with the message, useful for debugging.",
+        "example": "9034eeef6e62e209-MRS",
     },
-    'message.metadata.message_source': {
-        'description': 'Information about the source of the message, if applicable.',
-        'example': None,
+    "message.metadata.message_source": {
+        "description": "Information about the source of the message, if applicable.",
+        "example": None,
     },
-    'message.metadata.timestamp_': {
-        'description': "The timestamp format type for message creation, indicating if it's absolute or relative.",
-        'example': 'absolute',
+    "message.metadata.timestamp_": {
+        "description": "The timestamp format type for message creation, indicating if it's absolute or relative.",
+        "example": "absolute",
     },
-    'message.metadata.message_type': {
-        'description': 'The type/category of message, useful for filtering or processing messages.',
-        'example': None,
+    "message.metadata.message_type": {
+        "description": "The type/category of message, useful for filtering or processing messages.",
+        "example": None,
     },
-    'message.metadata.model_slug': {
-        'description': 'A slug representing the model used to generate the response.',
-        'example': 'gpt-4o',
+    "message.metadata.model_slug": {
+        "description": "A slug representing the model used to generate the response.",
+        "example": "gpt-4o",
     },
-    'message.metadata.default_model_slug': {
-        'description': 'The default model slug for the message, representing the standard model used.',
-        'example': 'gpt-4o',
+    "message.metadata.default_model_slug": {
+        "description": "The default model slug for the message, representing the standard model used.",
+        "example": "gpt-4o",
     },
-    'message.metadata.parent_id': {
-        'description': 'The ID of the parent message for threading purposes.',
-        'example': '073e2336-5c95-434e-a0d2-74a58b68f8e0',
+    "message.metadata.parent_id": {
+        "description": "The ID of the parent message for threading purposes.",
+        "example": "073e2336-5c95-434e-a0d2-74a58b68f8e0",
     },
-    'message.metadata.finish_details.type': {
-        'description': 'The type of finish that occurred for the message processing (e.g., stop, timeout).',
-        'example': 'stop',
+    "message.metadata.finish_details.type": {
+        "description": "The type of finish that occurred for the message processing (e.g., stop, timeout).",
+        "example": "stop",
     },
-    'message.metadata.finish_details.stop_tokens': {
-        'description': 'An array of token IDs that indicate where the message generation stopped.',
-        'example': [200002, 200007],
+    "message.metadata.finish_details.stop_tokens": {
+        "description": "An array of token IDs that indicate where the message generation stopped.",
+        "example": [200002, 200007],
     },
-    'message.metadata.is_complete': {
-        'description': 'A boolean indicating if the message generation process was completed successfully.',
-        'example': True,
+    "message.metadata.is_complete": {
+        "description": "A boolean indicating if the message generation process was completed successfully.",
+        "example": True,
     },
-    'message.metadata.citations': {
-        'description': 'An array of citations included in the message, if applicable.',
-        'example': '[]',
+    "message.metadata.citations": {
+        "description": "An array of citations included in the message, if applicable.",
+        "example": "[]",
     },
-    'message.metadata.content_references': {
-        'description': 'References to additional content used in the message, if any.',
-        'example': '[]',
+    "message.metadata.content_references": {
+        "description": "References to additional content used in the message, if any.",
+        "example": "[]",
     },
-    'message.metadata.command': {
-        'description': 'The command issued by the user that generated this message.',
-        'example': 'search',
+    "message.metadata.command": {
+        "description": "The command issued by the user that generated this message.",
+        "example": "search",
     },
-    'message.metadata.status': {
-        'description': 'The status of the message at the time of capture (completed, in-progress, etc.).',
-        'example': 'finished',
+    "message.metadata.status": {
+        "description": "The status of the message at the time of capture (completed, in-progress, etc.).",
+        "example": "finished",
     },
-    'message.metadata.search_source': {
-        'description': 'The source from which search results were derived, if applicable.',
-        'example': 'composer_search',
+    "message.metadata.search_source": {
+        "description": "The source from which search results were derived, if applicable.",
+        "example": "composer_search",
     },
-    'message.metadata.client_reported_search_source': {
-        'description': 'The source reported by the client regarding the search origin.',
-        'example': 'conversation_composer_previous_web_mode',
+    "message.metadata.client_reported_search_source": {
+        "description": "The source reported by the client regarding the search origin.",
+        "example": "conversation_composer_previous_web_mode",
     },
-    'message.metadata.search_result_groups': {
-        'description': "An array of search result groups that provide relevant information based on the user's query.",
-        'example': [
+    "message.metadata.search_result_groups": {
+        "description": "An array of search result groups that provide relevant information based on the user's query.",
+        "example": [
             {
-                'type': 'search_result_group',
-                'domain': 'learnmetrics.com',
-                'entries': [
+                "type": "search_result_group",
+                "domain": "learnmetrics.com",
+                "entries": [
                     {
-                        'type': 'search_result',
-                        'url': 'https://learnmetrics.com/how-ma...average-home-electricity-usage/',
-                        'title': 'How Many kWh Per Day Is Normal? Average 1-6 Person Home kWh Usage',
-                        'snippet': '7,340 kWh Per Year: 2 Person Ho...: 4 Person Home: 36.58 kWh P...',
-                        'ref_id': {
-                            'turn_index': 0,
-                            'ref_type': 'search',
-                            'ref_index': 0,
+                        "type": "search_result",
+                        "url": "https://learnmetrics.com/how-ma...average-home-electricity-usage/",
+                        "title": "How Many kWh Per Day Is Normal? Average 1-6 Person Home kWh Usage",
+                        "snippet": "7,340 kWh Per Year: 2 Person Ho...: 4 Person Home: 36.58 kWh P...",
+                        "ref_id": {
+                            "turn_index": 0,
+                            "ref_type": "search",
+                            "ref_index": 0,
                         },
-                        'content_type': None,
-                        'pub_date': None,
-                        'attributions': None,
+                        "content_type": None,
+                        "pub_date": None,
+                        "attributions": None,
                     }
                 ],
             }
         ],
     },
-    'message.metadata.safe_urls': {
-        'description': 'An array of URLs considered safe for sharing, derived from the content.',
-        'example': [
-            'https://www.sciencing.com/being...ls-3342/?utm_source=chatgpt.com'
+    "message.metadata.safe_urls": {
+        "description": "An array of URLs considered safe for sharing, derived from the content.",
+        "example": [
+            "https://www.sciencing.com/being...ls-3342/?utm_source=chatgpt.com"
         ],
     },
-    'message.metadata.message_locale': {
-        'description': 'The locale in which the message was generated, formatted as a language-country code.',
-        'example': 'en-US',
+    "message.metadata.message_locale": {
+        "description": "The locale in which the message was generated, formatted as a language-country code.",
+        "example": "en-US",
     },
-    'message.metadata.image_results': {
-        'description': 'An array of generated image results related to the conversation, if any.',
-        'example': '[]',
+    "message.metadata.image_results": {
+        "description": "An array of generated image results related to the conversation, if any.",
+        "example": "[]",
     },
-    'message.recipient': {
-        'description': 'The intended recipient of the message, indicating if it was meant for a specific user or a group.',
-        'example': 'all',
+    "message.recipient": {
+        "description": "The intended recipient of the message, indicating if it was meant for a specific user or a group.",
+        "example": "all",
     },
-    'message.create_time': {
-        'description': 'The creation timestamp of the message, represented as a float for more precision.',
-        'example': 1737102115.45064,
+    "message.create_time": {
+        "description": "The creation timestamp of the message, represented as a float for more precision.",
+        "example": 1737102115.45064,
     },
-    'parent': {
-        'description': 'The ID of the parent turn of the conversation, refers to the context or previous message.',
-        'example': '073e2336-5c95-434e-a0d2-74a58b68f8e0',
+    "parent": {
+        "description": "The ID of the parent turn of the conversation, refers to the context or previous message.",
+        "example": "073e2336-5c95-434e-a0d2-74a58b68f8e0",
     },
 }
 

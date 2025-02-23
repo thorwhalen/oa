@@ -1,5 +1,5 @@
-"""Making a children book containing rhyming stories of aesop fables, 
-illustrated using different styles of images, taking art movements and 
+"""Making a children book containing rhyming stories of aesop fables,
+illustrated using different styles of images, taking art movements and
 famous artists as styles."""
 
 from typing import Mapping, MutableMapping
@@ -22,20 +22,20 @@ from dol import Files, TextFiles, wrap_kvs
 # simply by changing the backend of the facade.
 def rm_extension(ext):
     """Make a key transformer that removes the given extension from keys"""
-    if not ext.startswith('.'):
-        ext = '.' + ext
+    if not ext.startswith("."):
+        ext = "." + ext
     return wrap_kvs(id_of_key=lambda x: x + ext, key_of_id=lambda x: x[: -len(ext)])
 
 
-Texts = rm_extension('txt')(TextFiles)
-Images = rm_extension('jpg')(Files)
-Htmls = rm_extension('html')(TextFiles)
+Texts = rm_extension("txt")(TextFiles)
+Images = rm_extension("jpg")(Files)
+Htmls = rm_extension("html")(TextFiles)
 
 # --------------------------------------------------------------------------------------
 
 
-root_url = 'https://aesopfables.com/'
-url = root_url + 'aesopsel.html'
+root_url = "https://aesopfables.com/"
+url = root_url + "aesopsel.html"
 
 
 def url_to_bytes(url: str) -> bytes:
@@ -43,25 +43,25 @@ def url_to_bytes(url: str) -> bytes:
 
 
 def _clean_up_fable_table(t):
-    t.columns = ['fable', 'moral']
-    t['moral'] = t['moral'].map(lambda x: x[0].strip())
-    t['moral'] = t['moral'].map(lambda x: x[1:] if x.startswith('.') else x)
-    t['title'], t['rel_url'] = zip(*t['fable'])
-    t['url'] = t['rel_url'].map(lambda x: root_url + x)
-    del t['fable']
+    t.columns = ["fable", "moral"]
+    t["moral"] = t["moral"].map(lambda x: x[0].strip())
+    t["moral"] = t["moral"].map(lambda x: x[1:] if x.startswith(".") else x)
+    t["title"], t["rel_url"] = zip(*t["fable"])
+    t["url"] = t["rel_url"].map(lambda x: root_url + x)
+    del t["fable"]
     return t
 
 
 def get_fable_table(files):
-    if 'fables.csv' not in files:
-        df = get_tables_from_url(url, extract_links='all')[0]
+    if "fables.csv" not in files:
+        df = get_tables_from_url(url, extract_links="all")[0]
         df = _clean_up_fable_table(df)
-        files['fables.csv'] = df.to_csv(index=False).encode()
-    return pd.read_csv(io.BytesIO(files['fables.csv']))
+        files["fables.csv"] = df.to_csv(index=False).encode()
+    return pd.read_csv(io.BytesIO(files["fables.csv"]))
 
 
 def get_title_and_urls(fable_table):
-    return dict(zip(fable_table['title'], fable_table['url']))
+    return dict(zip(fable_table["title"], fable_table["url"]))
 
 
 def get_original_story(url):
@@ -70,7 +70,7 @@ def get_original_story(url):
 
     r = requests.get(url)
     soup = BeautifulSoup(r.content)
-    return soup.find('pre').text.strip()
+    return soup.find("pre").text.strip()
 
 
 # TODO: Make decorators for launch_iteration, print_progress, and overwrite concerns.
@@ -90,7 +90,7 @@ def get_original_stories(
     def run_process():
         for i, (title, url) in enumerate(title_and_urls.items(), 1):
             if print_progress:
-                print(f'{i}/{n}: {title}')
+                print(f"{i}/{n}: {title}")
             if overwrite or title not in original_stories:
                 original_story = get_original_story(url)
                 original_stories[title] = original_story
@@ -119,7 +119,7 @@ def get_rhyming_stories(
     def run_process():
         for i, (title, original_story) in enumerate(original_stories.items(), 1):
             if print_progress:
-                print(f'{i}/{n}: {title}')
+                print(f"{i}/{n}: {title}")
             if overwrite or title not in rhyming_stories:
                 original_story = original_stories[title]
                 rhyming_story = ii.make_it_rhyming(original_story, **kwargs)
@@ -149,7 +149,7 @@ def get_image_descriptions(
         for i, (title, story) in enumerate(stories.items(), 1):
             image_style = next(_image_styles)
             if print_progress:
-                print(f'{i}/{n}: {title=}, {image_style=}')
+                print(f"{i}/{n}: {title=}, {image_style=}")
 
             if overwrite or title not in image_descriptions:
                 image_description = ii.get_image_description(
@@ -185,7 +185,7 @@ def get_images(
             if overwrite or title not in images:
                 try:
                     if print_progress:
-                        print(f'{i}/{n}: {title}')
+                        print(f"{i}/{n}: {title}")
                     image_url = ii.get_image_url(
                         image_description, image_style, **kwargs
                     )
@@ -194,8 +194,8 @@ def get_images(
                     images[title] = url_to_bytes(image_url)
                 except Exception as e:
                     print(
-                        f'The description or url for {title} lead to the error {e}. '
-                        f'Description:\n\n{image_description}\n\n\n'
+                        f"The description or url for {title} lead to the error {e}. "
+                        f"Description:\n\n{image_description}\n\n\n"
                     )
             yield
 
@@ -207,17 +207,17 @@ def get_images(
 
 
 def store_stats(*, original_stories, rhyming_stories, image_descriptions, image_urls):
-    print(f'{len(original_stories)=}')
-    print(f'{len(rhyming_stories)=}')
-    print(f'{len(image_descriptions)=}')
-    print(f'{len(image_urls)=}')
-    print('')
+    print(f"{len(original_stories)=}")
+    print(f"{len(rhyming_stories)=}")
+    print(f"{len(image_descriptions)=}")
+    print(f"{len(image_urls)=}")
+    print("")
     missing_rhyming_stories = set(original_stories) - set(rhyming_stories)
     missing_descriptions = set(rhyming_stories) - set(image_descriptions)
     missing_urls = set(image_descriptions) - set(image_urls)
-    print(f'{len(missing_rhyming_stories)=}')
-    print(f'{len(missing_descriptions)=}')
-    print(f'{len(missing_urls)=}')
+    print(f"{len(missing_rhyming_stories)=}")
+    print(f"{len(missing_descriptions)=}")
+    print(f"{len(missing_urls)=}")
 
 
 def mk_pages_store(*, rhyming_stories, image_urls, ipython_display=False):
@@ -226,7 +226,10 @@ def mk_pages_store(*, rhyming_stories, image_urls, ipython_display=False):
 
     fanout_store = add_ipython_key_completions(
         FanoutReader(
-            {'rhyming_stories': rhyming_stories, 'image_urls': image_urls,},
+            {
+                "rhyming_stories": rhyming_stories,
+                "image_urls": image_urls,
+            },
             keys=image_urls,  # take keys from image_urls
         )
     )
@@ -234,7 +237,7 @@ def mk_pages_store(*, rhyming_stories, image_urls, ipython_display=False):
     s = wrap_kvs(
         fanout_store,
         obj_of_data=lambda x: ii.aggregate_story_and_image(
-            image_url=x['image_urls'], story_text=x['rhyming_stories']
+            image_url=x["image_urls"], story_text=x["rhyming_stories"]
         ),
     )
     if ipython_display:
@@ -254,19 +257,19 @@ def get_top100_artists():
     from bs4 import BeautifulSoup
     from dol import Pipe
 
-    get_soup = Pipe(requests.get, attrgetter('content'), BeautifulSoup)
+    get_soup = Pipe(requests.get, attrgetter("content"), BeautifulSoup)
 
-    soup = get_soup('https://www.art-prints-on-demand.com/a/artists-painters.html')
+    soup = get_soup("https://www.art-prints-on-demand.com/a/artists-painters.html")
     soup2 = get_soup(
-        'https://www.art-prints-on-demand.com/a/artists-painters.html&mpos=999&ALL_ABC=1'
+        "https://www.art-prints-on-demand.com/a/artists-painters.html&mpos=999&ALL_ABC=1"
     )
     # extract artists
-    get_title = Pipe(methodcaller('find', 'a'), itemgetter('title'))
+    get_title = Pipe(methodcaller("find", "a"), itemgetter("title"))
     t1 = list(
-        map(get_title, soup.find_all('div', {'class': 'kk_category_pic'}))
+        map(get_title, soup.find_all("div", {"class": "kk_category_pic"}))
     )  # 30 top
     t2 = list(
-        map(get_title, soup2.find_all('div', {'class': 'kk_category_pic'}))
+        map(get_title, soup2.find_all("div", {"class": "kk_category_pic"}))
     )  # 100 top
     # merge both lists leaving the top 30 at the top, to favor them
     t = t1 + t2
@@ -276,110 +279,110 @@ def get_top100_artists():
 
 # Note: Obtained from get_top100_artists()
 top100_artists = [
-    'Claude Monet',
-    'Gustav Klimt',
-    'Vincent van Gogh',
-    'Paul Klee',
-    'Wassily Kandinsky',
-    'Franz Marc',
-    'Caspar David Friedrich',
-    'August Macke',
-    'Egon Schiele',
-    'Pierre-Auguste Renoir',
-    'William Turner',
-    'Leonardo da Vinci',
-    'Johannes Vermeer',
-    'Albrecht Dürer',
-    'Carl Spitzweg',
-    'Alphonse Mucha',
-    'Catrin Welz-Stein',
-    'Max Liebermann',
-    'Paul Cézanne',
-    'Rembrandt van Rijn',
-    'Paul Gauguin',
-    '(Raphael) Raffaello Sanzio',
-    'Amadeo Modigliani',
-    'Sandro Botticelli',
-    'Edvard Munch',
-    'Pierre Joseph Redouté',
-    'Michelangelo Caravaggio',
-    'Ernst Ludwig Kirchner',
-    'Piet Mondrian',
-    'Pablo Picasso',
-    'Katsushika Hokusai',
-    'Hieronymus Bosch',
-    'Timothy  Easton',
-    'Paula Modersohn-Becker',
-    'Edgar Degas',
-    'Michelangelo (Buonarroti)',
-    'Salvador Dali',
-    'Gustave Caillebotte',
-    'Pieter Brueghel the Elder',
-    'Ferdinand Hodler',
-    'Joan Miró',
-    'John William Waterhouse',
-    'Peter Severin Kroyer',
-    'Peter Paul Rubens',
-    'Peter  Graham',
-    'Henri de Toulouse-Lautrec',
-    'Camille Pissarro',
-    'Edouard Manet',
-    'Joaquin Sorolla',
-    'Sara Catena',
-    'Henri Julien-Félix Rousseau',
-    'Gustave Courbet',
-    'Jack Vettriano',
-    'Felix Vallotton',
-    'All catalogs',
-    'Arnold Böcklin',
-    'Alexej von Jawlensky',
-    'Kazimir Severinovich Malewitsch',
-    'Odilon Redon',
-    'Jean-Étienne Liotard',
-    'Giovanni Segantini',
-    'Azure',
-    'Oskar Schlemmer',
-    'Carl Larsson',
-    'Francisco José de Goya',
-    'Artist Artist',
-    'François Boucher',
-    'Mark Rothko',
-    'Susett Heise',
-    'Alfred Sisley',
-    'Giovanni Antonio Canal (Canaletto)',
-    'Jean-François Millet',
-    'Giuseppe Arcimboldo',
-    'Iwan Konstantinowitsch Aiwasowski',
-    'Catherine  Abel',
-    'Edward Hopper',
-    'Mark  Adlington',
-    'Jean Honoré Fragonard',
-    'Lucy Willis',
-    'Jacques Louis David',
-    'Pavel van Golod',
-    'M.c. Escher',
-    'Pierre Bonnard',
-    'Ferdinand Victor Eugène Delacroix',
-    'Carel Fabritius',
-    'Franz von Stuck',
-    'John Constable',
-    'László Moholy-Nagy',
-    'Lincoln  Seligman',
-    'William Adolphe Bouguereau',
-    'Adolph Friedrich Erdmann von Menzel',
-    'Petra Schüßler',
-    'Pompei, wall painting',
-    'Unbekannter Künstler',
-    'Ando oder Utagawa Hiroshige',
-    'Marc Chagall',
-    'Zita Rauschgold',
-    'William  Ireland',
-    'Bernardo Bellotto',
-    'Hermann Angeli',
+    "Claude Monet",
+    "Gustav Klimt",
+    "Vincent van Gogh",
+    "Paul Klee",
+    "Wassily Kandinsky",
+    "Franz Marc",
+    "Caspar David Friedrich",
+    "August Macke",
+    "Egon Schiele",
+    "Pierre-Auguste Renoir",
+    "William Turner",
+    "Leonardo da Vinci",
+    "Johannes Vermeer",
+    "Albrecht Dürer",
+    "Carl Spitzweg",
+    "Alphonse Mucha",
+    "Catrin Welz-Stein",
+    "Max Liebermann",
+    "Paul Cézanne",
+    "Rembrandt van Rijn",
+    "Paul Gauguin",
+    "(Raphael) Raffaello Sanzio",
+    "Amadeo Modigliani",
+    "Sandro Botticelli",
+    "Edvard Munch",
+    "Pierre Joseph Redouté",
+    "Michelangelo Caravaggio",
+    "Ernst Ludwig Kirchner",
+    "Piet Mondrian",
+    "Pablo Picasso",
+    "Katsushika Hokusai",
+    "Hieronymus Bosch",
+    "Timothy  Easton",
+    "Paula Modersohn-Becker",
+    "Edgar Degas",
+    "Michelangelo (Buonarroti)",
+    "Salvador Dali",
+    "Gustave Caillebotte",
+    "Pieter Brueghel the Elder",
+    "Ferdinand Hodler",
+    "Joan Miró",
+    "John William Waterhouse",
+    "Peter Severin Kroyer",
+    "Peter Paul Rubens",
+    "Peter  Graham",
+    "Henri de Toulouse-Lautrec",
+    "Camille Pissarro",
+    "Edouard Manet",
+    "Joaquin Sorolla",
+    "Sara Catena",
+    "Henri Julien-Félix Rousseau",
+    "Gustave Courbet",
+    "Jack Vettriano",
+    "Felix Vallotton",
+    "All catalogs",
+    "Arnold Böcklin",
+    "Alexej von Jawlensky",
+    "Kazimir Severinovich Malewitsch",
+    "Odilon Redon",
+    "Jean-Étienne Liotard",
+    "Giovanni Segantini",
+    "Azure",
+    "Oskar Schlemmer",
+    "Carl Larsson",
+    "Francisco José de Goya",
+    "Artist Artist",
+    "François Boucher",
+    "Mark Rothko",
+    "Susett Heise",
+    "Alfred Sisley",
+    "Giovanni Antonio Canal (Canaletto)",
+    "Jean-François Millet",
+    "Giuseppe Arcimboldo",
+    "Iwan Konstantinowitsch Aiwasowski",
+    "Catherine  Abel",
+    "Edward Hopper",
+    "Mark  Adlington",
+    "Jean Honoré Fragonard",
+    "Lucy Willis",
+    "Jacques Louis David",
+    "Pavel van Golod",
+    "M.c. Escher",
+    "Pierre Bonnard",
+    "Ferdinand Victor Eugène Delacroix",
+    "Carel Fabritius",
+    "Franz von Stuck",
+    "John Constable",
+    "László Moholy-Nagy",
+    "Lincoln  Seligman",
+    "William Adolphe Bouguereau",
+    "Adolph Friedrich Erdmann von Menzel",
+    "Petra Schüßler",
+    "Pompei, wall painting",
+    "Unbekannter Künstler",
+    "Ando oder Utagawa Hiroshige",
+    "Marc Chagall",
+    "Zita Rauschgold",
+    "William  Ireland",
+    "Bernardo Bellotto",
+    "Hermann Angeli",
 ]
 
 # Note: Reference: https://magazine.artland.com/art-movements-and-styles/
-art_movements = '''Abstract Expressionism
+art_movements = """Abstract Expressionism
 Art Deco
 Art Nouveau
 Avant-garde
@@ -414,6 +417,6 @@ Street Art
 Surrealism
 Suprematism
 Symbolism
-Zero Group'''.splitlines()
+Zero Group""".splitlines()
 
 styles_of_art = art_movements + top100_artists

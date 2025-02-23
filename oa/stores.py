@@ -39,8 +39,8 @@ from dol import wrap_kvs, KvReader, Pipe
 FilterFunc = Callable[[Any], bool]
 
 
-DFLT_PURPOSE = 'batch'
-DFLT_BATCHES_ENDPOINT = '/v1/embeddings'
+DFLT_PURPOSE = "batch"
+DFLT_BATCHES_ENDPOINT = "/v1/embeddings"
 
 openai_files_cumul_sig = merge_multiple_signatures(
     [
@@ -49,7 +49,7 @@ openai_files_cumul_sig = merge_multiple_signatures(
         OpenaiFiles.delete,
         Sig(OpenaiFiles.list),
     ],
-    default_conflict_method='take_first',
+    default_conflict_method="take_first",
 )
 
 params_from_openai_files_cls = source_parameter_props_from(openai_files_cumul_sig)
@@ -66,14 +66,14 @@ def _is_string(x):
 
 
 def _has_id_attr(x):
-    return hasattr(x, 'id')
+    return hasattr(x, "id")
 
 
 def _is_instance_and_has_id(x=None, *, type_: type):
     if x is None:
         return partial(_is_instance_and_has_id, type_=type_)
     else:
-        return isinstance(x, type_) and hasattr(x, 'id')
+        return isinstance(x, type_) and hasattr(x, "id")
 
 
 def extract_id(
@@ -81,7 +81,7 @@ def extract_id(
     *,
     is_id: FilterFunc = _is_string,
     has_id: FilterFunc = _has_id_attr,
-    get_id: Callable = attrgetter('id'),
+    get_id: Callable = attrgetter("id"),
 ):
     """
     Decorator that will extract the id from the first non-instance argument of a method.
@@ -195,7 +195,7 @@ def is_task_dict_list(x):
 
 class OaFilesBase(OaMapping):
     # @params_from_openai_files_cls
-    @Sig.replace_kwargs_using(files_create_sig - 'purpose')
+    @Sig.replace_kwargs_using(files_create_sig - "purpose")
     def __init__(
         self,
         client: Optional[openai.Client] = None,
@@ -210,7 +210,7 @@ class OaFilesBase(OaMapping):
         self.purpose = purpose
         self.iter_filter_purpose = iter_filter_purpose
         if self.iter_filter_purpose:
-            self._list_kwargs = {'purpose': self.purpose}
+            self._list_kwargs = {"purpose": self.purpose}
         self.encoding = encoding
         self.extra_kwargs = extra_kwargs
 
@@ -256,7 +256,7 @@ class OaFilesMetadata(OaFilesBase):
     _getitem = OaFilesBase.metadata
 
 
-@wrap_kvs(key_decoder=attrgetter('id'), value_decoder=attrgetter('content'))
+@wrap_kvs(key_decoder=attrgetter("id"), value_decoder=attrgetter("content"))
 class OaFiles(OaFilesBase):
     """
     A key-value store for OpenAI files content data.
@@ -264,7 +264,7 @@ class OaFiles(OaFilesBase):
     """
 
 
-@wrap_kvs(key_decoder=attrgetter('id'), value_decoder=jsonl_loads)
+@wrap_kvs(key_decoder=attrgetter("id"), value_decoder=jsonl_loads)
 class OaJsonLFiles(OaFilesBase):
     """
     A key-value store for OpenAI files content data.
@@ -280,7 +280,7 @@ def get_json_or_jsonl_data(response):
         return jsonl_loads(response.content)
 
 
-@wrap_kvs(key_decoder=attrgetter('id'), value_decoder=get_json_or_jsonl_data)
+@wrap_kvs(key_decoder=attrgetter("id"), value_decoder=get_json_or_jsonl_data)
 class OaJsonFiles(OaFilesBase):
     """
     A key-value store for OpenAI files content data.
@@ -316,25 +316,25 @@ class EmbeddingsDataObject(TypedDict):
     floats
     """
 
-    object: Literal['embeddings']  # This enforces the value to be 'embeddings'
+    object: Literal["embeddings"]  # This enforces the value to be 'embeddings'
     index: int  # Required field
     embeddings: List[float]  # The third known field, 'embeddings'
 
 
-DataObjectValue = TypeVar('DataObjectValue')
+DataObjectValue = TypeVar("DataObjectValue")
 DataObjectValue.__doc__ = (
     "The value that a DataObject holds in the field indicated by the object field"
 )
 
 jsonl_loads_response_lines = partial(
-    jsonl_loads_iter, get_lines=methodcaller('iter_lines')
+    jsonl_loads_iter, get_lines=methodcaller("iter_lines")
 )
 
 jsonl_loads_list = Pipe(jsonl_loads_response_lines, list)
 
 
 def response_body_data(response_dict: ResponseDict) -> DataObject:
-    return response_dict['response']['body']['data']
+    return response_dict["response"]["body"]["data"]
 
 
 def object_of_data(data: DataObject) -> DataObjectValue:
@@ -346,7 +346,7 @@ def object_of_data(data: DataObject) -> DataObjectValue:
     [1, 2, 3]
 
     """
-    return data[data['object']]
+    return data[data["object"]]
 
 
 def response_body_data_objects(
@@ -363,7 +363,7 @@ def response_body_data_objects(
 def get_json_data_from_response(response: HttpxBinaryResponseContent):
     """Extract the embeddings from a HttpxBinaryResponseContent object"""
     for d in jsonl_loads_response_lines(response):
-        custom_id = d['custom_id']
+        custom_id = d["custom_id"]
         dd = response_body_data(d)
         if isinstance(dd, list):
             for ddd in dd:
@@ -372,7 +372,7 @@ def get_json_data_from_response(response: HttpxBinaryResponseContent):
             yield custom_id, object_of_data(dd)
 
 
-@wrap_kvs(key_decoder=attrgetter('id'), value_decoder=get_json_data_from_response)
+@wrap_kvs(key_decoder=attrgetter("id"), value_decoder=get_json_data_from_response)
 class OaFilesJsonData(OaFilesBase):
     """
     A key-value store for OpenAI files content data.
@@ -432,7 +432,7 @@ class OaBatchesBase(OaMapping):
         )
 
 
-@wrap_kvs(key_decoder=attrgetter('id'))
+@wrap_kvs(key_decoder=attrgetter("id"))
 class OaBatches(OaBatchesBase):
     """
     A key-value store for OpenAI batches metadata.
@@ -444,10 +444,10 @@ class OaBatches(OaBatchesBase):
 # Batches/Files API utilities
 
 origin_date = 0
-end_of_times_date = iso_date_to_utc_int('9999-12-31T23:59:59Z')
+end_of_times_date = iso_date_to_utc_int("9999-12-31T23:59:59Z")
 DateSpec = Optional[Union[str, int]]
 
-NotGiven = type('NotGiven', (), {})()
+NotGiven = type("NotGiven", (), {})()
 
 
 def ensure_utc_date(x, *, val_if_none=NotGiven):
@@ -466,7 +466,7 @@ def date_filter(
     min_date: DateSpec = None,
     max_date: DateSpec = None,
     *,
-    date_extractor: Union[str, Callable] = 'created_at',
+    date_extractor: Union[str, Callable] = "created_at",
     stop_on_first_out_of_range=False,
 ):
     """
@@ -563,7 +563,7 @@ class OaDacc:
     @property
     def json_files(self):
         return self.s.json_files
-    
+
     @property
     def batches(self):
         return self.s.batches
@@ -649,8 +649,6 @@ class OaDacc:
         )
         batch = self.batches.append(input_file_id, endpoint="/v1/embeddings")
         return batch
-        
-
 
     date_filter = staticmethod(date_filter)
 

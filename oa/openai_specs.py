@@ -4,26 +4,26 @@ See raw schemas by doing
 
 >>> from oa.openai_specs import schemas
 >>> sorted(schemas)  # doctest: +SKIP
-['AssistantFileObject', 'AssistantObject', 'AssistantToolsCode', 'AssistantToolsFunction', 'AssistantToolsRetrieval', 'ChatCompletionFunctionCallOption', 
-'ChatCompletionFunctions', 'ChatCompletionMessageToolCall', 'ChatCompletionMessageToolCallChunk', 'ChatCompletionMessageToolCalls', 
-'ChatCompletionNamedToolChoice', 'ChatCompletionRequestAssistantMessage', 'ChatCompletionRequestFunctionMessage', 'ChatCompletionRequestMessage', 
-'ChatCompletionRequestMessageContentPart', 'ChatCompletionRequestMessageContentPartImage', 'ChatCompletionRequestMessageContentPartText', 
-'ChatCompletionRequestSystemMessage', 'ChatCompletionRequestToolMessage', 'ChatCompletionRequestUserMessage', 'ChatCompletionResponseMessage', 
-'ChatCompletionRole', 'ChatCompletionStreamResponseDelta', 'ChatCompletionTool', 'ChatCompletionToolChoiceOption', 'CompletionUsage', 
-'CreateAssistantFileRequest', 'CreateAssistantRequest', 'CreateChatCompletionFunctionResponse', 'CreateChatCompletionImageResponse', 
-'CreateChatCompletionRequest', 'CreateChatCompletionResponse', 'CreateChatCompletionStreamResponse', 'CreateCompletionRequest', 
-'CreateCompletionResponse', 'CreateEditRequest', 'CreateEditResponse', 'CreateEmbeddingRequest', 'CreateEmbeddingResponse', 'CreateFileRequest', 
-'CreateFineTuneRequest', 'CreateFineTuningJobRequest', 'CreateImageEditRequest', 'CreateImageRequest', 'CreateImageVariationRequest', 'CreateMessageRequest', 
-'CreateModerationRequest', 'CreateModerationResponse', 'CreateRunRequest', 'CreateSpeechRequest', 'CreateThreadAndRunRequest', 'CreateThreadRequest', 
-'CreateTranscriptionRequest', 'CreateTranscriptionResponse', 'CreateTranslationRequest', 'CreateTranslationResponse', 'DeleteAssistantFileResponse', 
-'DeleteAssistantResponse', 'DeleteFileResponse', 'DeleteMessageResponse', 'DeleteModelResponse', 'DeleteThreadResponse', 'Embedding', 'Error', 
-'ErrorResponse', 'FineTune', 'FineTuneEvent', 'FineTuningJob', 'FineTuningJobEvent', 'FunctionObject', 'FunctionParameters', 'Image', 
-'ImagesResponse', 'ListAssistantFilesResponse', 'ListAssistantsResponse', 'ListFilesResponse', 'ListFineTuneEventsResponse', 'ListFineTunesResponse', 
-'ListFineTuningJobEventsResponse', 'ListMessageFilesResponse', 'ListMessagesResponse', 'ListModelsResponse', 'ListPaginatedFineTuningJobsResponse', 
-'ListRunStepsResponse', 'ListRunsResponse', 'ListThreadsResponse', 'MessageContentImageFileObject', 'MessageContentTextAnnotationsFileCitationObject', 
-'MessageContentTextAnnotationsFilePathObject', 'MessageContentTextObject', 'MessageFileObject', 'MessageObject', 'Model', 'ModifyAssistantRequest', 
-'ModifyMessageRequest', 'ModifyRunRequest', 'ModifyThreadRequest', 'OpenAIFile', 'RunObject', 'RunStepDetailsMessageCreationObject', 'RunStepDetailsToolCallsCodeObject', 
-'RunStepDetailsToolCallsCodeOutputImageObject', 'RunStepDetailsToolCallsCodeOutputLogsObject', 'RunStepDetailsToolCallsFunctionObject', 'RunStepDetailsToolCallsObject', 
+['AssistantFileObject', 'AssistantObject', 'AssistantToolsCode', 'AssistantToolsFunction', 'AssistantToolsRetrieval', 'ChatCompletionFunctionCallOption',
+'ChatCompletionFunctions', 'ChatCompletionMessageToolCall', 'ChatCompletionMessageToolCallChunk', 'ChatCompletionMessageToolCalls',
+'ChatCompletionNamedToolChoice', 'ChatCompletionRequestAssistantMessage', 'ChatCompletionRequestFunctionMessage', 'ChatCompletionRequestMessage',
+'ChatCompletionRequestMessageContentPart', 'ChatCompletionRequestMessageContentPartImage', 'ChatCompletionRequestMessageContentPartText',
+'ChatCompletionRequestSystemMessage', 'ChatCompletionRequestToolMessage', 'ChatCompletionRequestUserMessage', 'ChatCompletionResponseMessage',
+'ChatCompletionRole', 'ChatCompletionStreamResponseDelta', 'ChatCompletionTool', 'ChatCompletionToolChoiceOption', 'CompletionUsage',
+'CreateAssistantFileRequest', 'CreateAssistantRequest', 'CreateChatCompletionFunctionResponse', 'CreateChatCompletionImageResponse',
+'CreateChatCompletionRequest', 'CreateChatCompletionResponse', 'CreateChatCompletionStreamResponse', 'CreateCompletionRequest',
+'CreateCompletionResponse', 'CreateEditRequest', 'CreateEditResponse', 'CreateEmbeddingRequest', 'CreateEmbeddingResponse', 'CreateFileRequest',
+'CreateFineTuneRequest', 'CreateFineTuningJobRequest', 'CreateImageEditRequest', 'CreateImageRequest', 'CreateImageVariationRequest', 'CreateMessageRequest',
+'CreateModerationRequest', 'CreateModerationResponse', 'CreateRunRequest', 'CreateSpeechRequest', 'CreateThreadAndRunRequest', 'CreateThreadRequest',
+'CreateTranscriptionRequest', 'CreateTranscriptionResponse', 'CreateTranslationRequest', 'CreateTranslationResponse', 'DeleteAssistantFileResponse',
+'DeleteAssistantResponse', 'DeleteFileResponse', 'DeleteMessageResponse', 'DeleteModelResponse', 'DeleteThreadResponse', 'Embedding', 'Error',
+'ErrorResponse', 'FineTune', 'FineTuneEvent', 'FineTuningJob', 'FineTuningJobEvent', 'FunctionObject', 'FunctionParameters', 'Image',
+'ImagesResponse', 'ListAssistantFilesResponse', 'ListAssistantsResponse', 'ListFilesResponse', 'ListFineTuneEventsResponse', 'ListFineTunesResponse',
+'ListFineTuningJobEventsResponse', 'ListMessageFilesResponse', 'ListMessagesResponse', 'ListModelsResponse', 'ListPaginatedFineTuningJobsResponse',
+'ListRunStepsResponse', 'ListRunsResponse', 'ListThreadsResponse', 'MessageContentImageFileObject', 'MessageContentTextAnnotationsFileCitationObject',
+'MessageContentTextAnnotationsFilePathObject', 'MessageContentTextObject', 'MessageFileObject', 'MessageObject', 'Model', 'ModifyAssistantRequest',
+'ModifyMessageRequest', 'ModifyRunRequest', 'ModifyThreadRequest', 'OpenAIFile', 'RunObject', 'RunStepDetailsMessageCreationObject', 'RunStepDetailsToolCallsCodeObject',
+'RunStepDetailsToolCallsCodeOutputImageObject', 'RunStepDetailsToolCallsCodeOutputLogsObject', 'RunStepDetailsToolCallsFunctionObject', 'RunStepDetailsToolCallsObject',
 'RunStepDetailsToolCallsRetrievalObject', 'RunStepObject', 'RunToolCallObject', 'SubmitToolOutputsRunRequest', 'ThreadObject']
 >>> schema = schemas['CreateCompletionRequest']
 >>> schema['properties']  # doctest: +SKIP
@@ -33,9 +33,9 @@ Get resulting signatures by doing.
 
 >>> from oa.openai_specs import sig
 >>> sig.CreateCompletionRequest)  # doctest: +SKIP
-<Sig (model: str, prompt='<|endoftext|>', *, seed: int, best_of: int = 1, echo: bool = False, 
-frequency_penalty: float = 0, logit_bias: dict = None, logprobs: int = None, max_tokens: int = None, 
-n: int = 1, presence_penalty: float = 0, stop=None, stream: bool = False, suffix: str = None, 
+<Sig (model: str, prompt='<|endoftext|>', *, seed: int, best_of: int = 1, echo: bool = False,
+frequency_penalty: float = 0, logit_bias: dict = None, logprobs: int = None, max_tokens: int = None,
+n: int = 1, presence_penalty: float = 0, stop=None, stream: bool = False, suffix: str = None,
 temperature: float = 1, top_p: float = 1, user: str = None)>
 
 Or see argument descriptions in rst format by doing:
@@ -67,7 +67,7 @@ from oa.util import grazed
 # TODO: Update openapi yaml def (or use )
 # See https://github.com/thorwhalen/oa/discussions/8#discussioncomment-9165753
 OPENAPI_SPEC_URL = (
-    'https://raw.githubusercontent.com/thorwhalen/oa/main/misc/openapi.yaml'
+    "https://raw.githubusercontent.com/thorwhalen/oa/main/misc/openapi.yaml"
 )
 
 

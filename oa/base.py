@@ -34,13 +34,13 @@ api = None
 # )
 
 _model_id_aliases = {
-    'davinci': 'text-davinci-003',
-    'ada v2': 'text-embedding-ada-002',
+    "davinci": "text-davinci-003",
+    "ada v2": "text-embedding-ada-002",
 }
 
 _model_information_aliases = {
-    'max_tokens': 'max_input',
-    'price': 'price_per_million_tokens',
+    "max_tokens": "max_input",
+    "price": "price_per_million_tokens",
 }
 
 
@@ -53,9 +53,9 @@ def model_information(model, information):
         information = _model_information_aliases[information]
 
     if model not in model_information_dict:
-        raise ValueError(f'Unknown model: {model}')
+        raise ValueError(f"Unknown model: {model}")
     if information not in model_information_dict[model]:
-        raise ValueError(f'Unknown information: {information}')
+        raise ValueError(f"Unknown information: {information}")
 
     return model_information_dict[model][information]
 
@@ -69,26 +69,26 @@ def compute_price(
     model: str, num_input_tokens: int = None, num_output_tokens: Optional[int] = None
 ):
     """Compute the price of a model given the number of input and output tokens"""
-    assert num_output_tokens is None, 'num_output_tokens not yet implemented'
+    assert num_output_tokens is None, "num_output_tokens not yet implemented"
     if num_input_tokens is None:
         return partial(compute_price, model)
-    price_per_million_tokens = model_information(model, 'price_per_million_tokens')
+    price_per_million_tokens = model_information(model, "price_per_million_tokens")
     return price_per_million_tokens * (num_input_tokens / 1_000_000)
 
 
 compute_price.model_information_dict = model_information_dict
 
-prompt_dalle_path = partial(prompt_path, prefix=djoin('dalle'))
-prompt_davinci_path = partial(prompt_path, prefix=djoin('davinci'))
+prompt_dalle_path = partial(prompt_path, prefix=djoin("dalle"))
+prompt_davinci_path = partial(prompt_path, prefix=djoin("davinci"))
 
 # TODO: Use oa.openai_specs sig to provide good signatures
 
 
 @Sig.replace_kwargs_using(openai.completions.create)
 def complete(prompt, model=None, **complete_params):
-    if 'engine' in complete_params:
-        model = complete_params.pop('engine')
-    model = model or getattr(complete, 'engine', DFLT_ENGINE)
+    if "engine" in complete_params:
+        model = complete_params.pop("engine")
+    model = model or getattr(complete, "engine", DFLT_ENGINE)
     text_resp = openai.completions.create(model=model, prompt=prompt, **complete_params)
     return text_resp.choices[0].text
 
@@ -99,9 +99,9 @@ complete.engine = DFLT_ENGINE
 @Sig.replace_kwargs_using(openai.chat.completions.create)
 def _raw_chat(prompt=None, model=DFLT_MODEL, *, messages=None, **chat_params):
     if not ((prompt is None) ^ (messages is None)):
-        raise ValueError('Either prompt or messages must be specified, but not both.')
+        raise ValueError("Either prompt or messages must be specified, but not both.")
     if prompt is not None:
-        messages = [{'role': 'user', 'content': prompt}]
+        messages = [{"role": "user", "content": prompt}]
     return openai.chat.completions.create(messages=messages, model=model, **chat_params)
 
 
@@ -121,12 +121,12 @@ chat.raw = _raw_chat
 
 
 @Sig.replace_kwargs_using(openai.images.generate)
-def _raw_dalle(prompt, n=1, size='512x512', **image_create_params):
+def _raw_dalle(prompt, n=1, size="512x512", **image_create_params):
     return openai.images.generate(prompt=prompt, n=n, size=size, **image_create_params)
 
 
 @Sig.replace_kwargs_using(_raw_dalle)
-def dalle(prompt, n=1, size='512x512', **image_create_params):
+def dalle(prompt, n=1, size="512x512", **image_create_params):
     r = _raw_dalle(prompt=prompt, n=n, size=size, **image_create_params)
     return r.data[0].url
 
@@ -149,14 +149,14 @@ def _raise_if_any_invalid(
     if not all(validation_vector):
         if print_invalid_texts:
             print(
-                'Invalid text(s):\n',
-                '\n'.join(
+                "Invalid text(s):\n",
+                "\n".join(
                     item
                     for is_valid, item in zip(validation_vector, texts)
                     if not is_valid
                 ),
             )
-        raise ValueError('Some of the texts are invalid')
+        raise ValueError("Some of the texts are invalid")
     return texts
 
 
@@ -284,19 +284,19 @@ def embeddings(
             "of embeddings!"
         )
 
-    if batch_callback == 'temp_files':  # an extra not annotated or documented
+    if batch_callback == "temp_files":  # an extra not annotated or documented
         # convenience to get intermediary results saved to file
         batch_callback = mk_local_files_saves_callback()
     batch_callback = batch_callback or (lambda i, batch: None)
     assert callable(batch_callback) & (
         len(Sig(batch_callback)) >= 2
-    ), 'batch_callback must be callable with at least two arguments (i, batch)'
+    ), "batch_callback must be callable with at least two arguments (i, batch)"
     texts, texts_type, keys = _prepare_embeddings_args(
         validate, texts, valid_text_getter, model
     )
 
     if texts_type is str and egress is not None:
-        raise ValueError('egress should be None if texts is a single string')
+        raise ValueError("egress should be None if texts is a single string")
 
     if client is None:
         client = mk_client()
@@ -437,7 +437,7 @@ def text_is_valid(
     texts, texts_type, keys = normalize_text_input(texts)
 
     # Set the maximum tokens allowed if not provided
-    max_tokens = max_tokens or model_information_dict[model]['max_input']
+    max_tokens = max_tokens or model_information_dict[model]["max_input"]
 
     # Define the validation logic for a single text
     def is_text_valid(text, token_count):

@@ -32,4 +32,3 @@ from oa.base import embeddings
 #     assert len(result["adj"]) == dimensions
 #     assert isinstance(result["noun"], list)
 #     assert len(result["noun"]) == dimensions
-
