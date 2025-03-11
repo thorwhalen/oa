@@ -371,8 +371,21 @@ def validate_texts_for_embeddings(
 ):
     validate = partial(text_is_valid, model=model)
     validation_vector = validate(texts)
+
+    # TODO: Too many places where we have to check if it's a dict or a list. Need to clean up.
+    if isinstance(validation_vector, Mapping):
+        keys = list(validation_vector.keys())
+        validation_vector = list(validation_vector.values())
+    else:
+        keys = None
+
     texts = valid_text_getter(validation_vector, texts=texts)
-    return texts
+
+    # TODO: Too many places where we have to check if it's a dict or a list. Need to clean up.
+    if isinstance(validation_vector, Mapping):
+        return {k: v for k, v in zip(keys, texts)}
+    else:
+        return texts
 
 
 def normalize_text_input(texts: TextOrTexts) -> TextStrings:
