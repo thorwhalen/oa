@@ -1,5 +1,6 @@
 """Base oa functionality"""
 
+import re
 from itertools import chain
 from functools import partial
 from typing import Union, Iterable, Optional, Mapping, KT, Callable
@@ -131,9 +132,15 @@ def dalle(prompt, n=1, size="512x512", **image_create_params):
     return r.data[0].url
 
 
-def list_engine_ids():
+def list_engine_ids(pattern: Optional[str] = None):
+    """List the available engine IDs. Optionally filter by a regex pattern."""
     models_list = mk_client().models.list()
-    return [x.id for x in models_list.data]
+    model_ids = [x.id for x in models_list.data]
+    if pattern:
+        # filter model_ids by pattern, taken to be a regex pattern
+        pattern = re.compile(pattern)
+        model_ids = list(filter(pattern.search, model_ids))
+    return model_ids
 
 
 def _raise_if_any_invalid(
