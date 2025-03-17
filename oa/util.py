@@ -148,7 +148,7 @@ embeddings_models = dict(
     **dict(_generate_batch_api_models_info(embeddings_models, batch_api_discount=0.5)),
 )
 
-
+# Note: OpenAI API live prices: https://platform.openai.com/docs/pricing
 chat_models = {
     "gpt-4": {
         "price_per_million_tokens": 30.00,  # in dollars

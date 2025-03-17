@@ -1,4 +1,10 @@
-"""Parameters, configuration, and constants for the OpenAI Gym environment."""
+"""
+Parameters, configuration, and constants for the OpenAI Gym environment.
+
+Some resources:
+* OpenAI API pricing: https://platform.openai.com/docs/pricing
+
+"""
 
 turns_data_ssot = {
     "id": {

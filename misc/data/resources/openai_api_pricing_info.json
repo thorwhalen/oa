@@ -1,0 +1,205 @@
+{
+    "Text tokens": {
+        "pricing_table_schema": [
+            "Model",
+            "Input",
+            "Cached input",
+            "Output"
+        ],
+        "pricing_table": [
+            {
+                "Model": "gpt-4.5-preview",
+                "Alternate Model Names": [
+                    "gpt-4.5-preview-2025-02-27"
+                ],
+                "Input": "$75.00",
+                "Cached input": "$37.50",
+                "Output": "$150.00"
+            },
+            {
+                "Model": "gpt-4o",
+                "Alternate Model Names": [
+                    "gpt-4o-2024-08-06"
+                ],
+                "Input": "$2.50",
+                "Cached input": "$1.25",
+                "Output": "$10.00"
+            },
+            {
+                "Model": "gpt-4o-audio-preview",
+                "Alternate Model Names": [
+                    "gpt-4o-audio-preview-2024-12-17"
+                ],
+                "Input": "$2.50",
+                "Cached input": "-",
+                "Output": "$10.00"
+            },
+            {
+                "Model": "gpt-4o-realtime-preview",
+                "Alternate Model Names": [
+                    "gpt-4o-realtime-preview-2024-12-17"
+                ],
+                "Input": "$5.00",
+                "Cached input": "$2.50",
+                "Output": "$20.00"
+            },
+            {
+                "Model": "gpt-4o-mini",
+                "Alternate Model Names": [
+                    "gpt-4o-mini-2024-07-18"
+                ],
+                "Input": "$0.15",
+                "Cached input": "$0.075",
+                "Output": "$0.60"
+            },
+            {
+                "Model": "gpt-4o-mini-audio-preview",
+                "Alternate Model Names": [
+                    "gpt-4o-mini-audio-preview-2024-12-17"
+                ],
+                "Input": "$0.15",
+                "Cached input": "-",
+                "Output": "$0.60"
+            },
+            {
+                "Model": "gpt-4o-mini-realtime-preview",
+                "Alternate Model Names": [
+                    "gpt-4o-mini-realtime-preview-2024-12-17"
+                ],
+                "Input": "$0.60",
+                "Cached input": "$0.30",
+                "Output": "$2.40"
+            },
+            {
+                "Model": "o1",
+                "Alternate Model Names": [
+                    "o1-2024-12-17"
+                ],
+                "Input": "$15.00",
+                "Cached input": "$7.50",
+                "Output": "$60.00"
+            },
+            {
+                "Model": "o3-mini",
+                "Alternate Model Names": [
+                    "o3-mini-2025-01-31"
+                ],
+                "Input": "$1.10",
+                "Cached input": "$0.55",
+                "Output": "$4.40"
+            },
+            {
+                "Model": "o1-mini",
+                "Alternate Model Names": [
+                    "o1-mini-2024-09-12"
+                ],
+                "Input": "$1.10",
+                "Cached input": "$0.55",
+                "Output": "$4.40"
+            },
+            {
+                "Model": "gpt-4o-mini-search-preview",
+                "Alternate Model Names": [
+                    "gpt-4o-mini-search-preview-2025-03-11"
+                ],
+                "Input": "$0.15",
+                "Cached input": "-",
+                "Output": "$0.60"
+            },
+            {
+                "Model": "gpt-4o-search-preview",
+                "Alternate Model Names": [
+                    "gpt-4o-search-preview-2025-03-11"
+                ],
+                "Input": "$2.50",
+                "Cached input": "-",
+                "Output": "$10.00"
+            },
+            {
+                "Model": "computer-use-preview",
+                "Alternate Model Names": [
+                    "computer-use-preview-2025-03-11"
+                ],
+                "Input": "$3.00",
+                "Cached input": "-",
+                "Output": "$12.00"
+            }
+        ],
+        "extras": {},
+        "pricing_table_schema - Batch": [
+            "Model",
+            "Input",
+            "Cached input",
+            "Output"
+        ],
+        "pricing_table - Batch": [
+            {
+                "Model": "gpt-4o-audio-preview",
+                "Alternate Model Names": [
+                    "gpt-4o-audio-preview-2024-12-17"
+                ],
+                "Input": "$40.00",
+                "Cached input": "-",
+                "Output": "$80.00"
+            },
+            {
+                "Model": "gpt-4o-mini-audio-preview",
+                "Alternate Model Names": [
+                    "gpt-4o-mini-audio-preview-2024-12-17"
+                ],
+                "Input": "$10.00",
+                "Cached input": "-",
+                "Output": "$20.00"
+            },
+            {
+                "Model": "gpt-4o-realtime-preview",
+                "Alternate Model Names": [
+                    "gpt-4o-realtime-preview-2024-12-17"
+                ],
+                "Input": "$40.00",
+                "Cached input": "$2.50",
+                "Output": "$80.00"
+            },
+            {
+                "Model": "gpt-4o-mini-realtime-preview",
+                "Alternate Model Names": [
+                    "gpt-4o-mini-realtime-preview-2024-12-17"
+                ],
+                "Input": "$10.00",
+                "Cached input": "$0.30",
+                "Output": "$20.00"
+            }
+        ]
+    },
+    "Image generationPriceper/image": {
+        "pricing_table_schema": [
+            "Model",
+            "Quality",
+            "1024x1024",
+            "1024x1792",
+            "Model",
+            "256x256",
+            "512x512",
+            "1024x1024"
+        ],
+        "pricing_table": [
+            {
+                "Model": "DALL\u00b7E 3",
+                "Quality": "Standard",
+                "1024x1024": "$0.04",
+                "1024x1792": "$0.08"
+            },
+            {
+                "Quality": "$0.08",
+                "1024x1024": "$0.12"
+            },
+            {
+                "Model": "DALL\u00b7E 2",
+                "Quality": "$0.016",
+                "1024x1024": "$0.018",
+                "1024x1792": "$0.02"
+            }
+        ],
+        "extras": {}
+    }
+}
