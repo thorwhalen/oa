@@ -45,7 +45,7 @@ jobs:
         uses: i2mint/isee/actions/pytest-validation@master
         with:
           root-dir: ${{ env.PROJECT_NAME }}
-          paths-to-ignore: examples,scrap
+          paths-to-ignore: examples,scrap,_resources
 
   publish:
     name: Publish
