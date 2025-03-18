@@ -12,6 +12,95 @@ from oa.util import data_files
 
 dflt_resources_dir = str(data_files.parent.parent / 'misc' / 'data' / 'resources')
 
+# -------------------------------------------------------------------------------------
+# SSOT tools
+
+_model_info_mapping = {
+    'Input': 'price_per_million_tokens',  # TODO: Verify that Input fields are always in per-million-token units
+    'Output': 'price_per_million_tokens_output',  # TODO: Verify that Output fields are always in per-million-token units
+}
+
+
+def pricing_info_persepective_of_model_info():
+    from oa.util import pricing_info
+    import pandas as pd
+
+    prices_info_ = pd.DataFrame(pricing_info()).drop_duplicates(subset='Model')
+
+    def if_price_change_to_number(price):
+        if isinstance(price, str) and price.startswith('$'):
+            return float(price.replace('$', '').replace(',', ''))
+        elif isinstance(price, dict):
+            return {k: if_price_change_to_number(v) for k, v in price.items()}
+        else:
+            return price
+
+    def ch_field_names(d):
+        return {_model_info_mapping.get(k, k): v for k, v in d.items()}
+
+    model_info = {
+        row['Model']: ch_field_names(if_price_change_to_number(row.dropna().to_dict()))
+        for _, row in prices_info_.iterrows()
+    }
+
+    return model_info
+
+
+def compare_pricing_info_to_model_info(verbose=True):
+    """Compares"""
+    from oa._resources import (
+        compare_pricing_info_to_model_info,
+        pricing_info_persepective_of_model_info,
+    )
+
+    from oa.util import pricing_info, model_information_dict
+
+    new_prices = pricing_info_persepective_of_model_info()
+
+    # keys (i.e. model ids) in common with both in model_information_dict & new_prices
+    common_keys = set(model_information_dict.keys()) & set(new_prices.keys())
+
+    # # for all keys in common, compare the prices
+    for key in common_keys:
+        model_info = model_information_dict[key]
+        price_info = new_prices[key]
+
+    from lkj import compare_field_values, inclusive_subdict
+    from functools import partial
+
+    prices_are_the_same = compare_field_values(
+        model_information_dict,
+        new_prices,
+        default_comparator=compare_field_values,
+        aggregator=lambda d: {k: all(v.values()) for k, v in d.items()},
+    )
+    models_where_prices_are_different = {
+        k for k, v in prices_are_the_same.items() if not v
+    }
+
+    differences = dict()
+
+    if any(models_where_prices_are_different):
+        t = inclusive_subdict(model_information_dict, models_where_prices_are_different)
+        tt = inclusive_subdict(new_prices, models_where_prices_are_different)
+
+        differences = compare_field_values(
+            t,
+            tt,
+            default_comparator=partial(
+                compare_field_values, default_comparator=lambda x, y: (x, y)
+            ),
+            # aggregator=lambda d: {k: all(v.values()) for k, v in d.items()},
+        )
+
+        if verbose:
+            import pprint
+
+            print("Differences:")
+            pprint.pprint(differences)
+
+    return differences
+
 
 # -------------------------------------------------------------------------------------
 # Resources class
@@ -27,6 +116,7 @@ import dol
 
 
 dflt_pricing_url = 'https://platform.openai.com/docs/pricing'
+
 
 @dataclass
 class Resources:
@@ -70,8 +160,6 @@ class Resources:
 
         # Import dependencies if not provided
         if self.get_pricing_page_html is None:
-            from oa._resources import get_pricing_page_html
-
             self.get_pricing_page_html = get_pricing_page_html
 
         if (
@@ -175,7 +263,11 @@ from typing import Dict, List, Any, Optional, Tuple
 from collections import defaultdict
 
 
-# TODO: Make it get the html from local cache if it exists
+from typing import Dict, List, Optional, Tuple, Any
+from bs4 import BeautifulSoup, Tag
+import re
+
+
 def get_pricing_page_html(url=dflt_pricing_url):
     """
     Get the HTML content of the pricing page.
@@ -191,170 +283,255 @@ def get_pricing_page_html(url=dflt_pricing_url):
 
 def parse_pricing_page(html_content: str) -> Dict[str, Dict[str, Any]]:
     """
-    Parse the pricing page HTML and extract structured data about API pricing.
+    Parse the HTML content and extract pricing information from all sections.
 
     Args:
-        html_content: HTML content of the pricing page
+        html_content: HTML content as a string
 
     Returns:
-        Dictionary with API categories as keys and pricing information as values
+        Dictionary with category names as keys and their parsed data as values
     """
     soup = BeautifulSoup(html_content, 'html.parser')
-    result = {}
-
-    # Find all sections that contain pricing tables
     sections = soup.find_all('section')
 
+    results = {}
+
     for section in sections:
-        section_data = _parse_section(section)
-        if section_data:
-            category_name, data = section_data
-            result[category_name] = data
+        parsed_categories = parse_section(section)
+        if parsed_categories:
+            for category_name, data in parsed_categories:
+                results[category_name] = data
 
-    return result
+    return results
 
 
-def _parse_section(section: Tag) -> Optional[Tuple[str, Dict[str, Any]]]:
+def parse_section(section: Tag) -> List[Tuple[str, Dict[str, Any]]]:
     """
-    Parse a section containing pricing information.
+    Parse a section containing pricing information into potentially multiple categories.
 
     Args:
         section: BeautifulSoup Tag containing a section
 
     Returns:
-        Tuple of (category_name, data_dict) or None if section has no pricing data
+        List of tuples, each with (category_name, data_dict)
     """
-    # Try to find the category name
-    category_name_div = section.find('div', class_='font-medium')
-    if not category_name_div:
-        return None
+    # Find the heading that contains the section name
+    heading = section.find('h3', class_='anchor-heading')
+    if not heading:
+        return []
 
-    category_name = category_name_div.get_text(strip=True)
+    # Extract the section name from the heading
+    section_name = _clean_text(heading.get_text(strip=True))
+    # Remove the "anchor-heading-icon" content if it exists
+    svg = heading.find('svg')
+    if svg:
+        svg_text = svg.get_text(strip=True)
+        section_name = section_name.replace(svg_text, '').strip()
 
-    # Initialize data dictionary for this category
-    data = {"pricing_table_schema": [], "pricing_table": [], "extras": {}}
+    # Find all potential category labels within this section
+    category_divs = section.find_all('div', class_='font-medium')
 
-    # Extract any extra information
-    extras = _extract_extras(section)
-    if extras:
-        data["extras"] = extras
+    # If no explicit categories are found, use the section name as the sole category
+    if not category_divs:
+        category_names = [section_name]
+    else:
+        # Fix for Image generation section which has a problematic structure
+        if section_name == "Image generation":
+            category_names = [section_name]
+        else:
+            category_names = [
+                f"{section_name} - {_clean_text(div.get_text(strip=True))}"
+                for div in category_divs
+            ]
 
     # Find tables in this section
     tables = section.find_all('table')
 
-    for table_idx, table in enumerate(tables):
-        # If there's more than one table, we'll assume the second is for batch pricing
-        table_prefix = "" if table_idx == 0 else " - Batch"
+    if not tables:
+        return []
+
+    # If we have more tables than categories, add generic category names
+    if len(tables) > len(category_names):
+        for i in range(len(category_names), len(tables)):
+            category_names.append(f"{section_name} - Table {i+1}")
+
+    results = []
+
+    # Process each table with its corresponding category name
+    for i, (table, category_name) in enumerate(zip(tables, category_names)):
+        # Initialize data dictionary for this category
+        data = {"pricing_table_schema": [], "pricing_table": [], "extras": {}}
+
+        # Extract any extra information
+        extras = _extract_extras(section)
+        if extras:
+            data["extras"] = extras
 
         # Extract table schema (column headers)
-        headers = table.find_all('th')
-        schema = [header.get_text(strip=True) for header in headers]
+        thead = table.find('thead')
+        if not thead:
+            continue
 
-        if table_idx == 0:
-            data["pricing_table_schema"] = schema
-        else:
-            data[f"pricing_table_schema{table_prefix}"] = schema
+        header_row = thead.find('tr')
+        if not header_row:
+            continue
+
+        headers = header_row.find_all('th')
+        schema = [_clean_text(header.get_text(strip=True)) for header in headers]
+
+        data["pricing_table_schema"] = schema
 
         # Extract table rows
-        rows = table.find_all('tr')[1:]  # Skip header row
+        tbody = table.find('tbody')
+        if not tbody:
+            continue
+
+        rows = tbody.find_all('tr')
         table_data = []
+
+        current_row_data = None
+        rowspan_active = False
+        rowspan_value = 0
 
         for row in rows:
             row_data = {}
             cells = row.find_all('td')
 
-            # Process cells
-            for i, cell in enumerate(cells):
-                if i < len(schema):  # Ensure we have a corresponding schema item
-                    column_name = schema[i]
+            # Check if this row is part of a rowspan
+            first_cell = cells[0] if cells else None
+            if (
+                first_cell
+                and first_cell.has_attr('rowspan')
+                and int(first_cell['rowspan']) > 1
+            ):
+                current_row_data = {}  # Start a new rowspan group
+                rowspan_active = True
+                rowspan_value = int(first_cell['rowspan'])
 
-                    # Handle model name and alternate model names
-                    if i == 0:  # First column is typically the model name
-                        model_names = _extract_model_names(cell)
-                        if len(model_names) > 1:
-                            row_data["Model"] = model_names[0]
-                            row_data["Alternate Model Names"] = model_names[1:]
-                        elif len(model_names) == 1:
-                            row_data["Model"] = model_names[0]
-                    else:
-                        # For other columns, extract the text content
-                        row_data[column_name] = cell.get_text(strip=True)
+                # Extract model information from the rowspan cell
+                model_info = _extract_model_info(first_cell)
+                for key, value in model_info.items():
+                    current_row_data[key] = value
 
-            if row_data:
+                # Process the rest of the cells in this first rowspan row
+                for i, cell in enumerate(cells[1:], 1):
+                    if i < len(schema):
+                        column_name = schema[i]
+                        cell_data = _extract_cell_data(cell)
+                        row_data[column_name] = cell_data
+
+                # Combine model info with row data
+                combined_data = {**current_row_data, **row_data}
+                table_data.append(combined_data)
+                rowspan_value -= 1
+
+            elif rowspan_active and current_row_data:
+                # This is a continuation row in a rowspan
+                for i, cell in enumerate(cells):
+                    # Adjusted index because first column is handled by rowspan
+                    col_idx = i + 1
+                    if col_idx < len(schema):
+                        column_name = schema[col_idx]
+                        cell_data = _extract_cell_data(cell)
+                        row_data[column_name] = cell_data
+
+                # Combine the current row data with the continuing rowspan data
+                combined_data = {**current_row_data, **row_data}
+                table_data.append(combined_data)
+
+                rowspan_value -= 1
+                if rowspan_value <= 0:
+                    rowspan_active = False
+
+            else:
+                # Normal row without rowspan
+                rowspan_active = False
+                for i, cell in enumerate(cells):
+                    if i < len(schema):
+                        column_name = schema[i]
+
+                        if i == 0:  # First column is typically the model name
+                            model_info = _extract_model_info(cell)
+                            for key, value in model_info.items():
+                                row_data[key] = value
+                        else:
+                            cell_data = _extract_cell_data(cell)
+                            row_data[column_name] = cell_data
+
                 table_data.append(row_data)
 
-        if table_idx == 0:
-            data["pricing_table"] = table_data
-        else:
-            data[f"pricing_table{table_prefix}"] = table_data
+        data["pricing_table"] = table_data
+        results.append((category_name, data))
 
-    return category_name, data
+    return results
 
 
 def _extract_extras(section: Tag) -> Dict[str, str]:
-    """
-    Extract extra information from a section.
-
-    Args:
-        section: BeautifulSoup Tag containing a section
-
-    Returns:
-        Dictionary of extra information
-    """
+    """Extract extra information from a section."""
     extras = {}
 
-    # Look for price per information
-    price_info = section.find(
-        'div', class_='flex flex-1 items-center justify-end gap-1 text-xs text-gray-600'
+    # Look for descriptive text
+    description = section.find(
+        'div', class_='text-xs text-gray-500 whitespace-pre-line'
     )
-    if price_info:
-        extras["price_info"] = price_info.get_text(strip=True)
-
-    # Look for description text
-    description = section.find('div', class_='text-sm text-gray-600')
     if description:
-        extras["description"] = description.get_text(strip=True)
+        extras["description"] = _clean_text(description.get_text(strip=True))
 
     return extras
 
 
-def _extract_model_names(cell: Tag) -> List[str]:
-    """
-    Extract model names from a table cell.
+def _extract_model_info(cell: Tag) -> Dict[str, Any]:
+    """Extract model name and any alternate model names from a cell."""
+    info = {}
 
-    Args:
-        cell: BeautifulSoup Tag containing a table cell
+    # Find the main model name
+    model_div = cell.find('div', class_='text-gray-900')
+    if model_div:
+        info["Model"] = _clean_text(model_div.get_text(strip=True))
 
-    Returns:
-        List of model names
-    """
-    model_names = []
+    # Check for alternate model names (usually in a smaller text below)
+    alt_model = cell.find('div', class_='text-xs text-gray-600')
+    if alt_model:
+        info["Alternate_Model"] = _clean_text(alt_model.get_text(strip=True))
 
-    # Look for main model name
-    main_model = cell.find('div', class_='text-gray-900')
-    if main_model:
-        model_names.append(main_model.get_text(strip=True))
+    return info
 
-    # Look for alternate model names
-    alt_models = cell.find_all(
-        'div', class_='text-gray-600 flex items-center group text-nowrap'
-    )
-    for alt in alt_models:
-        # Skip the bullet point and extract the model name
-        model_text = alt.get_text(strip=True)
-        # Remove the bullet character if present
-        model_text = re.sub(r'^[•·]', '', model_text).strip()
-        if model_text and model_text not in model_names:
-            model_names.append(model_text)
 
-    # Look for specific model versions
-    model_versions = cell.find_all('div', class_='text-xs text-gray-600')
-    for version in model_versions:
-        version_text = version.get_text(strip=True)
-        if version_text and version_text not in model_names:
-            model_names.append(version_text)
+def _extract_cell_data(cell: Tag) -> Dict[str, str]:
+    """Extract data from a pricing cell, which might include multiple values."""
+    # Initialize with the full text as default
+    cell_text = _clean_text(cell.get_text(strip=True))
 
-    return model_names
+    # If the cell is just a simple text cell, return it directly
+    if "-" in cell_text and len(cell_text) < 3:
+        return cell_text
+
+    # Check for price value and unit
+    price_div = cell.find('div', class_='text-right flex-1')
+    unit_div = cell.find('div', class_='text-xs text-gray-500 text-nowrap text-right')
+
+    # If we have both components, organize them properly
+    if price_div and unit_div:
+        price = _clean_text(price_div.get_text(strip=True))
+        unit = _clean_text(unit_div.get_text(strip=True))
+
+        # If the price is empty, just return the text
+        if not price.strip():
+            return cell_text
+
+        # Return structured data
+        return {"price": price, "unit": unit}
+
+    # Return the full text if we couldn't break it down
+    return cell_text
+
+
+def _clean_text(text: str) -> str:
+    """Clean up text by removing extra whitespace and newlines."""
+    # Replace multiple whitespace with a single space
+    text = re.sub(r'\s+', ' ', text)
+    # Remove any leading/trailing whitespace
+    return text.strip()
 
 
 def extract_pricing_data(html_content: str) -> Dict[str, Dict[str, Any]]:

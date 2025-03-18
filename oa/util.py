@@ -109,6 +109,53 @@ batch_endpoints = SimpleNamespace(
 )
 
 
+_pricing_category_aliases = {
+    "text": "Latest models - Text tokens",
+    "audio": "Latest models - Audio tokens",
+    "finetune": "Fine tuning",
+    "tools": "Built-in tools",
+    "search": "Web search",
+    "speech": "Transcription and speech generation",
+    "images": "Image generation",
+    "embeddings": "Embeddings",
+    "moderation": "Moderation",
+    "other": "Other models",
+}
+
+PricingCategory = Literal[tuple(_pricing_category_aliases.keys())]
+
+
+def pricing_info(category: PricingCategory = None, *, print_data_date=False):
+    """
+    Return the pricing info for the OpenAI API.
+
+    Note: These are not live prices. Live prices can be found here:
+
+    The information pricing_info returns is taken from the file `openai_api_pricing_info.json`
+    in the `data` directory of the package.
+    To print a message with the data date, do `pricing_info(print_data_date=True)`.
+    """
+    info_filepath = data_files / "openai_api_pricing_info.json"
+    if print_data_date:
+        print(f"Data date: {info_filepath.stat().st_mtime}")
+    info = json.loads(info_filepath.read_text())
+
+    if category is None:
+
+        def _pricing_info():
+            for category in _pricing_category_aliases:
+                for d in pricing_info(category):
+                    yield dict(category=category, **d)
+
+        return list(_pricing_info())
+    else:
+        return info[_pricing_category_aliases.get(category, category)]['pricing_table']
+
+
+pricing_info.category_aliases = _pricing_category_aliases
+
+# TODO: Write tools to update mteb_eval
+# Note: OpenAI API live prices: https://platform.openai.com/docs/pricing
 embeddings_models = {
     "text-embedding-3-small": {
         "price_per_million_tokens": 0.02,  # in dollars
@@ -152,48 +199,49 @@ embeddings_models = dict(
 chat_models = {
     "gpt-4": {
         "price_per_million_tokens": 30.00,  # in dollars
+        "price_per_million_tokens_output": 60.00,  # in dollars
         "pages_per_dollar": 134,  # approximately
         "performance_on_eval": "Advanced reasoning for complex tasks",
         "max_input": 8192,  # tokens
     },
     "gpt-4-32k": {
         "price_per_million_tokens": 60.00,  # in dollars
+        "price_per_million_tokens_output": 120.00,  # in dollars
         "pages_per_dollar": 67,
         "performance_on_eval": "Extended context window for long documents",
         "max_input": 32768,  # tokens
     },
     "gpt-4-turbo": {
         "price_per_million_tokens": 10.00,  # in dollars
+        "price_per_million_tokens_output": 30.00,  # in dollars
         "pages_per_dollar": 402,
         "performance_on_eval": "Cost-effective version of GPT-4",
         "max_input": 8192,  # tokens
     },
-    "gpt-3.5-turbo": {
-        "price_per_million_tokens": 0.50,  # in dollars
-        "pages_per_dollar": 8048,
-        "performance_on_eval": "Highly cost-effective for general tasks",
-        "max_input": 4096,  # tokens
-    },
-    "o1-preview": {
+    "o1": {
         "price_per_million_tokens": 15.00,  # in dollars
+        "price_per_million_tokens_output": 60.00,  # in dollars
         "pages_per_dollar": 268,
         "performance_on_eval": "Optimized for complex reasoning in STEM fields",
         "max_input": 8192,  # tokens
     },
     "o1-mini": {
-        "price_per_million_tokens": 3.00,  # in dollars
+        "price_per_million_tokens": 1.10,  # in dollars
+        "price_per_million_tokens_output": 4.40,  # in dollars
         "pages_per_dollar": 1341,
         "performance_on_eval": "Cost-effective reasoning for simpler tasks",
         "max_input": 8192,  # tokens
     },
     "gpt-4o": {
-        "price_per_million_tokens": 5.00,  # in dollars
+        "price_per_million_tokens": 2.50,  # in dollars
+        "price_per_million_tokens_output": 10.0,  # in dollars
         "pages_per_dollar": 804,  # approximately
         "performance_on_eval": "Efficiency-optimized version of GPT-4 for better performance on reasoning tasks",
         "max_input": 8192,  # tokens
     },
     "gpt-4o-mini": {
-        "price_per_million_tokens": 0.30,  # in dollars
+        "price_per_million_tokens": 0.15,  # in dollars,
+        "price_per_million_tokens_output": 0.60,  # in dollars
         "pages_per_dollar": 13410,
         "performance_on_eval": "Highly cost-effective, optimized for simple tasks with faster response times",
         "max_input": 8192,  # tokens
