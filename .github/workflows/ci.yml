@@ -35,7 +35,7 @@ jobs:
         with:
           root-dir: ${{ env.PROJECT_NAME }}
           enable: missing-module-docstring
-          ignore: tests,examples,scrap
+          ignore: tests,examples,scrap,_resources
 
     # Add a step to list installed pip packages before running the validation
       - name: List installed Python packages
