@@ -128,7 +128,7 @@ class Resources:
 
     >>> r = Resources()  # doctest: +ELLIPSIS
     >>> r.resources_dir  # doctest: +ELLIPSIS
-    '...misc/data'
+    '...misc/data/resources'
     """
 
     resources_dir: str = dflt_resources_dir
