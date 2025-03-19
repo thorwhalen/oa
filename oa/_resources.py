@@ -10,14 +10,14 @@ from dol import cache_this
 
 from oa.util import data_files
 
-dflt_resources_dir = str(data_files.parent.parent / 'misc' / 'data' / 'resources')
+dflt_resources_dir = str(data_files.parent.parent / "misc" / "data" / "resources")
 
 # -------------------------------------------------------------------------------------
 # SSOT tools
 
 _model_info_mapping = {
-    'Input': 'price_per_million_tokens',  # TODO: Verify that Input fields are always in per-million-token units
-    'Output': 'price_per_million_tokens_output',  # TODO: Verify that Output fields are always in per-million-token units
+    "Input": "price_per_million_tokens",  # TODO: Verify that Input fields are always in per-million-token units
+    "Output": "price_per_million_tokens_output",  # TODO: Verify that Output fields are always in per-million-token units
 }
 
 
@@ -25,11 +25,11 @@ def pricing_info_persepective_of_model_info():
     from oa.util import pricing_info
     import pandas as pd
 
-    prices_info_ = pd.DataFrame(pricing_info()).drop_duplicates(subset='Model')
+    prices_info_ = pd.DataFrame(pricing_info()).drop_duplicates(subset="Model")
 
     def if_price_change_to_number(price):
-        if isinstance(price, str) and price.startswith('$'):
-            return float(price.replace('$', '').replace(',', ''))
+        if isinstance(price, str) and price.startswith("$"):
+            return float(price.replace("$", "").replace(",", ""))
         elif isinstance(price, dict):
             return {k: if_price_change_to_number(v) for k, v in price.items()}
         else:
@@ -39,7 +39,7 @@ def pricing_info_persepective_of_model_info():
         return {_model_info_mapping.get(k, k): v for k, v in d.items()}
 
     model_info = {
-        row['Model']: ch_field_names(if_price_change_to_number(row.dropna().to_dict()))
+        row["Model"]: ch_field_names(if_price_change_to_number(row.dropna().to_dict()))
         for _, row in prices_info_.iterrows()
     }
 
@@ -115,7 +115,7 @@ import pandas as pd
 import dol
 
 
-dflt_pricing_url = 'https://platform.openai.com/docs/pricing'
+dflt_pricing_url = "https://platform.openai.com/docs/pricing"
 
 
 @dataclass
@@ -134,11 +134,11 @@ class Resources:
     resources_dir: str = dflt_resources_dir
     pricing_url: str = dflt_pricing_url
 
-    schema_description_key: str = 'openai_api_pricing_schema_description.txt'
-    schema_key: str = 'api_pricing_schema.json'
-    pricing_html_key: str = 'openai_api_pricing.html'
-    pricing_info_key: str = 'openai_api_pricing_info.json'
-    pricing_info_from_ai_key: str = 'openai_api_pricing_info_from_ai.json'
+    schema_description_key: str = "openai_api_pricing_schema_description.txt"
+    schema_key: str = "api_pricing_schema.json"
+    pricing_html_key: str = "openai_api_pricing.html"
+    pricing_info_key: str = "openai_api_pricing_info.json"
+    pricing_info_from_ai_key: str = "openai_api_pricing_info_from_ai.json"
 
     # Dependencies that can be injected
     get_pricing_page_html: Optional[Callable[[], str]] = None
@@ -176,16 +176,16 @@ class Resources:
             if self.prompt_json_function is None:
                 self.prompt_json_function = oa.prompt_json_function
 
-    @cache_this(cache='text_store', key=pricing_html_key)
+    @cache_this(cache="text_store", key=pricing_html_key)
     def pricing_page_html(self):
         """Retrieve the HTML for the OpenAI pricing page."""
         return get_pricing_page_html(self.pricing_url)
 
-    @cache_this(cache='json_store', key=pricing_info_key)
+    @cache_this(cache="json_store", key=pricing_info_key)
     def pricing_info(self):
         return extract_pricing_data(self.pricing_page_html)
 
-    @dol.cache_this(cache='text_store', key=lambda self: self.schema_description_key)
+    @dol.cache_this(cache="text_store", key=lambda self: self.schema_description_key)
     def schema_description(self) -> str:
         """Generate and retrieve the schema description for OpenAI API pricing."""
         return """
@@ -210,12 +210,12 @@ class Resources:
         level field describes a category, and whose value specifies information about these category.
         """
 
-    @dol.cache_this(cache='json_store', key=lambda self: self.schema_key)
+    @dol.cache_this(cache="json_store", key=lambda self: self.schema_key)
     def schema(self) -> Dict[str, Any]:
         """Generate or retrieve the schema for OpenAI API pricing."""
         return self.infer_schema_from_verbal_description(self.schema_description)
 
-    @dol.cache_this(cache='json_store', key=lambda self: self.pricing_info_from_ai_key)
+    @dol.cache_this(cache="json_store", key=lambda self: self.pricing_info_from_ai_key)
     def pricing_info_from_ai(self) -> Dict[str, Any]:
         """Extract pricing information from the HTML using AI."""
         prompt = f"""
@@ -235,18 +235,18 @@ class Resources:
     @property
     def pricing_tables_from_ai(self) -> Dict[str, pd.DataFrame]:
         """Convert pricing tables to pandas DataFrames."""
-        tables = self.pricing_info_from_ai.get('OpenAI_API_Pricing_Schema', {})
+        tables = self.pricing_info_from_ai.get("OpenAI_API_Pricing_Schema", {})
 
         # Create a mapping interface that transforms table data to DataFrames
         return dol.add_ipython_key_completions(
             dol.wrap_kvs(
-                tables, value_decoder=lambda x: pd.DataFrame(x.get('pricing_table', []))
+                tables, value_decoder=lambda x: pd.DataFrame(x.get("pricing_table", []))
             )
         )
 
     def list_pricing_categories(self) -> List[str]:
         """List available pricing categories."""
-        return list(self.pricing_info_from_ai.get('OpenAI_API_Pricing_Schema', {}))
+        return list(self.pricing_info_from_ai.get("OpenAI_API_Pricing_Schema", {}))
 
     def get_pricing_table(self, category: str) -> pd.DataFrame:
         """Get a specific pricing table as a pandas DataFrame."""
@@ -277,7 +277,7 @@ def get_pricing_page_html(url=dflt_pricing_url):
     """
     from tabled.html import url_to_html_func
 
-    url_to_html = url_to_html_func(('chrome', dict(wait=10)))
+    url_to_html = url_to_html_func(("chrome", dict(wait=10)))
     return url_to_html(url)
 
 
@@ -291,8 +291,8 @@ def parse_pricing_page(html_content: str) -> Dict[str, Dict[str, Any]]:
     Returns:
         Dictionary with category names as keys and their parsed data as values
     """
-    soup = BeautifulSoup(html_content, 'html.parser')
-    sections = soup.find_all('section')
+    soup = BeautifulSoup(html_content, "html.parser")
+    sections = soup.find_all("section")
 
     results = {}
 
@@ -316,20 +316,20 @@ def parse_section(section: Tag) -> List[Tuple[str, Dict[str, Any]]]:
         List of tuples, each with (category_name, data_dict)
     """
     # Find the heading that contains the section name
-    heading = section.find('h3', class_='anchor-heading')
+    heading = section.find("h3", class_="anchor-heading")
     if not heading:
         return []
 
     # Extract the section name from the heading
     section_name = _clean_text(heading.get_text(strip=True))
     # Remove the "anchor-heading-icon" content if it exists
-    svg = heading.find('svg')
+    svg = heading.find("svg")
     if svg:
         svg_text = svg.get_text(strip=True)
-        section_name = section_name.replace(svg_text, '').strip()
+        section_name = section_name.replace(svg_text, "").strip()
 
     # Find all potential category labels within this section
-    category_divs = section.find_all('div', class_='font-medium')
+    category_divs = section.find_all("div", class_="font-medium")
 
     # If no explicit categories are found, use the section name as the sole category
     if not category_divs:
@@ -345,7 +345,7 @@ def parse_section(section: Tag) -> List[Tuple[str, Dict[str, Any]]]:
             ]
 
     # Find tables in this section
-    tables = section.find_all('table')
+    tables = section.find_all("table")
 
     if not tables:
         return []
@@ -368,25 +368,25 @@ def parse_section(section: Tag) -> List[Tuple[str, Dict[str, Any]]]:
             data["extras"] = extras
 
         # Extract table schema (column headers)
-        thead = table.find('thead')
+        thead = table.find("thead")
         if not thead:
             continue
 
-        header_row = thead.find('tr')
+        header_row = thead.find("tr")
         if not header_row:
             continue
 
-        headers = header_row.find_all('th')
+        headers = header_row.find_all("th")
         schema = [_clean_text(header.get_text(strip=True)) for header in headers]
 
         data["pricing_table_schema"] = schema
 
         # Extract table rows
-        tbody = table.find('tbody')
+        tbody = table.find("tbody")
         if not tbody:
             continue
 
-        rows = tbody.find_all('tr')
+        rows = tbody.find_all("tr")
         table_data = []
 
         current_row_data = None
@@ -395,18 +395,18 @@ def parse_section(section: Tag) -> List[Tuple[str, Dict[str, Any]]]:
 
         for row in rows:
             row_data = {}
-            cells = row.find_all('td')
+            cells = row.find_all("td")
 
             # Check if this row is part of a rowspan
             first_cell = cells[0] if cells else None
             if (
                 first_cell
-                and first_cell.has_attr('rowspan')
-                and int(first_cell['rowspan']) > 1
+                and first_cell.has_attr("rowspan")
+                and int(first_cell["rowspan"]) > 1
             ):
                 current_row_data = {}  # Start a new rowspan group
                 rowspan_active = True
-                rowspan_value = int(first_cell['rowspan'])
+                rowspan_value = int(first_cell["rowspan"])
 
                 # Extract model information from the rowspan cell
                 model_info = _extract_model_info(first_cell)
@@ -472,7 +472,7 @@ def _extract_extras(section: Tag) -> Dict[str, str]:
 
     # Look for descriptive text
     description = section.find(
-        'div', class_='text-xs text-gray-500 whitespace-pre-line'
+        "div", class_="text-xs text-gray-500 whitespace-pre-line"
     )
     if description:
         extras["description"] = _clean_text(description.get_text(strip=True))
@@ -485,12 +485,12 @@ def _extract_model_info(cell: Tag) -> Dict[str, Any]:
     info = {}
 
     # Find the main model name
-    model_div = cell.find('div', class_='text-gray-900')
+    model_div = cell.find("div", class_="text-gray-900")
     if model_div:
         info["Model"] = _clean_text(model_div.get_text(strip=True))
 
     # Check for alternate model names (usually in a smaller text below)
-    alt_model = cell.find('div', class_='text-xs text-gray-600')
+    alt_model = cell.find("div", class_="text-xs text-gray-600")
     if alt_model:
         info["Alternate_Model"] = _clean_text(alt_model.get_text(strip=True))
 
@@ -507,8 +507,8 @@ def _extract_cell_data(cell: Tag) -> Dict[str, str]:
         return cell_text
 
     # Check for price value and unit
-    price_div = cell.find('div', class_='text-right flex-1')
-    unit_div = cell.find('div', class_='text-xs text-gray-500 text-nowrap text-right')
+    price_div = cell.find("div", class_="text-right flex-1")
+    unit_div = cell.find("div", class_="text-xs text-gray-500 text-nowrap text-right")
 
     # If we have both components, organize them properly
     if price_div and unit_div:
@@ -529,7 +529,7 @@ def _extract_cell_data(cell: Tag) -> Dict[str, str]:
 def _clean_text(text: str) -> str:
     """Clean up text by removing extra whitespace and newlines."""
     # Replace multiple whitespace with a single space
-    text = re.sub(r'\s+', ' ', text)
+    text = re.sub(r"\s+", " ", text)
     # Remove any leading/trailing whitespace
     return text.strip()
 

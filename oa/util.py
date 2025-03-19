@@ -149,7 +149,7 @@ def pricing_info(category: PricingCategory = None, *, print_data_date=False):
 
         return list(_pricing_info())
     else:
-        return info[_pricing_category_aliases.get(category, category)]['pricing_table']
+        return info[_pricing_category_aliases.get(category, category)]["pricing_table"]
 
 
 pricing_info.category_aliases = _pricing_category_aliases
