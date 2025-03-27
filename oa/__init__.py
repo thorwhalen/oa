@@ -8,6 +8,7 @@ from oa.util import (
     djoin,
     app_data_dir,
     num_tokens,
+    model_information_dict,
     utc_int_to_iso_date,
     DFLT_ENGINE,
     DFLT_MODEL,
