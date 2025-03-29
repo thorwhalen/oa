@@ -176,6 +176,7 @@ def string_format_embodier(
 ):
 
     names = _extract_names_from_format_string(template, ignore_pattern=ignore_pattern)
+    names = tuple(dict.fromkeys(names))  # get unique names, but conserving order
     sig = Sig(names).ch_kinds(**{name: Sig.KEYWORD_ONLY for name in names})
 
     @sig
@@ -266,6 +267,7 @@ def prompt_function(
     # TODO: Same logic replicated in string_format_embodier (what can we do?)
     names = template_to_names(template)
     arg_kinds = dict({name: Sig.KEYWORD_ONLY for name in names}, **(arg_kinds or {}))
+    names = tuple(dict.fromkeys(names))  # get unique names, but conserving order
     sig = Sig(names)
 
     # Inject defaults
