@@ -41,7 +41,7 @@ app_data_dir = os.environ.get(
     f"{pkg_name.upper()}_APP_DATA_DIR",
     os.path.join(_root_app_data_dir, pkg_name),
 )
-app_data_dir = dol.ensure_dir(app_data_dir, verbose=f"Making app dir: {app_data_dir}")
+app_data_dir = dol.ensure_dir(app_data_dir)
 djoin = partial(os.path.join, app_data_dir)
 
 # _open_api_key_env_name = 'OPENAI_API_KEY'
