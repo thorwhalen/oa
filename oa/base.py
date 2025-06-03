@@ -202,7 +202,7 @@ from oa.util import chunk_iterable, mk_local_files_saves_callback
 #    (e.g. return dict containing only valid texts (if input was list, uses indices as keys)
 @Sig.replace_kwargs_using(openai.embeddings.create)
 def embeddings(
-    texts: TextOrTexts,
+    texts: TextOrTexts = None,
     *,
     batch_size: Optional[int] = 2048,  # found on unofficial OpenAI API docs
     egress: Optional[str] = None,
@@ -270,7 +270,6 @@ def embeddings(
     >>> len(result[1]) == dimensions == 3
     True
 
-
     # Test with a dictionary of words
     >>> texts = {"adj": "semantic", "noun": "vector"}
     >>> result = embeddings_(texts)
@@ -283,7 +282,19 @@ def embeddings(
     >>> len(result["adj"]) == len(result["noun"]) == dimensions == 3
     True
 
+    If you don't specify `texts`, you will get a "partial" function that you can
+    use later to compute embeddings for texts. This is useful if you want to
+    set some parameters (like `dimensions`, `validate`, etc.) and then use the
+    resulting function to compute embeddings for different texts later on.
+    >>> embeddings_with_10_dimensions = embeddings_(texts=None, dimensions=10)
+    >>> isinstance(embeddings_with_10_dimensions, Callable)
+    True
+
     """
+    if texts is None:
+        _embeddings_kwargs = {k: v for k, v in locals().items() if k != 'texts'}
+        return partial(embeddings, **_embeddings_kwargs)
+    
     if egress is False:
         assert batch_callback, (
             "batch_callback must be provided if egress is False: "
