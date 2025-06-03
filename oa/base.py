@@ -292,8 +292,10 @@ def embeddings(
 
     """
     if texts is None:
-        _embeddings_kwargs = {k: v for k, v in locals().items() if k != 'texts'}
-        return partial(embeddings, **_embeddings_kwargs)
+        _kwargs = locals()
+        _ = _kwargs.pop("texts")
+        extra_embeddings_params = _kwargs.pop("extra_embeddings_params", {})
+        return partial(embeddings, **_kwargs, **extra_embeddings_params)
     
     if egress is False:
         assert batch_callback, (
