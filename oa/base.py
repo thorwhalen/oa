@@ -296,7 +296,7 @@ def embeddings(
         _ = _kwargs.pop("texts")
         extra_embeddings_params = _kwargs.pop("extra_embeddings_params", {})
         return partial(embeddings, **_kwargs, **extra_embeddings_params)
-    
+
     if egress is False:
         assert batch_callback, (
             "batch_callback must be provided if egress is False: "
