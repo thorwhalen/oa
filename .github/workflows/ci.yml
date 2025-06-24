@@ -35,7 +35,7 @@ jobs:
         with:
           root-dir: ${{ env.PROJECT_NAME }}
           enable: missing-module-docstring
-          ignore: tests,examples,scrap,_resources
+          ignore: tests,examples,scrap,_resources.py
 
     # Add a step to list installed pip packages before running the validation
       - name: List installed Python packages
@@ -45,7 +45,7 @@ jobs:
         uses: i2mint/isee/actions/pytest-validation@master
         with:
           root-dir: ${{ env.PROJECT_NAME }}
-          paths-to-ignore: examples,scrap,_resources
+          paths-to-ignore: examples,scrap,_resources.py
 
   publish:
     name: Publish
