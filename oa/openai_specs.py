@@ -341,7 +341,7 @@ spec_names = SpecNames()
 
 ## rm_when_none-parametrizale version of current version below
 # def _kwargs_cast_ingress(func_sig, rm_when_none=(), /, *args, **kwargs):
-#     kwargs = func_sig.kwargs_from_args_and_kwargs(args, kwargs)
+#     kwargs = func_sig.map_arguments(args, kwargs)
 #     if rm_when_none:
 #         for k in rm_when_none:
 #             if kwargs[k] is None:
@@ -350,7 +350,7 @@ spec_names = SpecNames()
 
 
 def _kwargs_cast_ingress(func_sig, /, *args, **kwargs):
-    kwargs = func_sig.kwargs_from_args_and_kwargs(args, kwargs)
+    kwargs = func_sig.map_arguments(args, kwargs)
     kwargs = {k: v for k, v in kwargs.items() if v is not None}
     return (), kwargs
 

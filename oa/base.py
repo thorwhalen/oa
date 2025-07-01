@@ -192,7 +192,7 @@ from oa.util import chunk_iterable, mk_local_files_saves_callback
 
 # from collections.abc import Mapping, Iterable
 
-
+extra_embeddings_params = Sig(openai.embeddings.create) - {'input', 'model'}
 # TODO: Added a lot of options, but not really clean. Should be cleaned up.
 # TODO: The dict-versus-list types should be handled more cleanly!
 # TODO: Integrate the batch API way of doing embeddings
@@ -200,7 +200,7 @@ from oa.util import chunk_iterable, mk_local_files_saves_callback
 # TODO: Make a few useful validation_callback functions
 #    (e.g. return list or dict where invalid texts are replaced with None)
 #    (e.g. return dict containing only valid texts (if input was list, uses indices as keys)
-@Sig.replace_kwargs_using(openai.embeddings.create)
+@Sig.replace_kwargs_using(extra_embeddings_params)
 def embeddings(
     texts: TextOrTexts = None,
     *,
