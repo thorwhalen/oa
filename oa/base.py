@@ -192,7 +192,9 @@ from oa.util import chunk_iterable, mk_local_files_saves_callback
 
 # from collections.abc import Mapping, Iterable
 
-extra_embeddings_params = Sig(openai.embeddings.create) - {'input', 'model'}
+extra_embeddings_params = Sig(openai.embeddings.create) - {"input", "model"}
+
+
 # TODO: Added a lot of options, but not really clean. Should be cleaned up.
 # TODO: The dict-versus-list types should be handled more cleanly!
 # TODO: Integrate the batch API way of doing embeddings
