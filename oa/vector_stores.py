@@ -13,7 +13,7 @@ SearchResults = Iterable[ResultT]
 
 
 def docs_to_vector_store(
-    docs: Mapping[str, str], vs_name: str = None
+    docs: Mapping[str, str], vs_name: str = None, *, client=None
 ) -> tuple[str, dict[str, str]]:
     """
     Create an OpenAI vector store from a mapping of documents.
@@ -31,7 +31,7 @@ def docs_to_vector_store(
         vs_name = f"test_vs_{uuid.uuid4().hex[:8]}"
 
     # Initialize OA stores
-    oa_stores = OaStores()
+    oa_stores = OaStores(client))
 
     # Create vector store
     vector_store = oa_stores.vector_stores_base.create(vs_name)
@@ -49,9 +49,11 @@ def docs_to_vector_store(
             tmp_file.write(doc_text)
             tmp_file.flush()
 
-            # Upload the file to OpenAI
+            # Upload the file to OpenAI with proper purpose for assistants/vector stores
             with open(tmp_file.name, 'rb') as file_content:
-                file_obj = oa_stores.files_base.append(file_content)
+                # Create a file store with the correct purpose for assistants/vector stores
+                assistants_files = oa_stores.OaFiles(client, purpose="assistants")
+                file_obj = assistants_files.append(file_content)
 
             # Add the file to the vector store
             vs_files.add_file(file_obj.id)
@@ -106,7 +108,9 @@ def bind_and_modify(func, *bound_args, _param_changes: dict = (), **bound_kwargs
 
     # Map the bound arguments to parameter names
     bound_params = original_sig.map_arguments(
-        bound_args, bound_kwargs, allow_partial=True,
+        bound_args,
+        bound_kwargs,
+        allow_partial=True,
     )
 
     # Remove bound parameters from signature
@@ -146,13 +150,43 @@ def mk_search_func_for_oa_vector_store(
     Returns:
         A function that takes a query and returns search results
     """
-
     oa_stores = OaStores(client)
-    return bind_and_modify(
+
+    # Create the basic search function with bound vector_store_id
+    basic_search = bind_and_modify(
         oa_stores.client.vector_stores.search,
         vector_store_id,
         _param_changes=dict(query={'kind': Parameter.POSITIONAL_OR_KEYWORD}),
     )
+
+    # If no doc_id_mapping, just return the basic search
+    if not doc_id_mapping:
+        return basic_search
+
+    # Create a wrapper that maps file IDs back to document keys
+    def search_with_doc_mapping(query, **kwargs):
+        """Search function that maps results back to original document keys"""
+        results = basic_search(query, **kwargs)
+
+        # Map file IDs back to document keys
+        mapped_results = []
+        for result in results:
+            # Assuming result has a file_id attribute or similar
+            # This might need adjustment based on actual OpenAI response structure
+            if hasattr(result, 'file_id') and result.file_id in doc_id_mapping:
+                # Replace or add the document key
+                mapped_result = result
+                mapped_result.doc_key = doc_id_mapping[result.file_id]
+                mapped_results.append(mapped_result.doc_key)  # Return just the doc key
+            elif hasattr(result, 'id') and result.id in doc_id_mapping:
+                mapped_results.append(doc_id_mapping[result.id])
+            else:
+                # If we can't find a mapping, include the original result
+                mapped_results.append(result)
+
+        return mapped_results
+
+    return search_with_doc_mapping
 
 
 def docs_to_search_func_factory_via_vector_store(
