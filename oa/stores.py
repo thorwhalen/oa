@@ -12,7 +12,7 @@ import openai  # TODO: Import from oa.util instead?
 from openai.resources.files import Files as OpenaiFiles, FileTypes, FileObject
 from openai.types import FileObject
 
-from oa.base import mk_client, TextOrTexts
+from oa.base import TextOrTexts
 from oa.batches import (
     mk_batch_file_embeddings_task,
     BatchSpec,
@@ -20,6 +20,9 @@ from oa.batches import (
     BatchId,
 )
 from oa.util import (
+    OaClientSpec,
+    mk_client,
+    ensure_oa_client,
     merge_multiple_signatures,
     source_parameter_props_from,
     utc_int_to_iso_date,
@@ -499,9 +502,8 @@ def date_filter(
 
 
 class OaStores:
-    def __init__(self, client: Optional[openai.Client] = None) -> None:
-        if client is None:
-            client = mk_client()
+    def __init__(self, client: OaClientSpec = None) -> None:
+        client = ensure_oa_client(client)
         self.client = client
 
     @cached_property
@@ -536,6 +538,14 @@ class OaStores:
     def files_metadata(self):
         return OaFilesMetadata(self.client)
 
+    @cached_property
+    def vector_stores(self):
+        return OaVectorStores(self.client)
+
+    @cached_property
+    def vector_stores_base(self):
+        return OaVectorStoresBase(self.client)
+
 
 # TODO: There's a lot of functions in stores and batch that take an oa_stores argument.
 #    Perhaps it's better for them to just be here in the OaDacc class instead?
@@ -567,6 +577,10 @@ class OaDacc:
     @property
     def batches(self):
         return self.s.batches
+
+    @property
+    def vector_stores(self):
+        return self.s.vector_stores
 
     def ensure_batch_obj(self, batch) -> BatchObj:
         return get_batch_obj(self.s, batch)
@@ -664,3 +678,102 @@ def print_some_jsonl_line_fields(line):
     print(f"{line['response']['body']['object']=}")
     print(f"{len(line['response']['body']['data'])=}")
     print(f"{list(line['response']['body']['data'][0])=}")
+
+
+# --------------------------------------------------------------------------------------
+# Vector Stores
+
+
+class OaVectorStoresBase(OaMapping):
+    """Base class for OpenAI vector stores mapping interface."""
+
+    def __init__(self, client: Optional[openai.Client] = None, **extra_kwargs):
+        if client is None:
+            client = mk_client()
+        self.client = client
+        self.extra_kwargs = extra_kwargs
+
+    def _iter(self):
+        """Iterate over vector store objects."""
+        return self.client.vector_stores.list(**self._list_kwargs)
+
+    @extract_id
+    def metadata(self, vs_id) -> Any:  # TODO: Add proper vector store type
+        """Get vector store metadata by ID."""
+        return self.client.vector_stores.retrieve(vs_id, **self.extra_kwargs)
+
+    _getitem = metadata
+
+    @extract_id
+    def _delitem(self, vs_id):
+        """Delete a vector store."""
+        return self.client.vector_stores.delete(vs_id)
+
+    def create(self, name: str, **config) -> Any:
+        """Create a new vector store with given name."""
+        return self.client.vector_stores.create(
+            name=name, **config, **self.extra_kwargs
+        )
+
+    def get_by_name(self, name: str):
+        """Get vector store by name (since OpenAI API doesn't support this directly)."""
+        for vs in self.client.vector_stores.list():
+            if vs.name == name:
+                return vs
+        raise KeyError(f"Vector store with name '{name}' not found")
+
+
+@wrap_kvs(key_decoder=attrgetter("id"))
+class OaVectorStores(OaVectorStoresBase):
+    """
+    A key-value store for OpenAI vector stores.
+    Keys are the vector store IDs.
+    """
+
+
+class OaVectorStoreFiles(OaMapping):
+    """Mapping interface for files within a vector store."""
+
+    def __init__(
+        self,
+        vector_store_id: str,
+        client: Optional[openai.Client] = None,
+        **extra_kwargs,
+    ):
+        if client is None:
+            client = mk_client()
+        self.client = client
+        self.vector_store_id = vector_store_id
+        self.extra_kwargs = extra_kwargs
+
+    def _iter(self):
+        """Iterate over file objects in the vector store."""
+        return self.client.vector_stores.files.list(
+            vector_store_id=self.vector_store_id, **self._list_kwargs
+        )
+
+    @extract_id
+    def metadata(self, file_id) -> Any:
+        """Get file info from vector store."""
+        return self.client.vector_stores.files.retrieve(
+            vector_store_id=self.vector_store_id, file_id=file_id, **self.extra_kwargs
+        )
+
+    _getitem = metadata
+
+    @extract_id
+    def _delitem(self, file_id):
+        """Remove file from vector store."""
+        return self.client.vector_stores.files.delete(
+            vector_store_id=self.vector_store_id, file_id=file_id
+        )
+
+    def add_file(self, file_id: str) -> Any:
+        """Add file to vector store."""
+        return self.client.vector_stores.files.create(
+            vector_store_id=self.vector_store_id, file_id=file_id, **self.extra_kwargs
+        )
+
+    def __setitem__(self, file_id, _):
+        """Add file to vector store (for MutableMapping interface)."""
+        self.add_file(file_id)

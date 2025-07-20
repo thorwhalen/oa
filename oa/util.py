@@ -279,6 +279,7 @@ def get_api_key_from_config():
     )
 
 
+# TODO: Hm... set api key globally? Doesn't seem we should do that!
 openai.api_key = get_api_key_from_config()
 
 
@@ -286,6 +287,24 @@ openai.api_key = get_api_key_from_config()
 def mk_client(api_key=None, **client_kwargs) -> openai.Client:
     api_key = api_key or get_api_key_from_config()
     return openai.OpenAI(api_key=api_key, **client_kwargs)
+
+
+OaClientSpec = Union[openai.Client, str, dict, None]
+
+def ensure_oa_client(oa_client: OaClientSpec) -> openai.Client:
+    """Ensure that an OpenAI client is available, either by using the provided one or creating a new one."""
+    if oa_client is None:
+        return mk_client()
+    elif isinstance(oa_client, openai.Client):
+        return oa_client
+    elif isinstance(oa_client, str):
+        return mk_client(api_key=oa_client)
+    elif isinstance(oa_client, dict):
+        return mk_client(**oa_client)
+    else:
+        raise TypeError(
+            f"Expected an OpenAI client instance, got {type(oa_client).__name__}"
+        )
 
 
 # TODO: Pros and cons of using a default client
