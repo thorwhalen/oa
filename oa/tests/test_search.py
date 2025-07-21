@@ -158,6 +158,7 @@ from oa.vector_stores import (
     docs_to_search_func_factory_via_vector_store,
 )
 
+
 def test_vector_store_search_functionality():
     """Test the vector store search functionality."""
 

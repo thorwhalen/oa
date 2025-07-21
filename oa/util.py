@@ -291,6 +291,7 @@ def mk_client(api_key=None, **client_kwargs) -> openai.Client:
 
 OaClientSpec = Union[openai.Client, str, dict, None]
 
+
 def ensure_oa_client(oa_client: OaClientSpec) -> openai.Client:
     """Ensure that an OpenAI client is available, either by using the provided one or creating a new one."""
     if oa_client is None:

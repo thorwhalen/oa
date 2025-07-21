@@ -44,13 +44,13 @@ def docs_to_vector_store(
         # Create a temporary file with the document content
         # Use doc_key as filename for easier identification
         with tempfile.NamedTemporaryFile(
-            mode='w', suffix='.txt', prefix=f"{doc_key}_", delete=False
+            mode="w", suffix=".txt", prefix=f"{doc_key}_", delete=False
         ) as tmp_file:
             tmp_file.write(doc_text)
             tmp_file.flush()
 
             # Upload the file to OpenAI with proper purpose for assistants/vector stores
-            with open(tmp_file.name, 'rb') as file_content:
+            with open(tmp_file.name, "rb") as file_content:
                 # Create a file store with the correct purpose for assistants/vector stores
                 assistants_files = OaFiles(client, purpose="assistants")
                 file_obj = assistants_files.append(file_content)
@@ -156,7 +156,7 @@ def mk_search_func_for_oa_vector_store(
     basic_search = bind_and_modify(
         oa_stores.client.vector_stores.search,
         vector_store_id,
-        _param_changes=dict(query={'kind': Parameter.POSITIONAL_OR_KEYWORD}),
+        _param_changes=dict(query={"kind": Parameter.POSITIONAL_OR_KEYWORD}),
     )
 
     # If no doc_id_mapping, just return the basic search
@@ -173,12 +173,12 @@ def mk_search_func_for_oa_vector_store(
         for result in results:
             # Assuming result has a file_id attribute or similar
             # This might need adjustment based on actual OpenAI response structure
-            if hasattr(result, 'file_id') and result.file_id in doc_id_mapping:
+            if hasattr(result, "file_id") and result.file_id in doc_id_mapping:
                 # Replace or add the document key
                 mapped_result = result
                 mapped_result.doc_key = doc_id_mapping[result.file_id]
                 mapped_results.append(mapped_result.doc_key)  # Return just the doc key
-            elif hasattr(result, 'id') and result.id in doc_id_mapping:
+            elif hasattr(result, "id") and result.id in doc_id_mapping:
                 mapped_results.append(doc_id_mapping[result.id])
             else:
                 # If we can't find a mapping, include the original result
