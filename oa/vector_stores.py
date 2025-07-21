@@ -4,7 +4,7 @@ import tempfile
 from functools import partial
 import os
 from typing import Callable, Mapping, Iterable, Any
-from oa.stores import OaStores, OaVectorStoreFiles
+from oa.stores import OaStores, OaVectorStoreFiles, OaFiles
 
 Query = str
 MaxNumResults = int
@@ -31,7 +31,7 @@ def docs_to_vector_store(
         vs_name = f"test_vs_{uuid.uuid4().hex[:8]}"
 
     # Initialize OA stores
-    oa_stores = OaStores(client))
+    oa_stores = OaStores(client)
 
     # Create vector store
     vector_store = oa_stores.vector_stores_base.create(vs_name)
@@ -52,7 +52,7 @@ def docs_to_vector_store(
             # Upload the file to OpenAI with proper purpose for assistants/vector stores
             with open(tmp_file.name, 'rb') as file_content:
                 # Create a file store with the correct purpose for assistants/vector stores
-                assistants_files = oa_stores.OaFiles(client, purpose="assistants")
+                assistants_files = OaFiles(client, purpose="assistants")
                 file_obj = assistants_files.append(file_content)
 
             # Add the file to the vector store
