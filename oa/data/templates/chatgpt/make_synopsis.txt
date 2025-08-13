@@ -1,7 +1,0 @@
-Make a {adjective: } synopsis of the following {text_kind: } text.
-
-{extras: }
-
-TEXT:
-
-{text}

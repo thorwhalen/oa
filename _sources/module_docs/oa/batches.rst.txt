@@ -1,0 +1,4 @@
+oa.batches
+==========
+.. automodule:: oa.batches
+   :members:

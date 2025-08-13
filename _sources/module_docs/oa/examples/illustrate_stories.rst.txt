@@ -1,0 +1,4 @@
+oa.examples.illustrate_stories
+==============================
+.. automodule:: oa.examples.illustrate_stories
+   :members:

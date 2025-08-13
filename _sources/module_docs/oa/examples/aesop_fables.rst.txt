@@ -1,0 +1,4 @@
+oa.examples.aesop_fables
+========================
+.. automodule:: oa.examples.aesop_fables
+   :members:

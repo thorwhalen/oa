@@ -1,0 +1,4 @@
+oa.stores
+=========
+.. automodule:: oa.stores
+   :members:

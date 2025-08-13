@@ -1,0 +1,4 @@
+oa._resources
+=============
+.. automodule:: oa._resources
+   :members:

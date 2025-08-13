@@ -1,0 +1,4 @@
+oa.openai_specs
+===============
+.. automodule:: oa.openai_specs
+   :members:

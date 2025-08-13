@@ -1,0 +1,4 @@
+oa.vector_stores
+================
+.. automodule:: oa.vector_stores
+   :members:
