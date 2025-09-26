@@ -59,7 +59,7 @@ from typing import Callable, Optional, Union, Iterable
 from functools import partial, cached_property
 
 import requests
-from dol import path_filter
+from dol import path_filter, Pipe
 
 
 def url_to_html(url: str) -> str:
