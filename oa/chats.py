@@ -6,25 +6,25 @@ For instance: Extract information from them.
 The main object here is `ChatDacc` (Chat Data Accessor), which is a class that allows
 you to access the data in a shared chat in a structured way.
 
->>> from oa.chats import ChatDacc
->>>
->>> url = 'https://chatgpt.com/share/6788d539-0f2c-8013-9535-889bf344d7d5'
->>> dacc = ChatDacc(url)
->>>
->>> basic_turns_data = dacc.basic_turns_data
->>> len(basic_turns_data)
-4
->>> first_turn = basic_turns_data[0]
->>> isinstance(first_turn, dict)
-True
->>> list(first_turn)
-['id', 'role', 'content', 'message_id']
->>> print(first_turn['content'])  # doctest: +NORMALIZE_WHITESPACE
-This conversation is meant to be used as an example, for testing, and/or for figuring out how to parse the html and json of a conversation.
-<BLANKLINE>
-As such, we'd like to keep it short.
-<BLANKLINE>
-Just say "Hello World!" back to me for now, and then in a second line write 10 random words.
+# >>> from oa.chats import ChatDacc
+# >>>
+# >>> url = 'https://chatgpt.com/share/6788d539-0f2c-8013-9535-889bf344d7d5'
+# >>> dacc = ChatDacc(url)
+# >>>
+# >>> basic_turns_data = dacc.basic_turns_data
+# >>> len(basic_turns_data)
+# 4
+# >>> first_turn = basic_turns_data[0]
+# >>> isinstance(first_turn, dict)
+# True
+# >>> list(first_turn)
+# ['id', 'role', 'content', 'message_id']
+# >>> print(first_turn['content'])  # doctest: +NORMALIZE_WHITESPACE
+# This conversation is meant to be used as an example, for testing, and/or for figuring out how to parse the html and json of a conversation.
+# <BLANKLINE>
+# As such, we'd like to keep it short.
+# <BLANKLINE>
+# Just say "Hello World!" back to me for now, and then in a second line write 10 random words.
 """
 
 import re
