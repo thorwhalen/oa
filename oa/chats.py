@@ -146,10 +146,10 @@ def reduce_chat_html(html: str) -> str:
         A stripped-down HTML string containing only the conversation thread.
     """
     # 1. Use BeautifulSoup to quickly find the root of the conversation thread
-    soup = BeautifulSoup(html, 'html.parser')
+    soup = BeautifulSoup(html, "html.parser")
 
     # 2. The entire conversation content lives inside the element with id="thread".
-    thread_div = soup.find('div', id='thread')
+    thread_div = soup.find("div", id="thread")
 
     if thread_div:
         # Get the inner HTML content of the thread div
@@ -179,66 +179,66 @@ def parse_chat_html(html: str) -> List[Dict[str, Any]]:
         A list of dictionaries, where each dictionary represents a message and
         contains 'id', 'role', 'content', and 'message_id' keys.
     """
-    soup = BeautifulSoup(html, 'html.parser')
+    soup = BeautifulSoup(html, "html.parser")
     conversation = []
 
     # Find all conversation turns (user or assistant messages)
-    turns = soup.find_all('article', {'data-turn': ['user', 'assistant']})
+    turns = soup.find_all("article", {"data-turn": ["user", "assistant"]})
 
     for turn in turns:
-        role = turn['data-turn']
+        role = turn["data-turn"]
         content_parts = []
 
         # Extract turn metadata, using 'id' as requested for compatibility
-        turn_id = turn.get('data-turn-id')
+        turn_id = turn.get("data-turn-id")
 
         # Find the inner div that contains the message ID
-        message_div = turn.find('div', {'data-message-author-role': role})
-        message_id = message_div.get('data-message-id') if message_div else None
+        message_div = turn.find("div", {"data-message-author-role": role})
+        message_id = message_div.get("data-message-id") if message_div else None
 
         # --- 1. Handle User Messages ---
-        if role == 'user':
-            text_container = turn.find('div', class_='whitespace-pre-wrap')
+        if role == "user":
+            text_container = turn.find("div", class_="whitespace-pre-wrap")
             if text_container:
-                content = text_container.get_text('\n').strip()
+                content = text_container.get_text("\n").strip()
                 if content:
                     content_parts.append({"type": "text", "text": content})
 
         # --- 2. Handle Assistant Messages ---
-        elif role == 'assistant':
+        elif role == "assistant":
             markdown_div = turn.find(
-                'div', class_=lambda c: c and 'markdown' in c and 'prose' in c
+                "div", class_=lambda c: c and "markdown" in c and "prose" in c
             )
 
             if markdown_div:
                 for element in markdown_div.children:
                     # Handle Paragraphs/Text (<p> tags)
-                    if element.name == 'p':
-                        text_content = element.get_text('\n').strip()
+                    if element.name == "p":
+                        text_content = element.get_text("\n").strip()
                         if text_content:
-                            cleaned_text = text_content.replace('\n\n', '\n').strip()
+                            cleaned_text = text_content.replace("\n\n", "\n").strip()
                             if cleaned_text:
                                 content_parts.append(
                                     {"type": "text", "text": cleaned_text}
                                 )
 
                     # Handle Code Blocks (<pre> tags for fenced code blocks)
-                    elif element.name == 'pre':
+                    elif element.name == "pre":
                         lang_div = element.find(
-                            'div',
+                            "div",
                             class_=lambda c: c
-                            and 'justify-between' in c
-                            and 'h-9' in c,
+                            and "justify-between" in c
+                            and "h-9" in c,
                         )
-                        language = 'plaintext'
+                        language = "plaintext"
                         if lang_div:
                             language_text = lang_div.get_text(strip=True).lower()
-                            if language_text and language_text != 'copy code':
+                            if language_text and language_text != "copy code":
                                 language = language_text
 
-                        code_tag = element.find('code')
+                        code_tag = element.find("code")
                         code_content = (
-                            code_tag.get_text(strip=False).strip('\n')
+                            code_tag.get_text(strip=False).strip("\n")
                             if code_tag
                             else ""
                         )
@@ -256,9 +256,9 @@ def parse_chat_html(html: str) -> List[Dict[str, Any]]:
         if content_parts:
             final_content = ""
             for part in content_parts:
-                if part['type'] == 'text':
-                    final_content += part['text'] + '\n\n'
-                elif part['type'] == 'code':
+                if part["type"] == "text":
+                    final_content += part["text"] + "\n\n"
+                elif part["type"] == "code":
                     final_content += f"```{part['language']}\n{part['code']}\n```\n\n"
 
             final_content = final_content.strip()
