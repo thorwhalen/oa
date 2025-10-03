@@ -14,6 +14,7 @@ To install:	```pip install oa```
   - [Raw form - When you need to be closer to the metal](#raw-form---when-you-need-to-be-closer-to-the-metal)
 
 
+
 # Usage
 
 Sure, you can do many things in English now with our new AI superpowers, but still, to be able to really reuse and compose your best prompts, you had better parametrize them -- that is, distill them down to the minimal necessary interface. The function.
