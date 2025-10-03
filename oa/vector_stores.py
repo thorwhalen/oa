@@ -152,41 +152,81 @@ def mk_search_func_for_oa_vector_store(
     """
     oa_stores = OaStores(client)
 
-    # Create the basic search function with bound vector_store_id
-    basic_search = bind_and_modify(
-        oa_stores.client.vector_stores.search,
-        vector_store_id,
-        _param_changes=dict(query={"kind": Parameter.POSITIONAL_OR_KEYWORD}),
-    )
+    def search_func(query: Query, **kwargs) -> SearchResults:
+        """
+        Search function that uses an assistant and a thread to perform the search.
+        """
+        # Create a temporary assistant with access to the vector store
+        assistant = oa_stores.client.beta.assistants.create(
+            name="Search Assistant",
+            instructions="You are a search assistant. Use the file_search tool to find relevant documents.",
+            model="gpt-4o",  # Or any other suitable model
+            tools=[{"type": "file_search"}],
+            tool_resources={"file_search": {"vector_store_ids": [vector_store_id]}},
+        )
 
-    # If no doc_id_mapping, just return the basic search
-    if not doc_id_mapping:
-        return basic_search
+        try:
+            # Create a thread with the search query
+            thread = oa_stores.client.beta.threads.create(
+                messages=[
+                    {
+                        "role": "user",
+                        "content": query,
+                    }
+                ]
+            )
 
-    # Create a wrapper that maps file IDs back to document keys
-    def search_with_doc_mapping(query, **kwargs):
-        """Search function that maps results back to original document keys"""
-        results = basic_search(query, **kwargs)
+            # Create a run to process the query
+            run = oa_stores.client.beta.threads.runs.create(
+                thread_id=thread.id,
+                assistant_id=assistant.id,
+            )
 
-        # Map file IDs back to document keys
-        mapped_results = []
-        for result in results:
-            # Assuming result has a file_id attribute or similar
-            # This might need adjustment based on actual OpenAI response structure
-            if hasattr(result, "file_id") and result.file_id in doc_id_mapping:
-                # Replace or add the document key
-                mapped_result = result
-                mapped_result.doc_key = doc_id_mapping[result.file_id]
-                mapped_results.append(mapped_result.doc_key)  # Return just the doc key
-            elif hasattr(result, "id") and result.id in doc_id_mapping:
-                mapped_results.append(doc_id_mapping[result.id])
+            # Wait for the run to complete
+            import time
+
+            while run.status in ["queued", "in_progress"]:
+                time.sleep(1)
+                run = oa_stores.client.beta.threads.runs.retrieve(
+                    thread_id=thread.id, run_id=run.id
+                )
+
+            if run.status == "completed":
+                # Retrieve messages to get the search results
+                messages = oa_stores.client.beta.threads.messages.list(
+                    thread_id=thread.id
+                )
+
+                # Extract file IDs from annotations
+                file_ids = []
+                for message in messages.data:
+                    if message.role == "assistant":
+                        for content_block in message.content:
+                            if content_block.type == 'text':
+                                annotations = content_block.text.annotations
+                                for annotation in annotations:
+                                    if annotation.type == 'file_citation':
+                                        file_ids.append(
+                                            annotation.file_citation.file_id
+                                        )
+
+                if doc_id_mapping:
+                    return [
+                        doc_id_mapping.get(file_id)
+                        for file_id in file_ids
+                        if file_id in doc_id_mapping
+                    ]
+                return file_ids
+
             else:
-                # If we can't find a mapping, include the original result
-                mapped_results.append(result)
+                # Handle other run statuses (failed, cancelled, etc.)
+                return []
 
-        return mapped_results
+        finally:
+            # Clean up the temporary assistant
+            oa_stores.client.beta.assistants.delete(assistant.id)
 
-    return search_with_doc_mapping
+    return search_func
 
 
 def docs_to_search_func_factory_via_vector_store(
