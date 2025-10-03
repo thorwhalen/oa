@@ -141,7 +141,7 @@ def mk_search_func_for_oa_vector_store(
     vector_store_id: str, doc_id_mapping: Mapping[str, str] = None, *, client=None
 ) -> Callable[[Query], SearchResults]:
     """
-    Create a search function for an OpenAI vector store.
+    Create a search function for an OpenAI vector store using the Responses API.
 
     Args:
         vector_store_id: The ID of the vector store to search
@@ -154,77 +154,32 @@ def mk_search_func_for_oa_vector_store(
 
     def search_func(query: Query, **kwargs) -> SearchResults:
         """
-        Search function that uses an assistant and a thread to perform the search.
+        Search function that uses the Responses API to perform the search.
         """
-        # Create a temporary assistant with access to the vector store
-        assistant = oa_stores.client.beta.assistants.create(
-            name="Search Assistant",
+        # Use the new Responses API with a single call
+        response = oa_stores.client.responses.create(
+            model="gpt-4o",
+            input=query,
             instructions="You are a search assistant. Use the file_search tool to find relevant documents.",
-            model="gpt-4o",  # Or any other suitable model
             tools=[{"type": "file_search"}],
             tool_resources={"file_search": {"vector_store_ids": [vector_store_id]}},
+            **kwargs,
         )
 
-        try:
-            # Create a thread with the search query
-            thread = oa_stores.client.beta.threads.create(
-                messages=[
-                    {
-                        "role": "user",
-                        "content": query,
-                    }
-                ]
-            )
+        # Extract file IDs from the response annotations
+        file_ids = []
+        if response.output_text:
+            for annotation in response.output_text.annotations:
+                if annotation.type == 'file_citation':
+                    file_ids.append(annotation.file_citation.file_id)
 
-            # Create a run to process the query
-            run = oa_stores.client.beta.threads.runs.create(
-                thread_id=thread.id,
-                assistant_id=assistant.id,
-            )
-
-            # Wait for the run to complete
-            import time
-
-            while run.status in ["queued", "in_progress"]:
-                time.sleep(1)
-                run = oa_stores.client.beta.threads.runs.retrieve(
-                    thread_id=thread.id, run_id=run.id
-                )
-
-            if run.status == "completed":
-                # Retrieve messages to get the search results
-                messages = oa_stores.client.beta.threads.messages.list(
-                    thread_id=thread.id
-                )
-
-                # Extract file IDs from annotations
-                file_ids = []
-                for message in messages.data:
-                    if message.role == "assistant":
-                        for content_block in message.content:
-                            if content_block.type == 'text':
-                                annotations = content_block.text.annotations
-                                for annotation in annotations:
-                                    if annotation.type == 'file_citation':
-                                        file_ids.append(
-                                            annotation.file_citation.file_id
-                                        )
-
-                if doc_id_mapping:
-                    return [
-                        doc_id_mapping.get(file_id)
-                        for file_id in file_ids
-                        if file_id in doc_id_mapping
-                    ]
-                return file_ids
-
-            else:
-                # Handle other run statuses (failed, cancelled, etc.)
-                return []
-
-        finally:
-            # Clean up the temporary assistant
-            oa_stores.client.beta.assistants.delete(assistant.id)
+        if doc_id_mapping:
+            return [
+                doc_id_mapping.get(file_id)
+                for file_id in file_ids
+                if file_id in doc_id_mapping
+            ]
+        return file_ids
 
     return search_func
 
