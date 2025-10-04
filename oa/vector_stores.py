@@ -161,17 +161,21 @@ def mk_search_func_for_oa_vector_store(
             model="gpt-4o",
             input=query,
             instructions="You are a search assistant. Use the file_search tool to find relevant documents.",
-            tools=[{"type": "file_search"}],
-            tool_resources={"file_search": {"vector_store_ids": [vector_store_id]}},
+            tools=[
+                {
+                    "type": "file_search",
+                    "vector_store_ids": [vector_store_id],
+                }
+            ],
             **kwargs,
         )
 
-        # Extract file IDs from the response annotations
+        # Extract file IDs from the response
         file_ids = []
-        if response.output_text:
-            for annotation in response.output_text.annotations:
-                if annotation.type == 'file_citation':
-                    file_ids.append(annotation.file_citation.file_id)
+        for output in response.output:
+            if output.type == 'file_search':
+                for result in output.file_search.results:
+                    file_ids.append(result.file_id)
 
         if doc_id_mapping:
             return [
