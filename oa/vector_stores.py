@@ -173,7 +173,7 @@ def mk_search_func_for_oa_vector_store(
         # Extract file IDs from the response
         file_ids = []
         for output in response.output:
-            if output.type == 'file_search':
+            if output.type == "file_search":
                 for result in output.file_search.results:
                     file_ids.append(result.file_id)
 
