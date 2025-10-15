@@ -3,7 +3,8 @@
 from importlib.resources import files
 import os
 from functools import partial, lru_cache
-from typing import Mapping, Union, get_args, Literal
+from typing import Union, get_args, Literal
+from collections.abc import Mapping
 from types import SimpleNamespace
 
 from i2 import Sig, get_app_config_folder
@@ -347,7 +348,7 @@ def _extract_folder_and_suffixes(
     return root_folder, suffixes
 
 
-def mk_template_store(template_store: Union[Mapping, str]):
+def mk_template_store(template_store: Mapping | str):
     if isinstance(template_store, Mapping):
         return template_store
     elif isinstance(template_store, str):
@@ -409,34 +410,31 @@ extractors = oa_extractors_obj(
 
 # --------------------------------------------------------------------------------------
 # misc utils
-from typing import Iterable
+from collections.abc import Iterable
 from dateutil.parser import parse as parse_date
 from datetime import datetime, timezone
 from itertools import chain, islice
 from typing import (
-    Iterable,
     Union,
     Dict,
     List,
     Tuple,
-    Mapping,
     TypeVar,
-    Iterator,
-    Callable,
     Optional,
     T,
 )
+from collections.abc import Iterable, Mapping, Iterator, Callable
 
 KT = TypeVar("KT")  # there's a typing.KT, but pylance won't allow me to use it!
 VT = TypeVar("VT")  # there's a typing.VT, but pylance won't allow me to use it!
 
 
 def chunk_iterable(
-    iterable: Union[Iterable[T], Mapping[KT, VT]],
+    iterable: Iterable[T] | Mapping[KT, VT],
     chk_size: int,
     *,
-    chunk_type: Optional[Callable[..., Union[Iterable[T], Mapping[KT, VT]]]] = None,
-) -> Iterator[Union[List[T], Tuple[T, ...], Dict[KT, VT]]]:
+    chunk_type: Callable[..., Iterable[T] | Mapping[KT, VT]] | None = None,
+) -> Iterator[list[T] | tuple[T, ...] | dict[KT, VT]]:
     """
     Divide an iterable into chunks/batches of a specific size.
 
@@ -541,11 +539,12 @@ def save_in_temp_dir(obj, serializer=pickle.dumps):
     return f.name
 
 
-from typing import Any, Optional, Callable
+from typing import Any, Optional
+from collections.abc import Callable
 
 
 def mk_local_files_saves_callback(
-    rootdir: Optional[str] = None,
+    rootdir: str | None = None,
     *,
     serializer: Callable[[Any], bytes] = pickle.dumps,
     index_to_filename: Callable[[int], str] = "{:05.0f}".format,
@@ -571,7 +570,8 @@ def mk_local_files_saves_callback(
 
 import json
 from operator import methodcaller
-from typing import Iterable, Callable, T
+from typing import T
+from collections.abc import Iterable, Callable
 from dol import Pipe
 
 DFLT_ENCODING = "utf-8"
@@ -613,7 +613,7 @@ jsonl_loads = Pipe(jsonl_loads_iter, list)
 jsonl_loads.__doc__ = jsonl_loads_iter.__doc__
 
 
-from typing import Iterable
+from collections.abc import Iterable
 import openai
 from i2.signatures import SignatureAble
 from inspect import Parameter
@@ -658,17 +658,15 @@ def source_parameter_props_from(parameters: Mapping[str, Parameter]):
 from dataclasses import dataclass, field
 import time
 from typing import (
-    Callable,
     Any,
     Optional,
     Tuple,
     Dict,
-    MutableMapping,
-    Iterable,
     Union,
     TypeVar,
     Generic,
 )
+from collections.abc import Callable, MutableMapping, Iterable
 
 # Define type variables and aliases
 KT = TypeVar("KT")  # Key type
@@ -709,12 +707,12 @@ class ProcessingManager(Generic[KT, VT, Result]):
     - **cycles** (`int`): Number of processing cycles that have been performed.
     """
 
-    pending_items: Union[MutableMapping[KT, VT], Iterable[VT]]
-    processing_function: Callable[[VT], Tuple[Status, Result]]
+    pending_items: MutableMapping[KT, VT] | Iterable[VT]
+    processing_function: Callable[[VT], tuple[Status, Result]]
     handle_status_function: Callable[[VT, Status, Result], bool]
-    wait_time_function: Callable[[float, Dict], float]
+    wait_time_function: Callable[[float, dict], float]
     status_check_interval: float = 5.0
-    max_cycles: Optional[int] = None
+    max_cycles: int | None = None
     completed_items: MutableMapping[KT, Result] = field(default_factory=dict)
     cycles: int = 0  # Tracks the number of cycles performed
 

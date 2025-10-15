@@ -2,7 +2,8 @@
 
 from collections.abc import Mapping
 from operator import attrgetter, methodcaller
-from typing import Optional, Union, Iterable, Callable, Any, List, Literal, T
+from typing import Optional, Union, Any, List, Literal, T
+from collections.abc import Iterable, Callable
 import json
 from functools import wraps, partial, cached_property
 
@@ -80,7 +81,7 @@ def _is_instance_and_has_id(x=None, *, type_: type):
 
 
 def extract_id(
-    method: Optional[Callable] = None,
+    method: Callable | None = None,
     *,
     is_id: FilterFunc = _is_string,
     has_id: FilterFunc = _has_id_attr,
@@ -201,8 +202,8 @@ class OaFilesBase(OaMapping):
     @Sig.replace_kwargs_using(files_create_sig - "purpose")
     def __init__(
         self,
-        client: Optional[openai.Client] = None,
-        purpose: Optional[Purpose] = DFLT_PURPOSE,  # type: ignore
+        client: openai.Client | None = None,
+        purpose: Purpose | None = DFLT_PURPOSE,  # type: ignore
         iter_filter_purpose: bool = False,  # type: ignore
         encoding: str = DFLT_ENCODING,
         **extra_kwargs,
@@ -236,7 +237,7 @@ class OaFilesBase(OaMapping):
         return self.client.files.delete(file_id)  # Assuming there's a delete method
 
     @params_from_openai_files_cls
-    def append(self, file: Union[FileTypes, dict]) -> FileObject:
+    def append(self, file: FileTypes | dict) -> FileObject:
         # Note: self.client.create can be found in openai.resources.files.Files.create
         if is_task_dict(file) or is_task_dict_list(file):
             file = jsonl_dumps(file, self.encoding)
@@ -321,7 +322,7 @@ class EmbeddingsDataObject(TypedDict):
 
     object: Literal["embeddings"]  # This enforces the value to be 'embeddings'
     index: int  # Required field
-    embeddings: List[float]  # The third known field, 'embeddings'
+    embeddings: list[float]  # The third known field, 'embeddings'
 
 
 DataObjectValue = TypeVar("DataObjectValue")
@@ -394,7 +395,7 @@ from typing import Literal
 # TODO: Why does go to definition here (for self.client.batches,
 #    but also for self.client.files), but not in OpenAIFilesBase?
 class OaBatchesBase(OaMapping):
-    def __init__(self, client: Optional[openai.Client] = None, **extra_kwargs):
+    def __init__(self, client: openai.Client | None = None, **extra_kwargs):
         if client is None:
             client = mk_client()
         self.client = client
@@ -423,7 +424,7 @@ class OaBatchesBase(OaMapping):
         *,
         endpoint: BatchesEndpoint = DFLT_BATCHES_ENDPOINT,  # type: ignore
         completion_window: Literal["24h"] = "24h",
-        metadata: Optional[Dict[str, str]] = None,
+        metadata: dict[str, str] | None = None,
     ):
         """Create and submit a new batch via submitting the input file (obj or id)."""
         return self.client.batches.create(
@@ -469,7 +470,7 @@ def date_filter(
     min_date: DateSpec = None,
     max_date: DateSpec = None,
     *,
-    date_extractor: Union[str, Callable] = "created_at",
+    date_extractor: str | Callable = "created_at",
     stop_on_first_out_of_range=False,
 ):
     """
@@ -554,11 +555,11 @@ from oa.batches import get_output_file_data, get_batch_id_and_obj, get_batch_obj
 from oa.util import concat_lists, extractors
 
 Segment = str  # TODO: Replace by more specific, global type
-Vector = List[float]  # TODO: Replace by more specific, global type
+Vector = list[float]  # TODO: Replace by more specific, global type
 
 
 class OaDacc:
-    def __init__(self, client: Optional[openai.Client] = None) -> None:
+    def __init__(self, client: openai.Client | None = None) -> None:
         if client is None:
             client = mk_client()
         self.client = client
@@ -585,7 +586,7 @@ class OaDacc:
     def ensure_batch_obj(self, batch) -> BatchObj:
         return get_batch_obj(self.s, batch)
 
-    def batch_id_and_obj(self, batch) -> Tuple[BatchId, BatchObj]:
+    def batch_id_and_obj(self, batch) -> tuple[BatchId, BatchObj]:
         batch_id, batch_obj = get_batch_id_and_obj(self.s, batch)
         return batch_id, batch_obj
 
@@ -597,7 +598,7 @@ class OaDacc:
         batch_obj = self.ensure_batch_obj(batch)
         return batch_obj.status
 
-    def retrieve_embeddings(self, batch: BatchSpec) -> List[Vector]:
+    def retrieve_embeddings(self, batch: BatchSpec) -> list[Vector]:
         """Retrieve output embeddings for a completed batch."""
         output_data_obj = self.get_output_file_data(batch)
 
@@ -610,14 +611,14 @@ class OaDacc:
             )
         )
 
-    def segments_from_file(self, file) -> List[Segment]:
+    def segments_from_file(self, file) -> list[Segment]:
         """
         Retrieve output embeddings for a completed batch, from the file it's stored in.
         """
         input_data = self.json_files[file]
         return extractors.inputs_from_file_obj(input_data)
 
-    def segments_from_batch(self, batch: BatchSpec) -> List[Segment]:
+    def segments_from_batch(self, batch: BatchSpec) -> list[Segment]:
         """
         Retrieve output embeddings for a completed batch, given the batch object or id.
         """
@@ -625,7 +626,7 @@ class OaDacc:
         input_data_file_id = batch_obj.input_file_id
         return self.segments_from_file(input_data_file_id)
 
-    def embeddings_from_file(self, file) -> List[Vector]:
+    def embeddings_from_file(self, file) -> list[Vector]:
         """
         Retrieve output embeddings for a completed batch, from the file it's stored in.
         """
@@ -637,7 +638,7 @@ class OaDacc:
             )
         )
 
-    def embeddings_from_batch(self, batch: BatchSpec) -> List[Vector]:
+    def embeddings_from_batch(self, batch: BatchSpec) -> list[Vector]:
         """
         Retrieve output embeddings for a completed batch, given the batch object or id.
         """
@@ -646,7 +647,7 @@ class OaDacc:
 
     def segments_and_embeddings(
         self, batch: BatchSpec
-    ) -> Tuple[List[Segment], List[Vector]]:
+    ) -> tuple[list[Segment], list[Vector]]:
         """Retrieve segments nad embeddings for a completed batch."""
         batch_obj = self.ensure_batch_obj(batch)
         return (
@@ -687,7 +688,7 @@ def print_some_jsonl_line_fields(line):
 class OaVectorStoresBase(OaMapping):
     """Base class for OpenAI vector stores mapping interface."""
 
-    def __init__(self, client: Optional[openai.Client] = None, **extra_kwargs):
+    def __init__(self, client: openai.Client | None = None, **extra_kwargs):
         if client is None:
             client = mk_client()
         self.client = client
@@ -737,7 +738,7 @@ class OaVectorStoreFiles(OaMapping):
     def __init__(
         self,
         vector_store_id: str,
-        client: Optional[openai.Client] = None,
+        client: openai.Client | None = None,
         **extra_kwargs,
     ):
         if client is None:

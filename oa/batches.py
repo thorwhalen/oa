@@ -7,7 +7,8 @@ Useful links:
 
 """
 
-from typing import Optional, Union, Callable, List, Any, Tuple
+from typing import Optional, Union, List, Any, Tuple
+from collections.abc import Callable
 from functools import partial
 import itertools
 from oa.util import batch_endpoints, BatchObj
@@ -90,7 +91,7 @@ def _mk_embeddings_request_body(
     text_or_texts,
     model=DFLT_EMBEDDINGS_MODEL,
     user=NOT_GIVEN,
-    dimensions: Optional[int] = NOT_GIVEN,
+    dimensions: int | None = NOT_GIVEN,
     **extra_embeddings_params,
 ):
     return _rm_not_given_values(
@@ -122,15 +123,15 @@ def _mk_task_request_dict(
 def mk_batch_file_embeddings_task(
     texts: TextOrTexts,
     *,
-    custom_id: Optional[str] = None,
-    validate: Optional[Union[bool, Callable]] = True,
+    custom_id: str | None = None,
+    validate: bool | Callable | None = True,
     valid_text_getter=_raise_if_any_invalid,
     # client=None,
     model=DFLT_EMBEDDINGS_MODEL,
-    dimensions: Optional[int] = NOT_GIVEN,
+    dimensions: int | None = NOT_GIVEN,
     custom_id_per_text=None,
     **extra_embeddings_params,
-) -> Union[dict, List[dict]]:
+) -> dict | list[dict]:
     """
     Create a batch task (json-)dicts for generating embeddings.
 
@@ -336,7 +337,7 @@ def get_batch_obj(oa_stores, batch: BatchSpec) -> BatchObj:
         raise KeyError(f"Batch {batch} not found.")
 
 
-def get_batch_id_and_obj(oa_stores, batch: BatchSpec) -> Tuple[BatchId, BatchObj]:
+def get_batch_id_and_obj(oa_stores, batch: BatchSpec) -> tuple[BatchId, BatchObj]:
     try:
         batch_obj = oa_stores.batches_base[batch]
         batch_id = batch_obj.id

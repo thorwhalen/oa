@@ -18,7 +18,7 @@ T = TypeVar("T", bound=BaseModel)
 # JsonL (lists of dicts)
 
 
-class JsonL(RootModel[List[T]], Generic[T]):
+class JsonL(RootModel[list[T]], Generic[T]):
     """
     A generic class for JSONL (JSON Lines) files, which are lists of dictionaries.
     """
@@ -38,7 +38,7 @@ InputDataJsonL = JsonL[InputText]
 
 
 class BatchRequestBody(BaseModel):
-    input: List[str]
+    input: list[str]
     model: str
 
 
@@ -68,7 +68,7 @@ class Usage(BaseModel):
 # ResponseBody is now parameterized by DatumT
 class ResponseBody(BaseModel, Generic[DatumT]):
     object: str
-    data: List[DatumT]  # Generic list of DatumT
+    data: list[DatumT]  # Generic list of DatumT
     model: str
     usage: Usage
 

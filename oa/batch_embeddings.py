@@ -15,15 +15,11 @@ from typing import (
     List,
     Union,
     Optional,
-    Callable,
     Any,
     TypeVar,
-    Iterable,
-    Mapping,
-    MutableMapping,
     Tuple,
-    Iterator,
 )
+from collections.abc import Callable, Iterable, Mapping, MutableMapping, Iterator
 from dataclasses import dataclass, field
 from collections import defaultdict
 from functools import partial
@@ -60,11 +56,11 @@ class BatchRequestCounts:
 
 # Type aliases for improved readability
 Segment = str
-Segments = Union[List[Segment], Dict[str, Segment]]
-Embedding = List[float]
-Embeddings = List[Embedding]
-SegmentsMapper = Dict[BatchId, List[Segment]]
-EmbeddingsMapper = Dict[BatchId, List[Embedding]]
+Segments = Union[list[Segment], dict[str, Segment]]
+Embedding = list[float]
+Embeddings = list[Embedding]
+SegmentsMapper = dict[BatchId, list[Segment]]
+EmbeddingsMapper = dict[BatchId, list[Embedding]]
 
 # Default values
 DFLT_BATCH_SIZE = 1000
@@ -162,11 +158,11 @@ class ProcessingMall(Mapping):
     def __init__(
         self,
         *,
-        current: Optional[MutableMapping] = None,
-        segments: Optional[MutableMapping] = None,
-        finished: Optional[MutableMapping] = None,
-        erred: Optional[MutableMapping] = None,
-        embeddings: Optional[MutableMapping] = None,
+        current: MutableMapping | None = None,
+        segments: MutableMapping | None = None,
+        finished: MutableMapping | None = None,
+        erred: MutableMapping | None = None,
+        embeddings: MutableMapping | None = None,
     ):
         """
         Initialize the ProcessingMall with optional custom stores.
@@ -245,17 +241,17 @@ class EmbeddingsBatchProcess:
 
     def __init__(
         self,
-        segments: Optional[Segments] = None,
-        processing_mall: Optional[Union[str, ProcessingMall]] = None,
+        segments: Segments | None = None,
+        processing_mall: str | ProcessingMall | None = None,
         *,
         model: str = DFLT_EMBEDDINGS_MODEL,
         batch_size: int = DFLT_BATCH_SIZE,
         poll_interval: float = DFLT_POLL_INTERVAL,
-        max_polls: Optional[int] = DFLT_MAX_POLLS,
+        max_polls: int | None = DFLT_MAX_POLLS,
         verbosity: int = DFLT_VERBOSITY,
         keep_processing_info: bool = DFLT_KEEP_PROCESSING_INFO,
-        dacc: Optional[OaDacc] = None,
-        logger: Optional[logging.Logger] = None,
+        dacc: OaDacc | None = None,
+        logger: logging.Logger | None = None,
         **embeddings_kwargs,
     ):
         """
@@ -330,7 +326,7 @@ class EmbeddingsBatchProcess:
             self.processing_mall.clear()
         return False  # Don't suppress exceptions
 
-    def _prepare_batches(self) -> Iterator[Tuple[List[Segment], BatchId]]:
+    def _prepare_batches(self) -> Iterator[tuple[list[Segment], BatchId]]:
         """
         Prepare and chunk segments into batches.
 
@@ -357,7 +353,7 @@ class EmbeddingsBatchProcess:
 
             yield segments_batch, batch_id
 
-    def submit_batches(self) -> Dict[BatchId, BatchObj]:
+    def submit_batches(self) -> dict[BatchId, BatchObj]:
         """
         Submit all segment batches to the OpenAI API.
 
@@ -452,7 +448,7 @@ class EmbeddingsBatchProcess:
         self._is_running = True
 
         # Define the processing function
-        def batch_processor(batch_id: BatchId) -> Tuple[str, Any]:
+        def batch_processor(batch_id: BatchId) -> tuple[str, Any]:
             try:
                 # Get batch status and output data
                 # Ensure we're using string batch_id
@@ -503,7 +499,7 @@ class EmbeddingsBatchProcess:
             f"{len(self.processing_mall.erred)} failed"
         )
 
-    def aggregate_results(self) -> Tuple[List[Segment], List[Embedding]]:
+    def aggregate_results(self) -> tuple[list[Segment], list[Embedding]]:
         """
         Aggregate all segments and embeddings from completed batches.
 
@@ -554,7 +550,7 @@ class EmbeddingsBatchProcess:
 
         return all_segments, all_embeddings
 
-    def run(self) -> Tuple[List[Segment], List[Embedding]]:
+    def run(self) -> tuple[list[Segment], list[Embedding]]:
         """
         Execute the complete batch embedding workflow and return results.
 
@@ -587,11 +583,11 @@ class EmbeddingsBatchProcess:
         return self._is_complete
 
     @property
-    def result(self) -> Optional[Tuple[List[Segment], List[Embedding]]]:
+    def result(self) -> tuple[list[Segment], list[Embedding]] | None:
         """Get the aggregated results if available"""
         return self._result
 
-    def get_status_summary(self) -> Dict[str, int]:
+    def get_status_summary(self) -> dict[str, int]:
         """
         Get a summary of batch statuses.
 
@@ -618,15 +614,15 @@ def compute_embeddings(
     *,
     batch_size: int = DFLT_BATCH_SIZE,
     poll_interval: float = DFLT_POLL_INTERVAL,
-    max_polls: Optional[int] = DFLT_MAX_POLLS,
+    max_polls: int | None = DFLT_MAX_POLLS,
     verbosity: int = DFLT_VERBOSITY,
-    processing_mall: Optional[ProcessingMall] = None,
+    processing_mall: ProcessingMall | None = None,
     keep_processing_info: bool = DFLT_KEEP_PROCESSING_INFO,
-    dacc: Optional[OaDacc] = None,
+    dacc: OaDacc | None = None,
     return_process: bool = False,
-    logger: Optional[logging.Logger] = None,
+    logger: logging.Logger | None = None,
     **embeddings_kwargs,
-) -> Union[Tuple[List[Segment], List[Embedding]], EmbeddingsBatchProcess]:
+) -> tuple[list[Segment], list[Embedding]] | EmbeddingsBatchProcess:
     """
     Compute embeddings for text segments using OpenAI's batch API.
 

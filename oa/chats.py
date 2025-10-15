@@ -30,7 +30,8 @@ you to access the data in a shared chat in a structured way.
 import re
 import json
 import asyncio
-from typing import Callable, Optional, Union, Iterable, List, Dict, Any
+from typing import Optional, Union, List, Dict, Any
+from collections.abc import Callable, Iterable
 from functools import partial, cached_property
 from bs4 import BeautifulSoup
 from dol import path_filter, Pipe, path_get, paths_getter
@@ -164,7 +165,7 @@ def reduce_chat_html(html: str) -> str:
         return html
 
 
-def parse_chat_html(html: str) -> List[Dict[str, Any]]:
+def parse_chat_html(html: str) -> list[dict[str, Any]]:
     """
     Parses conversation data from a shared chat HTML file into a structured list of messages.
 
@@ -308,7 +309,7 @@ def remove_utm_source(text):
 
 
 def find_url_keys(data, current_path=""):
-    """
+    r"""
     Recursively finds all paths in a JSON-like object (nested dicts/lists) where URL strings are present.
 
     This is a generator function that yields each path as a dot-separated string. Supports paths through
@@ -365,7 +366,7 @@ def find_url_keys(data, current_path=""):
 
 
 def find_all_matching_paths_in_list_values(
-    nested_dict, target_value: Union[Callable, str]
+    nested_dict, target_value: Callable | str
 ):
     """
     Find all paths in a nested dictionary where target_value evaluates to True
@@ -395,7 +396,7 @@ def find_all_matching_paths_in_list_values(
     )
 
 
-def _ensure_filter_func(target: Union[str, Callable]) -> Callable:
+def _ensure_filter_func(target: str | Callable) -> Callable:
     """Convert a string to a regex filter function, or pass through callable."""
     if isinstance(target, str):
         target_pattern = re.compile(target, re.DOTALL)

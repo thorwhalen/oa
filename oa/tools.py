@@ -1,7 +1,8 @@
 """Interface tools"""
 
 from functools import partial
-from typing import Optional, Callable
+from typing import Optional
+from collections.abc import Callable
 import string
 
 from i2 import Sig, Pipe
@@ -21,7 +22,7 @@ string_formatter = string.Formatter()
 DFLT_IGNORE_PATTERN = re.compile(r"```.*?```", re.DOTALL)
 
 
-def remove_pattern(string, pattern_to_remove: Optional[Pattern] = DFLT_IGNORE_PATTERN):
+def remove_pattern(string, pattern_to_remove: Pattern | None = DFLT_IGNORE_PATTERN):
     """
     Returns a where a given regular expression pattern has been removed.
 
@@ -36,8 +37,8 @@ def remove_pattern(string, pattern_to_remove: Optional[Pattern] = DFLT_IGNORE_PA
 
 def extract_parts(string: str, pattern: Pattern) -> NamedTuple:
     PartResult = namedtuple("PartResult", ["matched", "unmatched"])
-    matched: List[str] = []
-    unmatched: List[str] = []
+    matched: list[str] = []
+    unmatched: list[str] = []
     last_end = 0
 
     for match in re.finditer(pattern, string):
@@ -96,7 +97,7 @@ def pattern_based_map(
 
 
 def _extract_names_from_format_string(
-    template: str, *, ignore_pattern: Optional[Pattern] = DFLT_IGNORE_PATTERN
+    template: str, *, ignore_pattern: Pattern | None = DFLT_IGNORE_PATTERN
 ):
     """Extract names from a string format template
 
@@ -124,15 +125,15 @@ def _extract_defaults_from_format_string(
     """
     if ignore_pattern is not None:
         template = remove_pattern(template, ignore_pattern)
-    return dict(
-        (name, specifier)
+    return {
+        name: specifier
         for _, name, specifier, _ in string_formatter.parse(template)
         if name is not None and specifier != ""
-    )
+    }
 
 
 def _template_without_specifiers(
-    template: str, *, ignore_pattern: Optional[Pattern] = DFLT_IGNORE_PATTERN
+    template: str, *, ignore_pattern: Pattern | None = DFLT_IGNORE_PATTERN
 ) -> str:
     """Uses remove any extras from a template string, leaving only text and fields.
 
@@ -162,7 +163,7 @@ def _template_without_specifiers(
 
 
 def _template_with_double_braces_in_ignored_sections(
-    template, *, ignore_pattern: Optional[Pattern] = DFLT_IGNORE_PATTERN
+    template, *, ignore_pattern: Pattern | None = DFLT_IGNORE_PATTERN
 ) -> str:
     """double the braces of the parts of the template that should be ignored"""
     double_braces = lambda string: string.replace("{", "{{").replace("}", "}}")
@@ -172,7 +173,7 @@ def _template_with_double_braces_in_ignored_sections(
 
 
 def string_format_embodier(
-    template, *, ignore_pattern: Optional[Pattern] = DFLT_IGNORE_PATTERN
+    template, *, ignore_pattern: Pattern | None = DFLT_IGNORE_PATTERN
 ):
 
     names = _extract_names_from_format_string(template, ignore_pattern=ignore_pattern)
@@ -199,11 +200,11 @@ add_module = add_attr("__module__")
 def prompt_function(
     template,
     *,
-    defaults: Optional[dict] = None,
+    defaults: dict | None = None,
     template_to_names: Callable = _extract_names_from_format_string,
     template_to_defaults: Callable = _extract_defaults_from_format_string,
     embodier: Callable = string_format_embodier,
-    arg_kinds: Optional[dict] = None,
+    arg_kinds: dict | None = None,
     name="prompt",
     prompt_func=chat,
     prompt_func_kwargs=None,
@@ -309,7 +310,7 @@ def prompt_function(
 
 import json
 from i2 import Sig, Pipe
-from typing import Mapping
+from collections.abc import Mapping
 
 
 def identity(x):
@@ -431,7 +432,7 @@ def _might_be_a_json_string(string):
     return re.compile(r"^\s*[\[\{]").match(string) is not None
 
 
-def _ensure_json_schema(json_schema: Union[str, bytes, Mapping]) -> dict:
+def _ensure_json_schema(json_schema: str | bytes | Mapping) -> dict:
     """
     A few things to make it more probable that the input is a oa valid json schema
     """
@@ -463,11 +464,11 @@ def _ensure_json_schema(json_schema: Union[str, bytes, Mapping]) -> dict:
 #   --> need to ensure that all work well together (no obfuscated conflicts)
 def prompt_json_function(
     template,
-    json_schema: Union[str, bytes, Mapping] = "string",
+    json_schema: str | bytes | Mapping = "string",
     *,
-    defaults: Optional[dict] = None,
+    defaults: dict | None = None,
     embodier: Callable = string_format_embodier,
-    arg_kinds: Optional[dict] = None,
+    arg_kinds: dict | None = None,
     name="prompt",
     prompt_func=chat,
     prompt_func_kwargs=None,
@@ -542,7 +543,8 @@ def infer_schema_from_verbal_description(verbal_description: str):
     return f(verbal_description=verbal_description)
 
 
-from typing import Mapping, Optional, KT, Union
+from typing import Optional, KT, Union
+from collections.abc import Mapping
 from dol import filt_iter
 from oa.util import mk_template_store, DFLT_TEMPLATES_SOURCE
 import os
@@ -571,12 +573,12 @@ class PromptFuncs:
 
     def __init__(
         self,
-        template_store: Union[Mapping, str] = DFLT_TEMPLATE_SOURCE_WITH_SUFFIXES,
+        template_store: Mapping | str = DFLT_TEMPLATE_SOURCE_WITH_SUFFIXES,
         *,
         function_key: Callable[[StoreKey], FuncName] = dflt_function_key,
         factory_key: Callable[[StoreKey], FactoryKey] = dflt_factory_key,
         factories: Callable[[FactoryKey], Callable] = dflt_factories,
-        extra_template_kwargs: Optional[Mapping[StoreKey, Mapping]] = None,
+        extra_template_kwargs: Mapping[StoreKey, Mapping] | None = None,
     ):
         self._template_store = mk_template_store(template_store)
         self._function_key = function_key

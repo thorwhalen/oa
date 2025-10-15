@@ -2,7 +2,7 @@
 illustrated using different styles of images, taking art movements and
 famous artists as styles."""
 
-from typing import Mapping, MutableMapping
+from collections.abc import Mapping, MutableMapping
 import os
 import io
 from itertools import cycle

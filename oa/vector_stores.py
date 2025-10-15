@@ -3,7 +3,8 @@
 import tempfile
 from functools import partial
 import os
-from typing import Callable, Mapping, Iterable, Any
+from typing import Any
+from collections.abc import Callable, Mapping, Iterable
 from oa.stores import OaStores, OaVectorStoreFiles, OaFiles
 
 Query = str

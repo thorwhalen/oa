@@ -3,7 +3,8 @@
 import re
 from itertools import chain
 from functools import partial
-from typing import Union, Iterable, Optional, Mapping, KT, Callable
+from typing import Union, Optional, KT
+from collections.abc import Iterable, Mapping, Callable
 
 from types import SimpleNamespace
 from i2 import Sig, Param
@@ -67,7 +68,7 @@ model_information.model_information_dict = model_information_dict
 # TODO: Parse more info and complete this function
 #     (see https://github.com/thorwhalen/oa/discussions/8#discussioncomment-9138661)
 def compute_price(
-    model: str, num_input_tokens: int = None, num_output_tokens: Optional[int] = None
+    model: str, num_input_tokens: int = None, num_output_tokens: int | None = None
 ):
     """Compute the price of a model given the number of input and output tokens"""
     assert num_output_tokens is None, "num_output_tokens not yet implemented"
@@ -132,7 +133,7 @@ def dalle(prompt, n=1, size="512x512", **image_create_params):
     return r.data[0].url
 
 
-def list_engine_ids(pattern: Optional[str] = None):
+def list_engine_ids(pattern: str | None = None):
     """List the available engine IDs. Optionally filter by a regex pattern."""
     models_list = mk_client().models.list()
     model_ids = [x.id for x in models_list.data]
@@ -206,14 +207,14 @@ extra_embeddings_params = Sig(openai.embeddings.create) - {"input", "model"}
 def embeddings(
     texts: TextOrTexts = None,
     *,
-    batch_size: Optional[int] = 2048,  # found on unofficial OpenAI API docs
-    egress: Optional[str] = None,
-    batch_callback: Optional[Callable[[int, List[list]], Any]] = None,
-    validate: Optional[Union[bool, Callable]] = True,
+    batch_size: int | None = 2048,  # found on unofficial OpenAI API docs
+    egress: str | None = None,
+    batch_callback: Callable[[int, list[list]], Any] | None = None,
+    validate: bool | Callable | None = True,
     valid_text_getter=_raise_if_any_invalid,
     model=DFLT_EMBEDDINGS_MODEL,
     client=None,
-    dimensions: Optional[int] = NOT_GIVEN,
+    dimensions: int | None = NOT_GIVEN,
     **extra_embeddings_params,
 ):
     """
@@ -359,7 +360,7 @@ def _embeddings_batch(
     texts: TextOrTexts,
     model=DFLT_EMBEDDINGS_MODEL,
     client=None,
-    dimensions: Optional[int] = NOT_GIVEN,
+    dimensions: int | None = NOT_GIVEN,
     **extra_embeddings_params,
 ):
 

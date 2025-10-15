@@ -112,10 +112,10 @@ pytype_of_jstype = {
 class Message(TypedDict):
     role: str
     content: str
-    name: Optional[str]
+    name: str | None
 
 
-Messages = List[Message]
+Messages = list[Message]
 Model = str  # TODO: should be Literal parsed from the models list
 
 pytype_of_name = {

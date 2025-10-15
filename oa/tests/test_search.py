@@ -1,6 +1,6 @@
 """Test search functionality"""
 
-from typing import Callable
+from collections.abc import Callable
 import os
 
 # ------------------------------------------------------------------------------

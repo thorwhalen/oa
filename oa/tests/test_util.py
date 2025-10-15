@@ -10,7 +10,7 @@ def test_processing_manager_all_complete():
     """
 
     # Define a processing function that always returns 'completed'
-    def processing_function(item: Any) -> Tuple[Status, Result]:
+    def processing_function(item: Any) -> tuple[Status, Result]:
         return "completed", f"Result for {item}"
 
     # Define a handle_status_function that removes items when completed
@@ -18,7 +18,7 @@ def test_processing_manager_all_complete():
         return status == "completed"
 
     # Define a wait_time_function that doesn't wait
-    def wait_time_function(cycle_duration: float, local_vars: Dict) -> float:
+    def wait_time_function(cycle_duration: float, local_vars: dict) -> float:
         return 0.0
 
     pending_items = {"item1": "data1", "item2": "data2", "item3": "data3"}
@@ -77,7 +77,7 @@ def test_processing_manager_user_story():
         "task5": 0,  # Will retry on failure
     }
 
-    def processing_function(item: Any) -> Tuple[Status, Result]:
+    def processing_function(item: Any) -> tuple[Status, Result]:
         """
         Simulates processing of a task.
         """
@@ -152,7 +152,7 @@ def test_processing_manager_user_story():
             print(f"Task {task_id} is in progress.")
             return False
 
-    def wait_time_function(cycle_duration: float, local_vars: Dict) -> float:
+    def wait_time_function(cycle_duration: float, local_vars: dict) -> float:
         """
         Determines how long to wait before the next cycle.
         """
