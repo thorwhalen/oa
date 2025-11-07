@@ -499,7 +499,7 @@ def prompt_json_function(
 
     egress = Pipe(json.loads, egress or identity)
 
-    return prompt_function(
+    func = prompt_function(
         template,
         defaults=defaults,
         embodier=embodier,
@@ -512,6 +512,8 @@ def prompt_json_function(
         doc=doc,
         module=module,
     )
+    func.json_schema = json_schema
+    return func
 
 
 def infer_schema_from_verbal_description(verbal_description: str):
