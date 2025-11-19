@@ -3,6 +3,7 @@ on: [push, pull_request]
 
 env:
   PROJECT_NAME: oa
+  OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
 
 jobs:
   validation:
