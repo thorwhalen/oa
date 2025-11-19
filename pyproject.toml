@@ -32,6 +32,7 @@ dependencies = [
     "tiktoken",
     "python-dateutil",
     "beautifulsoup4",
+    "dill"
 ]
 
 [project.license]
