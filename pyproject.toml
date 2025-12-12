@@ -6,7 +6,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "oa"
-version = "0.1.44"
+version = "0.1.45"
 description = "Python interface to OpenAI"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -32,7 +32,7 @@ dependencies = [
     "tiktoken",
     "python-dateutil",
     "beautifulsoup4",
-    "dill"
+    "dill",
 ]
 
 [project.license]
