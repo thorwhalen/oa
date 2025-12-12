@@ -631,28 +631,28 @@ class PromptFuncs:
 
 
 # -----------------------------------------------------------------------------
-# constrained_answer: 
+# constrained_answer:
 
 import oa
 from typing import Union
 
 
 def constrained_answer(
-    prompt: str, 
+    prompt: str,
     valid_answers: Union[list[str], list[int], list[float], type, tuple[float, float]],
     *,
     model="gpt-4o-mini",
-    n: int = 1
+    n: int = 1,
 ):
     """
     Get an answer from the LLM constrained to a set of valid answers or types.
-    
-    Uses `prompt_json_function` to ensure the LLM returns a valid response based on 
+
+    Uses `prompt_json_function` to ensure the LLM returns a valid response based on
     constraints.
 
     This can be seen as a facade for some common structured output use cases, as well
     as a convenient tool to do response statistics and validation (via n>1).
-    
+
     Args:
         prompt: The question or prompt to ask the LLM
         valid_answers: Can be:
@@ -665,10 +665,10 @@ def constrained_answer(
             - tuple[float, float]: Numerical range (min, max) inclusive
         model: The model to use for the LLM (default: "gpt-4o-mini")
         n: Number of times to call the LLM (default: 1)
-        
+
     Returns:
         One of the valid answers, respecting the type constraint
-        
+
     Examples:
         >>> # String options
         >>> answer = constrained_answer(
@@ -677,7 +677,7 @@ def constrained_answer(
         ... )
         >>> answer in ["compiled", "interpreted", "both"]
         True
-        
+
         >>> # Boolean
         >>> answer = constrained_answer(
         ...     "Is Python dynamically typed?",
@@ -685,7 +685,7 @@ def constrained_answer(
         ... )
         >>> isinstance(answer, bool)
         True
-        
+
         >>> # Integer options
         >>> answer = constrained_answer(
         ...     "How many wheels does a car have?",
@@ -693,7 +693,7 @@ def constrained_answer(
         ... )
         >>> answer in [2, 3, 4, 6, 8]
         True
-        
+
         >>> # Numerical range
         >>> answer = constrained_answer(
         ...     "What is a reasonable hourly rate for a senior Python developer? (USD)",
@@ -704,15 +704,16 @@ def constrained_answer(
     """
     if n != 1:
         from functools import partial
-        f = partial(constrained_answer, prompt, valid_answers, model, n=1)
+
+        f = partial(constrained_answer, prompt, valid_answers, model=model, n=1)
         return [f() for _ in range(n)]
-    
+
     # Determine the type and constraints
     if isinstance(valid_answers, list):
         # List of specific options
         if not valid_answers:
             raise ValueError("valid_answers list cannot be empty")
-        
+
         first_item = valid_answers[0]
         if isinstance(first_item, str):
             json_type = "string"
@@ -725,21 +726,16 @@ def constrained_answer(
             enum_values = valid_answers
         else:
             raise ValueError(f"Unsupported list item type: {type(first_item)}")
-        
+
         json_schema = {
             "name": "constrained_answer_schema",
             "schema": {
                 "type": "object",
-                "properties": {
-                    "answer": {
-                        "type": json_type,
-                        "enum": enum_values
-                    }
-                },
-                "required": ["answer"]
-            }
+                "properties": {"answer": {"type": json_type, "enum": enum_values}},
+                "required": ["answer"],
+            },
         }
-        
+
         valid_answers_list = "\n".join(f"- {answer}" for answer in valid_answers)
         template = """
 {prompt}
@@ -747,118 +743,99 @@ You must respond with EXACTLY one of these options:
 {valid_answers_list}
 Choose the most appropriate answer.
 """
-    
+
     elif valid_answers is bool:
         # Boolean constraint
         json_schema = {
             "name": "constrained_answer_schema",
             "schema": {
                 "type": "object",
-                "properties": {
-                    "answer": {
-                        "type": "boolean"
-                    }
-                },
-                "required": ["answer"]
-            }
+                "properties": {"answer": {"type": "boolean"}},
+                "required": ["answer"],
+            },
         }
-        
+
         template = """
 {prompt}
 You must respond with either True or False.
 """
         valid_answers_list = ""
-    
+
     elif valid_answers is int:
         # Any integer
         json_schema = {
             "name": "constrained_answer_schema",
             "schema": {
                 "type": "object",
-                "properties": {
-                    "answer": {
-                        "type": "integer"
-                    }
-                },
-                "required": ["answer"]
-            }
+                "properties": {"answer": {"type": "integer"}},
+                "required": ["answer"],
+            },
         }
-        
+
         template = """
 {prompt}
 You must respond with an integer number.
 """
         valid_answers_list = ""
-    
+
     elif valid_answers is float:
         # Any number
         json_schema = {
             "name": "constrained_answer_schema",
             "schema": {
                 "type": "object",
-                "properties": {
-                    "answer": {
-                        "type": "number"
-                    }
-                },
-                "required": ["answer"]
-            }
+                "properties": {"answer": {"type": "number"}},
+                "required": ["answer"],
+            },
         }
-        
+
         template = """
 {prompt}
 You must respond with a number.
 """
         valid_answers_list = ""
-    
+
     elif isinstance(valid_answers, tuple) and len(valid_answers) == 2:
         # Numerical range
         min_val, max_val = valid_answers
-        if not isinstance(min_val, (int, float)) or not isinstance(max_val, (int, float)):
+        if not isinstance(min_val, (int, float)) or not isinstance(
+            max_val, (int, float)
+        ):
             raise ValueError("Range tuple must contain two numbers")
-        
+
         json_schema = {
             "name": "constrained_answer_schema",
             "schema": {
                 "type": "object",
                 "properties": {
-                    "answer": {
-                        "type": "number",
-                        "minimum": min_val,
-                        "maximum": max_val
-                    }
+                    "answer": {"type": "number", "minimum": min_val, "maximum": max_val}
                 },
-                "required": ["answer"]
-            }
+                "required": ["answer"],
+            },
         }
-        
+
         template = """
 {prompt}
 You must respond with a number between {min_val} and {max_val} (inclusive).
 """
         valid_answers_list = ""
-    
+
     else:
         raise ValueError(f"Unsupported valid_answers type: {type(valid_answers)}")
-    
+
     # Create the prompt function with JSON schema constraint
     ask_constrained = oa.prompt_json_function(
-        template,
-        json_schema=json_schema,
-        name="ask_constrained",
-        model=model
+        template, json_schema=json_schema, name="ask_constrained", model=model
     )
-    
+
     # Call the function with appropriate kwargs
     if isinstance(valid_answers, tuple) and len(valid_answers) == 2:
         result = ask_constrained(
-            prompt=prompt, 
-            min_val=valid_answers[0], 
-            max_val=valid_answers[1]
+            prompt=prompt, min_val=valid_answers[0], max_val=valid_answers[1]
         )
     elif isinstance(valid_answers, list):
         result = ask_constrained(prompt=prompt, valid_answers_list=valid_answers_list)
     else:
         result = ask_constrained(prompt=prompt)
-    
+
     return result["answer"]
