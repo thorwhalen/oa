@@ -30,7 +30,8 @@ from oa.tools import (
     prompt_function,  # Make a python function from a prompt template
     PromptFuncs,  # make a collection of AI-enabled functions
     prompt_json_function,  # Make a python function (returning a valid json) from a prompt template
-    infer_schema_from_verbal_description,  # Get a schema from a verbal description
+    infer_schema_from_verbal_description,  # Get a schema from a verbal description,
+    constrained_answer,  # Get an answer constrained to a set of valid answers or types
 )
 from oa import ask
 from oa.stores import OaStores
