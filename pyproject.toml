@@ -1,7 +1,5 @@
 [build-system]
-requires = [
-    "hatchling",
-]
+requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
@@ -10,15 +8,8 @@ version = "0.1.46"
 description = "Python interface to OpenAI"
 readme = "README.md"
 requires-python = ">=3.10"
-keywords = [
-    "openai",
-    "llm",
-    "chat bot",
-    "chatGPT",
-]
-authors = [
-    { name = "Thor Whalen" },
-]
+keywords = ["openai", "llm", "chat bot", "chatGPT"]
+authors = [{ name = "Thor Whalen" }]
 dependencies = [
     "openai",
     "i2",
@@ -42,9 +33,7 @@ text = "Apache-2.0"
 Homepage = "https://github.com/thorwhalen/oa"
 
 [project.optional-dependencies]
-testing = [
-    "playwright",
-]
+testing = ["playwright"]
 
 [tool.ruff]
 line-length = 88
@@ -61,40 +50,21 @@ exclude = [
 ]
 
 [tool.ruff.lint]
-select = [
-    "D100",
-]
-ignore = [
-    "D203",
-    "E501",
-    "B905",
-]
+select = ["D100"]
+ignore = ["D203", "E501", "B905"]
 
 [tool.ruff.lint.pydocstyle]
 convention = "google"
 
 [tool.ruff.lint.per-file-ignores]
-"tests/*" = [
-    "D",
-]
-"examples/*" = [
-    "D",
-]
-"scrap/*" = [
-    "D",
-]
+"**/tests/*" = ["D"]
+"**/examples/*" = ["D"]
+"**/scrap/*" = ["D"]
 
 [tool.pytest.ini_options]
 minversion = "6.0"
-testpaths = [
-    "tests",
-]
-doctest_optionflags = [
-    "NORMALIZE_WHITESPACE",
-    "ELLIPSIS",
-]
+testpaths = ["tests"]
+doctest_optionflags = ["NORMALIZE_WHITESPACE", "ELLIPSIS"]
 
 [tool.hatch.build.targets.wheel]
-include = [
-    "oa/data/**/*",
-]
+include = ["oa/data/**/*"]
