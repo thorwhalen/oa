@@ -26,6 +26,8 @@ dependencies = [
     "dill",
     "numpy",
     "pandas",
+    "pydantic",
+    "tabled",
 ]
 
 [project.license]
