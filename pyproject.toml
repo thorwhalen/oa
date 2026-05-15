@@ -67,4 +67,4 @@ testpaths = ["tests"]
 doctest_optionflags = ["NORMALIZE_WHITESPACE", "ELLIPSIS"]
 
 [tool.hatch.build.targets.wheel]
-include = ["oa/data/**/*"]
+packages = ["oa"]
