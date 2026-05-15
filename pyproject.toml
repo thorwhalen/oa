@@ -24,6 +24,8 @@ dependencies = [
     "python-dateutil",
     "beautifulsoup4",
     "dill",
+    "numpy",
+    "pandas",
 ]
 
 [project.license]
