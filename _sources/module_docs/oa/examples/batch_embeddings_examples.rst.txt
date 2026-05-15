@@ -1,0 +1,4 @@
+oa.examples.batch_embeddings_examples
+=====================================
+.. automodule:: oa.examples.batch_embeddings_examples
+   :members:

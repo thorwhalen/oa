@@ -6,25 +6,25 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>oa.openai_specs &mdash; oa 0.1.43 documentation</title>
+  <title>oa.openai_specs &mdash; oa 0.1.46 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
       <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
 
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=a183c34f"></script>
-      <script src="../../_static/doctools.js?v=9bcbadda"></script>
-      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/documentation_options.js?v=f98a5df1"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
       <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
       <script src="../../_static/copybutton.js?v=f281be69"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="oa.scrap" href="scrap.html" />
+    <link rel="next" title="oa.stores" href="stores.html" />
     <link rel="prev" title="oa.oa_types" href="oa_types.html" /> 
 </head>
 
@@ -53,14 +53,27 @@
 <li class="toctree-l1"><a class="reference internal" href="_params.html">oa._params</a></li>
 <li class="toctree-l1"><a class="reference internal" href="_resources.html">oa._resources</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ask.html">oa.ask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="audio.html">oa.audio</a></li>
 <li class="toctree-l1"><a class="reference internal" href="base.html">oa.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="batch_embeddings.html">oa.batch_embeddings</a></li>
 <li class="toctree-l1"><a class="reference internal" href="batches.html">oa.batches</a></li>
 <li class="toctree-l1"><a class="reference internal" href="chats.html">oa.chats</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples/aesop_fables.html">oa.examples.aesop_fables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/batch_embeddings_examples.html">oa.examples.batch_embeddings_examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples/illustrate_stories.html">oa.examples.illustrate_stories</a></li>
 <li class="toctree-l1"><a class="reference internal" href="oa_types.html">oa.oa_types</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">oa.openai_specs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="scrap.html">oa.scrap</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">oa.openai_specs</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#oa.openai_specs.Message"><code class="docutils literal notranslate"><span class="pre">Message</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#oa.openai_specs.get_openapi_spec_dict"><code class="docutils literal notranslate"><span class="pre">get_openapi_spec_dict()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#oa.openai_specs.merge_keys_to_values"><code class="docutils literal notranslate"><span class="pre">merge_keys_to_values()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#oa.openai_specs.normalized_file_name"><code class="docutils literal notranslate"><span class="pre">normalized_file_name()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#oa.openai_specs.properties_to_annotation"><code class="docutils literal notranslate"><span class="pre">properties_to_annotation()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#oa.openai_specs.properties_to_param_dict"><code class="docutils literal notranslate"><span class="pre">properties_to_param_dict()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#oa.openai_specs.schema_to_docs"><code class="docutils literal notranslate"><span class="pre">schema_to_docs()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#oa.openai_specs.schema_to_rst_argument_descriptions"><code class="docutils literal notranslate"><span class="pre">schema_to_rst_argument_descriptions()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#oa.openai_specs.schema_to_signature"><code class="docutils literal notranslate"><span class="pre">schema_to_signature()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="stores.html">oa.stores</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tools.html">oa.tools</a></li>
 <li class="toctree-l1"><a class="reference internal" href="util.html">oa.util</a></li>
@@ -91,8 +104,144 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="oa-openai-specs">
-<h1>oa.openai_specs<a class="headerlink" href="#oa-openai-specs" title="Link to this heading"></a></h1>
+  <section id="module-oa.openai_specs">
+<span id="oa-openai-specs"></span><h1>oa.openai_specs<a class="headerlink" href="#module-oa.openai_specs" title="Link to this heading"></a></h1>
+<p>Tools to extract specs from the openai interface</p>
+<p>See raw schemas by doing</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">oa.openai_specs</span><span class="w"> </span><span class="kn">import</span> <span class="n">schemas</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">sorted</span><span class="p">(</span><span class="n">schemas</span><span class="p">)</span>
+<span class="go">[&#39;AssistantFileObject&#39;, &#39;AssistantObject&#39;, &#39;AssistantToolsCode&#39;, &#39;AssistantToolsFunction&#39;, &#39;AssistantToolsRetrieval&#39;, &#39;ChatCompletionFunctionCallOption&#39;,</span>
+<span class="go">&#39;ChatCompletionFunctions&#39;, &#39;ChatCompletionMessageToolCall&#39;, &#39;ChatCompletionMessageToolCallChunk&#39;, &#39;ChatCompletionMessageToolCalls&#39;,</span>
+<span class="go">&#39;ChatCompletionNamedToolChoice&#39;, &#39;ChatCompletionRequestAssistantMessage&#39;, &#39;ChatCompletionRequestFunctionMessage&#39;, &#39;ChatCompletionRequestMessage&#39;,</span>
+<span class="go">&#39;ChatCompletionRequestMessageContentPart&#39;, &#39;ChatCompletionRequestMessageContentPartImage&#39;, &#39;ChatCompletionRequestMessageContentPartText&#39;,</span>
+<span class="go">&#39;ChatCompletionRequestSystemMessage&#39;, &#39;ChatCompletionRequestToolMessage&#39;, &#39;ChatCompletionRequestUserMessage&#39;, &#39;ChatCompletionResponseMessage&#39;,</span>
+<span class="go">&#39;ChatCompletionRole&#39;, &#39;ChatCompletionStreamResponseDelta&#39;, &#39;ChatCompletionTool&#39;, &#39;ChatCompletionToolChoiceOption&#39;, &#39;CompletionUsage&#39;,</span>
+<span class="go">&#39;CreateAssistantFileRequest&#39;, &#39;CreateAssistantRequest&#39;, &#39;CreateChatCompletionFunctionResponse&#39;, &#39;CreateChatCompletionImageResponse&#39;,</span>
+<span class="go">&#39;CreateChatCompletionRequest&#39;, &#39;CreateChatCompletionResponse&#39;, &#39;CreateChatCompletionStreamResponse&#39;, &#39;CreateCompletionRequest&#39;,</span>
+<span class="go">&#39;CreateCompletionResponse&#39;, &#39;CreateEditRequest&#39;, &#39;CreateEditResponse&#39;, &#39;CreateEmbeddingRequest&#39;, &#39;CreateEmbeddingResponse&#39;, &#39;CreateFileRequest&#39;,</span>
+<span class="go">&#39;CreateFineTuneRequest&#39;, &#39;CreateFineTuningJobRequest&#39;, &#39;CreateImageEditRequest&#39;, &#39;CreateImageRequest&#39;, &#39;CreateImageVariationRequest&#39;, &#39;CreateMessageRequest&#39;,</span>
+<span class="go">&#39;CreateModerationRequest&#39;, &#39;CreateModerationResponse&#39;, &#39;CreateRunRequest&#39;, &#39;CreateSpeechRequest&#39;, &#39;CreateThreadAndRunRequest&#39;, &#39;CreateThreadRequest&#39;,</span>
+<span class="go">&#39;CreateTranscriptionRequest&#39;, &#39;CreateTranscriptionResponse&#39;, &#39;CreateTranslationRequest&#39;, &#39;CreateTranslationResponse&#39;, &#39;DeleteAssistantFileResponse&#39;,</span>
+<span class="go">&#39;DeleteAssistantResponse&#39;, &#39;DeleteFileResponse&#39;, &#39;DeleteMessageResponse&#39;, &#39;DeleteModelResponse&#39;, &#39;DeleteThreadResponse&#39;, &#39;Embedding&#39;, &#39;Error&#39;,</span>
+<span class="go">&#39;ErrorResponse&#39;, &#39;FineTune&#39;, &#39;FineTuneEvent&#39;, &#39;FineTuningJob&#39;, &#39;FineTuningJobEvent&#39;, &#39;FunctionObject&#39;, &#39;FunctionParameters&#39;, &#39;Image&#39;,</span>
+<span class="go">&#39;ImagesResponse&#39;, &#39;ListAssistantFilesResponse&#39;, &#39;ListAssistantsResponse&#39;, &#39;ListFilesResponse&#39;, &#39;ListFineTuneEventsResponse&#39;, &#39;ListFineTunesResponse&#39;,</span>
+<span class="go">&#39;ListFineTuningJobEventsResponse&#39;, &#39;ListMessageFilesResponse&#39;, &#39;ListMessagesResponse&#39;, &#39;ListModelsResponse&#39;, &#39;ListPaginatedFineTuningJobsResponse&#39;,</span>
+<span class="go">&#39;ListRunStepsResponse&#39;, &#39;ListRunsResponse&#39;, &#39;ListThreadsResponse&#39;, &#39;MessageContentImageFileObject&#39;, &#39;MessageContentTextAnnotationsFileCitationObject&#39;,</span>
+<span class="go">&#39;MessageContentTextAnnotationsFilePathObject&#39;, &#39;MessageContentTextObject&#39;, &#39;MessageFileObject&#39;, &#39;MessageObject&#39;, &#39;Model&#39;, &#39;ModifyAssistantRequest&#39;,</span>
+<span class="go">&#39;ModifyMessageRequest&#39;, &#39;ModifyRunRequest&#39;, &#39;ModifyThreadRequest&#39;, &#39;OpenAIFile&#39;, &#39;RunObject&#39;, &#39;RunStepDetailsMessageCreationObject&#39;, &#39;RunStepDetailsToolCallsCodeObject&#39;,</span>
+<span class="go">&#39;RunStepDetailsToolCallsCodeOutputImageObject&#39;, &#39;RunStepDetailsToolCallsCodeOutputLogsObject&#39;, &#39;RunStepDetailsToolCallsFunctionObject&#39;, &#39;RunStepDetailsToolCallsObject&#39;,</span>
+<span class="go">&#39;RunStepDetailsToolCallsRetrievalObject&#39;, &#39;RunStepObject&#39;, &#39;RunToolCallObject&#39;, &#39;SubmitToolOutputsRunRequest&#39;, &#39;ThreadObject&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">schema</span> <span class="o">=</span> <span class="n">schemas</span><span class="p">[</span><span class="s1">&#39;CreateCompletionRequest&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">schema</span><span class="p">[</span><span class="s1">&#39;properties&#39;</span><span class="p">]</span>
+<span class="go"> {&#39;model&#39;: {&#39;description&#39;: &#39;ID of the model to use...</span>
+</pre></div>
+</div>
+<p>Get resulting signatures by doing.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">oa.openai_specs</span><span class="w"> </span><span class="kn">import</span> <span class="n">sig</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sig</span><span class="o">.</span><span class="n">CreateCompletionRequest</span><span class="p">)</span>
+<span class="go">&lt;Sig (model: str, prompt=&#39;&lt;|endoftext|&gt;&#39;, *, seed: int, best_of: int = 1, echo: bool = False,</span>
+<span class="go">frequency_penalty: float = 0, logit_bias: dict = None, logprobs: int = None, max_tokens: int = None,</span>
+<span class="go">n: int = 1, presence_penalty: float = 0, stop=None, stream: bool = False, suffix: str = None,</span>
+<span class="go">temperature: float = 1, top_p: float = 1, user: str = None)&gt;</span>
+</pre></div>
+</div>
+<p>Or see argument descriptions in rst format by doing:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">oa.openai_specs</span><span class="w"> </span><span class="kn">import</span> <span class="n">schema_to_rst_argument_descriptions</span><span class="p">,</span> <span class="n">schemas</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">schema_to_rst_argument_descriptions</span><span class="p">(</span><span class="n">schemas</span><span class="p">[</span><span class="s1">&#39;CreateCompletionRequest&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p><a href="#id1"><span class="problematic" id="id2">``</span></a><a href="#id3"><span class="problematic" id="id4">`</span></a></p>
+<dl class="py class">
+<dt class="sig sig-object py" id="oa.openai_specs.Message">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">oa.openai_specs.</span></span><span class="sig-name descname"><span class="pre">Message</span></span><a class="reference internal" href="../../_modules/oa/openai_specs.html#Message"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oa.openai_specs.Message" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="oa.openai_specs.get_openapi_spec_dict">
+<span class="sig-prename descclassname"><span class="pre">oa.openai_specs.</span></span><span class="sig-name descname"><span class="pre">get_openapi_spec_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">openapi_spec_url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'https://raw.githubusercontent.com/thorwhalen/oa/main/misc/openapi.yaml'</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">refresh</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expand_refs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/oa/openai_specs.html#get_openapi_spec_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oa.openai_specs.get_openapi_spec_dict" title="Link to this definition"></a></dt>
+<dd><p>Get the dict of the openapi spec</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="oa.openai_specs.merge_keys_to_values">
+<span class="sig-prename descclassname"><span class="pre">oa.openai_specs.</span></span><span class="sig-name descname"><span class="pre">merge_keys_to_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'key'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/oa/openai_specs.html#merge_keys_to_values"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oa.openai_specs.merge_keys_to_values" title="Link to this definition"></a></dt>
+<dd><p>Merge the keys of a dict into the values of the dict.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span> <span class="s1">&#39;c&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;d&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;e&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">}}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">dict</span><span class="p">(</span><span class="n">merge_keys_to_values</span><span class="p">(</span><span class="n">d</span><span class="p">))</span>
+<span class="go">{&#39;a&#39;: {&#39;key&#39;: &#39;a&#39;, &#39;b&#39;: 1}, &#39;c&#39;: {&#39;key&#39;: &#39;c&#39;, &#39;d&#39;: 2, &#39;e&#39;: 3}}</span>
+</pre></div>
+</div>
+<p>Useful when, for example, you want to make a table containing both keys and values.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="oa.openai_specs.normalized_file_name">
+<span class="sig-prename descclassname"><span class="pre">oa.openai_specs.</span></span><span class="sig-name descname"><span class="pre">normalized_file_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prompt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../_modules/oa/openai_specs.html#normalized_file_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oa.openai_specs.normalized_file_name" title="Link to this definition"></a></dt>
+<dd><p>Convert prompt to a normalized valid file/folder name</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">normalized_file_name</span><span class="p">(</span><span class="s2">&quot;This is a prompt&quot;</span><span class="p">)</span>
+<span class="go">&#39;this is a prompt&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">normalized_file_name</span><span class="p">(</span><span class="s2">&quot;This is: a PROMPT!  (with punctuation)&quot;</span><span class="p">)</span>
+<span class="go">&#39;this is a prompt with punctuation&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="oa.openai_specs.properties_to_annotation">
+<span class="sig-prename descclassname"><span class="pre">oa.openai_specs.</span></span><span class="sig-name descname"><span class="pre">properties_to_annotation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">props</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/oa/openai_specs.html#properties_to_annotation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oa.openai_specs.properties_to_annotation" title="Link to this definition"></a></dt>
+<dd><p>Get annotations from a schema</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="oa.openai_specs.properties_to_param_dict">
+<span class="sig-prename descclassname"><span class="pre">oa.openai_specs.</span></span><span class="sig-name descname"><span class="pre">properties_to_param_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">props</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/oa/openai_specs.html#properties_to_param_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oa.openai_specs.properties_to_param_dict" title="Link to this definition"></a></dt>
+<dd><p>Get all but kind fields of a Parameter object</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="oa.openai_specs.schema_to_docs">
+<span class="sig-prename descclassname"><span class="pre">oa.openai_specs.</span></span><span class="sig-name descname"><span class="pre">schema_to_docs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">schema</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">line_prefix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'\t'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/oa/openai_specs.html#schema_to_docs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oa.openai_specs.schema_to_docs" title="Link to this definition"></a></dt>
+<dd><p>Get the docs for a schema</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">oa.openai_specs</span><span class="w"> </span><span class="kn">import</span> <span class="n">specs</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">schema</span> <span class="o">=</span> <span class="n">specs</span><span class="p">[</span><span class="s1">&#39;components&#39;</span><span class="p">][</span><span class="s1">&#39;schemas&#39;</span><span class="p">][</span><span class="s1">&#39;CreateChatCompletionRequest&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">schema_to_docs</span><span class="p">(</span><span class="s1">&#39;chatcompletion&#39;</span><span class="p">,</span> <span class="n">schema</span><span class="p">))</span>
+<span class="go">chatcompletion(...</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>model</strong> – ID of the model to use. Currently, only …</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="oa.openai_specs.schema_to_rst_argument_descriptions">
+<span class="sig-prename descclassname"><span class="pre">oa.openai_specs.</span></span><span class="sig-name descname"><span class="pre">schema_to_rst_argument_descriptions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schema</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">process_description</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;function</span> <span class="pre">_clean_up_whitespace&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/oa/openai_specs.html#schema_to_rst_argument_descriptions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oa.openai_specs.schema_to_rst_argument_descriptions" title="Link to this definition"></a></dt>
+<dd><p>Yield rst-formatted argument descriptions for a schema</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">oa.openai_specs</span><span class="w"> </span><span class="kn">import</span> <span class="n">specs</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">schema</span> <span class="o">=</span> <span class="n">specs</span><span class="p">[</span><span class="s1">&#39;components&#39;</span><span class="p">][</span><span class="s1">&#39;schemas&#39;</span><span class="p">][</span><span class="s1">&#39;CreateChatCompletionRequest&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="o">*</span><span class="n">schema_to_rst_argument_descriptions</span><span class="p">(</span><span class="n">schema</span><span class="p">),</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="go">:param model: ID of the model to use. Currently, only ...</span>
+</pre></div>
+</div>
+<p><cite>process_description</cite> is a function that will be applied to each schema description
+(so you can clean it up, or add links, etc.). By default, it will replace all
+whitespaces with single space, and strip.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="oa.openai_specs.schema_to_signature">
+<span class="sig-prename descclassname"><span class="pre">oa.openai_specs.</span></span><span class="sig-name descname"><span class="pre">schema_to_signature</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schema</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/oa/openai_specs.html#schema_to_signature"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oa.openai_specs.schema_to_signature" title="Link to this definition"></a></dt>
+<dd><p>Get a signature from a schema</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">oa.openai_specs</span><span class="w"> </span><span class="kn">import</span> <span class="n">specs</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">schema</span> <span class="o">=</span> <span class="n">specs</span><span class="p">[</span><span class="s1">&#39;components&#39;</span><span class="p">][</span><span class="s1">&#39;schemas&#39;</span><span class="p">][</span><span class="s1">&#39;CreateChatCompletionRequest&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">schema_to_signature</span><span class="p">(</span><span class="n">schema</span><span class="p">)))</span>
+<span class="go">(model: str, messages: List[openai_specs.Message], *, temperature: float = 1, ...</span>
+</pre></div>
+</div>
+</dd></dl>
+
 </section>
 
 
@@ -100,7 +249,7 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="oa_types.html" class="btn btn-neutral float-left" title="oa.oa_types" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="scrap.html" class="btn btn-neutral float-right" title="oa.scrap" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="stores.html" class="btn btn-neutral float-right" title="oa.stores" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

@@ -1,0 +1,996 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>oa.stores &mdash; oa 0.1.46 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=f98a5df1"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            oa
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa.html">oa</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/_params.html">oa._params</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/_resources.html">oa._resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/ask.html">oa.ask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/audio.html">oa.audio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/base.html">oa.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/batch_embeddings.html">oa.batch_embeddings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/batches.html">oa.batches</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/chats.html">oa.chats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/examples/aesop_fables.html">oa.examples.aesop_fables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/examples/batch_embeddings_examples.html">oa.examples.batch_embeddings_examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/examples/illustrate_stories.html">oa.examples.illustrate_stories</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/oa_types.html">oa.oa_types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/openai_specs.html">oa.openai_specs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/stores.html">oa.stores</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/tools.html">oa.tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/util.html">oa.util</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/vector_stores.html">oa.vector_stores</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">oa</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">oa.stores</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for oa.stores</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Data object layers for openai resources&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Mapping</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">operator</span><span class="w"> </span><span class="kn">import</span> <span class="n">attrgetter</span><span class="p">,</span> <span class="n">methodcaller</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">T</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Callable</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">wraps</span><span class="p">,</span> <span class="n">partial</span><span class="p">,</span> <span class="n">cached_property</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">openai</span>  <span class="c1"># TODO: Import from oa.util instead?</span>
+
+<span class="c1"># TODO: Move openai imports to go through oa.util</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">openai.resources.files</span><span class="w"> </span><span class="kn">import</span> <span class="n">Files</span> <span class="k">as</span> <span class="n">OpenaiFiles</span><span class="p">,</span> <span class="n">FileTypes</span><span class="p">,</span> <span class="n">FileObject</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">openai.types</span><span class="w"> </span><span class="kn">import</span> <span class="n">FileObject</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">oa.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">TextOrTexts</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">oa.batches</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">mk_batch_file_embeddings_task</span><span class="p">,</span>
+    <span class="n">BatchSpec</span><span class="p">,</span>
+    <span class="n">BatchObj</span><span class="p">,</span>
+    <span class="n">BatchId</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">oa.util</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">OaClientSpec</span><span class="p">,</span>
+    <span class="n">mk_client</span><span class="p">,</span>
+    <span class="n">ensure_oa_client</span><span class="p">,</span>
+    <span class="n">merge_multiple_signatures</span><span class="p">,</span>
+    <span class="n">source_parameter_props_from</span><span class="p">,</span>
+    <span class="n">utc_int_to_iso_date</span><span class="p">,</span>
+    <span class="n">iso_date_to_utc_int</span><span class="p">,</span>
+    <span class="n">Purpose</span><span class="p">,</span>
+    <span class="n">BatchesEndpoint</span><span class="p">,</span>
+    <span class="n">DFLT_ENCODING</span><span class="p">,</span>
+    <span class="n">jsonl_loads_iter</span><span class="p">,</span>
+    <span class="n">jsonl_dumps</span><span class="p">,</span>
+    <span class="n">jsonl_loads</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">i2</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sig</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">i2.signatures</span><span class="w"> </span><span class="kn">import</span> <span class="n">SignatureAble</span><span class="p">,</span> <span class="n">ParamsAble</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">i2</span><span class="w"> </span><span class="kn">import</span> <span class="n">postprocess</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dol</span><span class="w"> </span><span class="kn">import</span> <span class="n">wrap_kvs</span><span class="p">,</span> <span class="n">KvReader</span><span class="p">,</span> <span class="n">Pipe</span>
+
+<span class="n">FilterFunc</span> <span class="o">=</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Any</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]</span>
+
+
+<span class="n">DFLT_PURPOSE</span> <span class="o">=</span> <span class="s2">&quot;batch&quot;</span>
+<span class="n">DFLT_BATCHES_ENDPOINT</span> <span class="o">=</span> <span class="s2">&quot;/v1/embeddings&quot;</span>
+
+<span class="n">openai_files_cumul_sig</span> <span class="o">=</span> <span class="n">merge_multiple_signatures</span><span class="p">(</span>
+    <span class="p">[</span>
+        <span class="n">OpenaiFiles</span><span class="o">.</span><span class="n">create</span><span class="p">,</span>
+        <span class="n">OpenaiFiles</span><span class="o">.</span><span class="n">retrieve</span><span class="p">,</span>
+        <span class="n">OpenaiFiles</span><span class="o">.</span><span class="n">delete</span><span class="p">,</span>
+        <span class="n">Sig</span><span class="p">(</span><span class="n">OpenaiFiles</span><span class="o">.</span><span class="n">list</span><span class="p">),</span>
+    <span class="p">],</span>
+    <span class="n">default_conflict_method</span><span class="o">=</span><span class="s2">&quot;take_first&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">params_from_openai_files_cls</span> <span class="o">=</span> <span class="n">source_parameter_props_from</span><span class="p">(</span><span class="n">openai_files_cumul_sig</span><span class="p">)</span>
+
+<span class="n">files_create_sig</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">Sig</span><span class="p">(</span><span class="n">OpenaiFiles</span><span class="o">.</span><span class="n">create</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">ch_defaults</span><span class="p">(</span><span class="n">purpose</span><span class="o">=</span><span class="n">DFLT_PURPOSE</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">ch_kinds</span><span class="p">(</span><span class="n">purpose</span><span class="o">=</span><span class="n">Sig</span><span class="o">.</span><span class="n">POSITIONAL_OR_KEYWORD</span><span class="p">)</span>
+<span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_is_string</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_has_id_attr</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="s2">&quot;id&quot;</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_is_instance_and_has_id</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">type_</span><span class="p">:</span> <span class="nb">type</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">partial</span><span class="p">(</span><span class="n">_is_instance_and_has_id</span><span class="p">,</span> <span class="n">type_</span><span class="o">=</span><span class="n">type_</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">type_</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="s2">&quot;id&quot;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="extract_id">
+<a class="viewcode-back" href="../../module_docs/oa/stores.html#oa.stores.extract_id">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">extract_id</span><span class="p">(</span>
+    <span class="n">method</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">is_id</span><span class="p">:</span> <span class="n">FilterFunc</span> <span class="o">=</span> <span class="n">_is_string</span><span class="p">,</span>
+    <span class="n">has_id</span><span class="p">:</span> <span class="n">FilterFunc</span> <span class="o">=</span> <span class="n">_has_id_attr</span><span class="p">,</span>
+    <span class="n">get_id</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">=</span> <span class="n">attrgetter</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">),</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Decorator that will extract the id from the first non-instance argument of a method.</span>
+
+<span class="sd">    &gt;&gt;&gt; @extract_id</span>
+<span class="sd">    ... def veni(self, vidi, vici):</span>
+<span class="sd">    ...     return f&quot;{vidi=}, {vici=}&quot;</span>
+<span class="sd">    &gt;&gt;&gt; assert (</span>
+<span class="sd">    ...     veni(None, &#39;hi&#39;, vici=3)  # calling the function</span>
+<span class="sd">    ...     == veni.__wrapped__(None, &#39;hi&#39;, vici=3)  # outputs the same as calling the original</span>
+<span class="sd">    ...     == &quot;vidi=&#39;hi&#39;, vici=3&quot;</span>
+<span class="sd">    ... )</span>
+
+<span class="sd">    Except it now has extra powers; if your id is contained in a attribute,</span>
+<span class="sd">    it&#39;ll be extracted.</span>
+
+<span class="sd">    &gt;&gt;&gt; from types import SimpleNamespace</span>
+<span class="sd">    &gt;&gt;&gt; obj = SimpleNamespace(id=&#39;hi&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; obj.id</span>
+<span class="sd">    &#39;hi&#39;</span>
+<span class="sd">    &gt;&gt;&gt; assert veni(None, obj, vici=3) == &quot;vidi=&#39;hi&#39;, vici=3&quot;</span>
+
+<span class="sd">    You can also customize the filters and the id getter.</span>
+<span class="sd">    The following will resolve a string representation of an integer as an id.</span>
+
+<span class="sd">    &gt;&gt;&gt; @extract_id(is_id=lambda x: isinstance(x, int), has_id=str.isnumeric, get_id=int)</span>
+<span class="sd">    ... def add_one(self, x):</span>
+<span class="sd">    ...     return x</span>
+<span class="sd">    ...</span>
+<span class="sd">    &gt;&gt;&gt; assert add_one(None, 3) == 3</span>
+<span class="sd">    &gt;&gt;&gt; assert add_one(None, &quot;42&quot;) == 42</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">method</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">partial</span><span class="p">(</span><span class="n">extract_id</span><span class="p">,</span> <span class="n">is_id</span><span class="o">=</span><span class="n">is_id</span><span class="p">,</span> <span class="n">has_id</span><span class="o">=</span><span class="n">has_id</span><span class="p">,</span> <span class="n">get_id</span><span class="o">=</span><span class="n">get_id</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+
+        <span class="nd">@wraps</span><span class="p">(</span><span class="n">method</span><span class="p">)</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">_wrapped_method</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">is_id</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">has_id</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+                    <span class="n">x</span> <span class="o">=</span> <span class="n">get_id</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Can&#39;t resolve id from </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">method</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">_wrapped_method</span></div>
+
+
+
+<div class="viewcode-block" id="MappingHooks">
+<a class="viewcode-back" href="../../module_docs/oa/stores.html#oa.stores.MappingHooks">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">MappingHooks</span><span class="p">(</span><span class="n">Mapping</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># TODO: I&#39;d like to just return the (iterable) object, but that doesn&#39;t work (why?)</span>
+        <span class="k">yield from</span> <span class="bp">self</span><span class="o">.</span><span class="n">_iter</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_len</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_contains</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getitem</span><span class="p">(</span><span class="n">key</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="MutuableMappingHooks">
+<a class="viewcode-back" href="../../module_docs/oa/stores.html#oa.stores.MutuableMappingHooks">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">MutuableMappingHooks</span><span class="p">(</span><span class="n">MappingHooks</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__delitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_delitem</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_setitem</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="OaMapping">
+<a class="viewcode-back" href="../../module_docs/oa/stores.html#oa.stores.OaMapping">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">OaMapping</span><span class="p">(</span><span class="n">MappingHooks</span><span class="p">,</span> <span class="n">KvReader</span><span class="p">):</span>
+    <span class="n">client</span><span class="p">:</span> <span class="n">openai</span><span class="o">.</span><span class="n">Client</span>
+    <span class="n">_list_kwargs</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># default, overriden in __init__</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the number of batches.&quot;&quot;&quot;</span>
+        <span class="c1"># TODO: Does the API have a direct way to get the number of items?</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
+            <span class="n">c</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">c</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_contains</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check if an item is contained in the mapping.&quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">except</span> <span class="n">openai</span><span class="o">.</span><span class="n">NotFoundError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__delitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_delitem</span><span class="p">(</span><span class="n">key</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="is_task_dict">
+<a class="viewcode-back" href="../../module_docs/oa/stores.html#oa.stores.is_task_dict">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">is_task_dict</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Is a dict (or Mapping) the schema of an openai API &#39;task&#39;&quot;&quot;&quot;</span>
+    <span class="c1"># TODO: Get this schema dynamically from the API&#39;s swagger spec (or similar)</span>
+    <span class="n">task_keys</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;custom_id&quot;</span><span class="p">,</span> <span class="s2">&quot;method&quot;</span><span class="p">,</span> <span class="s2">&quot;url&quot;</span><span class="p">,</span> <span class="s2">&quot;body&quot;</span><span class="p">}</span>
+    <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">all</span><span class="p">(</span><span class="n">k</span> <span class="ow">in</span> <span class="n">x</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">task_keys</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="is_task_dict_list">
+<a class="viewcode-back" href="../../module_docs/oa/stores.html#oa.stores.is_task_dict_list">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">is_task_dict_list</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Is a list (or iterable) of dicts (or Mappings) the schema of an openai API &#39;task&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># TODO: Get this schema dynamically from the API&#39;s swagger spec (or similar)</span>
+    <span class="k">return</span> <span class="nb">all</span><span class="p">(</span><span class="n">is_task_dict</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">x</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="OaFilesBase">
+<a class="viewcode-back" href="../../module_docs/oa/stores.html#oa.stores.OaFilesBase">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">OaFilesBase</span><span class="p">(</span><span class="n">OaMapping</span><span class="p">):</span>
+    <span class="c1"># @params_from_openai_files_cls</span>
+    <span class="nd">@Sig</span><span class="o">.</span><span class="n">replace_kwargs_using</span><span class="p">(</span><span class="n">files_create_sig</span> <span class="o">-</span> <span class="s2">&quot;purpose&quot;</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">client</span><span class="p">:</span> <span class="n">openai</span><span class="o">.</span><span class="n">Client</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">purpose</span><span class="p">:</span> <span class="n">Purpose</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">DFLT_PURPOSE</span><span class="p">,</span>  <span class="c1"># type: ignore</span>
+        <span class="n">iter_filter_purpose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>  <span class="c1"># type: ignore</span>
+        <span class="n">encoding</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">DFLT_ENCODING</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">extra_kwargs</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="k">if</span> <span class="n">client</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">client</span> <span class="o">=</span> <span class="n">mk_client</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="n">client</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">purpose</span> <span class="o">=</span> <span class="n">purpose</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">iter_filter_purpose</span> <span class="o">=</span> <span class="n">iter_filter_purpose</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">iter_filter_purpose</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_list_kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;purpose&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">purpose</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">encoding</span> <span class="o">=</span> <span class="n">encoding</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">extra_kwargs</span> <span class="o">=</span> <span class="n">extra_kwargs</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_iter</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">list</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">_list_kwargs</span><span class="p">)</span>
+
+    <span class="nd">@extract_id</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_id</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">FileObject</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">retrieve</span><span class="p">(</span><span class="n">file_id</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">extra_kwargs</span><span class="p">)</span>
+
+    <span class="nd">@extract_id</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">content</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_id</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">content</span><span class="p">(</span><span class="n">file_id</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">extra_kwargs</span><span class="p">)</span>
+
+    <span class="n">_getitem</span> <span class="o">=</span> <span class="n">content</span>
+
+    <span class="nd">@extract_id</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_delitem</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_id</span><span class="p">):</span>
+        <span class="c1"># Delete the file using the API (you might need to implement this)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">file_id</span><span class="p">)</span>  <span class="c1"># Assuming there&#39;s a delete method</span>
+
+    <span class="nd">@params_from_openai_files_cls</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file</span><span class="p">:</span> <span class="n">FileTypes</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">FileObject</span><span class="p">:</span>
+        <span class="c1"># Note: self.client.create can be found in openai.resources.files.Files.create</span>
+        <span class="k">if</span> <span class="n">is_task_dict</span><span class="p">(</span><span class="n">file</span><span class="p">)</span> <span class="ow">or</span> <span class="n">is_task_dict_list</span><span class="p">(</span><span class="n">file</span><span class="p">):</span>
+            <span class="n">file</span> <span class="o">=</span> <span class="n">jsonl_dumps</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoding</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">file</span><span class="p">,</span> <span class="n">purpose</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">purpose</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">extra_kwargs</span>
+        <span class="p">)</span>
+
+    <span class="nd">@Sig</span><span class="o">.</span><span class="n">replace_kwargs_using</span><span class="p">(</span><span class="n">mk_batch_file_embeddings_task</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">create_embedding_task</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">texts</span><span class="p">:</span> <span class="n">TextOrTexts</span><span class="p">,</span> <span class="o">**</span><span class="n">extra_kwargs</span><span class="p">):</span>
+        <span class="c1"># Note: self.client.create can be found in openai.resources.files.Files.create</span>
+        <span class="n">task</span> <span class="o">=</span> <span class="n">mk_batch_file_embeddings_task</span><span class="p">(</span><span class="n">texts</span><span class="p">,</span> <span class="o">**</span><span class="n">extra_kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">task</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="OaFilesMetadata">
+<a class="viewcode-back" href="../../module_docs/oa/stores.html#oa.stores.OaFilesMetadata">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">OaFilesMetadata</span><span class="p">(</span><span class="n">OaFilesBase</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A key-value store for OpenAI files metadata.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_getitem</span> <span class="o">=</span> <span class="n">OaFilesBase</span><span class="o">.</span><span class="n">metadata</span></div>
+
+
+
+<div class="viewcode-block" id="OaFiles">
+<a class="viewcode-back" href="../../module_docs/oa/stores.html#oa.stores.OaFiles">[docs]</a>
+<span class="nd">@wrap_kvs</span><span class="p">(</span><span class="n">key_decoder</span><span class="o">=</span><span class="n">attrgetter</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">),</span> <span class="n">value_decoder</span><span class="o">=</span><span class="n">attrgetter</span><span class="p">(</span><span class="s2">&quot;content&quot;</span><span class="p">))</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">OaFiles</span><span class="p">(</span><span class="n">OaFilesBase</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A key-value store for OpenAI files content data.</span>
+<span class="sd">    Keys are the file IDs.</span>
+<span class="sd">    &quot;&quot;&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="OaJsonLFiles">
+<a class="viewcode-back" href="../../module_docs/oa/stores.html#oa.stores.OaJsonLFiles">[docs]</a>
+<span class="nd">@wrap_kvs</span><span class="p">(</span><span class="n">key_decoder</span><span class="o">=</span><span class="n">attrgetter</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">),</span> <span class="n">value_decoder</span><span class="o">=</span><span class="n">jsonl_loads</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">OaJsonLFiles</span><span class="p">(</span><span class="n">OaFilesBase</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A key-value store for OpenAI files content data.</span>
+<span class="sd">    Keys are the file IDs.</span>
+<span class="sd">    &quot;&quot;&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="get_json_or_jsonl_data">
+<a class="viewcode-back" href="../../module_docs/oa/stores.html#oa.stores.get_json_or_jsonl_data">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_json_or_jsonl_data</span><span class="p">(</span><span class="n">response</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Extract the json data from a response&quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+    <span class="k">except</span> <span class="n">json</span><span class="o">.</span><span class="n">JSONDecodeError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">jsonl_loads</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="OaJsonFiles">
+<a class="viewcode-back" href="../../module_docs/oa/stores.html#oa.stores.OaJsonFiles">[docs]</a>
+<span class="nd">@wrap_kvs</span><span class="p">(</span><span class="n">key_decoder</span><span class="o">=</span><span class="n">attrgetter</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">),</span> <span class="n">value_decoder</span><span class="o">=</span><span class="n">get_json_or_jsonl_data</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">OaJsonFiles</span><span class="p">(</span><span class="n">OaFilesBase</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A key-value store for OpenAI files content data.</span>
+<span class="sd">    Keys are the file IDs.</span>
+<span class="sd">    &quot;&quot;&quot;</span></div>
+
+
+
+<span class="c1"># TODO: Find a non-underscored place to import HttpxBinaryResponseContent from</span>
+<span class="c1"># Note: This is just used for annotation purposes</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">openai._legacy_response</span><span class="w"> </span><span class="kn">import</span> <span class="n">HttpxBinaryResponseContent</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TypedDict</span><span class="p">,</span> <span class="n">TypeVar</span>
+
+
+<span class="c1"># TODO: Find some where to import this definition from</span>
+<div class="viewcode-block" id="ResponseDict">
+<a class="viewcode-back" href="../../module_docs/oa/stores.html#oa.stores.ResponseDict">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ResponseDict</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
+    <span class="nb">id</span><span class="p">:</span> <span class="nb">str</span>  <span class="c1"># Example type, you can replace it with whatever type is appropriate</span>
+    <span class="n">custom_id</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">response</span><span class="p">:</span> <span class="nb">dict</span>
+    <span class="n">error</span><span class="p">:</span> <span class="n">Any</span>  <span class="c1"># TODO: Look up what type this can be</span></div>
+
+
+
+<div class="viewcode-block" id="DataObject">
+<a class="viewcode-back" href="../../module_docs/oa/stores.html#oa.stores.DataObject">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">DataObject</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">,</span> <span class="n">total</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;dicts that have two required fields: &#39;object&#39; and &#39;index&#39;&quot;&quot;&quot;</span>
+
+    <span class="nb">object</span><span class="p">:</span> <span class="nb">str</span>  <span class="c1"># Required field</span>
+    <span class="n">index</span><span class="p">:</span> <span class="nb">int</span>  <span class="c1"># Required field</span></div>
+
+
+
+<div class="viewcode-block" id="EmbeddingsDataObject">
+<a class="viewcode-back" href="../../module_docs/oa/stores.html#oa.stores.EmbeddingsDataObject">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">EmbeddingsDataObject</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A DataObject with object=&#39;embeddings&#39; and an &#39;embeddings&#39; key that is a list of</span>
+<span class="sd">    floats</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nb">object</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;embeddings&quot;</span><span class="p">]</span>  <span class="c1"># This enforces the value to be &#39;embeddings&#39;</span>
+    <span class="n">index</span><span class="p">:</span> <span class="nb">int</span>  <span class="c1"># Required field</span>
+    <span class="n">embeddings</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span>  <span class="c1"># The third known field, &#39;embeddings&#39;</span></div>
+
+
+
+<span class="n">DataObjectValue</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;DataObjectValue&quot;</span><span class="p">)</span>
+<span class="n">DataObjectValue</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s2">&quot;The value that a DataObject holds in the field indicated by the object field&quot;</span>
+<span class="p">)</span>
+
+<span class="n">jsonl_loads_response_lines</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span>
+    <span class="n">jsonl_loads_iter</span><span class="p">,</span> <span class="n">get_lines</span><span class="o">=</span><span class="n">methodcaller</span><span class="p">(</span><span class="s2">&quot;iter_lines&quot;</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="n">jsonl_loads_list</span> <span class="o">=</span> <span class="n">Pipe</span><span class="p">(</span><span class="n">jsonl_loads_response_lines</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">response_body_data</span><span class="p">(</span><span class="n">response_dict</span><span class="p">:</span> <span class="n">ResponseDict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataObject</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">response_dict</span><span class="p">[</span><span class="s2">&quot;response&quot;</span><span class="p">][</span><span class="s2">&quot;body&quot;</span><span class="p">][</span><span class="s2">&quot;data&quot;</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="object_of_data">
+<a class="viewcode-back" href="../../module_docs/oa/stores.html#oa.stores.object_of_data">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">object_of_data</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">DataObject</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataObjectValue</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This function extracts the object (value) from a {object: V, index: i, V} dict</span>
+<span class="sd">    which is the format you&#39;ll find in the [&#39;response&#39;][&#39;body&#39;][&#39;data&#39;] of a response.</span>
+
+<span class="sd">    &gt;&gt;&gt; object_of_data({&#39;object&#39;: &#39;embeddings&#39;, &#39;index&#39;: 3, &#39;embeddings&#39;: [1, 2, 3]})</span>
+<span class="sd">    [1, 2, 3]</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">data</span><span class="p">[</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;object&quot;</span><span class="p">]]</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">response_body_data_objects</span><span class="p">(</span>
+    <span class="n">response_dict</span><span class="p">:</span> <span class="n">ResponseDict</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">DataObjectValue</span><span class="p">]:</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">response_body_data</span><span class="p">(</span><span class="n">response_dict</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="n">object_of_data</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+
+<span class="c1"># Note: This is to be used as a content decoder</span>
+<span class="c1"># TODO: The looping logic is messy, consider refactoring</span>
+<div class="viewcode-block" id="get_json_data_from_response">
+<a class="viewcode-back" href="../../module_docs/oa/stores.html#oa.stores.get_json_data_from_response">[docs]</a>
+<span class="nd">@postprocess</span><span class="p">(</span><span class="nb">dict</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_json_data_from_response</span><span class="p">(</span><span class="n">response</span><span class="p">:</span> <span class="n">HttpxBinaryResponseContent</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Extract the embeddings from a HttpxBinaryResponseContent object&quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">jsonl_loads_response_lines</span><span class="p">(</span><span class="n">response</span><span class="p">):</span>
+        <span class="n">custom_id</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;custom_id&quot;</span><span class="p">]</span>
+        <span class="n">dd</span> <span class="o">=</span> <span class="n">response_body_data</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dd</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">ddd</span> <span class="ow">in</span> <span class="n">dd</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="n">custom_id</span><span class="p">,</span> <span class="n">object_of_data</span><span class="p">(</span><span class="n">ddd</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">custom_id</span><span class="p">,</span> <span class="n">object_of_data</span><span class="p">(</span><span class="n">dd</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="OaFilesJsonData">
+<a class="viewcode-back" href="../../module_docs/oa/stores.html#oa.stores.OaFilesJsonData">[docs]</a>
+<span class="nd">@wrap_kvs</span><span class="p">(</span><span class="n">key_decoder</span><span class="o">=</span><span class="n">attrgetter</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">),</span> <span class="n">value_decoder</span><span class="o">=</span><span class="n">get_json_data_from_response</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">OaFilesJsonData</span><span class="p">(</span><span class="n">OaFilesBase</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A key-value store for OpenAI files content data.</span>
+<span class="sd">    Keys are the file IDs.</span>
+<span class="sd">    Values are the data extracted from the HttpxBinaryResponseContent object.</span>
+<span class="sd">    &quot;&quot;&quot;</span></div>
+
+
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">openai</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Mapping</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Dict</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">openai.resources.batches</span><span class="w"> </span><span class="kn">import</span> <span class="n">Batches</span> <span class="k">as</span> <span class="n">OaBatches</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Literal</span>
+
+
+<span class="c1"># TODO: Why does go to definition here (for self.client.batches,</span>
+<span class="c1">#    but also for self.client.files), but not in OpenAIFilesBase?</span>
+<div class="viewcode-block" id="OaBatchesBase">
+<a class="viewcode-back" href="../../module_docs/oa/stores.html#oa.stores.OaBatchesBase">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">OaBatchesBase</span><span class="p">(</span><span class="n">OaMapping</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">:</span> <span class="n">openai</span><span class="o">.</span><span class="n">Client</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">extra_kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">client</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">client</span> <span class="o">=</span> <span class="n">mk_client</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="n">client</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">extra_kwargs</span> <span class="o">=</span> <span class="n">extra_kwargs</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_iter</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">BatchObj</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return an iterator over batch IDs&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">batches</span><span class="o">.</span><span class="n">list</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">_list_kwargs</span><span class="p">)</span>
+
+<div class="viewcode-block" id="OaBatchesBase.metadata">
+<a class="viewcode-back" href="../../module_docs/oa/stores.html#oa.stores.OaBatchesBase.metadata">[docs]</a>
+    <span class="nd">@extract_id</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BatchObj</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Retrieve metadata for a batch.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">batches</span><span class="o">.</span><span class="n">retrieve</span><span class="p">(</span><span class="n">batch_id</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">extra_kwargs</span><span class="p">)</span></div>
+
+
+    <span class="n">_getitem</span> <span class="o">=</span> <span class="n">metadata</span>
+
+    <span class="nd">@extract_id</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_delitem</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Cancel the batch via the API.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">batches</span><span class="o">.</span><span class="n">cancel</span><span class="p">(</span><span class="n">batch_id</span><span class="p">)</span>
+
+<div class="viewcode-block" id="OaBatchesBase.append">
+<a class="viewcode-back" href="../../module_docs/oa/stores.html#oa.stores.OaBatchesBase.append">[docs]</a>
+    <span class="nd">@extract_id</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">append</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">input_file_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">endpoint</span><span class="p">:</span> <span class="n">BatchesEndpoint</span> <span class="o">=</span> <span class="n">DFLT_BATCHES_ENDPOINT</span><span class="p">,</span>  <span class="c1"># type: ignore</span>
+        <span class="n">completion_window</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;24h&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;24h&quot;</span><span class="p">,</span>
+        <span class="n">metadata</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create and submit a new batch via submitting the input file (obj or id).&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">batches</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+            <span class="n">input_file_id</span><span class="o">=</span><span class="n">input_file_id</span><span class="p">,</span>
+            <span class="n">endpoint</span><span class="o">=</span><span class="n">endpoint</span><span class="p">,</span>
+            <span class="n">completion_window</span><span class="o">=</span><span class="n">completion_window</span><span class="p">,</span>
+            <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">,</span>
+            <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">extra_kwargs</span><span class="p">,</span>
+        <span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="OaBatches">
+<a class="viewcode-back" href="../../module_docs/oa/stores.html#oa.stores.OaBatches">[docs]</a>
+<span class="nd">@wrap_kvs</span><span class="p">(</span><span class="n">key_decoder</span><span class="o">=</span><span class="n">attrgetter</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">))</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">OaBatches</span><span class="p">(</span><span class="n">OaBatchesBase</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A key-value store for OpenAI batches metadata.</span>
+<span class="sd">    Keys are the batch IDs.</span>
+<span class="sd">    &quot;&quot;&quot;</span></div>
+
+
+
+<span class="c1"># --------------------------------------------------------------------------------------</span>
+<span class="c1"># Batches/Files API utilities</span>
+
+<span class="n">origin_date</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">end_of_times_date</span> <span class="o">=</span> <span class="n">iso_date_to_utc_int</span><span class="p">(</span><span class="s2">&quot;9999-12-31T23:59:59Z&quot;</span><span class="p">)</span>
+<span class="n">DateSpec</span> <span class="o">=</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span>
+
+<span class="n">NotGiven</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="s2">&quot;NotGiven&quot;</span><span class="p">,</span> <span class="p">(),</span> <span class="p">{})()</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">ensure_utc_date</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">val_if_none</span><span class="o">=</span><span class="n">NotGiven</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">iso_date_to_utc_int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">x</span>
+    <span class="k">elif</span> <span class="n">val_if_none</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">NotGiven</span> <span class="ow">and</span> <span class="n">x</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">val_if_none</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expected a date string or int, got </span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="date_filter">
+<a class="viewcode-back" href="../../module_docs/oa/stores.html#oa.stores.date_filter">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">date_filter</span><span class="p">(</span>
+    <span class="n">objs</span><span class="p">,</span>  <span class="c1"># Iterable of file/batch API objects</span>
+    <span class="n">min_date</span><span class="p">:</span> <span class="n">DateSpec</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">max_date</span><span class="p">:</span> <span class="n">DateSpec</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">date_extractor</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Callable</span> <span class="o">=</span> <span class="s2">&quot;created_at&quot;</span><span class="p">,</span>
+    <span class="n">stop_on_first_out_of_range</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Filter objects by date.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        objs: The objects to filter (must have a)</span>
+<span class="sd">        min_date: The minimum date (inclusive)</span>
+<span class="sd">        max_date: The maximum date (inclusive)</span>
+<span class="sd">        date_attr: The attribute to get the date from</span>
+<span class="sd">        stop_on_first_out_of_range: If True, stop iteration on first out-of-range date</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">date_extractor</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">date_attr</span> <span class="o">=</span> <span class="n">date_extractor</span>
+        <span class="n">date_extractor</span> <span class="o">=</span> <span class="n">attrgetter</span><span class="p">(</span><span class="n">date_attr</span><span class="p">)</span>
+
+    <span class="n">min_date</span> <span class="o">=</span> <span class="n">ensure_utc_date</span><span class="p">(</span><span class="n">min_date</span><span class="p">,</span> <span class="n">val_if_none</span><span class="o">=</span><span class="n">origin_date</span><span class="p">)</span>
+    <span class="n">max_date</span> <span class="o">=</span> <span class="n">ensure_utc_date</span><span class="p">(</span><span class="n">max_date</span><span class="p">,</span> <span class="n">val_if_none</span><span class="o">=</span><span class="n">end_of_times_date</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">objs</span><span class="p">:</span>
+        <span class="n">date</span> <span class="o">=</span> <span class="n">date_extractor</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">min_date</span> <span class="o">&lt;=</span> <span class="n">date</span> <span class="o">&lt;=</span> <span class="n">max_date</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">obj</span>
+        <span class="k">elif</span> <span class="n">stop_on_first_out_of_range</span><span class="p">:</span>
+            <span class="k">break</span></div>
+
+
+
+<span class="c1"># --------------------------------------------------------------------------------------</span>
+<span class="c1"># General classes that tie everything together</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">OaStores</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">:</span> <span class="n">OaClientSpec</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">client</span> <span class="o">=</span> <span class="n">ensure_oa_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="n">client</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">data_files</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">OaFilesJsonData</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="p">)</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">json_files</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">OaJsonFiles</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="p">)</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">jsonl_files</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">OaJsonFiles</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="p">)</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">files</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">OaFiles</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="p">)</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">batches</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">OaBatches</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="p">)</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">files_base</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">OaFilesBase</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="p">)</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">batches_base</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">OaBatchesBase</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="p">)</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">files_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">OaFilesMetadata</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="p">)</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">vector_stores</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">OaVectorStores</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="p">)</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">vector_stores_base</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">OaVectorStoresBase</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="p">)</span>
+
+
+<span class="c1"># TODO: There&#39;s a lot of functions in stores and batch that take an oa_stores argument.</span>
+<span class="c1">#    Perhaps it&#39;s better for them to just be here in the OaDacc class instead?</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tuple</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">oa.batches</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_output_file_data</span><span class="p">,</span> <span class="n">get_batch_id_and_obj</span><span class="p">,</span> <span class="n">get_batch_obj</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">oa.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">concat_lists</span><span class="p">,</span> <span class="n">extractors</span>
+
+<span class="n">Segment</span> <span class="o">=</span> <span class="nb">str</span>  <span class="c1"># TODO: Replace by more specific, global type</span>
+<span class="n">Vector</span> <span class="o">=</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span>  <span class="c1"># TODO: Replace by more specific, global type</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">OaDacc</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">:</span> <span class="n">openai</span><span class="o">.</span><span class="n">Client</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">client</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">client</span> <span class="o">=</span> <span class="n">mk_client</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="n">client</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">s</span> <span class="o">=</span> <span class="n">OaStores</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="p">)</span>
+
+    <span class="n">extractors</span> <span class="o">=</span> <span class="n">extractors</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">files</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">files</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">json_files</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">json_files</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">batches</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">batches</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">vector_stores</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">vector_stores</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">ensure_batch_obj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BatchObj</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">get_batch_obj</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="n">batch</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">batch_id_and_obj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">BatchId</span><span class="p">,</span> <span class="n">BatchObj</span><span class="p">]:</span>
+        <span class="n">batch_id</span><span class="p">,</span> <span class="n">batch_obj</span> <span class="o">=</span> <span class="n">get_batch_id_and_obj</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="n">batch</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">batch_id</span><span class="p">,</span> <span class="n">batch_obj</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_output_file_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">get_output_file_data</span><span class="p">(</span><span class="n">batch</span><span class="p">,</span> <span class="n">oa_stores</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">check_status</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">:</span> <span class="n">BatchSpec</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check the status of a batch process.&quot;&quot;&quot;</span>
+        <span class="n">batch_obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ensure_batch_obj</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">batch_obj</span><span class="o">.</span><span class="n">status</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">retrieve_embeddings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">:</span> <span class="n">BatchSpec</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Vector</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Retrieve output embeddings for a completed batch.&quot;&quot;&quot;</span>
+        <span class="n">output_data_obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_output_file_data</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
+
+        <span class="c1"># batch = self.s.batches[batch_id]</span>
+
+        <span class="k">return</span> <span class="n">concat_lists</span><span class="p">(</span>
+            <span class="nb">map</span><span class="p">(</span>
+                <span class="n">extractors</span><span class="o">.</span><span class="n">embeddings_from_output_data</span><span class="p">,</span>
+                <span class="n">jsonl_loads_iter</span><span class="p">(</span><span class="n">output_data_obj</span><span class="o">.</span><span class="n">content</span><span class="p">),</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">segments_from_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Segment</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieve output embeddings for a completed batch, from the file it&#39;s stored in.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">input_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">json_files</span><span class="p">[</span><span class="n">file</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">extractors</span><span class="o">.</span><span class="n">inputs_from_file_obj</span><span class="p">(</span><span class="n">input_data</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">segments_from_batch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">:</span> <span class="n">BatchSpec</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Segment</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieve output embeddings for a completed batch, given the batch object or id.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">batch_obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ensure_batch_obj</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
+        <span class="n">input_data_file_id</span> <span class="o">=</span> <span class="n">batch_obj</span><span class="o">.</span><span class="n">input_file_id</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">segments_from_file</span><span class="p">(</span><span class="n">input_data_file_id</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">embeddings_from_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Vector</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieve output embeddings for a completed batch, from the file it&#39;s stored in.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">output_data_obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">files_base</span><span class="p">[</span><span class="n">file</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">concat_lists</span><span class="p">(</span>
+            <span class="nb">map</span><span class="p">(</span>
+                <span class="n">extractors</span><span class="o">.</span><span class="n">embeddings_from_output_data</span><span class="p">,</span>
+                <span class="n">jsonl_loads_iter</span><span class="p">(</span><span class="n">output_data_obj</span><span class="o">.</span><span class="n">content</span><span class="p">),</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">embeddings_from_batch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">:</span> <span class="n">BatchSpec</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Vector</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieve output embeddings for a completed batch, given the batch object or id.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">batch_obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ensure_batch_obj</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">embeddings_from_file</span><span class="p">(</span><span class="n">batch_obj</span><span class="o">.</span><span class="n">output_file_id</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">segments_and_embeddings</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">:</span> <span class="n">BatchSpec</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Segment</span><span class="p">],</span> <span class="nb">list</span><span class="p">[</span><span class="n">Vector</span><span class="p">]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Retrieve segments nad embeddings for a completed batch.&quot;&quot;&quot;</span>
+        <span class="n">batch_obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ensure_batch_obj</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">segments_from_batch</span><span class="p">(</span><span class="n">batch_obj</span><span class="p">),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">embeddings_from_batch</span><span class="p">(</span><span class="n">batch_obj</span><span class="p">),</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">launch_embedding_task</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">segments</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Segment</span><span class="p">],</span> <span class="o">**</span><span class="n">imbed_task_dict_kwargs</span>
+    <span class="p">):</span>
+        <span class="c1"># Upload files and get input file IDs</span>
+        <span class="n">input_file_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">create_embedding_task</span><span class="p">(</span>
+            <span class="n">segments</span><span class="p">,</span> <span class="o">**</span><span class="n">imbed_task_dict_kwargs</span>
+        <span class="p">)</span>
+        <span class="n">batch</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">batches</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">input_file_id</span><span class="p">,</span> <span class="n">endpoint</span><span class="o">=</span><span class="s2">&quot;/v1/embeddings&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">batch</span>
+
+    <span class="n">date_filter</span> <span class="o">=</span> <span class="nb">staticmethod</span><span class="p">(</span><span class="n">date_filter</span><span class="p">)</span>
+
+
+<span class="c1"># --------------------------------------------------------------------------------------</span>
+<span class="c1"># debugging and diagnosis tools</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">print_some_jsonl_line_fields</span><span class="p">(</span><span class="n">line</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">line</span><span class="p">)</span><span class="si">=}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="s1">&#39;response&#39;</span><span class="p">])</span><span class="si">=}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="s1">&#39;response&#39;</span><span class="p">][</span><span class="s1">&#39;body&#39;</span><span class="p">])</span><span class="si">=}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">line</span><span class="p">[</span><span class="s1">&#39;response&#39;</span><span class="p">][</span><span class="s1">&#39;body&#39;</span><span class="p">][</span><span class="s1">&#39;object&#39;</span><span class="p">]</span><span class="si">=}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="s1">&#39;response&#39;</span><span class="p">][</span><span class="s1">&#39;body&#39;</span><span class="p">][</span><span class="s1">&#39;data&#39;</span><span class="p">])</span><span class="si">=}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="s1">&#39;response&#39;</span><span class="p">][</span><span class="s1">&#39;body&#39;</span><span class="p">][</span><span class="s1">&#39;data&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span><span class="si">=}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+
+<span class="c1"># --------------------------------------------------------------------------------------</span>
+<span class="c1"># Vector Stores</span>
+
+
+<div class="viewcode-block" id="OaVectorStoresBase">
+<a class="viewcode-back" href="../../module_docs/oa/stores.html#oa.stores.OaVectorStoresBase">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">OaVectorStoresBase</span><span class="p">(</span><span class="n">OaMapping</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for OpenAI vector stores mapping interface.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">:</span> <span class="n">openai</span><span class="o">.</span><span class="n">Client</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">extra_kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">client</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">client</span> <span class="o">=</span> <span class="n">mk_client</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="n">client</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">extra_kwargs</span> <span class="o">=</span> <span class="n">extra_kwargs</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_iter</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Iterate over vector store objects.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">vector_stores</span><span class="o">.</span><span class="n">list</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">_list_kwargs</span><span class="p">)</span>
+
+<div class="viewcode-block" id="OaVectorStoresBase.metadata">
+<a class="viewcode-back" href="../../module_docs/oa/stores.html#oa.stores.OaVectorStoresBase.metadata">[docs]</a>
+    <span class="nd">@extract_id</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vs_id</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>  <span class="c1"># TODO: Add proper vector store type</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get vector store metadata by ID.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">vector_stores</span><span class="o">.</span><span class="n">retrieve</span><span class="p">(</span><span class="n">vs_id</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">extra_kwargs</span><span class="p">)</span></div>
+
+
+    <span class="n">_getitem</span> <span class="o">=</span> <span class="n">metadata</span>
+
+    <span class="nd">@extract_id</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_delitem</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vs_id</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Delete a vector store.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">vector_stores</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">vs_id</span><span class="p">)</span>
+
+<div class="viewcode-block" id="OaVectorStoresBase.create">
+<a class="viewcode-back" href="../../module_docs/oa/stores.html#oa.stores.OaVectorStoresBase.create">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">config</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a new vector store with given name.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">vector_stores</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="o">**</span><span class="n">config</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">extra_kwargs</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="OaVectorStoresBase.get_by_name">
+<a class="viewcode-back" href="../../module_docs/oa/stores.html#oa.stores.OaVectorStoresBase.get_by_name">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_by_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get vector store by name (since OpenAI API doesn&#39;t support this directly).&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">vs</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">vector_stores</span><span class="o">.</span><span class="n">list</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">vs</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">name</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">vs</span>
+        <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Vector store with name &#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39; not found&quot;</span><span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="OaVectorStores">
+<a class="viewcode-back" href="../../module_docs/oa/stores.html#oa.stores.OaVectorStores">[docs]</a>
+<span class="nd">@wrap_kvs</span><span class="p">(</span><span class="n">key_decoder</span><span class="o">=</span><span class="n">attrgetter</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">))</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">OaVectorStores</span><span class="p">(</span><span class="n">OaVectorStoresBase</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A key-value store for OpenAI vector stores.</span>
+<span class="sd">    Keys are the vector store IDs.</span>
+<span class="sd">    &quot;&quot;&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="OaVectorStoreFiles">
+<a class="viewcode-back" href="../../module_docs/oa/stores.html#oa.stores.OaVectorStoreFiles">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">OaVectorStoreFiles</span><span class="p">(</span><span class="n">OaMapping</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Mapping interface for files within a vector store.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">vector_store_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">client</span><span class="p">:</span> <span class="n">openai</span><span class="o">.</span><span class="n">Client</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">extra_kwargs</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="k">if</span> <span class="n">client</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">client</span> <span class="o">=</span> <span class="n">mk_client</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="n">client</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vector_store_id</span> <span class="o">=</span> <span class="n">vector_store_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">extra_kwargs</span> <span class="o">=</span> <span class="n">extra_kwargs</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_iter</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Iterate over file objects in the vector store.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">vector_stores</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">list</span><span class="p">(</span>
+            <span class="n">vector_store_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">vector_store_id</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">_list_kwargs</span>
+        <span class="p">)</span>
+
+<div class="viewcode-block" id="OaVectorStoreFiles.metadata">
+<a class="viewcode-back" href="../../module_docs/oa/stores.html#oa.stores.OaVectorStoreFiles.metadata">[docs]</a>
+    <span class="nd">@extract_id</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_id</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get file info from vector store.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">vector_stores</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">retrieve</span><span class="p">(</span>
+            <span class="n">vector_store_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">vector_store_id</span><span class="p">,</span> <span class="n">file_id</span><span class="o">=</span><span class="n">file_id</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">extra_kwargs</span>
+        <span class="p">)</span></div>
+
+
+    <span class="n">_getitem</span> <span class="o">=</span> <span class="n">metadata</span>
+
+    <span class="nd">@extract_id</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_delitem</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_id</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Remove file from vector store.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">vector_stores</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span>
+            <span class="n">vector_store_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">vector_store_id</span><span class="p">,</span> <span class="n">file_id</span><span class="o">=</span><span class="n">file_id</span>
+        <span class="p">)</span>
+
+<div class="viewcode-block" id="OaVectorStoreFiles.add_file">
+<a class="viewcode-back" href="../../module_docs/oa/stores.html#oa.stores.OaVectorStoreFiles.add_file">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add file to vector store.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">vector_stores</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+            <span class="n">vector_store_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">vector_store_id</span><span class="p">,</span> <span class="n">file_id</span><span class="o">=</span><span class="n">file_id</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">extra_kwargs</span>
+        <span class="p">)</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_id</span><span class="p">,</span> <span class="n">_</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add file to vector store (for MutableMapping interface).&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_file</span><span class="p">(</span><span class="n">file_id</span><span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright NO COPYRIGHT.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -6,18 +6,18 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>oa.chats &mdash; oa 0.1.43 documentation</title>
+  <title>oa.chats &mdash; oa 0.1.46 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
       <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
 
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=a183c34f"></script>
-      <script src="../../_static/doctools.js?v=9bcbadda"></script>
-      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/documentation_options.js?v=f98a5df1"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
       <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
       <script src="../../_static/copybutton.js?v=f281be69"></script>
@@ -53,14 +53,35 @@
 <li class="toctree-l1"><a class="reference internal" href="_params.html">oa._params</a></li>
 <li class="toctree-l1"><a class="reference internal" href="_resources.html">oa._resources</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ask.html">oa.ask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="audio.html">oa.audio</a></li>
 <li class="toctree-l1"><a class="reference internal" href="base.html">oa.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="batch_embeddings.html">oa.batch_embeddings</a></li>
 <li class="toctree-l1"><a class="reference internal" href="batches.html">oa.batches</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">oa.chats</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">oa.chats</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#oa.chats.ChatDacc"><code class="docutils literal notranslate"><span class="pre">ChatDacc</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#oa.chats.ChatDacc.basic_turns_data"><code class="docutils literal notranslate"><span class="pre">ChatDacc.basic_turns_data</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#oa.chats.ChatDacc.basic_turns_df"><code class="docutils literal notranslate"><span class="pre">ChatDacc.basic_turns_df</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#oa.chats.ChatDacc.copy_turns_json"><code class="docutils literal notranslate"><span class="pre">ChatDacc.copy_turns_json()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#oa.chats.ChatDacc.paths_containing_urls"><code class="docutils literal notranslate"><span class="pre">ChatDacc.paths_containing_urls</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#oa.chats.ChatDacc.url_data"><code class="docutils literal notranslate"><span class="pre">ChatDacc.url_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#oa.chats.ChatDacc.url_paths"><code class="docutils literal notranslate"><span class="pre">ChatDacc.url_paths</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#oa.chats.find_all_matching_paths_in_list_values"><code class="docutils literal notranslate"><span class="pre">find_all_matching_paths_in_list_values()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#oa.chats.find_url_keys"><code class="docutils literal notranslate"><span class="pre">find_url_keys()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#oa.chats.get_rendered_html"><code class="docutils literal notranslate"><span class="pre">get_rendered_html()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#oa.chats.get_rendered_html_async"><code class="docutils literal notranslate"><span class="pre">get_rendered_html_async()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#oa.chats.parse_chat_html"><code class="docutils literal notranslate"><span class="pre">parse_chat_html()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#oa.chats.reduce_chat_html"><code class="docutils literal notranslate"><span class="pre">reduce_chat_html()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#oa.chats.remove_utm_source"><code class="docutils literal notranslate"><span class="pre">remove_utm_source()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#oa.chats.truncate_dict_values"><code class="docutils literal notranslate"><span class="pre">truncate_dict_values()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="examples/aesop_fables.html">oa.examples.aesop_fables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/batch_embeddings_examples.html">oa.examples.batch_embeddings_examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples/illustrate_stories.html">oa.examples.illustrate_stories</a></li>
 <li class="toctree-l1"><a class="reference internal" href="oa_types.html">oa.oa_types</a></li>
 <li class="toctree-l1"><a class="reference internal" href="openai_specs.html">oa.openai_specs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="scrap.html">oa.scrap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="stores.html">oa.stores</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tools.html">oa.tools</a></li>
 <li class="toctree-l1"><a class="reference internal" href="util.html">oa.util</a></li>
@@ -91,8 +112,245 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="oa-chats">
-<h1>oa.chats<a class="headerlink" href="#oa-chats" title="Link to this heading"></a></h1>
+  <section id="module-oa.chats">
+<span id="oa-chats"></span><h1>oa.chats<a class="headerlink" href="#module-oa.chats" title="Link to this heading"></a></h1>
+<p>Tools to work with shared chats (conversations).</p>
+<p>For instance: Extract information from them.</p>
+<p>The main object here is <cite>ChatDacc</cite> (Chat Data Accessor), which is a class that allows
+you to access the data in a shared chat in a structured way.</p>
+<p># &gt;&gt;&gt; from oa.chats import ChatDacc
+# &gt;&gt;&gt;
+# &gt;&gt;&gt; url = ‘<a class="reference external" href="https://chatgpt.com/share/6788d539-0f2c-8013-9535-889bf344d7d5">https://chatgpt.com/share/6788d539-0f2c-8013-9535-889bf344d7d5</a>’
+# &gt;&gt;&gt; dacc = ChatDacc(url)
+# &gt;&gt;&gt;
+# &gt;&gt;&gt; basic_turns_data = dacc.basic_turns_data
+# &gt;&gt;&gt; len(basic_turns_data)
+# 4
+# &gt;&gt;&gt; first_turn = basic_turns_data[0]
+# &gt;&gt;&gt; isinstance(first_turn, dict)
+# True
+# &gt;&gt;&gt; list(first_turn)
+# [‘id’, ‘role’, ‘content’, ‘message_id’]
+# &gt;&gt;&gt; print(first_turn[‘content’])  # doctest: +NORMALIZE_WHITESPACE
+# This conversation is meant to be used as an example, for testing, and/or for figuring out how to parse the html and json of a conversation.
+# &lt;BLANKLINE&gt;
+# As such, we’d like to keep it short.
+# &lt;BLANKLINE&gt;
+# Just say “Hello World!” back to me for now, and then in a second line write 10 random words.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="oa.chats.ChatDacc">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">oa.chats.</span></span><span class="sig-name descname"><span class="pre">ChatDacc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">src</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/oa/chats.html#ChatDacc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oa.chats.ChatDacc" title="Link to this definition"></a></dt>
+<dd><p>Chat Data Accessor - manages and extracts data from shared ChatGPT conversations.</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="oa.chats.ChatDacc.basic_turns_data">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">basic_turns_data</span></span><a class="headerlink" href="#oa.chats.ChatDacc.basic_turns_data" title="Link to this definition"></a></dt>
+<dd><p>Return the parsed conversation as-is (list of dicts with id, role, content, message_id).</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="oa.chats.ChatDacc.basic_turns_df">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">basic_turns_df</span></span><a class="headerlink" href="#oa.chats.ChatDacc.basic_turns_df" title="Link to this definition"></a></dt>
+<dd><p>Convert the conversation to a pandas DataFrame.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="oa.chats.ChatDacc.copy_turns_json">
+<span class="sig-name descname"><span class="pre">copy_turns_json</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/oa/chats.html#ChatDacc.copy_turns_json"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oa.chats.ChatDacc.copy_turns_json" title="Link to this definition"></a></dt>
+<dd><p>Copy the conversation data to clipboard as JSON.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="oa.chats.ChatDacc.paths_containing_urls">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">paths_containing_urls</span></span><a class="headerlink" href="#oa.chats.ChatDacc.paths_containing_urls" title="Link to this definition"></a></dt>
+<dd><p>Get unique paths containing URLs with array indices replaced by wildcards.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="oa.chats.ChatDacc.url_data">
+<span class="sig-name descname"><span class="pre">url_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">remove_chatgpt_utm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/oa/chats.html#ChatDacc.url_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oa.chats.ChatDacc.url_data" title="Link to this definition"></a></dt>
+<dd><p>Extract all URLs from the conversation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>remove_chatgpt_utm</strong> – If True, remove utm_source=chatgpt.com from URLs</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of URLs found in the conversation</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="oa.chats.ChatDacc.url_paths">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">url_paths</span></span><a class="headerlink" href="#oa.chats.ChatDacc.url_paths" title="Link to this definition"></a></dt>
+<dd><p>Find all paths containing URLs in the conversation data.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="oa.chats.find_all_matching_paths_in_list_values">
+<span class="sig-prename descclassname"><span class="pre">oa.chats.</span></span><span class="sig-name descname"><span class="pre">find_all_matching_paths_in_list_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nested_dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/oa/chats.html#find_all_matching_paths_in_list_values"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oa.chats.find_all_matching_paths_in_list_values" title="Link to this definition"></a></dt>
+<dd><p>Find all paths in a nested dictionary where target_value evaluates to True
+for elements in a list contained within the value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nested_dict</strong> – The dictionary to search.</p></li>
+<li><p><strong>target_value</strong> – A function that takes a value and returns a boolean.
+If a string, will be converted to a regex search.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A generator yielding paths that match the condition.</p>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">nested_dict</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">... </span>    <span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;b&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;c&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="s2">&quot;d&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]}},</span>
+<span class="gp">... </span>    <span class="s2">&quot;e&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;f&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">],</span> <span class="s2">&quot;g&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;h&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">]}},</span>
+<span class="gp">... </span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">target_value_fn</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span>  <span class="c1"># Find even numbers</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">find_all_matching_paths_in_list_values</span><span class="p">(</span><span class="n">nested_dict</span><span class="p">,</span> <span class="n">target_value_fn</span><span class="p">))</span>
+<span class="go">[(&#39;a&#39;, &#39;b&#39;, &#39;c&#39;), (&#39;a&#39;, &#39;b&#39;, &#39;d&#39;), (&#39;e&#39;, &#39;f&#39;), (&#39;e&#39;, &#39;g&#39;, &#39;h&#39;)]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="oa.chats.find_url_keys">
+<span class="sig-prename descclassname"><span class="pre">oa.chats.</span></span><span class="sig-name descname"><span class="pre">find_url_keys</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">current_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/oa/chats.html#find_url_keys"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oa.chats.find_url_keys" title="Link to this definition"></a></dt>
+<dd><p>Recursively finds all paths in a JSON-like object (nested dicts/lists) where URL strings are present.</p>
+<p>This is a generator function that yields each path as a dot-separated string. Supports paths through
+both dictionaries and lists.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>dict</em><em> or </em><em>list</em>) – The JSON-like object to search.</p></li>
+<li><p><strong>current_path</strong> (<em>str</em>) – The current path being traversed, used internally during recursion.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Yields<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>str</em> – Dot-separated path to a value containing a URL.</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">example_data</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">... </span>    <span class="s2">&quot;key1&quot;</span><span class="p">:</span> <span class="p">{</span>
+<span class="gp">... </span>        <span class="s2">&quot;nested&quot;</span><span class="p">:</span> <span class="p">[</span>
+<span class="gp">... </span>            <span class="p">{</span><span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;http://example.com&quot;</span><span class="p">},</span>
+<span class="gp">... </span>            <span class="p">{</span><span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://example.org&quot;</span><span class="p">}</span>
+<span class="gp">... </span>        <span class="p">]</span>
+<span class="gp">... </span>    <span class="p">},</span>
+<span class="gp">... </span>    <span class="s2">&quot;key2&quot;</span><span class="p">:</span> <span class="s2">&quot;http://another-example.com&quot;</span>
+<span class="gp">... </span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">find_url_keys</span><span class="p">(</span><span class="n">example_data</span><span class="p">))</span>
+<span class="go">[&#39;key1.nested[0].url&#39;, &#39;key1.nested[1].url&#39;, &#39;key2&#39;]</span>
+</pre></div>
+</div>
+<p>One thing you’ll probably want to do sometimes is transform, filter, and
+aggregate these paths. Here’s an example of how you might get a list of
+unique paths, with all array indices replaced with a wildcard, so thay
+don’t appear as separate paths:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">partial</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">paths</span> <span class="o">=</span> <span class="n">find_url_keys</span><span class="p">(</span><span class="n">example_data</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">transform</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">,</span> <span class="s1">&#39;\[\d+\]&#39;</span><span class="p">,</span> <span class="s1">&#39;[*]&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">unique_paths</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">transform</span><span class="p">,</span> <span class="n">paths</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">sorted</span><span class="p">(</span><span class="n">unique_paths</span><span class="p">)</span>
+<span class="go">[&#39;key1.nested[*].url&#39;, &#39;key2&#39;]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="oa.chats.get_rendered_html">
+<span class="sig-prename descclassname"><span class="pre">oa.chats.</span></span><span class="sig-name descname"><span class="pre">get_rendered_html</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">headless</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">30000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_async</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../_modules/oa/chats.html#get_rendered_html"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oa.chats.get_rendered_html" title="Link to this definition"></a></dt>
+<dd><p>Return the fully rendered HTML for <cite>url</cite> using Playwright (sync or async).</p>
+<p>By default this uses the synchronous Playwright API. If <cite>use_async=True</cite> the
+async variant will be executed via asyncio.run.</p>
+<dl class="simple">
+<dt>Note: This function only imports Playwright when called. Install with:</dt><dd><p>pip install playwright
+playwright install chromium</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="oa.chats.get_rendered_html_async">
+<span class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">oa.chats.</span></span><span class="sig-name descname"><span class="pre">get_rendered_html_async</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">headless</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">30000</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../_modules/oa/chats.html#get_rendered_html_async"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oa.chats.get_rendered_html_async" title="Link to this definition"></a></dt>
+<dd><p>Asynchronous version: return fully rendered HTML using Playwright async API.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="oa.chats.parse_chat_html">
+<span class="sig-prename descclassname"><span class="pre">oa.chats.</span></span><span class="sig-name descname"><span class="pre">parse_chat_html</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">html</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/oa/chats.html#parse_chat_html"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oa.chats.parse_chat_html" title="Link to this definition"></a></dt>
+<dd><p>Parses conversation data from a shared chat HTML file into a structured list of messages.</p>
+<p>It extracts the primary conversation data along with essential metadata:
+‘id’ (from the turn ID), ‘role’, ‘content’, and ‘message_id’. The ‘time’
+field is excluded as it cannot be reliably extracted from the visible HTML.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>html</strong> – The full HTML content of the conversation file.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of dictionaries, where each dictionary represents a message and
+contains ‘id’, ‘role’, ‘content’, and ‘message_id’ keys.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="oa.chats.reduce_chat_html">
+<span class="sig-prename descclassname"><span class="pre">oa.chats.</span></span><span class="sig-name descname"><span class="pre">reduce_chat_html</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">html</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../_modules/oa/chats.html#reduce_chat_html"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oa.chats.reduce_chat_html" title="Link to this definition"></a></dt>
+<dd><p>Strips away all irrelevant metadata, headers, footers, and scripts from
+the raw HTML, keeping only the essential conversation content enclosed in
+the &lt;div id=”thread”&gt; tag.</p>
+<p>This dramatically reduces the size of the HTML fed into the main parser
+while preserving all necessary information for <cite>parse_chat_html</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>html</strong> – The full HTML content of the conversation file.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A stripped-down HTML string containing only the conversation thread.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="oa.chats.remove_utm_source">
+<span class="sig-prename descclassname"><span class="pre">oa.chats.</span></span><span class="sig-name descname"><span class="pre">remove_utm_source</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/oa/chats.html#remove_utm_source"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oa.chats.remove_utm_source" title="Link to this definition"></a></dt>
+<dd><p>Removes the “?utm_source=chatgpt.com” suffix from all URLs in the given text.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>text</strong> (<em>str</em>) – The input text containing URLs.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The text with the specified query parameter removed from all URLs.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">input_text</span> <span class="o">=</span> <span class="p">(</span>
+<span class="gp">... </span>    <span class="s2">&quot;not_a_url &quot;</span>  <span class="c1"># not even a url (won&#39;t be touched)</span>
+<span class="gp">... </span>    <span class="s2">&quot;http://abc?utm_source=chatgpt.com_not_at_the_end &quot;</span>  <span class="c1"># target not at the end</span>
+<span class="gp">... </span>    <span class="s2">&quot;https://abc?utm_source=chatgpt.com &quot;</span>  <span class="c1"># with ?</span>
+<span class="gp">... </span>    <span class="s2">&quot;https://abc&amp;utm_source=chatgpt.com &quot;</span>  <span class="c1"># with &amp;</span>
+<span class="gp">... </span>    <span class="s2">&quot;http://abc?utm_source=chatgpt.com&quot;</span>  <span class="c1"># with http instead of https</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">remove_utm_source</span><span class="p">(</span><span class="n">input_text</span><span class="p">)</span>
+<span class="go">&#39;not_a_url http://abc_not_at_the_end https://abc https://abc http://abc&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="oa.chats.truncate_dict_values">
+<span class="sig-prename descclassname"><span class="pre">oa.chats.</span></span><span class="sig-name descname"><span class="pre">truncate_dict_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/oa/chats.html#truncate_dict_values"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oa.chats.truncate_dict_values" title="Link to this definition"></a></dt>
+<dd><p>Truncate string values in a dict to a maximum length for display purposes.</p>
+</dd></dl>
+
 </section>
 
 

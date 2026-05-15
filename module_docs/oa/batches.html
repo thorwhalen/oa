@@ -6,18 +6,18 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>oa.batches &mdash; oa 0.1.43 documentation</title>
+  <title>oa.batches &mdash; oa 0.1.46 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
       <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
 
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=a183c34f"></script>
-      <script src="../../_static/doctools.js?v=9bcbadda"></script>
-      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/documentation_options.js?v=f98a5df1"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
       <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
       <script src="../../_static/copybutton.js?v=f281be69"></script>
@@ -25,7 +25,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="oa.chats" href="chats.html" />
-    <link rel="prev" title="oa.base" href="base.html" /> 
+    <link rel="prev" title="oa.batch_embeddings" href="batch_embeddings.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -53,14 +53,28 @@
 <li class="toctree-l1"><a class="reference internal" href="_params.html">oa._params</a></li>
 <li class="toctree-l1"><a class="reference internal" href="_resources.html">oa._resources</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ask.html">oa.ask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="audio.html">oa.audio</a></li>
 <li class="toctree-l1"><a class="reference internal" href="base.html">oa.base</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">oa.batches</a></li>
+<li class="toctree-l1"><a class="reference internal" href="batch_embeddings.html">oa.batch_embeddings</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">oa.batches</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#oa.batches.BatchCancelledError"><code class="docutils literal notranslate"><span class="pre">BatchCancelledError</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#oa.batches.BatchError"><code class="docutils literal notranslate"><span class="pre">BatchError</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#oa.batches.BatchExpiredError"><code class="docutils literal notranslate"><span class="pre">BatchExpiredError</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#oa.batches.BatchFailedError"><code class="docutils literal notranslate"><span class="pre">BatchFailedError</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#oa.batches.BatchFinalizingError"><code class="docutils literal notranslate"><span class="pre">BatchFinalizingError</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#oa.batches.BatchInProgressError"><code class="docutils literal notranslate"><span class="pre">BatchInProgressError</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#oa.batches.get_output_file_data"><code class="docutils literal notranslate"><span class="pre">get_output_file_data()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#oa.batches.mk_batch_file_embeddings_task"><code class="docutils literal notranslate"><span class="pre">mk_batch_file_embeddings_task()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#oa.batches.on_complete"><code class="docutils literal notranslate"><span class="pre">on_complete()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#oa.batches.random_custom_id"><code class="docutils literal notranslate"><span class="pre">random_custom_id()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="chats.html">oa.chats</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples/aesop_fables.html">oa.examples.aesop_fables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/batch_embeddings_examples.html">oa.examples.batch_embeddings_examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples/illustrate_stories.html">oa.examples.illustrate_stories</a></li>
 <li class="toctree-l1"><a class="reference internal" href="oa_types.html">oa.oa_types</a></li>
 <li class="toctree-l1"><a class="reference internal" href="openai_specs.html">oa.openai_specs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="scrap.html">oa.scrap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="stores.html">oa.stores</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tools.html">oa.tools</a></li>
 <li class="toctree-l1"><a class="reference internal" href="util.html">oa.util</a></li>
@@ -91,15 +105,161 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="oa-batches">
-<h1>oa.batches<a class="headerlink" href="#oa-batches" title="Link to this heading"></a></h1>
+  <section id="module-oa.batches">
+<span id="oa-batches"></span><h1>oa.batches<a class="headerlink" href="#module-oa.batches" title="Link to this heading"></a></h1>
+<p>Batch functionality</p>
+<p>Useful links:
+- Web tool: <a class="reference external" href="https://platform.openai.com/batches/">https://platform.openai.com/batches/</a>
+- API docs: <a class="reference external" href="https://platform.openai.com/docs/api-reference/batch">https://platform.openai.com/docs/api-reference/batch</a></p>
+<dl class="py exception">
+<dt class="sig sig-object py" id="oa.batches.BatchCancelledError">
+<span class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">oa.batches.</span></span><span class="sig-name descname"><span class="pre">BatchCancelledError</span></span><a class="reference internal" href="../../_modules/oa/batches.html#BatchCancelledError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oa.batches.BatchCancelledError" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="oa.batches.BatchError">
+<span class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">oa.batches.</span></span><span class="sig-name descname"><span class="pre">BatchError</span></span><a class="reference internal" href="../../_modules/oa/batches.html#BatchError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oa.batches.BatchError" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="oa.batches.BatchExpiredError">
+<span class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">oa.batches.</span></span><span class="sig-name descname"><span class="pre">BatchExpiredError</span></span><a class="reference internal" href="../../_modules/oa/batches.html#BatchExpiredError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oa.batches.BatchExpiredError" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="oa.batches.BatchFailedError">
+<span class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">oa.batches.</span></span><span class="sig-name descname"><span class="pre">BatchFailedError</span></span><a class="reference internal" href="../../_modules/oa/batches.html#BatchFailedError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oa.batches.BatchFailedError" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="oa.batches.BatchFinalizingError">
+<span class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">oa.batches.</span></span><span class="sig-name descname"><span class="pre">BatchFinalizingError</span></span><a class="reference internal" href="../../_modules/oa/batches.html#BatchFinalizingError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oa.batches.BatchFinalizingError" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="oa.batches.BatchInProgressError">
+<span class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">oa.batches.</span></span><span class="sig-name descname"><span class="pre">BatchInProgressError</span></span><a class="reference internal" href="../../_modules/oa/batches.html#BatchInProgressError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oa.batches.BatchInProgressError" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="oa.batches.get_output_file_data">
+<span class="sig-prename descclassname"><span class="pre">oa.batches.</span></span><span class="sig-name descname"><span class="pre">get_output_file_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">batch:</span> <span class="pre">~openai.types.batch.Batch</span> <span class="pre">|</span> <span class="pre">str,</span> <span class="pre">*,</span> <span class="pre">oa_stores,</span> <span class="pre">get_batch_obj:</span> <span class="pre">~collections.abc.Callable</span> <span class="pre">=</span> <span class="pre">&lt;function</span> <span class="pre">get_batch_obj&gt;,</span> <span class="pre">on_complete:</span> <span class="pre">~collections.abc.Callable</span> <span class="pre">=</span> <span class="pre">&lt;function</span> <span class="pre">on_complete&gt;,</span> <span class="pre">on_error:</span> <span class="pre">~collections.abc.Callable[[BaseException],</span> <span class="pre">~typing.Any]</span> <span class="pre">=</span> <span class="pre">&lt;function</span> <span class="pre">raise_error&gt;</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/oa/batches.html#get_output_file_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oa.batches.get_output_file_data" title="Link to this definition"></a></dt>
+<dd><p>Get the output file data for a batch, if it has completed successfully.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="oa.batches.mk_batch_file_embeddings_task">
+<span class="sig-prename descclassname"><span class="pre">oa.batches.</span></span><span class="sig-name descname"><span class="pre">mk_batch_file_embeddings_task</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">texts:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">~collections.abc.Iterable[str]</span> <span class="pre">|</span> <span class="pre">~collections.abc.Mapping[KT,</span> <span class="pre">str],</span> <span class="pre">*,</span> <span class="pre">custom_id:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">validate:</span> <span class="pre">bool</span> <span class="pre">|</span> <span class="pre">~collections.abc.Callable</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">True,</span> <span class="pre">valid_text_getter=&lt;function</span> <span class="pre">_raise_if_any_invalid&gt;,</span> <span class="pre">model='text-embedding-3-small',</span> <span class="pre">dimensions:</span> <span class="pre">int</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">NOT_GIVEN,</span> <span class="pre">custom_id_per_text=None,</span> <span class="pre">**extra_embeddings_params</span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/oa/batches.html#mk_batch_file_embeddings_task"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oa.batches.mk_batch_file_embeddings_task" title="Link to this definition"></a></dt>
+<dd><p>Create a batch task (json-)dicts for generating embeddings.</p>
+<p>These dictionaries (or list thereof) are destined to be used as input for the
+OpenAI API batch endpoint. The endpoint will then generate embeddings for the
+provided texts.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>texts</strong> (<em>TextOrTexts</em>) – The text or list of texts to generate embeddings for.</p></li>
+<li><p><strong>custom_id</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em>) – A custom identifier for the batch task. Defaults to None.</p></li>
+<li><p><strong>validate</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><em>bool</em><em>, </em><em>Callable</em><em>]</em><em>]</em><em>, </em><em>optional</em>) – Whether to validate the texts. Defaults to True.</p></li>
+<li><p><strong>valid_text_getter</strong> (<em>Optional</em><em>[</em><em>Callable</em><em>]</em><em>, </em><em>optional</em>) – Function to retrieve valid texts. Defaults to _raise_if_any_invalid.</p></li>
+<li><p><strong>model</strong> (<em>str</em><em>, </em><em>optional</em>) – The embeddings model to use. Defaults to DFLT_EMBEDDINGS_MODEL.</p></li>
+<li><p><strong>dimensions</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em><em>, </em><em>optional</em>) – The dimensions for the embeddings. Defaults to NOT_GIVEN.</p></li>
+<li><p><strong>custom_id_per_text</strong> (<em>Optional</em><em>[</em><em>bool</em><em>]</em><em>, </em><em>optional</em>) – Whether to include a custom ID per text item. Defaults to None.</p></li>
+<li><p><strong>**extra_embeddings_params</strong> – Additional parameters for embeddings.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A single task dictionary or a list of task dictionaries.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Union[dict, List[dict]]</p>
+</dd>
+</dl>
+<p>Examples:</p>
+<p>With a single text:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mk_batch_file_embeddings_task</span><span class="p">(</span><span class="s2">&quot;Example text&quot;</span><span class="p">)</span>
+<span class="go">{&#39;custom_id&#39;: &#39;...&#39;,</span>
+<span class="go"> &#39;method&#39;: &#39;POST&#39;,</span>
+<span class="go"> &#39;url&#39;: &#39;/v1/embeddings&#39;,</span>
+<span class="go"> &#39;body&#39;: {&#39;input&#39;: [&#39;Example text&#39;], &#39;model&#39;: &#39;text-embedding-3-small&#39;}}</span>
+</pre></div>
+</div>
+<p>With a list of texts:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mk_batch_file_embeddings_task</span><span class="p">([</span><span class="s2">&quot;Text1&quot;</span><span class="p">,</span> <span class="s2">&quot;Text2&quot;</span><span class="p">])</span>
+<span class="go">{&#39;custom_id&#39;: &#39;...&#39;,</span>
+<span class="go"> &#39;method&#39;: &#39;POST&#39;,</span>
+<span class="go"> &#39;url&#39;: &#39;/v1/embeddings&#39;,</span>
+<span class="go"> &#39;body&#39;: {&#39;input&#39;: [&#39;Text1&#39;, &#39;Text2&#39;], &#39;model&#39;: &#39;text-embedding-3-small&#39;}}</span>
+</pre></div>
+</div>
+<p>With a dictionary of texts:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mk_batch_file_embeddings_task</span><span class="p">({</span><span class="s2">&quot;key1&quot;</span><span class="p">:</span> <span class="s2">&quot;Text1&quot;</span><span class="p">,</span> <span class="s2">&quot;key2&quot;</span><span class="p">:</span> <span class="s2">&quot;Text2&quot;</span><span class="p">})</span>
+<span class="go">[{&#39;custom_id&#39;: &#39;key1&#39;,</span>
+<span class="go">  &#39;method&#39;: &#39;POST&#39;,</span>
+<span class="go">  &#39;url&#39;: &#39;/v1/embeddings&#39;,</span>
+<span class="go">  &#39;body&#39;: {&#39;input&#39;: &#39;Text1&#39;, &#39;model&#39;: &#39;text-embedding-3-small&#39;}},</span>
+<span class="go"> {&#39;custom_id&#39;: &#39;key2&#39;,</span>
+<span class="go">  &#39;method&#39;: &#39;POST&#39;,</span>
+<span class="go">  &#39;url&#39;: &#39;/v1/embeddings&#39;,</span>
+<span class="go">  &#39;body&#39;: {&#39;input&#39;: &#39;Text2&#39;, &#39;model&#39;: &#39;text-embedding-3-small&#39;}}]</span>
+</pre></div>
+</div>
+<p>As you see, when a list is given, the batch task is created with a single custom_id,
+with a list of texts as input.
+When a dictionary is given, the batch task is created with
+a custom_id per text item, and the input is a dictionary of key-value pairs.</p>
+<p>The usefulness of giving a dictionary is that the tasks will contain the same keys
+as your dictionary, which can be useful when having to link the results back to
+the original data. But it comes with a disadvantage: it’s much faster to process
+a list of texts than multiple tasks with a single text each.</p>
+<p>When efficiency is a concern, you can keep a texts dictionary on the client side,
+ask to embed list(texts.values()), and then use the keys to link the results back
+to the original data.
+You can force the function to ignore the type of the texts input and do it the way
+you want it, by setting custom_id_per_text to True or False.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mk_batch_file_embeddings_task</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="p">{</span><span class="s2">&quot;key1&quot;</span><span class="p">:</span> <span class="s2">&quot;Text1&quot;</span><span class="p">,</span> <span class="s2">&quot;key2&quot;</span><span class="p">:</span> <span class="s2">&quot;Text2&quot;</span><span class="p">},</span> <span class="n">custom_id_per_text</span><span class="o">=</span><span class="kc">False</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="go">{&#39;custom_id&#39;: &#39;...&#39;,</span>
+<span class="go">&#39;method&#39;: &#39;POST&#39;,</span>
+<span class="go">&#39;url&#39;: &#39;/v1/embeddings&#39;,</span>
+<span class="go">&#39;body&#39;: {&#39;input&#39;: [&#39;Text1&#39;, &#39;Text2&#39;],</span>
+<span class="go">&#39;model&#39;: &#39;text-embedding-3-small&#39;}}</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mk_batch_file_embeddings_task</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="p">[</span><span class="s2">&quot;Text1&quot;</span><span class="p">,</span> <span class="s2">&quot;Text2&quot;</span><span class="p">],</span> <span class="n">custom_id_per_text</span><span class="o">=</span><span class="kc">True</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="go">[{&#39;custom_id&#39;: 0,</span>
+<span class="go">  &#39;method&#39;: &#39;POST&#39;,</span>
+<span class="go">  &#39;url&#39;: &#39;/v1/embeddings&#39;,</span>
+<span class="go">  &#39;body&#39;: {&#39;input&#39;: &#39;Text1&#39;, &#39;model&#39;: &#39;text-embedding-3-small&#39;}},</span>
+<span class="go"> {&#39;custom_id&#39;: 1,</span>
+<span class="go">  &#39;method&#39;: &#39;POST&#39;,</span>
+<span class="go">  &#39;url&#39;: &#39;/v1/embeddings&#39;,</span>
+<span class="go">  &#39;body&#39;: {&#39;input&#39;: &#39;Text2&#39;, &#39;model&#39;: &#39;text-embedding-3-small&#39;}}]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="oa.batches.on_complete">
+<span class="sig-prename descclassname"><span class="pre">oa.batches.</span></span><span class="sig-name descname"><span class="pre">on_complete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">oa_stores</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_obj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Batch</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/oa/batches.html#on_complete"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oa.batches.on_complete" title="Link to this definition"></a></dt>
+<dd><p>Return the output file if the batch completed successfully</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="oa.batches.random_custom_id">
+<span class="sig-prename descclassname"><span class="pre">oa.batches.</span></span><span class="sig-name descname"><span class="pre">random_custom_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'custom_id-'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">suffix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/oa/batches.html#random_custom_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oa.batches.random_custom_id" title="Link to this definition"></a></dt>
+<dd><p>Make a random custom_id by using the current time in nanoseconds</p>
+</dd></dl>
+
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="base.html" class="btn btn-neutral float-left" title="oa.base" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="batch_embeddings.html" class="btn btn-neutral float-left" title="oa.batch_embeddings" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="chats.html" class="btn btn-neutral float-right" title="oa.chats" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

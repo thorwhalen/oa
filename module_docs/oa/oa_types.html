@@ -6,18 +6,18 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>oa.oa_types &mdash; oa 0.1.43 documentation</title>
+  <title>oa.oa_types &mdash; oa 0.1.46 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
       <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
 
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=a183c34f"></script>
-      <script src="../../_static/doctools.js?v=9bcbadda"></script>
-      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/documentation_options.js?v=f98a5df1"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
       <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
       <script src="../../_static/copybutton.js?v=f281be69"></script>
@@ -53,14 +53,63 @@
 <li class="toctree-l1"><a class="reference internal" href="_params.html">oa._params</a></li>
 <li class="toctree-l1"><a class="reference internal" href="_resources.html">oa._resources</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ask.html">oa.ask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="audio.html">oa.audio</a></li>
 <li class="toctree-l1"><a class="reference internal" href="base.html">oa.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="batch_embeddings.html">oa.batch_embeddings</a></li>
 <li class="toctree-l1"><a class="reference internal" href="batches.html">oa.batches</a></li>
 <li class="toctree-l1"><a class="reference internal" href="chats.html">oa.chats</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples/aesop_fables.html">oa.examples.aesop_fables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/batch_embeddings_examples.html">oa.examples.batch_embeddings_examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples/illustrate_stories.html">oa.examples.illustrate_stories</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">oa.oa_types</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">oa.oa_types</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#oa.oa_types.BatchRequest"><code class="docutils literal notranslate"><span class="pre">BatchRequest</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#oa.oa_types.BatchRequest.model_config"><code class="docutils literal notranslate"><span class="pre">BatchRequest.model_config</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#oa.oa_types.BatchRequestBody"><code class="docutils literal notranslate"><span class="pre">BatchRequestBody</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#oa.oa_types.BatchRequestBody.model_config"><code class="docutils literal notranslate"><span class="pre">BatchRequestBody.model_config</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#oa.oa_types.EmbeddingResponse"><code class="docutils literal notranslate"><span class="pre">EmbeddingResponse</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#oa.oa_types.EmbeddingResponse.model_config"><code class="docutils literal notranslate"><span class="pre">EmbeddingResponse.model_config</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#oa.oa_types.InputDataJsonL"><code class="docutils literal notranslate"><span class="pre">InputDataJsonL</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#oa.oa_types.InputText"><code class="docutils literal notranslate"><span class="pre">InputText</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#oa.oa_types.InputText.model_config"><code class="docutils literal notranslate"><span class="pre">InputText.model_config</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#oa.oa_types.JsonL"><code class="docutils literal notranslate"><span class="pre">JsonL</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#oa.oa_types.JsonL.model_config"><code class="docutils literal notranslate"><span class="pre">JsonL.model_config</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id0"><code class="docutils literal notranslate"><span class="pre">JsonL</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1"><code class="docutils literal notranslate"><span class="pre">JsonL.model_config</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#oa.oa_types.RequestResponse"><code class="docutils literal notranslate"><span class="pre">RequestResponse</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#oa.oa_types.RequestResponse.model_config"><code class="docutils literal notranslate"><span class="pre">RequestResponse.model_config</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#oa.oa_types.Response"><code class="docutils literal notranslate"><span class="pre">Response</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#oa.oa_types.Response.model_config"><code class="docutils literal notranslate"><span class="pre">Response.model_config</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id2"><code class="docutils literal notranslate"><span class="pre">Response</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id3"><code class="docutils literal notranslate"><span class="pre">Response.model_config</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#oa.oa_types.ResponseBody"><code class="docutils literal notranslate"><span class="pre">ResponseBody</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#oa.oa_types.ResponseBody.model_config"><code class="docutils literal notranslate"><span class="pre">ResponseBody.model_config</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#oa.oa_types.Usage"><code class="docutils literal notranslate"><span class="pre">Usage</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#oa.oa_types.Usage.model_config"><code class="docutils literal notranslate"><span class="pre">Usage.model_config</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="openai_specs.html">oa.openai_specs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="scrap.html">oa.scrap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="stores.html">oa.stores</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tools.html">oa.tools</a></li>
 <li class="toctree-l1"><a class="reference internal" href="util.html">oa.util</a></li>
@@ -91,8 +140,139 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="oa-oa-types">
-<h1>oa.oa_types<a class="headerlink" href="#oa-oa-types" title="Link to this heading"></a></h1>
+  <section id="module-oa.oa_types">
+<span id="oa-oa-types"></span><h1>oa.oa_types<a class="headerlink" href="#module-oa.oa_types" title="Link to this heading"></a></h1>
+<p>Types for oa</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="oa.oa_types.BatchRequest">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">oa.oa_types.</span></span><span class="sig-name descname"><span class="pre">BatchRequest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">custom_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">body</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#oa.oa_types.BatchRequestBody" title="oa.oa_types.BatchRequestBody"><span class="pre">BatchRequestBody</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/oa/oa_types.html#BatchRequest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oa.oa_types.BatchRequest" title="Link to this definition"></a></dt>
+<dd><dl class="py attribute">
+<dt class="sig sig-object py" id="oa.oa_types.BatchRequest.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></span><a class="headerlink" href="#oa.oa_types.BatchRequest.model_config" title="Link to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="oa.oa_types.BatchRequestBody">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">oa.oa_types.</span></span><span class="sig-name descname"><span class="pre">BatchRequestBody</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">input</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/oa/oa_types.html#BatchRequestBody"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oa.oa_types.BatchRequestBody" title="Link to this definition"></a></dt>
+<dd><dl class="py attribute">
+<dt class="sig sig-object py" id="oa.oa_types.BatchRequestBody.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></span><a class="headerlink" href="#oa.oa_types.BatchRequestBody.model_config" title="Link to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="oa.oa_types.EmbeddingResponse">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">oa.oa_types.</span></span><span class="sig-name descname"><span class="pre">EmbeddingResponse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">custom_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">response</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#oa.oa_types.RequestResponse" title="oa.oa_types.RequestResponse"><span class="pre">RequestResponse</span></a><span class="p"><span class="pre">[</span></span><span class="pre">Embedding</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#oa.oa_types.EmbeddingResponse" title="Link to this definition"></a></dt>
+<dd><dl class="py attribute">
+<dt class="sig sig-object py" id="oa.oa_types.EmbeddingResponse.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></span><a class="headerlink" href="#oa.oa_types.EmbeddingResponse.model_config" title="Link to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="oa.oa_types.InputDataJsonL">
+<span class="sig-prename descclassname"><span class="pre">oa.oa_types.</span></span><span class="sig-name descname"><span class="pre">InputDataJsonL</span></span><a class="headerlink" href="#oa.oa_types.InputDataJsonL" title="Link to this definition"></a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">JsonL[InputText]</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="oa.oa_types.InputText">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">oa.oa_types.</span></span><span class="sig-name descname"><span class="pre">InputText</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">input</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/oa/oa_types.html#InputText"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oa.oa_types.InputText" title="Link to this definition"></a></dt>
+<dd><p>Used to specify the input data in some OpenAI API endpounts.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="oa.oa_types.InputText.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></span><a class="headerlink" href="#oa.oa_types.InputText.model_config" title="Link to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="oa.oa_types.JsonL">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">oa.oa_types.</span></span><span class="sig-name descname"><span class="pre">JsonL</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">RootModelRootType</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">PydanticUndefined</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/oa/oa_types.html#JsonL"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oa.oa_types.JsonL" title="Link to this definition"></a></dt>
+<dd><p>A generic class for JSONL (JSON Lines) files, which are lists of dictionaries.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="oa.oa_types.JsonL.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></span><a class="headerlink" href="#oa.oa_types.JsonL.model_config" title="Link to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="id0">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">oa.oa_types.</span></span><span class="sig-name descname"><span class="pre">JsonL</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">RootModelRootType</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">PydanticUndefined</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/oa/oa_types.html#JsonL"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id0" title="Link to this definition"></a></dt>
+<dd><p>A generic class for JSONL (JSON Lines) files, which are lists of dictionaries.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id1">
+<span class="sig-name descname"><span class="pre">model_config</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></span><a class="headerlink" href="#id1" title="Link to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="oa.oa_types.RequestResponse">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">oa.oa_types.</span></span><span class="sig-name descname"><span class="pre">RequestResponse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">status_code</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Annotated</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Ge</span><span class="p"><span class="pre">(</span></span><span class="n"><span class="pre">ge</span></span><span class="o"><span class="pre">=</span></span><span class="m"><span class="pre">100</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Le</span><span class="p"><span class="pre">(</span></span><span class="n"><span class="pre">le</span></span><span class="o"><span class="pre">=</span></span><span class="m"><span class="pre">599</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">body</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#oa.oa_types.ResponseBody" title="oa.oa_types.ResponseBody"><span class="pre">ResponseBody</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/oa/oa_types.html#RequestResponse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oa.oa_types.RequestResponse" title="Link to this definition"></a></dt>
+<dd><dl class="py attribute">
+<dt class="sig sig-object py" id="oa.oa_types.RequestResponse.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></span><a class="headerlink" href="#oa.oa_types.RequestResponse.model_config" title="Link to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="oa.oa_types.Response">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">oa.oa_types.</span></span><span class="sig-name descname"><span class="pre">Response</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">custom_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">response</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#oa.oa_types.RequestResponse" title="oa.oa_types.RequestResponse"><span class="pre">RequestResponse</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">error</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/oa/oa_types.html#Response"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oa.oa_types.Response" title="Link to this definition"></a></dt>
+<dd><dl class="py attribute">
+<dt class="sig sig-object py" id="oa.oa_types.Response.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></span><a class="headerlink" href="#oa.oa_types.Response.model_config" title="Link to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="id2">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">oa.oa_types.</span></span><span class="sig-name descname"><span class="pre">Response</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">custom_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">response</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#oa.oa_types.RequestResponse" title="oa.oa_types.RequestResponse"><span class="pre">RequestResponse</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">error</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/oa/oa_types.html#Response"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id2" title="Link to this definition"></a></dt>
+<dd><dl class="py attribute">
+<dt class="sig sig-object py" id="id3">
+<span class="sig-name descname"><span class="pre">model_config</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></span><a class="headerlink" href="#id3" title="Link to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="oa.oa_types.ResponseBody">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">oa.oa_types.</span></span><span class="sig-name descname"><span class="pre">ResponseBody</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">object</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">DatumT</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">usage</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#oa.oa_types.Usage" title="oa.oa_types.Usage"><span class="pre">Usage</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/oa/oa_types.html#ResponseBody"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oa.oa_types.ResponseBody" title="Link to this definition"></a></dt>
+<dd><dl class="py attribute">
+<dt class="sig sig-object py" id="oa.oa_types.ResponseBody.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></span><a class="headerlink" href="#oa.oa_types.ResponseBody.model_config" title="Link to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="oa.oa_types.Usage">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">oa.oa_types.</span></span><span class="sig-name descname"><span class="pre">Usage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">prompt_tokens</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_tokens</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/oa/oa_types.html#Usage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oa.oa_types.Usage" title="Link to this definition"></a></dt>
+<dd><dl class="py attribute">
+<dt class="sig sig-object py" id="oa.oa_types.Usage.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></span><a class="headerlink" href="#oa.oa_types.Usage.model_config" title="Link to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+</dd></dl>
+
 </section>
 
 

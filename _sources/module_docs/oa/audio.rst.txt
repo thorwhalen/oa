@@ -1,0 +1,4 @@
+oa.audio
+========
+.. automodule:: oa.audio
+   :members:

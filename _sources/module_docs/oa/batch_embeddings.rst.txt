@@ -1,0 +1,4 @@
+oa.batch_embeddings
+===================
+.. automodule:: oa.batch_embeddings
+   :members:

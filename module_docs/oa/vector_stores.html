@@ -6,18 +6,18 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>oa.vector_stores &mdash; oa 0.1.43 documentation</title>
+  <title>oa.vector_stores &mdash; oa 0.1.46 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
       <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
 
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=a183c34f"></script>
-      <script src="../../_static/doctools.js?v=9bcbadda"></script>
-      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/documentation_options.js?v=f98a5df1"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
       <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
       <script src="../../_static/copybutton.js?v=f281be69"></script>
@@ -52,18 +52,26 @@
 <li class="toctree-l1"><a class="reference internal" href="_params.html">oa._params</a></li>
 <li class="toctree-l1"><a class="reference internal" href="_resources.html">oa._resources</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ask.html">oa.ask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="audio.html">oa.audio</a></li>
 <li class="toctree-l1"><a class="reference internal" href="base.html">oa.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="batch_embeddings.html">oa.batch_embeddings</a></li>
 <li class="toctree-l1"><a class="reference internal" href="batches.html">oa.batches</a></li>
 <li class="toctree-l1"><a class="reference internal" href="chats.html">oa.chats</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples/aesop_fables.html">oa.examples.aesop_fables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/batch_embeddings_examples.html">oa.examples.batch_embeddings_examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples/illustrate_stories.html">oa.examples.illustrate_stories</a></li>
 <li class="toctree-l1"><a class="reference internal" href="oa_types.html">oa.oa_types</a></li>
 <li class="toctree-l1"><a class="reference internal" href="openai_specs.html">oa.openai_specs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="scrap.html">oa.scrap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="stores.html">oa.stores</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tools.html">oa.tools</a></li>
 <li class="toctree-l1"><a class="reference internal" href="util.html">oa.util</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">oa.vector_stores</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">oa.vector_stores</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#oa.vector_stores.bind_and_modify"><code class="docutils literal notranslate"><span class="pre">bind_and_modify()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#oa.vector_stores.docs_to_search_func_factory_via_vector_store"><code class="docutils literal notranslate"><span class="pre">docs_to_search_func_factory_via_vector_store()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#oa.vector_stores.docs_to_vector_store"><code class="docutils literal notranslate"><span class="pre">docs_to_vector_store()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#oa.vector_stores.mk_search_func_for_oa_vector_store"><code class="docutils literal notranslate"><span class="pre">mk_search_func_for_oa_vector_store()</span></code></a></li>
+</ul>
+</li>
 </ul>
 
         </div>
@@ -90,8 +98,88 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="oa-vector-stores">
-<h1>oa.vector_stores<a class="headerlink" href="#oa-vector-stores" title="Link to this heading"></a></h1>
+  <section id="module-oa.vector_stores">
+<span id="oa-vector-stores"></span><h1>oa.vector_stores<a class="headerlink" href="#module-oa.vector_stores" title="Link to this heading"></a></h1>
+<p>Vector stores and search</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="oa.vector_stores.bind_and_modify">
+<span class="sig-prename descclassname"><span class="pre">oa.vector_stores.</span></span><span class="sig-name descname"><span class="pre">bind_and_modify</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">bound_args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_param_changes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">bound_kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/oa/vector_stores.html#bind_and_modify"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oa.vector_stores.bind_and_modify" title="Link to this definition"></a></dt>
+<dd><p>Convenience function that both binds arguments and modifies signature.</p>
+<p>This is perfect for your vector store search use case.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>func</strong> – The function to wrap</p></li>
+<li><p><strong>bound_args</strong> – Positional arguments to bind</p></li>
+<li><p><strong>bound_kwargs</strong> – Dict of argument names to values to bind</p></li>
+<li><p><strong>_param_changes</strong> – Parameter modifications</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Wrapped function with bound arguments and modified signature</p>
+</dd>
+</dl>
+<p>Example for your vector store case:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span><span class="w"> </span><span class="nf">search</span><span class="p">(</span><span class="n">vector_store_id</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">filters</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Searching </span><span class="si">{</span><span class="n">vector_store_id</span><span class="si">}</span><span class="s2"> for &#39;</span><span class="si">{</span><span class="n">query</span><span class="si">}</span><span class="s2">&#39;&quot;</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Bind vector_store_id and make query positional</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bound_search</span> <span class="o">=</span> <span class="n">bind_and_modify</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">search</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">vector_store_id</span><span class="o">=</span><span class="s1">&#39;my_store&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">_param_changes</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">query</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;kind&#39;</span><span class="p">:</span> <span class="n">Parameter</span><span class="o">.</span><span class="n">POSITIONAL_OR_KEYWORD</span><span class="p">}),</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bound_search</span><span class="p">(</span><span class="s1">&#39;my query&#39;</span><span class="p">)</span>
+<span class="go">&quot;Searching my_store for &#39;my query&#39;&quot;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="oa.vector_stores.docs_to_search_func_factory_via_vector_store">
+<span class="sig-prename descclassname"><span class="pre">oa.vector_stores.</span></span><span class="sig-name descname"><span class="pre">docs_to_search_func_factory_via_vector_store</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">docs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/oa/vector_stores.html#docs_to_search_func_factory_via_vector_store"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oa.vector_stores.docs_to_search_func_factory_via_vector_store" title="Link to this definition"></a></dt>
+<dd><p>Factory function that creates a search function via vector store.
+This can be used with check_search_func_factory.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="oa.vector_stores.docs_to_vector_store">
+<span class="sig-prename descclassname"><span class="pre">oa.vector_stores.</span></span><span class="sig-name descname"><span class="pre">docs_to_vector_store</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">docs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vs_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">client</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/oa/vector_stores.html#docs_to_vector_store"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oa.vector_stores.docs_to_vector_store" title="Link to this definition"></a></dt>
+<dd><p>Create an OpenAI vector store from a mapping of documents.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>docs</strong> – Mapping of document keys to text content</p></li>
+<li><p><strong>vs_name</strong> – Optional name for the vector store. If None, generates a unique name.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>(vector_store_id, file_id_to_doc_key_mapping)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="oa.vector_stores.mk_search_func_for_oa_vector_store">
+<span class="sig-prename descclassname"><span class="pre">oa.vector_stores.</span></span><span class="sig-name descname"><span class="pre">mk_search_func_for_oa_vector_store</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vector_store_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">doc_id_mapping</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">client</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/oa/vector_stores.html#mk_search_func_for_oa_vector_store"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oa.vector_stores.mk_search_func_for_oa_vector_store" title="Link to this definition"></a></dt>
+<dd><p>Create a search function for an OpenAI vector store using the Responses API.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>vector_store_id</strong> – The ID of the vector store to search</p></li>
+<li><p><strong>doc_id_mapping</strong> – Optional mapping from file IDs to document keys for result translation</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A function that takes a query and returns search results</p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 
 

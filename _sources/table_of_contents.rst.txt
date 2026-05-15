@@ -6,14 +6,16 @@
    module_docs/oa/_params
    module_docs/oa/_resources
    module_docs/oa/ask
+   module_docs/oa/audio
    module_docs/oa/base
+   module_docs/oa/batch_embeddings
    module_docs/oa/batches
    module_docs/oa/chats
    module_docs/oa/examples/aesop_fables
+   module_docs/oa/examples/batch_embeddings_examples
    module_docs/oa/examples/illustrate_stories
    module_docs/oa/oa_types
    module_docs/oa/openai_specs
-   module_docs/oa/scrap
    module_docs/oa/stores
    module_docs/oa/tools
    module_docs/oa/util

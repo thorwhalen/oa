@@ -1,0 +1,347 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>oa.audio &mdash; oa 0.1.46 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=f98a5df1"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            oa
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa.html">oa</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/_params.html">oa._params</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/_resources.html">oa._resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/ask.html">oa.ask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/audio.html">oa.audio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/base.html">oa.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/batch_embeddings.html">oa.batch_embeddings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/batches.html">oa.batches</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/chats.html">oa.chats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/examples/aesop_fables.html">oa.examples.aesop_fables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/examples/batch_embeddings_examples.html">oa.examples.batch_embeddings_examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/examples/illustrate_stories.html">oa.examples.illustrate_stories</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/oa_types.html">oa.oa_types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/openai_specs.html">oa.openai_specs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/stores.html">oa.stores</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/tools.html">oa.tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/util.html">oa.util</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/vector_stores.html">oa.vector_stores</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">oa</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">oa.audio</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for oa.audio</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;OpenAI Audio tools&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">partial</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Literal</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Iterable</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">i2</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sig</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">oa.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">openai</span><span class="p">,</span> <span class="n">mk_client</span><span class="p">,</span> <span class="n">ensure_oa_client</span><span class="p">,</span> <span class="n">OaClientSpec</span>
+
+<span class="c1"># --------------------------------------------------------------------------------------</span>
+<span class="c1"># Defaults</span>
+
+<span class="n">DFLT_TRANSCRIPTION_MODEL</span> <span class="o">=</span> <span class="s2">&quot;whisper-1&quot;</span>
+<span class="n">DFLT_TTS_MODEL</span> <span class="o">=</span> <span class="s2">&quot;tts-1&quot;</span>
+<span class="n">DFLT_TTS_VOICE</span> <span class="o">=</span> <span class="s2">&quot;alloy&quot;</span>
+<span class="n">DFLT_RESPONSE_FORMAT</span> <span class="o">=</span> <span class="s2">&quot;json&quot;</span>
+<span class="n">DFLT_AUDIO_FORMAT</span> <span class="o">=</span> <span class="s2">&quot;mp3&quot;</span>
+
+<span class="c1"># --------------------------------------------------------------------------------------</span>
+<span class="c1"># Transcription</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_parse_transcription_response</span><span class="p">(</span><span class="n">resp</span><span class="p">,</span> <span class="n">response_format</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse the transcription API response into a standardized dict.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">response_format</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;json&quot;</span><span class="p">,</span> <span class="s2">&quot;verbose_json&quot;</span><span class="p">):</span>
+        <span class="n">full_text</span> <span class="o">=</span> <span class="n">resp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;text&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">segments</span> <span class="o">=</span> <span class="n">resp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;segments&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">language</span> <span class="o">=</span> <span class="n">resp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;language&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">response_format</span> <span class="o">==</span> <span class="s2">&quot;srt&quot;</span><span class="p">:</span>
+        <span class="n">full_text</span> <span class="o">=</span> <span class="n">resp</span>
+        <span class="n">segments</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">language</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">full_text</span> <span class="o">=</span> <span class="n">resp</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">resp</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="nb">str</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span>
+        <span class="n">segments</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">language</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="n">full_text</span><span class="p">,</span>
+        <span class="s2">&quot;segments&quot;</span><span class="p">:</span> <span class="n">segments</span><span class="p">,</span>
+        <span class="s2">&quot;language&quot;</span><span class="p">:</span> <span class="n">language</span><span class="p">,</span>
+        <span class="s2">&quot;raw_response&quot;</span><span class="p">:</span> <span class="n">resp</span><span class="p">,</span>
+    <span class="p">}</span>
+
+
+<div class="viewcode-block" id="transcribe">
+<a class="viewcode-back" href="../../module_docs/oa/audio.html#oa.audio.transcribe">[docs]</a>
+<span class="nd">@Sig</span><span class="o">.</span><span class="n">replace_kwargs_using</span><span class="p">(</span><span class="n">openai</span><span class="o">.</span><span class="n">audio</span><span class="o">.</span><span class="n">transcriptions</span><span class="o">.</span><span class="n">create</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">transcribe</span><span class="p">(</span>
+    <span class="n">audio</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">model</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">DFLT_TRANSCRIPTION_MODEL</span><span class="p">,</span>
+    <span class="n">response_format</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">DFLT_RESPONSE_FORMAT</span><span class="p">,</span>
+    <span class="n">language</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">client</span><span class="p">:</span> <span class="n">OaClientSpec</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Transcribe an audio or video file using OpenAI&#39;s Whisper API.</span>
+
+<span class="sd">    :param audio_file_path: Path to the audio/video file to transcribe</span>
+<span class="sd">    :param model: Transcription model to use</span>
+<span class="sd">    :param response_format: Format for the response (&#39;json&#39;, &#39;text&#39;, &#39;srt&#39;, &#39;verbose_json&#39;)</span>
+<span class="sd">    :param language: Optional ISO-639-1 language code (e.g., &#39;en&#39;, &#39;fr&#39;)</span>
+<span class="sd">    :param client: OpenAI client instance, API key string, config dict, or None</span>
+<span class="sd">    :param kwargs: Additional parameters for the API</span>
+<span class="sd">    :return: Dict with &#39;text&#39;, &#39;segments&#39;, &#39;language&#39;, and &#39;raw_response&#39;</span>
+
+<span class="sd">    Note: Actual API calls require a valid audio file and API key</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">ensure_oa_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">audio</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">resp</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">audio</span><span class="o">.</span><span class="n">transcriptions</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">f</span><span class="p">,</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span>
+            <span class="n">response_format</span><span class="o">=</span><span class="n">response_format</span><span class="p">,</span>
+            <span class="n">language</span><span class="o">=</span><span class="n">language</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">_parse_transcription_response</span><span class="p">(</span><span class="n">resp</span><span class="p">,</span> <span class="n">response_format</span><span class="p">)</span></div>
+
+
+
+<span class="c1"># --------------------------------------------------------------------------------------</span>
+<span class="c1"># SRT (SubRip) utilities</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_format_srt_timestamp</span><span class="p">(</span><span class="n">seconds</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Format seconds as SRT timestamp (HH:MM:SS,mmm).</span>
+
+<span class="sd">    &gt;&gt;&gt; _format_srt_timestamp(0)</span>
+<span class="sd">    &#39;00:00:00,000&#39;</span>
+<span class="sd">    &gt;&gt;&gt; _format_srt_timestamp(3661.5)</span>
+<span class="sd">    &#39;01:01:01,500&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">hrs</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">seconds</span> <span class="o">//</span> <span class="mi">3600</span><span class="p">)</span>
+    <span class="n">mins</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">seconds</span> <span class="o">%</span> <span class="mi">3600</span><span class="p">)</span> <span class="o">//</span> <span class="mi">60</span><span class="p">)</span>
+    <span class="n">secs</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">seconds</span> <span class="o">%</span> <span class="mi">60</span><span class="p">)</span>
+    <span class="n">millis</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">seconds</span> <span class="o">-</span> <span class="nb">int</span><span class="p">(</span><span class="n">seconds</span><span class="p">))</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">)</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">hrs</span><span class="si">:</span><span class="s2">02</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">mins</span><span class="si">:</span><span class="s2">02</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">secs</span><span class="si">:</span><span class="s2">02</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">millis</span><span class="si">:</span><span class="s2">03</span><span class="si">}</span><span class="s2">&quot;</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_segments_to_srt_entries</span><span class="p">(</span><span class="n">segments</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate SRT entries from segments with timestamps.&quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">seg</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">segments</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">start_str</span> <span class="o">=</span> <span class="n">_format_srt_timestamp</span><span class="p">(</span><span class="n">seg</span><span class="p">[</span><span class="s2">&quot;start&quot;</span><span class="p">])</span>
+        <span class="n">end_str</span> <span class="o">=</span> <span class="n">_format_srt_timestamp</span><span class="p">(</span><span class="n">seg</span><span class="p">[</span><span class="s2">&quot;end&quot;</span><span class="p">])</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">seg</span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="k">yield</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">idx</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">start_str</span><span class="si">}</span><span class="s2"> --&gt; </span><span class="si">{</span><span class="n">end_str</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">text</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_text_to_equal_duration_segments</span><span class="p">(</span>
+    <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">segment_duration</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">words_per_segment</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Split text into segments of roughly equal duration.</span>
+
+<span class="sd">    &gt;&gt;&gt; segments = list(_text_to_equal_duration_segments(&quot;one two three four&quot;, 10.0))</span>
+<span class="sd">    &gt;&gt;&gt; segments[0][&#39;text&#39;]</span>
+<span class="sd">    &#39;one two three four&#39;</span>
+<span class="sd">    &gt;&gt;&gt; segments[0][&#39;end&#39;]</span>
+<span class="sd">    10.0</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">words</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">words</span><span class="p">:</span>
+        <span class="k">return</span>
+
+    <span class="k">if</span> <span class="n">words_per_segment</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># Simple heuristic: assume uniform word rate</span>
+        <span class="n">words_per_segment</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">words</span><span class="p">)</span> <span class="o">//</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">words</span><span class="p">)</span> <span class="o">/</span> <span class="mi">10</span><span class="p">)))</span>
+
+    <span class="n">idx</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">words</span><span class="p">),</span> <span class="n">words_per_segment</span><span class="p">):</span>
+        <span class="n">chunk</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">words</span><span class="p">[</span><span class="n">i</span> <span class="p">:</span> <span class="n">i</span> <span class="o">+</span> <span class="n">words_per_segment</span><span class="p">])</span>
+        <span class="n">start_t</span> <span class="o">=</span> <span class="n">idx</span> <span class="o">*</span> <span class="n">segment_duration</span>
+        <span class="n">end_t</span> <span class="o">=</span> <span class="n">start_t</span> <span class="o">+</span> <span class="n">segment_duration</span>
+        <span class="k">yield</span> <span class="p">{</span><span class="s2">&quot;start&quot;</span><span class="p">:</span> <span class="n">start_t</span><span class="p">,</span> <span class="s2">&quot;end&quot;</span><span class="p">:</span> <span class="n">end_t</span><span class="p">,</span> <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="n">chunk</span><span class="p">}</span>
+        <span class="n">idx</span> <span class="o">+=</span> <span class="mi">1</span>
+
+
+<div class="viewcode-block" id="transcription_to_srt">
+<a class="viewcode-back" href="../../module_docs/oa/audio.html#oa.audio.transcription_to_srt">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">transcription_to_srt</span><span class="p">(</span><span class="n">transcription</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">segment_duration</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert a transcription dict to SRT format string.</span>
+
+<span class="sd">    :param transcription: Dict with &#39;text&#39; and optionally &#39;segments&#39;</span>
+<span class="sd">    :param segment_duration: If segments missing, duration per generated segment</span>
+<span class="sd">    :return: SRT formatted string</span>
+
+<span class="sd">    &gt;&gt;&gt; result = transcription_to_srt({&#39;text&#39;: &#39;Hello world&#39;})</span>
+<span class="sd">    &gt;&gt;&gt; &#39;Hello world&#39; in result</span>
+<span class="sd">    True</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">segments</span> <span class="o">=</span> <span class="n">transcription</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;segments&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">segments</span><span class="p">:</span>
+        <span class="c1"># Use existing timestamped segments</span>
+        <span class="n">entries</span> <span class="o">=</span> <span class="n">_segments_to_srt_entries</span><span class="p">(</span><span class="n">segments</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">segment_duration</span><span class="p">:</span>
+        <span class="c1"># Generate equal-duration segments from text</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">transcription</span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">synthetic_segments</span> <span class="o">=</span> <span class="n">_text_to_equal_duration_segments</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">segment_duration</span><span class="p">)</span>
+        <span class="n">entries</span> <span class="o">=</span> <span class="n">_segments_to_srt_entries</span><span class="p">(</span><span class="n">synthetic_segments</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># Single segment spanning the whole text</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">transcription</span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">entries</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;1</span><span class="se">\n</span><span class="s2">00:00:00,000 --&gt; 99:59:59,000</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">text</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">entries</span><span class="p">)</span></div>
+
+
+
+<span class="c1"># --------------------------------------------------------------------------------------</span>
+<span class="c1"># Text-to-Speech</span>
+
+
+<div class="viewcode-block" id="text_to_speech">
+<a class="viewcode-back" href="../../module_docs/oa/audio.html#oa.audio.text_to_speech">[docs]</a>
+<span class="nd">@Sig</span><span class="o">.</span><span class="n">replace_kwargs_using</span><span class="p">(</span><span class="n">openai</span><span class="o">.</span><span class="n">audio</span><span class="o">.</span><span class="n">speech</span><span class="o">.</span><span class="n">create</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">text_to_speech</span><span class="p">(</span>
+    <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">model</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">DFLT_TTS_MODEL</span><span class="p">,</span>
+    <span class="n">voice</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">DFLT_TTS_VOICE</span><span class="p">,</span>
+    <span class="n">response_format</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">DFLT_AUDIO_FORMAT</span><span class="p">,</span>
+    <span class="n">client</span><span class="p">:</span> <span class="n">OaClientSpec</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert text to speech using OpenAI&#39;s TTS API.</span>
+
+<span class="sd">    :param text: Text to convert to speech</span>
+<span class="sd">    :param model: TTS model to use</span>
+<span class="sd">    :param voice: Voice to use (alloy, echo, fable, onyx, nova, shimmer)</span>
+<span class="sd">    :param response_format: Audio format (&#39;mp3&#39;, &#39;opus&#39;, &#39;aac&#39;, &#39;flac&#39;, &#39;wav&#39;, &#39;pcm&#39;)</span>
+<span class="sd">    :param client: OpenAI client instance, API key string, config dict, or None</span>
+<span class="sd">    :param kwargs: Additional parameters for the API</span>
+<span class="sd">    :return: Audio content as bytes</span>
+
+<span class="sd">    Note: Actual API calls require a valid API key</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">ensure_oa_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">audio</span><span class="o">.</span><span class="n">speech</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+        <span class="nb">input</span><span class="o">=</span><span class="n">text</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">voice</span><span class="o">=</span><span class="n">voice</span><span class="p">,</span> <span class="n">response_format</span><span class="o">=</span><span class="n">response_format</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Handle different response types</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">content</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">response</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">read</span><span class="p">()</span></div>
+
+
+
+<span class="c1"># Alias for consistency with other modules</span>
+<span class="n">tts</span> <span class="o">=</span> <span class="n">text_to_speech</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright NO COPYRIGHT.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
