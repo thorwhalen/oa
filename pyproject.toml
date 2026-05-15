@@ -69,6 +69,7 @@ convention = "google"
 minversion = "6.0"
 testpaths = ["tests"]
 doctest_optionflags = ["NORMALIZE_WHITESPACE", "ELLIPSIS"]
+addopts = "--ignore=oa/batch_embeddings.py --ignore=oa/examples"
 
 [tool.hatch.build.targets.wheel]
 packages = ["oa"]
