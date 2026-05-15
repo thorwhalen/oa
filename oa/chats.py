@@ -227,9 +227,9 @@ def parse_chat_html(html: str) -> list[dict[str, Any]]:
                     elif element.name == "pre":
                         lang_div = element.find(
                             "div",
-                            class_=lambda c: c
-                            and "justify-between" in c
-                            and "h-9" in c,
+                            class_=lambda c: (
+                                c and "justify-between" in c and "h-9" in c
+                            ),
                         )
                         language = "plaintext"
                         if lang_div:
@@ -365,9 +365,7 @@ def find_url_keys(data, current_path=""):
             yield from find_url_keys(item, new_path)
 
 
-def find_all_matching_paths_in_list_values(
-    nested_dict, target_value: Callable | str
-):
+def find_all_matching_paths_in_list_values(nested_dict, target_value: Callable | str):
     """
     Find all paths in a nested dictionary where target_value evaluates to True
     for elements in a list contained within the value.

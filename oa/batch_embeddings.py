@@ -192,9 +192,9 @@ class ProcessingMall(Mapping):
         import os
 
         if not isinstance(store_cls, Mapping):
-            assert callable(
-                store_cls
-            ), "store_cls must be a callable or a dict of callables"
+            assert callable(store_cls), (
+                "store_cls must be a callable or a dict of callables"
+            )
             store_cls = {name: store_cls for name in cls._store_names}
 
         # if rootdir doesn't have any path separator, and doesn't exist, assume it's a
@@ -307,7 +307,9 @@ class EmbeddingsBatchProcess:
         self.logger.setLevel(
             logging.ERROR
             if verbosity == 0
-            else logging.INFO if verbosity == 1 else logging.DEBUG
+            else logging.INFO
+            if verbosity == 1
+            else logging.DEBUG
         )
 
         # Internal state

@@ -311,9 +311,9 @@ def embeddings(
         # convenience to get intermediary results saved to file
         batch_callback = mk_local_files_saves_callback()
     batch_callback = batch_callback or (lambda i, batch: None)
-    assert callable(batch_callback) & (
-        len(Sig(batch_callback)) >= 2
-    ), "batch_callback must be callable with at least two arguments (i, batch)"
+    assert callable(batch_callback) & (len(Sig(batch_callback)) >= 2), (
+        "batch_callback must be callable with at least two arguments (i, batch)"
+    )
     texts, texts_type, keys = _prepare_embeddings_args(
         validate, texts, valid_text_getter, model
     )

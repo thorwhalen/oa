@@ -380,7 +380,6 @@ def get_output_file_data(
     if batch_obj.status == "completed":
         return on_complete(oa_stores, batch_obj)
     else:
-
         if batch_obj.status == "failed":
             # Raise an error if the batch failed
             error_obj = BatchFailedError(

@@ -143,11 +143,9 @@ class Resources:
 
     # Dependencies that can be injected
     get_pricing_page_html: Callable[[], str] | None = None
-    infer_schema_from_verbal_description: Callable[[str], dict[str, Any]] | None = (
-        None
-    )
-    prompt_json_function: None | (
-        Callable[[str, dict[str, Any]], Callable[[str], dict[str, Any]]]
+    infer_schema_from_verbal_description: Callable[[str], dict[str, Any]] | None = None
+    prompt_json_function: (
+        None | (Callable[[str, dict[str, Any]], Callable[[str], dict[str, Any]]])
     ) = None
 
     def __post_init__(self):
@@ -354,7 +352,7 @@ def parse_section(section: Tag) -> list[tuple[str, dict[str, Any]]]:
     # If we have more tables than categories, add generic category names
     if len(tables) > len(category_names):
         for i in range(len(category_names), len(tables)):
-            category_names.append(f"{section_name} - Table {i+1}")
+            category_names.append(f"{section_name} - Table {i + 1}")
 
     results = []
 

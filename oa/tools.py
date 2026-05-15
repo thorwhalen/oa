@@ -597,10 +597,13 @@ class PromptFuncs:
         for store_key, template in self._template_store.items():
             factory = self._factories[self._factory_key(store_key)]
             func_key = self._function_key(store_key)
-            yield func_key, factory(
-                template,
-                name=func_key,
-                **self._extra_template_kwargs.get(store_key, {}),
+            yield (
+                func_key,
+                factory(
+                    template,
+                    name=func_key,
+                    **self._extra_template_kwargs.get(store_key, {}),
+                ),
             )
 
     def _inject_functions(self):
