@@ -73,3 +73,6 @@ addopts = "--ignore=oa/batch_embeddings.py --ignore=oa/examples"
 
 [tool.hatch.build.targets.wheel]
 packages = ["oa"]
+
+[tool.wads.ci.env]
+defaults = {OPENAI_API_KEY = "test-dummy-key"}
