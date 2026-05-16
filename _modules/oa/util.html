@@ -1,0 +1,973 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>oa.util &mdash; oa 0.1.48 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=b5e87a2a"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            oa
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa.html">oa</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/_params.html">oa._params</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/_resources.html">oa._resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/ask.html">oa.ask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/audio.html">oa.audio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/base.html">oa.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/batch_embeddings.html">oa.batch_embeddings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/batches.html">oa.batches</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/chats.html">oa.chats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/examples/aesop_fables.html">oa.examples.aesop_fables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/examples/batch_embeddings_examples.html">oa.examples.batch_embeddings_examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/examples/illustrate_stories.html">oa.examples.illustrate_stories</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/oa_types.html">oa.oa_types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/openai_specs.html">oa.openai_specs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/stores.html">oa.stores</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/tools.html">oa.tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/util.html">oa.util</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/vector_stores.html">oa.vector_stores</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">oa</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">oa.util</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for oa.util</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;oa utils&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">importlib.resources</span><span class="w"> </span><span class="kn">import</span> <span class="n">files</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">partial</span><span class="p">,</span> <span class="n">lru_cache</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">get_args</span><span class="p">,</span> <span class="n">Literal</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Mapping</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">types</span><span class="w"> </span><span class="kn">import</span> <span class="n">SimpleNamespace</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">i2</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sig</span><span class="p">,</span> <span class="n">get_app_config_folder</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">dol</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">graze</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">config2py</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">get_config</span><span class="p">,</span>
+    <span class="n">ask_user_for_input</span><span class="p">,</span>
+    <span class="n">get_configs_local_store</span><span class="p">,</span>
+    <span class="n">simple_config_getter</span><span class="p">,</span>
+    <span class="n">user_gettable</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">openai</span>  <span class="c1"># pip install openai (see https://pypi.org/project/openai/)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">openai.resources.files</span><span class="w"> </span><span class="kn">import</span> <span class="n">FileObject</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">openai.resources.batches</span><span class="w"> </span><span class="kn">import</span> <span class="n">Batches</span> <span class="k">as</span> <span class="n">OpenaiBatches</span><span class="p">,</span> <span class="n">Batch</span> <span class="k">as</span> <span class="n">BatchObj</span>
+
+<span class="n">BatchObj</span>  <span class="c1"># to avoid unused import warning (the import here is for other modules)</span>
+
+
+<div class="viewcode-block" id="get_package_name">
+<a class="viewcode-back" href="../../module_docs/oa/util.html#oa.util.get_package_name">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_package_name</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return current package name&quot;&quot;&quot;</span>
+    <span class="c1"># return __name__.split(&#39;.&#39;)[0]</span>
+    <span class="c1"># TODO: See if this works in all cases where module is in highest level of package</span>
+    <span class="c1">#  but meanwhile, hardcode it:</span>
+    <span class="k">return</span> <span class="s2">&quot;oa&quot;</span></div>
+
+
+
+<span class="c1"># get app data dir path and ensure it exists</span>
+<span class="n">pkg_name</span> <span class="o">=</span> <span class="n">get_package_name</span><span class="p">()</span>
+<span class="n">data_files</span> <span class="o">=</span> <span class="n">files</span><span class="p">(</span><span class="n">pkg_name</span><span class="p">)</span> <span class="o">/</span> <span class="s2">&quot;data&quot;</span>
+<span class="n">templates_files</span> <span class="o">=</span> <span class="n">data_files</span> <span class="o">/</span> <span class="s2">&quot;templates&quot;</span>
+<span class="n">_root_app_data_dir</span> <span class="o">=</span> <span class="n">get_app_config_folder</span><span class="p">()</span>
+<span class="n">app_data_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">pkg_name</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s2">_APP_DATA_DIR&quot;</span><span class="p">,</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">_root_app_data_dir</span><span class="p">,</span> <span class="n">pkg_name</span><span class="p">),</span>
+<span class="p">)</span>
+<span class="n">app_data_dir</span> <span class="o">=</span> <span class="n">dol</span><span class="o">.</span><span class="n">ensure_dir</span><span class="p">(</span><span class="n">app_data_dir</span><span class="p">)</span>
+<span class="n">djoin</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">,</span> <span class="n">app_data_dir</span><span class="p">)</span>
+
+<span class="c1"># _open_api_key_env_name = &#39;OPENAI_API_KEY&#39;</span>
+<span class="c1"># _api_key = os.environ.get(_open_api_key_env_name, None)</span>
+<span class="c1"># if _api_key is None:</span>
+<span class="c1">#     _api_key = getpass.getpass(</span>
+<span class="c1">#         f&quot;Please set your OpenAI API key and press enter to continue. &quot;</span>
+<span class="c1">#         f&quot;I will put it in the environment variable {_open_api_key_env_name} &quot;</span>
+<span class="c1">#     )</span>
+<span class="c1"># openai.api_key = _api_key</span>
+
+<span class="n">configs_local_store</span> <span class="o">=</span> <span class="n">get_configs_local_store</span><span class="p">(</span><span class="n">pkg_name</span><span class="p">)</span>
+
+<span class="n">_DFLT_CONFIGS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;OPENAI_API_KEY_ENV_NAME&quot;</span><span class="p">:</span> <span class="s2">&quot;OPENAI_API_KEY&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;OA_DFLT_TEMPLATES_SOURCE_ENV_NAME&quot;</span><span class="p">:</span> <span class="s2">&quot;OA_DFLT_TEMPLATES_SOURCE&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;OA_DFLT_ENGINE&quot;</span><span class="p">:</span> <span class="s2">&quot;gpt-3.5-turbo-instruct&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;OA_DFLT_MODEL&quot;</span><span class="p">:</span> <span class="s2">&quot;gpt-3.5-turbo&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c1"># write the defaults to the local store, if key missing there</span>
+<span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">_DFLT_CONFIGS</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="k">if</span> <span class="n">k</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">configs_local_store</span><span class="p">:</span>
+        <span class="n">configs_local_store</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+
+
+<span class="n">config_sources</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">configs_local_store</span><span class="p">,</span>  <span class="c1"># look in the local store</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">,</span>  <span class="c1"># look in the environment variables</span>
+    <span class="n">user_gettable</span><span class="p">(</span>
+        <span class="n">configs_local_store</span>
+    <span class="p">),</span>  <span class="c1"># ask the user (and save response in local store)</span>
+<span class="p">]</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">kv_strip_value</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">v</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+
+<span class="c1"># The main config getter for this package</span>
+<span class="n">config_getter</span> <span class="o">=</span> <span class="n">get_config</span><span class="p">(</span><span class="n">sources</span><span class="o">=</span><span class="n">config_sources</span><span class="p">,</span> <span class="n">egress</span><span class="o">=</span><span class="n">kv_strip_value</span><span class="p">)</span>
+
+
+<span class="c1"># Get the OPENAI_API_KEY_ENV_NAME and DFLT_TEMPLATES_SOURCE_ENV_NAME</span>
+<span class="n">OPENAI_API_KEY_ENV_NAME</span> <span class="o">=</span> <span class="n">config_getter</span><span class="p">(</span><span class="s2">&quot;OPENAI_API_KEY_ENV_NAME&quot;</span><span class="p">)</span>
+<span class="n">DFLT_TEMPLATES_SOURCE_ENV_NAME</span> <span class="o">=</span> <span class="n">config_getter</span><span class="p">(</span><span class="s2">&quot;OA_DFLT_TEMPLATES_SOURCE_ENV_NAME&quot;</span><span class="p">)</span>
+
+<span class="c1"># TODO: Understand the model/engine thing better and merge defaults if possible</span>
+<span class="n">DFLT_ENGINE</span> <span class="o">=</span> <span class="n">config_getter</span><span class="p">(</span><span class="s2">&quot;OA_DFLT_ENGINE&quot;</span><span class="p">)</span>
+<span class="n">DFLT_MODEL</span> <span class="o">=</span> <span class="n">config_getter</span><span class="p">(</span><span class="s2">&quot;OA_DFLT_MODEL&quot;</span><span class="p">)</span>
+
+<span class="c1"># TODO: Add the following to config_getter mechanism</span>
+<span class="n">DFLT_EMBEDDINGS_MODEL</span> <span class="o">=</span> <span class="s2">&quot;text-embedding-3-small&quot;</span>
+
+
+<span class="n">Purpose</span> <span class="o">=</span> <span class="n">FileObject</span><span class="o">.</span><span class="n">model_fields</span><span class="p">[</span><span class="s2">&quot;purpose&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">annotation</span>
+<span class="n">DFLT_PURPOSE</span> <span class="o">=</span> <span class="s2">&quot;batch&quot;</span>
+<span class="n">BatchesEndpoint</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">Sig</span><span class="p">(</span><span class="n">OpenaiBatches</span><span class="o">.</span><span class="n">create</span><span class="p">)</span><span class="o">.</span><span class="n">annotations</span><span class="p">[</span><span class="s2">&quot;endpoint&quot;</span><span class="p">])</span>
+<span class="n">batch_endpoints_values</span> <span class="o">=</span> <span class="n">get_args</span><span class="p">(</span><span class="n">BatchesEndpoint</span><span class="p">)</span>
+<span class="n">batch_endpoints_keys</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">k</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;/v1/&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">batch_endpoints_values</span>
+<span class="p">]</span>
+<span class="n">batch_endpoints</span> <span class="o">=</span> <span class="n">SimpleNamespace</span><span class="p">(</span>
+    <span class="o">**</span><span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">batch_endpoints_keys</span><span class="p">,</span> <span class="n">batch_endpoints_values</span><span class="p">))</span>
+<span class="p">)</span>
+
+
+<span class="n">_pricing_category_aliases</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;Latest models - Text tokens&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;audio&quot;</span><span class="p">:</span> <span class="s2">&quot;Latest models - Audio tokens&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;finetune&quot;</span><span class="p">:</span> <span class="s2">&quot;Fine tuning&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;tools&quot;</span><span class="p">:</span> <span class="s2">&quot;Built-in tools&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;search&quot;</span><span class="p">:</span> <span class="s2">&quot;Web search&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;speech&quot;</span><span class="p">:</span> <span class="s2">&quot;Transcription and speech generation&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;images&quot;</span><span class="p">:</span> <span class="s2">&quot;Image generation&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;embeddings&quot;</span><span class="p">:</span> <span class="s2">&quot;Embeddings&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;moderation&quot;</span><span class="p">:</span> <span class="s2">&quot;Moderation&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;other&quot;</span><span class="p">:</span> <span class="s2">&quot;Other models&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">PricingCategory</span> <span class="o">=</span> <span class="n">Literal</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">_pricing_category_aliases</span><span class="o">.</span><span class="n">keys</span><span class="p">())]</span>
+
+
+<div class="viewcode-block" id="pricing_info">
+<a class="viewcode-back" href="../../module_docs/oa/util.html#oa.util.pricing_info">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">pricing_info</span><span class="p">(</span><span class="n">category</span><span class="p">:</span> <span class="n">PricingCategory</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">print_data_date</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return the pricing info for the OpenAI API.</span>
+
+<span class="sd">    Note: These are not live prices. Live prices can be found here:</span>
+
+<span class="sd">    The information pricing_info returns is taken from the file `openai_api_pricing_info.json`</span>
+<span class="sd">    in the `data` directory of the package.</span>
+<span class="sd">    To print a message with the data date, do `pricing_info(print_data_date=True)`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">info_filepath</span> <span class="o">=</span> <span class="n">data_files</span> <span class="o">/</span> <span class="s2">&quot;openai_api_pricing_info.json&quot;</span>
+    <span class="k">if</span> <span class="n">print_data_date</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Data date: </span><span class="si">{</span><span class="n">info_filepath</span><span class="o">.</span><span class="n">stat</span><span class="p">()</span><span class="o">.</span><span class="n">st_mtime</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">info</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">info_filepath</span><span class="o">.</span><span class="n">read_text</span><span class="p">())</span>
+
+    <span class="k">if</span> <span class="n">category</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">_pricing_info</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">category</span> <span class="ow">in</span> <span class="n">_pricing_category_aliases</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">pricing_info</span><span class="p">(</span><span class="n">category</span><span class="p">):</span>
+                    <span class="k">yield</span> <span class="nb">dict</span><span class="p">(</span><span class="n">category</span><span class="o">=</span><span class="n">category</span><span class="p">,</span> <span class="o">**</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">_pricing_info</span><span class="p">())</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">info</span><span class="p">[</span><span class="n">_pricing_category_aliases</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">category</span><span class="p">,</span> <span class="n">category</span><span class="p">)][</span><span class="s2">&quot;pricing_table&quot;</span><span class="p">]</span></div>
+
+
+
+<span class="n">pricing_info</span><span class="o">.</span><span class="n">category_aliases</span> <span class="o">=</span> <span class="n">_pricing_category_aliases</span>
+
+<span class="c1"># TODO: Write tools to update mteb_eval</span>
+<span class="c1"># Note: OpenAI API live prices: https://platform.openai.com/docs/pricing</span>
+<span class="n">embeddings_models</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;text-embedding-3-small&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;price_per_million_tokens&quot;</span><span class="p">:</span> <span class="mf">0.02</span><span class="p">,</span>  <span class="c1"># in dollars</span>
+        <span class="s2">&quot;pages_per_dollar&quot;</span><span class="p">:</span> <span class="mi">62500</span><span class="p">,</span>  <span class="c1"># to do:</span>
+        <span class="s2">&quot;performance_on_mteb_eval&quot;</span><span class="p">:</span> <span class="mf">62.3</span><span class="p">,</span>
+        <span class="s2">&quot;max_input&quot;</span><span class="p">:</span> <span class="mi">8191</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;text-embedding-3-large&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;price_per_million_tokens&quot;</span><span class="p">:</span> <span class="mf">0.13</span><span class="p">,</span>  <span class="c1"># in dollars</span>
+        <span class="s2">&quot;pages_per_dollar&quot;</span><span class="p">:</span> <span class="mi">9615</span><span class="p">,</span>
+        <span class="s2">&quot;performance_on_mteb_eval&quot;</span><span class="p">:</span> <span class="mf">64.6</span><span class="p">,</span>
+        <span class="s2">&quot;max_input&quot;</span><span class="p">:</span> <span class="mi">8191</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;text-embedding-ada-002&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;price_per_million_tokens&quot;</span><span class="p">:</span> <span class="mf">0.10</span><span class="p">,</span>  <span class="c1"># in dollars</span>
+        <span class="s2">&quot;pages_per_dollar&quot;</span><span class="p">:</span> <span class="mi">12500</span><span class="p">,</span>
+        <span class="s2">&quot;performance_on_mteb_eval&quot;</span><span class="p">:</span> <span class="mf">61.0</span><span class="p">,</span>
+        <span class="s2">&quot;max_input&quot;</span><span class="p">:</span> <span class="mi">8191</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">}</span>
+
+
+<span class="c1"># add batch-api models</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_generate_batch_api_models_info</span><span class="p">(</span><span class="n">models_info_dict</span><span class="p">,</span> <span class="n">batch_api_discount</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">model_name</span><span class="p">,</span> <span class="n">model_info</span> <span class="ow">in</span> <span class="n">models_info_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="n">model_info</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">m</span><span class="p">[</span><span class="s2">&quot;price_per_million_tokens&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span>
+            <span class="n">m</span><span class="p">[</span><span class="s2">&quot;price_per_million_tokens&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">batch_api_discount</span><span class="p">,</span> <span class="mi">4</span>
+        <span class="p">)</span>
+        <span class="n">m</span><span class="p">[</span><span class="s2">&quot;pages_per_dollar&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">m</span><span class="p">[</span><span class="s2">&quot;price_per_million_tokens&quot;</span><span class="p">])</span>
+        <span class="c1"># the rest remains the same</span>
+        <span class="k">yield</span> <span class="sa">f</span><span class="s2">&quot;batch__</span><span class="si">{</span><span class="n">model_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">m</span>
+
+
+<span class="n">embeddings_models</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="n">embeddings_models</span><span class="p">,</span>
+    <span class="o">**</span><span class="nb">dict</span><span class="p">(</span><span class="n">_generate_batch_api_models_info</span><span class="p">(</span><span class="n">embeddings_models</span><span class="p">,</span> <span class="n">batch_api_discount</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)),</span>
+<span class="p">)</span>
+
+<span class="c1"># Note: OpenAI API live prices: https://platform.openai.com/docs/pricing</span>
+<span class="n">chat_models</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;gpt-4&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;price_per_million_tokens&quot;</span><span class="p">:</span> <span class="mf">30.00</span><span class="p">,</span>  <span class="c1"># in dollars</span>
+        <span class="s2">&quot;price_per_million_tokens_output&quot;</span><span class="p">:</span> <span class="mf">60.00</span><span class="p">,</span>  <span class="c1"># in dollars</span>
+        <span class="s2">&quot;pages_per_dollar&quot;</span><span class="p">:</span> <span class="mi">134</span><span class="p">,</span>  <span class="c1"># approximately</span>
+        <span class="s2">&quot;performance_on_eval&quot;</span><span class="p">:</span> <span class="s2">&quot;Advanced reasoning for complex tasks&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;max_input&quot;</span><span class="p">:</span> <span class="mi">8192</span><span class="p">,</span>  <span class="c1"># tokens</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;gpt-4-32k&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;price_per_million_tokens&quot;</span><span class="p">:</span> <span class="mf">60.00</span><span class="p">,</span>  <span class="c1"># in dollars</span>
+        <span class="s2">&quot;price_per_million_tokens_output&quot;</span><span class="p">:</span> <span class="mf">120.00</span><span class="p">,</span>  <span class="c1"># in dollars</span>
+        <span class="s2">&quot;pages_per_dollar&quot;</span><span class="p">:</span> <span class="mi">67</span><span class="p">,</span>
+        <span class="s2">&quot;performance_on_eval&quot;</span><span class="p">:</span> <span class="s2">&quot;Extended context window for long documents&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;max_input&quot;</span><span class="p">:</span> <span class="mi">32768</span><span class="p">,</span>  <span class="c1"># tokens</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;gpt-4-turbo&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;price_per_million_tokens&quot;</span><span class="p">:</span> <span class="mf">10.00</span><span class="p">,</span>  <span class="c1"># in dollars</span>
+        <span class="s2">&quot;price_per_million_tokens_output&quot;</span><span class="p">:</span> <span class="mf">30.00</span><span class="p">,</span>  <span class="c1"># in dollars</span>
+        <span class="s2">&quot;pages_per_dollar&quot;</span><span class="p">:</span> <span class="mi">402</span><span class="p">,</span>
+        <span class="s2">&quot;performance_on_eval&quot;</span><span class="p">:</span> <span class="s2">&quot;Cost-effective version of GPT-4&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;max_input&quot;</span><span class="p">:</span> <span class="mi">8192</span><span class="p">,</span>  <span class="c1"># tokens</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;o1&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;price_per_million_tokens&quot;</span><span class="p">:</span> <span class="mf">15.00</span><span class="p">,</span>  <span class="c1"># in dollars</span>
+        <span class="s2">&quot;price_per_million_tokens_output&quot;</span><span class="p">:</span> <span class="mf">60.00</span><span class="p">,</span>  <span class="c1"># in dollars</span>
+        <span class="s2">&quot;pages_per_dollar&quot;</span><span class="p">:</span> <span class="mi">268</span><span class="p">,</span>
+        <span class="s2">&quot;performance_on_eval&quot;</span><span class="p">:</span> <span class="s2">&quot;Optimized for complex reasoning in STEM fields&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;max_input&quot;</span><span class="p">:</span> <span class="mi">8192</span><span class="p">,</span>  <span class="c1"># tokens</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;o1-mini&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;price_per_million_tokens&quot;</span><span class="p">:</span> <span class="mf">1.10</span><span class="p">,</span>  <span class="c1"># in dollars</span>
+        <span class="s2">&quot;price_per_million_tokens_output&quot;</span><span class="p">:</span> <span class="mf">4.40</span><span class="p">,</span>  <span class="c1"># in dollars</span>
+        <span class="s2">&quot;pages_per_dollar&quot;</span><span class="p">:</span> <span class="mi">1341</span><span class="p">,</span>
+        <span class="s2">&quot;performance_on_eval&quot;</span><span class="p">:</span> <span class="s2">&quot;Cost-effective reasoning for simpler tasks&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;max_input&quot;</span><span class="p">:</span> <span class="mi">8192</span><span class="p">,</span>  <span class="c1"># tokens</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;gpt-4o&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;price_per_million_tokens&quot;</span><span class="p">:</span> <span class="mf">2.50</span><span class="p">,</span>  <span class="c1"># in dollars</span>
+        <span class="s2">&quot;price_per_million_tokens_output&quot;</span><span class="p">:</span> <span class="mf">10.0</span><span class="p">,</span>  <span class="c1"># in dollars</span>
+        <span class="s2">&quot;pages_per_dollar&quot;</span><span class="p">:</span> <span class="mi">804</span><span class="p">,</span>  <span class="c1"># approximately</span>
+        <span class="s2">&quot;performance_on_eval&quot;</span><span class="p">:</span> <span class="s2">&quot;Efficiency-optimized version of GPT-4 for better performance on reasoning tasks&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;max_input&quot;</span><span class="p">:</span> <span class="mi">8192</span><span class="p">,</span>  <span class="c1"># tokens</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;gpt-4o-mini&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;price_per_million_tokens&quot;</span><span class="p">:</span> <span class="mf">0.15</span><span class="p">,</span>  <span class="c1"># in dollars,</span>
+        <span class="s2">&quot;price_per_million_tokens_output&quot;</span><span class="p">:</span> <span class="mf">0.60</span><span class="p">,</span>  <span class="c1"># in dollars</span>
+        <span class="s2">&quot;pages_per_dollar&quot;</span><span class="p">:</span> <span class="mi">13410</span><span class="p">,</span>
+        <span class="s2">&quot;performance_on_eval&quot;</span><span class="p">:</span> <span class="s2">&quot;Highly cost-effective, optimized for simple tasks with faster response times&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;max_input&quot;</span><span class="p">:</span> <span class="mi">8192</span><span class="p">,</span>  <span class="c1"># tokens</span>
+    <span class="p">},</span>
+<span class="p">}</span>
+
+<span class="n">model_information_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="o">**</span><span class="n">embeddings_models</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">chat_models</span><span class="p">,</span>
+    <span class="c1"># TODO: Add more model information dicts here</span>
+<span class="p">)</span>
+
+
+<span class="c1"># Have a particular way to get this api key</span>
+<span class="nd">@lru_cache</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_api_key_from_config</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">get_config</span><span class="p">(</span>
+        <span class="n">OPENAI_API_KEY_ENV_NAME</span><span class="p">,</span>
+        <span class="n">sources</span><span class="o">=</span><span class="p">[</span>
+            <span class="c1"># Try to find it in oa config</span>
+            <span class="n">configs_local_store</span><span class="p">,</span>
+            <span class="c1"># Try to find it in os.environ (environmental variables)</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">,</span>
+            <span class="c1"># If not, ask the user to input it</span>
+            <span class="k">lambda</span> <span class="n">k</span><span class="p">:</span> <span class="n">ask_user_for_input</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Please set your OpenAI API key and press enter to continue. &quot;</span>
+                <span class="s2">&quot;If you don&#39;t have one, you can get one at &quot;</span>
+                <span class="s2">&quot;https://platform.openai.com/account/api-keys. &quot;</span><span class="p">,</span>
+                <span class="n">mask_input</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">masking_toggle_str</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+                <span class="n">egress</span><span class="o">=</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">configs_local_store</span><span class="o">.</span><span class="fm">__setitem__</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span>
+            <span class="p">),</span>
+        <span class="p">],</span>
+        <span class="n">egress</span><span class="o">=</span><span class="n">kv_strip_value</span><span class="p">,</span>
+    <span class="p">)</span>
+
+
+<span class="c1"># TODO: Hm... set api key globally? Doesn&#39;t seem we should do that!</span>
+<span class="n">openai</span><span class="o">.</span><span class="n">api_key</span> <span class="o">=</span> <span class="n">get_api_key_from_config</span><span class="p">()</span>
+
+
+<span class="nd">@lru_cache</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">mk_client</span><span class="p">(</span><span class="n">api_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">client_kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">openai</span><span class="o">.</span><span class="n">Client</span><span class="p">:</span>
+    <span class="n">api_key</span> <span class="o">=</span> <span class="n">api_key</span> <span class="ow">or</span> <span class="n">get_api_key_from_config</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">openai</span><span class="o">.</span><span class="n">OpenAI</span><span class="p">(</span><span class="n">api_key</span><span class="o">=</span><span class="n">api_key</span><span class="p">,</span> <span class="o">**</span><span class="n">client_kwargs</span><span class="p">)</span>
+
+
+<span class="n">OaClientSpec</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="n">openai</span><span class="o">.</span><span class="n">Client</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="ensure_oa_client">
+<a class="viewcode-back" href="../../module_docs/oa/util.html#oa.util.ensure_oa_client">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">ensure_oa_client</span><span class="p">(</span><span class="n">oa_client</span><span class="p">:</span> <span class="n">OaClientSpec</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">openai</span><span class="o">.</span><span class="n">Client</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Ensure that an OpenAI client is available, either by using the provided one or creating a new one.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">oa_client</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">mk_client</span><span class="p">()</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">oa_client</span><span class="p">,</span> <span class="n">openai</span><span class="o">.</span><span class="n">Client</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">oa_client</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">oa_client</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">mk_client</span><span class="p">(</span><span class="n">api_key</span><span class="o">=</span><span class="n">oa_client</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">oa_client</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">mk_client</span><span class="p">(</span><span class="o">**</span><span class="n">oa_client</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Expected an OpenAI client instance, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">oa_client</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span></div>
+
+
+
+<span class="c1"># TODO: Pros and cons of using a default client</span>
+<span class="c1">#   Reason was that I was fed up of having to pass the client to every function</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">dflt_client</span> <span class="o">=</span> <span class="n">mk_client</span><span class="p">()</span>
+<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="n">dflt_client</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="n">_grazed_dir</span> <span class="o">=</span> <span class="n">dol</span><span class="o">.</span><span class="n">ensure_dir</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">app_data_dir</span><span class="p">,</span> <span class="s2">&quot;grazed&quot;</span><span class="p">))</span>
+<span class="n">grazed</span> <span class="o">=</span> <span class="n">graze</span><span class="o">.</span><span class="n">Graze</span><span class="p">(</span><span class="n">rootdir</span><span class="o">=</span><span class="n">_grazed_dir</span><span class="p">)</span>
+
+
+<span class="n">chatgpt_templates_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">templates_files</span><span class="p">,</span> <span class="s2">&quot;chatgpt&quot;</span><span class="p">)</span>
+
+<span class="n">DFLT_TEMPLATES_SOURCE</span> <span class="o">=</span> <span class="n">get_config</span><span class="p">(</span>
+    <span class="n">DFLT_TEMPLATES_SOURCE_ENV_NAME</span><span class="p">,</span>
+    <span class="n">sources</span><span class="o">=</span><span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">],</span>
+    <span class="n">default</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">chatgpt_templates_dir</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<span class="c1"># TODO: This is general: Bring this in dol or dolx</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_extract_folder_and_suffixes</span><span class="p">(</span>
+    <span class="n">string</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">default_suffixes</span><span class="o">=</span><span class="p">(),</span> <span class="o">*</span><span class="p">,</span> <span class="n">default_folder</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">root_sep</span><span class="o">=</span><span class="s2">&quot;:&quot;</span><span class="p">,</span> <span class="n">suffix_sep</span><span class="o">=</span><span class="s2">&quot;,&quot;</span>
+<span class="p">):</span>
+    <span class="n">root_folder</span><span class="p">,</span> <span class="o">*</span><span class="n">suffixes</span> <span class="o">=</span> <span class="n">string</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">root_sep</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">root_folder</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+        <span class="n">root_folder</span> <span class="o">=</span> <span class="n">default_folder</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">suffixes</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">suffixes</span> <span class="o">=</span> <span class="n">default_suffixes</span>
+    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">suffixes</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">suffixes</span> <span class="o">=</span> <span class="n">suffixes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">suffix_sep</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;template_store must be a path to a directory of templates, &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;optionally followed by a colon and a list of file suffixes to use&quot;</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="n">root_folder</span><span class="p">,</span> <span class="n">suffixes</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">mk_template_store</span><span class="p">(</span><span class="n">template_store</span><span class="p">:</span> <span class="n">Mapping</span> <span class="o">|</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">template_store</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">template_store</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">template_store</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">root_folder</span><span class="p">,</span> <span class="n">suffixes</span> <span class="o">=</span> <span class="n">_extract_folder_and_suffixes</span><span class="p">(</span><span class="n">template_store</span><span class="p">)</span>
+        <span class="n">suffix_filter</span> <span class="o">=</span> <span class="n">dol</span><span class="o">.</span><span class="n">filt_iter</span><span class="o">.</span><span class="n">suffixes</span><span class="p">(</span><span class="n">suffixes</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">suffix_filter</span><span class="p">(</span><span class="n">dol</span><span class="o">.</span><span class="n">TextFiles</span><span class="p">(</span><span class="n">root_folder</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;template_store must be a Mapping or a path to a directory of templates&quot;</span>
+        <span class="p">)</span>
+
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">tiktoken</span>
+
+
+<div class="viewcode-block" id="num_tokens">
+<a class="viewcode-back" href="../../module_docs/oa/util.html#oa.util.num_tokens">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">num_tokens</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">DFLT_MODEL</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the number of tokens in a string, under given model.</span>
+
+<span class="sd">    keywords: token count, number of tokens</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">encoding</span> <span class="o">=</span> <span class="n">tiktoken</span><span class="o">.</span><span class="n">encoding_for_model</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">encoding</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">disallowed_special</span><span class="o">=</span><span class="p">()))</span></div>
+
+
+
+<span class="c1"># --------------------------------------------------------------------------------------</span>
+<span class="c1"># Extraction</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">oa.oa_types</span><span class="w"> </span><span class="kn">import</span> <span class="n">BatchRequest</span><span class="p">,</span> <span class="n">EmbeddingResponse</span><span class="p">,</span> <span class="n">InputDataJsonL</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ju</span><span class="w"> </span><span class="kn">import</span> <span class="n">ModelExtractor</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">types</span><span class="w"> </span><span class="kn">import</span> <span class="n">SimpleNamespace</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">operator</span><span class="w"> </span><span class="kn">import</span> <span class="n">itemgetter</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pickle</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">tempfile</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">dol</span><span class="w"> </span><span class="kn">import</span> <span class="n">add_ipython_key_completions</span><span class="p">,</span> <span class="n">Pipe</span>
+
+<span class="n">models</span> <span class="o">=</span> <span class="p">[</span><span class="n">BatchRequest</span><span class="p">,</span> <span class="n">EmbeddingResponse</span><span class="p">,</span> <span class="n">InputDataJsonL</span><span class="p">]</span>
+
+<span class="n">oa_extractor</span> <span class="o">=</span> <span class="n">Pipe</span><span class="p">(</span><span class="n">ModelExtractor</span><span class="p">(</span><span class="n">models</span><span class="p">),</span> <span class="n">add_ipython_key_completions</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="oa_extractors_obj">
+<a class="viewcode-back" href="../../module_docs/oa/util.html#oa.util.oa_extractors_obj">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">oa_extractors_obj</span><span class="p">(</span><span class="o">**</span><span class="n">named_paths</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return a SimpleNamespace of extractors for the named paths</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">SimpleNamespace</span><span class="p">(</span>
+        <span class="o">**</span><span class="p">{</span>
+            <span class="n">name</span><span class="p">:</span> <span class="n">Pipe</span><span class="p">(</span><span class="n">oa_extractor</span><span class="p">,</span> <span class="n">itemgetter</span><span class="p">(</span><span class="n">path</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">named_paths</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+        <span class="p">}</span>
+    <span class="p">)</span></div>
+
+
+
+<span class="n">extractors</span> <span class="o">=</span> <span class="n">oa_extractors_obj</span><span class="p">(</span>
+    <span class="n">embeddings_from_output_data</span><span class="o">=</span><span class="s2">&quot;response.body.data.*.embedding&quot;</span><span class="p">,</span>
+    <span class="n">inputs_from_file_obj</span><span class="o">=</span><span class="s2">&quot;body.input&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<span class="c1"># --------------------------------------------------------------------------------------</span>
+<span class="c1"># misc utils</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Iterable</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dateutil.parser</span><span class="w"> </span><span class="kn">import</span> <span class="n">parse</span> <span class="k">as</span> <span class="n">parse_date</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timezone</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">itertools</span><span class="w"> </span><span class="kn">import</span> <span class="n">chain</span><span class="p">,</span> <span class="n">islice</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Union</span><span class="p">,</span>
+    <span class="n">Dict</span><span class="p">,</span>
+    <span class="n">List</span><span class="p">,</span>
+    <span class="n">Tuple</span><span class="p">,</span>
+    <span class="n">TypeVar</span><span class="p">,</span>
+    <span class="n">Optional</span><span class="p">,</span>
+    <span class="n">T</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">Callable</span>
+
+<span class="n">KT</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;KT&quot;</span><span class="p">)</span>  <span class="c1"># there&#39;s a typing.KT, but pylance won&#39;t allow me to use it!</span>
+<span class="n">VT</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;VT&quot;</span><span class="p">)</span>  <span class="c1"># there&#39;s a typing.VT, but pylance won&#39;t allow me to use it!</span>
+
+
+<div class="viewcode-block" id="chunk_iterable">
+<a class="viewcode-back" href="../../module_docs/oa/util.html#oa.util.chunk_iterable">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">chunk_iterable</span><span class="p">(</span>
+    <span class="n">iterable</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">T</span><span class="p">]</span> <span class="o">|</span> <span class="n">Mapping</span><span class="p">[</span><span class="n">KT</span><span class="p">,</span> <span class="n">VT</span><span class="p">],</span>
+    <span class="n">chk_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">chunk_type</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">T</span><span class="p">]</span> <span class="o">|</span> <span class="n">Mapping</span><span class="p">[</span><span class="n">KT</span><span class="p">,</span> <span class="n">VT</span><span class="p">]]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">T</span><span class="p">]</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">T</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">[</span><span class="n">KT</span><span class="p">,</span> <span class="n">VT</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Divide an iterable into chunks/batches of a specific size.</span>
+
+<span class="sd">    Handles both mappings (e.g. dicts) and non-mappings (lists, tuples, sets...)</span>
+<span class="sd">    as you probably expect it to (if you give a dict input, it will chunk on the</span>
+<span class="sd">    (key, value) items and return dicts of these).</span>
+<span class="sd">    Thought note that you always can control the type of the chunks with the</span>
+<span class="sd">    `chunk_type` argument.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        iterable: The iterable or mapping to divide.</span>
+<span class="sd">        chk_size: The size of each chunk.</span>
+<span class="sd">        chunk_type: The type of the chunks (list, tuple, set, dict...).</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        An iterator of dicts if the input is a Mapping, otherwise an iterator</span>
+<span class="sd">        of collections (list, tuple, set...).</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; list(chunk_iterable([1, 2, 3, 4, 5], 2))</span>
+<span class="sd">        [[1, 2], [3, 4], [5]]</span>
+
+<span class="sd">        &gt;&gt;&gt; list(chunk_iterable((1, 2, 3, 4, 5), 3, chunk_type=tuple))</span>
+<span class="sd">        [(1, 2, 3), (4, 5)]</span>
+
+<span class="sd">        &gt;&gt;&gt; list(chunk_iterable({&quot;a&quot;: 1, &quot;b&quot;: 2, &quot;c&quot;: 3}, 2))</span>
+<span class="sd">        [{&#39;a&#39;: 1, &#39;b&#39;: 2}, {&#39;c&#39;: 3}]</span>
+
+<span class="sd">        &gt;&gt;&gt; list(chunk_iterable({&quot;x&quot;: 1, &quot;y&quot;: 2, &quot;z&quot;: 3}, 1, chunk_type=dict))</span>
+<span class="sd">        [{&#39;x&#39;: 1}, {&#39;y&#39;: 2}, {&#39;z&#39;: 3}]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">iterable</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">chunk_type</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">chunk_type</span> <span class="o">=</span> <span class="nb">dict</span>
+        <span class="n">it</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">iterable</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
+        <span class="k">for</span> <span class="n">first</span> <span class="ow">in</span> <span class="n">it</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="p">{</span>
+                <span class="n">key</span><span class="p">:</span> <span class="n">value</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">chain</span><span class="p">([</span><span class="n">first</span><span class="p">],</span> <span class="n">islice</span><span class="p">(</span><span class="n">it</span><span class="p">,</span> <span class="n">chk_size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
+            <span class="p">}</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">chunk_type</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">iterable</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">,</span> <span class="nb">set</span><span class="p">)):</span>
+                <span class="n">chunk_type</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">iterable</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">chunk_type</span> <span class="o">=</span> <span class="nb">list</span>
+        <span class="n">it</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">iterable</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">first</span> <span class="ow">in</span> <span class="n">it</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">chunk_type</span><span class="p">(</span><span class="n">chain</span><span class="p">([</span><span class="n">first</span><span class="p">],</span> <span class="n">islice</span><span class="p">(</span><span class="n">it</span><span class="p">,</span> <span class="n">chk_size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)))</span></div>
+
+
+
+<div class="viewcode-block" id="concat_lists">
+<a class="viewcode-back" href="../../module_docs/oa/util.html#oa.util.concat_lists">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">concat_lists</span><span class="p">(</span><span class="n">lists</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Iterable</span><span class="p">]):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Concatenate a list of lists into a single list.</span>
+
+<span class="sd">    &gt;&gt;&gt; concat_lists([[1, 2], [3, 4], [5, 6]])</span>
+<span class="sd">    [1, 2, 3, 4, 5, 6]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">chain</span><span class="o">.</span><span class="n">from_iterable</span><span class="p">(</span><span class="n">lists</span><span class="p">))</span></div>
+
+
+
+<span class="c1"># a function to translate utc time in 1723557717 format into a human readable format</span>
+<div class="viewcode-block" id="utc_int_to_iso_date">
+<a class="viewcode-back" href="../../module_docs/oa/util.html#oa.util.utc_int_to_iso_date">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">utc_int_to_iso_date</span><span class="p">(</span><span class="n">utc_time</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert utc integer timestamp to more human readable iso format.</span>
+<span class="sd">    Inverse of iso_date_to_utc_int.</span>
+
+<span class="sd">    &gt;&gt;&gt; utc_int_to_iso_date(1723471317)</span>
+<span class="sd">    &#39;2024-08-12T14:01:57+00:00&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">utcfromtimestamp</span><span class="p">(</span><span class="n">utc_time</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span></div>
+
+
+
+<div class="viewcode-block" id="iso_date_to_utc_int">
+<a class="viewcode-back" href="../../module_docs/oa/util.html#oa.util.iso_date_to_utc_int">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">iso_date_to_utc_int</span><span class="p">(</span><span class="n">iso_date</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert iso date string to utc integer timestamp.</span>
+<span class="sd">    Inverse of utc_int_to_iso_date.</span>
+
+<span class="sd">    &gt;&gt;&gt; iso_date_to_utc_int(&#39;2024-08-12T14:01:57+00:00&#39;)</span>
+<span class="sd">    1723471317</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">parse_date</span><span class="p">(</span><span class="n">iso_date</span><span class="p">)</span><span class="o">.</span><span class="n">timestamp</span><span class="p">())</span></div>
+
+
+
+<span class="c1"># just to have the inverse of a function close to the function itself:</span>
+<span class="n">utc_int_to_iso_date</span><span class="o">.</span><span class="n">inverse</span> <span class="o">=</span> <span class="n">iso_date_to_utc_int</span>
+<span class="n">iso_date_to_utc_int</span><span class="o">.</span><span class="n">inverse</span> <span class="o">=</span> <span class="n">utc_int_to_iso_date</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">transpose_iterable</span><span class="p">(</span><span class="n">iterable_of_tuples</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">iterable_of_tuples</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">transpose_and_concatenate</span><span class="p">(</span><span class="n">iterable_of_tuples</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">map</span><span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">map</span><span class="p">(</span><span class="n">chain</span><span class="o">.</span><span class="n">from_iterable</span><span class="p">,</span> <span class="n">transpose_iterable</span><span class="p">(</span><span class="n">iterable_of_tuples</span><span class="p">)))</span>
+
+
+<div class="viewcode-block" id="save_in_temp_dir">
+<a class="viewcode-back" href="../../module_docs/oa/util.html#oa.util.save_in_temp_dir">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">save_in_temp_dir</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">serializer</span><span class="o">=</span><span class="n">pickle</span><span class="o">.</span><span class="n">dumps</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Saves obj in a temp file, using serializer to serialize it, and returns its path.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="n">delete</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">serializer</span><span class="p">(</span><span class="n">obj</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">f</span><span class="o">.</span><span class="n">name</span></div>
+
+
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Optional</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span>
+
+
+<div class="viewcode-block" id="mk_local_files_saves_callback">
+<a class="viewcode-back" href="../../module_docs/oa/util.html#oa.util.mk_local_files_saves_callback">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">mk_local_files_saves_callback</span><span class="p">(</span>
+    <span class="n">rootdir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">serializer</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Any</span><span class="p">],</span> <span class="nb">bytes</span><span class="p">]</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">dumps</span><span class="p">,</span>
+    <span class="n">index_to_filename</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">int</span><span class="p">],</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{:05.0f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">,</span>
+    <span class="n">print_dir_path</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns a function that takes two inputs (i: int, obj: Any) and saves the</span>
+<span class="sd">    serializer(obj) bytes in a file named index_to_filename(i) in the rootdir.</span>
+<span class="sd">    If rootdir, a temp dir is used.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">rootdir</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">rootdir</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkdtemp</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">rootdir</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;rootdir </span><span class="si">{</span><span class="n">rootdir</span><span class="si">}</span><span class="s2"> is not a directory&quot;</span>
+    <span class="k">if</span> <span class="n">print_dir_path</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Files will be saved in </span><span class="si">{</span><span class="n">rootdir</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">save_to_file</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rootdir</span><span class="p">,</span> <span class="n">index_to_filename</span><span class="p">(</span><span class="n">i</span><span class="p">)),</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">serializer</span><span class="p">(</span><span class="n">obj</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">save_to_file</span></div>
+
+
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">operator</span><span class="w"> </span><span class="kn">import</span> <span class="n">methodcaller</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">T</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Callable</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dol</span><span class="w"> </span><span class="kn">import</span> <span class="n">Pipe</span>
+
+<span class="n">DFLT_ENCODING</span> <span class="o">=</span> <span class="s2">&quot;utf-8&quot;</span>
+
+
+<div class="viewcode-block" id="jsonl_dumps">
+<a class="viewcode-back" href="../../module_docs/oa/util.html#oa.util.jsonl_dumps">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">jsonl_dumps</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">encoding</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">DFLT_ENCODING</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Serialize an iterable as JSONL bytes</span>
+
+<span class="sd">    &gt;&gt;&gt; jsonl_dumps([{&#39;a&#39;: 1}, {&#39;b&#39;: 2}])</span>
+<span class="sd">    b&#39;{&quot;a&quot;: 1}\n{&quot;b&quot;: 2}&#39;</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">encoding</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">b</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">line</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">encoding</span><span class="p">)</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">x</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="jsonl_loads_iter">
+<a class="viewcode-back" href="../../module_docs/oa/util.html#oa.util.jsonl_loads_iter">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">jsonl_loads_iter</span><span class="p">(</span>
+    <span class="n">src</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">get_lines</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">T</span><span class="p">],</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">bytes</span><span class="p">]]</span> <span class="o">=</span> <span class="nb">bytes</span><span class="o">.</span><span class="n">splitlines</span><span class="p">,</span>
+    <span class="n">line_egress</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">=</span> <span class="n">methodcaller</span><span class="p">(</span><span class="s2">&quot;strip&quot;</span><span class="p">),</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Deserialize JSONL bytes into a python iterable (dict or list of dicts)</span>
+
+<span class="sd">    &gt;&gt;&gt; list(jsonl_loads(b&#39;\n{&quot;a&quot;: 1}\n\n{&quot;b&quot;: 2}&#39;))</span>
+<span class="sd">    [{&#39;a&#39;: 1}, {&#39;b&#39;: 2}]</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">filter</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="nb">map</span><span class="p">(</span><span class="n">line_egress</span><span class="p">,</span> <span class="n">get_lines</span><span class="p">(</span><span class="n">src</span><span class="p">))):</span>
+        <span class="k">yield</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">line</span><span class="p">)</span></div>
+
+
+
+<span class="n">jsonl_loads</span> <span class="o">=</span> <span class="n">Pipe</span><span class="p">(</span><span class="n">jsonl_loads_iter</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span>
+<span class="n">jsonl_loads</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="n">jsonl_loads_iter</span><span class="o">.</span><span class="vm">__doc__</span>
+
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Iterable</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">openai</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">i2.signatures</span><span class="w"> </span><span class="kn">import</span> <span class="n">SignatureAble</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">inspect</span><span class="w"> </span><span class="kn">import</span> <span class="n">Parameter</span>
+
+
+<span class="nd">@Sig</span><span class="o">.</span><span class="n">replace_kwargs_using</span><span class="p">(</span><span class="n">Sig</span><span class="o">.</span><span class="n">merge_with_sig</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">merge_multiple_signatures</span><span class="p">(</span>
+    <span class="n">iterable_of_sigs</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">SignatureAble</span><span class="p">],</span> <span class="o">**</span><span class="n">merge_with_sig_options</span>
+<span class="p">):</span>
+    <span class="n">sig</span> <span class="o">=</span> <span class="n">Sig</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">input_sig</span> <span class="ow">in</span> <span class="nb">map</span><span class="p">(</span><span class="n">Sig</span><span class="p">,</span> <span class="n">iterable_of_sigs</span><span class="p">):</span>
+        <span class="n">sig</span> <span class="o">=</span> <span class="n">sig</span><span class="o">.</span><span class="n">merge_with_sig</span><span class="p">(</span><span class="n">input_sig</span><span class="p">,</span> <span class="o">**</span><span class="n">merge_with_sig_options</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">sig</span>
+
+
+<span class="c1"># TODO: Control whether to only overwrite if defaults and/or annotations don&#39;t already exist</span>
+<span class="c1"># TODO: Control if matching by name or annotation</span>
+<div class="viewcode-block" id="source_parameter_props_from">
+<a class="viewcode-back" href="../../module_docs/oa/util.html#oa.util.source_parameter_props_from">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">source_parameter_props_from</span><span class="p">(</span><span class="n">parameters</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Parameter</span><span class="p">]):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A decorator that will change the annotation and default of the parameters of the</span>
+<span class="sd">    decorated function, sourcing them from `parameters`, matching them by name.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">decorator</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+        <span class="n">sig</span> <span class="o">=</span> <span class="n">Sig</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+        <span class="n">common_names</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">sig</span><span class="o">.</span><span class="n">names</span><span class="p">)</span> <span class="o">&amp;</span> <span class="nb">set</span><span class="p">(</span><span class="n">parameters</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="n">sig</span> <span class="o">=</span> <span class="n">sig</span><span class="o">.</span><span class="n">ch_defaults</span><span class="p">(</span>
+            <span class="o">**</span><span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="n">parameters</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">default</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">common_names</span><span class="p">}</span>
+        <span class="p">)</span>
+        <span class="n">sig</span> <span class="o">=</span> <span class="n">sig</span><span class="o">.</span><span class="n">ch_annotations</span><span class="p">(</span>
+            <span class="o">**</span><span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="n">parameters</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">annotation</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">common_names</span><span class="p">}</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">sig</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">decorator</span></div>
+
+
+
+<span class="c1"># --------------------------------------------------------------------------------------</span>
+<span class="c1"># ProcessingManager</span>
+<span class="c1"># Monitoring the processing of a collection of items</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">field</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Any</span><span class="p">,</span>
+    <span class="n">Optional</span><span class="p">,</span>
+    <span class="n">Tuple</span><span class="p">,</span>
+    <span class="n">Dict</span><span class="p">,</span>
+    <span class="n">Union</span><span class="p">,</span>
+    <span class="n">TypeVar</span><span class="p">,</span>
+    <span class="n">Generic</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">MutableMapping</span><span class="p">,</span> <span class="n">Iterable</span>
+
+<span class="c1"># Define type variables and aliases</span>
+<span class="n">KT</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;KT&quot;</span><span class="p">)</span>  <span class="c1"># Key type</span>
+<span class="n">VT</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;VT&quot;</span><span class="p">)</span>  <span class="c1"># Value type (pending item type)</span>
+<span class="n">Result</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;Result&quot;</span><span class="p">)</span>  <span class="c1"># Result type returned by processing_function</span>
+<span class="n">Status</span> <span class="o">=</span> <span class="nb">str</span>  <span class="c1"># Could be an Enum in future</span>
+
+
+<div class="viewcode-block" id="ProcessingManager">
+<a class="viewcode-back" href="../../module_docs/oa/util.html#oa.util.ProcessingManager">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ProcessingManager</span><span class="p">(</span><span class="n">Generic</span><span class="p">[</span><span class="n">KT</span><span class="p">,</span> <span class="n">VT</span><span class="p">,</span> <span class="n">Result</span><span class="p">]):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A class to manage and monitor the processing of a collection of items, allowing customizable</span>
+<span class="sd">    processing functions, status handling, and timing control, using keys to track items.</span>
+
+<span class="sd">    **Use Case**:</span>
+<span class="sd">    - Ideal for scenarios where you have a set of items identified by keys that require periodic status</span>
+<span class="sd">      checks until they reach a completed state.</span>
+<span class="sd">    - Useful for managing batch jobs, asynchronous tasks, or any operations where items may not complete</span>
+<span class="sd">      processing immediately.</span>
+
+<span class="sd">    **Attributes**:</span>
+<span class="sd">    - **pending_items** (`MutableMapping[KT, VT]`): The mapping of keys to pending items.</span>
+<span class="sd">        - If an iterable is provided, it is converted to a dict using `dict(enumerate(iterable))`.</span>
+<span class="sd">    - **processing_function** (`Callable[[VT], Tuple[Status, Result]]`): A function that takes a value (item)</span>
+<span class="sd">      and returns a tuple of `(status, result)`.</span>
+<span class="sd">        - `status` (`Status`): Indicates the current state of the item (e.g., `&#39;completed&#39;`, `&#39;in_progress&#39;`, `&#39;failed&#39;`).</span>
+<span class="sd">        - `result` (`Result`): Additional data or context about the item&#39;s processing result.</span>
+<span class="sd">    - **handle_status_function** (`Callable[[VT, Status, Result], bool]`): A function that decides whether to remove</span>
+<span class="sd">      an item from `pending_items` based on its `status` and `result`.</span>
+<span class="sd">        - Returns `True` if the item should be removed (e.g., processing is complete or failed irrecoverably).</span>
+<span class="sd">    - **wait_time_function** (`Callable[[float, Dict], float]`): A function that determines how long to wait</span>
+<span class="sd">      before the next processing cycle.</span>
+<span class="sd">        - Takes `cycle_duration` (time taken for the last cycle) and `locals()` dictionary as inputs.</span>
+<span class="sd">        - Returns the sleep time in seconds.</span>
+<span class="sd">    - **status_check_interval** (`float`): Desired minimum time (in seconds) between status checks. Defaults to `5.0`.</span>
+<span class="sd">    - **max_cycles** (`Optional[int]`): Maximum number of processing cycles to perform. If `None`, there is no limit.</span>
+<span class="sd">    - **completed_items** (`MutableMapping[KT, Result]`): Mapping of keys to results for items that have been processed.</span>
+<span class="sd">    - **cycles** (`int`): Number of processing cycles that have been performed.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">pending_items</span><span class="p">:</span> <span class="n">MutableMapping</span><span class="p">[</span><span class="n">KT</span><span class="p">,</span> <span class="n">VT</span><span class="p">]</span> <span class="o">|</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">VT</span><span class="p">]</span>
+    <span class="n">processing_function</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">VT</span><span class="p">],</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Status</span><span class="p">,</span> <span class="n">Result</span><span class="p">]]</span>
+    <span class="n">handle_status_function</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">VT</span><span class="p">,</span> <span class="n">Status</span><span class="p">,</span> <span class="n">Result</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]</span>
+    <span class="n">wait_time_function</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">dict</span><span class="p">],</span> <span class="nb">float</span><span class="p">]</span>
+    <span class="n">status_check_interval</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">5.0</span>
+    <span class="n">max_cycles</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">completed_items</span><span class="p">:</span> <span class="n">MutableMapping</span><span class="p">[</span><span class="n">KT</span><span class="p">,</span> <span class="n">Result</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">dict</span><span class="p">)</span>
+    <span class="n">cycles</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># Tracks the number of cycles performed</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Convert pending_items to a MutableMapping if it&#39;s not one already</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pending_items</span><span class="p">,</span> <span class="n">MutableMapping</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pending_items</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pending_items</span><span class="p">))</span>
+        <span class="c1"># Ensure completed_items is a MutableMapping</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">completed_items</span><span class="p">,</span> <span class="n">MutableMapping</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">completed_items</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">status</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Indicates whether all pending items have been processed.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: `True` if there are no more pending items, `False` otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">pending_items</span>
+
+<div class="viewcode-block" id="ProcessingManager.process_pending_items">
+<a class="viewcode-back" href="../../module_docs/oa/util.html#oa.util.ProcessingManager.process_pending_items">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">process_pending_items</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Processes the pending items once.</span>
+
+<span class="sd">        This method iterates over each key-value pair in `pending_items`, applies the `processing_function`</span>
+<span class="sd">        to determine its status, and then uses `handle_status_function` to decide whether to</span>
+<span class="sd">        remove the item from `pending_items`. Items removed are added to `completed_items` with their results.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">keys_to_remove</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pending_items</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+            <span class="c1"># Apply the processing_function to get the item&#39;s status and result</span>
+            <span class="n">status</span><span class="p">,</span> <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">processing_function</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+
+            <span class="c1"># Decide whether to remove the item based on its status and result</span>
+            <span class="n">should_remove</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">handle_status_function</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">status</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">should_remove</span><span class="p">:</span>
+                <span class="n">keys_to_remove</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+                <span class="c1"># Store the result associated with the item&#39;s key</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">completed_items</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span>
+
+        <span class="c1"># Remove items that are done processing from pending_items</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">keys_to_remove</span><span class="p">:</span>
+            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">pending_items</span><span class="p">[</span><span class="n">k</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="ProcessingManager.process_items">
+<a class="viewcode-back" href="../../module_docs/oa/util.html#oa.util.ProcessingManager.process_items">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">process_items</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Runs the processing loop until all pending items are processed or max_cycles is reached.</span>
+
+<span class="sd">        In each cycle:</span>
+<span class="sd">        - Calls `process_pending_items()` to process the current pending items.</span>
+<span class="sd">        - Increments the cycle count.</span>
+<span class="sd">        - Calculates the duration of the cycle and determines how long to sleep before the next cycle</span>
+<span class="sd">          using `wait_time_function`.</span>
+<span class="sd">        - Sleeps for the calculated duration if there are still pending items.</span>
+
+<span class="sd">        The loop continues until:</span>
+<span class="sd">        - `pending_items` is empty (all items have been processed), or</span>
+<span class="sd">        - The number of cycles reaches `max_cycles`, if specified.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Continue looping while there are pending items and the cycle limit hasn&#39;t been reached</span>
+        <span class="k">while</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">status</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">cycles</span> <span class="o">&lt;</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">max_cycles</span> <span class="ow">or</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">)):</span>
+            <span class="c1"># Record the start time of the cycle</span>
+            <span class="n">cycle_start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+            <span class="c1"># Process the pending items once</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">process_pending_items</span><span class="p">()</span>
+
+            <span class="c1"># Increment the cycle counter</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cycles</span> <span class="o">+=</span> <span class="mi">1</span>
+
+            <span class="c1"># Calculate how long the processing took</span>
+            <span class="n">cycle_duration</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">cycle_start_time</span>
+
+            <span class="c1"># Determine how long to wait before the next cycle</span>
+            <span class="n">sleep_duration</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wait_time_function</span><span class="p">(</span><span class="n">cycle_duration</span><span class="p">,</span> <span class="nb">locals</span><span class="p">())</span>
+
+            <span class="c1"># Sleep if there are still pending items and the sleep duration is positive</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">status</span> <span class="ow">and</span> <span class="n">sleep_duration</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">sleep_duration</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">completed_items</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright NO COPYRIGHT.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,338 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>oa.vector_stores &mdash; oa 0.1.48 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=b5e87a2a"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            oa
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa.html">oa</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/_params.html">oa._params</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/_resources.html">oa._resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/ask.html">oa.ask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/audio.html">oa.audio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/base.html">oa.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/batch_embeddings.html">oa.batch_embeddings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/batches.html">oa.batches</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/chats.html">oa.chats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/examples/aesop_fables.html">oa.examples.aesop_fables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/examples/batch_embeddings_examples.html">oa.examples.batch_embeddings_examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/examples/illustrate_stories.html">oa.examples.illustrate_stories</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/oa_types.html">oa.oa_types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/openai_specs.html">oa.openai_specs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/stores.html">oa.stores</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/tools.html">oa.tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/util.html">oa.util</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/vector_stores.html">oa.vector_stores</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">oa</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">oa.vector_stores</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for oa.vector_stores</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Vector stores and search&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">tempfile</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">partial</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">Iterable</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">oa.stores</span><span class="w"> </span><span class="kn">import</span> <span class="n">OaStores</span><span class="p">,</span> <span class="n">OaVectorStoreFiles</span><span class="p">,</span> <span class="n">OaFiles</span>
+
+<span class="n">Query</span> <span class="o">=</span> <span class="nb">str</span>
+<span class="n">MaxNumResults</span> <span class="o">=</span> <span class="nb">int</span>
+<span class="n">ResultT</span> <span class="o">=</span> <span class="n">Any</span>
+<span class="n">SearchResults</span> <span class="o">=</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">ResultT</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="docs_to_vector_store">
+<a class="viewcode-back" href="../../module_docs/oa/vector_stores.html#oa.vector_stores.docs_to_vector_store">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">docs_to_vector_store</span><span class="p">(</span>
+    <span class="n">docs</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="n">vs_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create an OpenAI vector store from a mapping of documents.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        docs: Mapping of document keys to text content</span>
+<span class="sd">        vs_name: Optional name for the vector store. If None, generates a unique name.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        tuple: (vector_store_id, file_id_to_doc_key_mapping)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">vs_name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">uuid</span>
+
+        <span class="n">vs_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;test_vs_</span><span class="si">{</span><span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">()</span><span class="o">.</span><span class="n">hex</span><span class="p">[:</span><span class="mi">8</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+
+    <span class="c1"># Initialize OA stores</span>
+    <span class="n">oa_stores</span> <span class="o">=</span> <span class="n">OaStores</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+
+    <span class="c1"># Create vector store</span>
+    <span class="n">vector_store</span> <span class="o">=</span> <span class="n">oa_stores</span><span class="o">.</span><span class="n">vector_stores_base</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">vs_name</span><span class="p">)</span>
+
+    <span class="c1"># Create temporary files for each document and upload them</span>
+    <span class="n">vs_files</span> <span class="o">=</span> <span class="n">OaVectorStoreFiles</span><span class="p">(</span><span class="n">vector_store</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">oa_stores</span><span class="o">.</span><span class="n">client</span><span class="p">)</span>
+    <span class="n">file_id_to_doc_key</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">for</span> <span class="n">doc_key</span><span class="p">,</span> <span class="n">doc_text</span> <span class="ow">in</span> <span class="n">docs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="c1"># Create a temporary file with the document content</span>
+        <span class="c1"># Use doc_key as filename for easier identification</span>
+        <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span>
+            <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">suffix</span><span class="o">=</span><span class="s2">&quot;.txt&quot;</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">doc_key</span><span class="si">}</span><span class="s2">_&quot;</span><span class="p">,</span> <span class="n">delete</span><span class="o">=</span><span class="kc">False</span>
+        <span class="p">)</span> <span class="k">as</span> <span class="n">tmp_file</span><span class="p">:</span>
+            <span class="n">tmp_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">doc_text</span><span class="p">)</span>
+            <span class="n">tmp_file</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+
+            <span class="c1"># Upload the file to OpenAI with proper purpose for assistants/vector stores</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">tmp_file</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file_content</span><span class="p">:</span>
+                <span class="c1"># Create a file store with the correct purpose for assistants/vector stores</span>
+                <span class="n">assistants_files</span> <span class="o">=</span> <span class="n">OaFiles</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">purpose</span><span class="o">=</span><span class="s2">&quot;assistants&quot;</span><span class="p">)</span>
+                <span class="n">file_obj</span> <span class="o">=</span> <span class="n">assistants_files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">file_content</span><span class="p">)</span>
+
+            <span class="c1"># Add the file to the vector store</span>
+            <span class="n">vs_files</span><span class="o">.</span><span class="n">add_file</span><span class="p">(</span><span class="n">file_obj</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+
+            <span class="c1"># Store the mapping</span>
+            <span class="n">file_id_to_doc_key</span><span class="p">[</span><span class="n">file_obj</span><span class="o">.</span><span class="n">id</span><span class="p">]</span> <span class="o">=</span> <span class="n">doc_key</span>
+
+            <span class="c1"># Clean up temporary file</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">unlink</span><span class="p">(</span><span class="n">tmp_file</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">vector_store</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">file_id_to_doc_key</span></div>
+
+
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">partial</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">inspect</span><span class="w"> </span><span class="kn">import</span> <span class="n">Parameter</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">i2</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sig</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">i2.wrapper</span><span class="w"> </span><span class="kn">import</span> <span class="n">Ingress</span><span class="p">,</span> <span class="n">wrap</span>
+
+
+<div class="viewcode-block" id="bind_and_modify">
+<a class="viewcode-back" href="../../module_docs/oa/vector_stores.html#oa.vector_stores.bind_and_modify">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">bind_and_modify</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="o">*</span><span class="n">bound_args</span><span class="p">,</span> <span class="n">_param_changes</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">(),</span> <span class="o">**</span><span class="n">bound_kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convenience function that both binds arguments and modifies signature.</span>
+
+<span class="sd">    This is perfect for your vector store search use case.</span>
+
+<span class="sd">    :param func: The function to wrap</span>
+<span class="sd">    :param bound_args: Positional arguments to bind</span>
+<span class="sd">    :param bound_kwargs: Dict of argument names to values to bind</span>
+<span class="sd">    :param _param_changes: Parameter modifications</span>
+<span class="sd">    :return: Wrapped function with bound arguments and modified signature</span>
+
+<span class="sd">    Example for your vector store case:</span>
+
+<span class="sd">    &gt;&gt;&gt; def search(vector_store_id, *, query, filters=None, max_results=10):</span>
+<span class="sd">    ...     return f&quot;Searching {vector_store_id} for &#39;{query}&#39;&quot;</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; # Bind vector_store_id and make query positional</span>
+<span class="sd">    &gt;&gt;&gt; bound_search = bind_and_modify(</span>
+<span class="sd">    ...     search,</span>
+<span class="sd">    ...     vector_store_id=&#39;my_store&#39;,</span>
+<span class="sd">    ...     _param_changes=dict(query={&#39;kind&#39;: Parameter.POSITIONAL_OR_KEYWORD}),</span>
+<span class="sd">    ... )</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; bound_search(&#39;my query&#39;)</span>
+<span class="sd">    &quot;Searching my_store for &#39;my query&#39;&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">i2.wrapper</span><span class="w"> </span><span class="kn">import</span> <span class="n">Ingress</span><span class="p">,</span> <span class="n">wrap</span>
+
+    <span class="c1"># Get original signature and determine what we&#39;re binding</span>
+    <span class="n">original_sig</span> <span class="o">=</span> <span class="n">Sig</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+    <span class="n">bound_kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">bound_kwargs</span><span class="p">)</span>
+
+    <span class="c1"># Map the bound arguments to parameter names</span>
+    <span class="n">bound_params</span> <span class="o">=</span> <span class="n">original_sig</span><span class="o">.</span><span class="n">map_arguments</span><span class="p">(</span>
+        <span class="n">bound_args</span><span class="p">,</span>
+        <span class="n">bound_kwargs</span><span class="p">,</span>
+        <span class="n">allow_partial</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Remove bound parameters from signature</span>
+    <span class="n">remaining_sig</span> <span class="o">=</span> <span class="n">original_sig</span> <span class="o">-</span> <span class="nb">list</span><span class="p">(</span><span class="n">bound_params</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+
+    <span class="c1"># Apply parameter modifications to the remaining signature</span>
+    <span class="k">if</span> <span class="n">_param_changes</span><span class="p">:</span>
+        <span class="n">remaining_sig</span> <span class="o">=</span> <span class="n">remaining_sig</span><span class="o">.</span><span class="n">modified</span><span class="p">(</span><span class="o">**</span><span class="n">_param_changes</span><span class="p">)</span>
+
+    <span class="c1"># Create an ingress that transforms outer args/kwargs to inner args/kwargs</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">kwargs_trans</span><span class="p">(</span><span class="n">outer_kwargs</span><span class="p">):</span>
+        <span class="c1"># Start with the bound parameters</span>
+        <span class="n">inner_kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">bound_params</span><span class="p">)</span>
+        <span class="c1"># Add the outer kwargs</span>
+        <span class="n">inner_kwargs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">outer_kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">inner_kwargs</span>
+
+    <span class="c1"># Create ingress with the modified signature as outer and original as inner</span>
+    <span class="n">ingress</span> <span class="o">=</span> <span class="n">Ingress</span><span class="p">(</span>
+        <span class="n">outer_sig</span><span class="o">=</span><span class="n">remaining_sig</span><span class="p">,</span> <span class="n">kwargs_trans</span><span class="o">=</span><span class="n">kwargs_trans</span><span class="p">,</span> <span class="n">inner_sig</span><span class="o">=</span><span class="n">original_sig</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Wrap the function</span>
+    <span class="k">return</span> <span class="n">wrap</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">ingress</span><span class="o">=</span><span class="n">ingress</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="mk_search_func_for_oa_vector_store">
+<a class="viewcode-back" href="../../module_docs/oa/vector_stores.html#oa.vector_stores.mk_search_func_for_oa_vector_store">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">mk_search_func_for_oa_vector_store</span><span class="p">(</span>
+    <span class="n">vector_store_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">doc_id_mapping</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Query</span><span class="p">],</span> <span class="n">SearchResults</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create a search function for an OpenAI vector store using the Responses API.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        vector_store_id: The ID of the vector store to search</span>
+<span class="sd">        doc_id_mapping: Optional mapping from file IDs to document keys for result translation</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A function that takes a query and returns search results</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">oa_stores</span> <span class="o">=</span> <span class="n">OaStores</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">search_func</span><span class="p">(</span><span class="n">query</span><span class="p">:</span> <span class="n">Query</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SearchResults</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Search function that uses the Responses API to perform the search.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Use the new Responses API with a single call</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">oa_stores</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">responses</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+            <span class="n">model</span><span class="o">=</span><span class="s2">&quot;gpt-4o&quot;</span><span class="p">,</span>
+            <span class="nb">input</span><span class="o">=</span><span class="n">query</span><span class="p">,</span>
+            <span class="n">instructions</span><span class="o">=</span><span class="s2">&quot;You are a search assistant. Use the file_search tool to find relevant documents.&quot;</span><span class="p">,</span>
+            <span class="n">tools</span><span class="o">=</span><span class="p">[</span>
+                <span class="p">{</span>
+                    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;file_search&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;vector_store_ids&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">vector_store_id</span><span class="p">],</span>
+                <span class="p">}</span>
+            <span class="p">],</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Extract file IDs from the response</span>
+        <span class="n">file_ids</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">output</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">output</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">output</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;file_search&quot;</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">output</span><span class="o">.</span><span class="n">file_search</span><span class="o">.</span><span class="n">results</span><span class="p">:</span>
+                    <span class="n">file_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">file_id</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">doc_id_mapping</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[</span>
+                <span class="n">doc_id_mapping</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">file_id</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">file_id</span> <span class="ow">in</span> <span class="n">file_ids</span>
+                <span class="k">if</span> <span class="n">file_id</span> <span class="ow">in</span> <span class="n">doc_id_mapping</span>
+            <span class="p">]</span>
+        <span class="k">return</span> <span class="n">file_ids</span>
+
+    <span class="k">return</span> <span class="n">search_func</span></div>
+
+
+
+<div class="viewcode-block" id="docs_to_search_func_factory_via_vector_store">
+<a class="viewcode-back" href="../../module_docs/oa/vector_stores.html#oa.vector_stores.docs_to_search_func_factory_via_vector_store">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">docs_to_search_func_factory_via_vector_store</span><span class="p">(</span>
+    <span class="n">docs</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Query</span><span class="p">],</span> <span class="n">SearchResults</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Factory function that creates a search function via vector store.</span>
+<span class="sd">    This can be used with check_search_func_factory.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Create vector store from docs</span>
+    <span class="n">vs_id</span><span class="p">,</span> <span class="n">file_id_mapping</span> <span class="o">=</span> <span class="n">docs_to_vector_store</span><span class="p">(</span><span class="n">docs</span><span class="p">)</span>
+
+    <span class="c1"># Create and return search function with proper mapping</span>
+    <span class="k">return</span> <span class="n">mk_search_func_for_oa_vector_store</span><span class="p">(</span><span class="n">vs_id</span><span class="p">,</span> <span class="n">file_id_mapping</span><span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright NO COPYRIGHT.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

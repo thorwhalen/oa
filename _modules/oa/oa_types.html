@@ -1,0 +1,288 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>oa.oa_types &mdash; oa 0.1.48 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=b5e87a2a"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            oa
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa.html">oa</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/_params.html">oa._params</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/_resources.html">oa._resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/ask.html">oa.ask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/audio.html">oa.audio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/base.html">oa.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/batch_embeddings.html">oa.batch_embeddings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/batches.html">oa.batches</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/chats.html">oa.chats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/examples/aesop_fables.html">oa.examples.aesop_fables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/examples/batch_embeddings_examples.html">oa.examples.batch_embeddings_examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/examples/illustrate_stories.html">oa.examples.illustrate_stories</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/oa_types.html">oa.oa_types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/openai_specs.html">oa.openai_specs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/stores.html">oa.stores</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/tools.html">oa.tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/util.html">oa.util</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/vector_stores.html">oa.vector_stores</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">oa</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">oa.oa_types</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for oa.oa_types</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Types for oa&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">TypeVar</span><span class="p">,</span> <span class="n">Generic</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">RootModel</span><span class="p">,</span> <span class="n">Field</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">ju.pydantic_util</span><span class="w"> </span><span class="kn">import</span> <span class="n">is_pydantic_model</span><span class="p">,</span> <span class="n">is_type_hint</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">openai.types</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">oat</span>
+
+<span class="n">pydantic_models</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">vars</span><span class="p">(</span><span class="n">oat</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">is_pydantic_model</span><span class="p">(</span><span class="n">v</span><span class="p">)}</span>
+<span class="n">type_hints</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">vars</span><span class="p">(</span><span class="n">oat</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">is_type_hint</span><span class="p">(</span><span class="n">v</span><span class="p">)}</span>
+
+
+<span class="n">T</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;T&quot;</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="n">BaseModel</span><span class="p">)</span>
+
+<span class="c1"># --------------------------------------------------------------------------------------</span>
+<span class="c1"># JsonL (lists of dicts)</span>
+
+
+<div class="viewcode-block" id="JsonL">
+<a class="viewcode-back" href="../../module_docs/oa/oa_types.html#oa.oa_types.JsonL">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">JsonL</span><span class="p">(</span><span class="n">RootModel</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">T</span><span class="p">]],</span> <span class="n">Generic</span><span class="p">[</span><span class="n">T</span><span class="p">]):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A generic class for JSONL (JSON Lines) files, which are lists of dictionaries.</span>
+<span class="sd">    &quot;&quot;&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="InputText">
+<a class="viewcode-back" href="../../module_docs/oa/oa_types.html#oa.oa_types.InputText">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">InputText</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Used to specify the input data in some OpenAI API endpounts.&quot;&quot;&quot;</span>
+
+    <span class="nb">input</span><span class="p">:</span> <span class="nb">str</span></div>
+
+
+
+<span class="n">InputDataJsonL</span> <span class="o">=</span> <span class="n">JsonL</span><span class="p">[</span><span class="n">InputText</span><span class="p">]</span>
+
+
+<span class="c1"># --------------------------------------------------------------------------------------</span>
+<span class="c1"># BatchRequest (e.g. embeddings)</span>
+
+
+<div class="viewcode-block" id="BatchRequestBody">
+<a class="viewcode-back" href="../../module_docs/oa/oa_types.html#oa.oa_types.BatchRequestBody">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">BatchRequestBody</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="nb">input</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="n">model</span><span class="p">:</span> <span class="nb">str</span></div>
+
+
+
+<span class="c1"># Note: leaf model</span>
+<div class="viewcode-block" id="BatchRequest">
+<a class="viewcode-back" href="../../module_docs/oa/oa_types.html#oa.oa_types.BatchRequest">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">BatchRequest</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">custom_id</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">method</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">url</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">body</span><span class="p">:</span> <span class="n">BatchRequestBody</span></div>
+
+
+
+<span class="c1"># --------------------------------------------------------------------------------------</span>
+<span class="c1"># OpenAI Responses</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">Field</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">TypeVar</span><span class="p">,</span> <span class="n">Generic</span><span class="p">,</span> <span class="n">Any</span>
+
+<span class="c1"># Define a generic type for Datum</span>
+<span class="n">DatumT</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;DatumT&quot;</span><span class="p">)</span>
+
+
+<span class="c1"># Usage model remains the same</span>
+<div class="viewcode-block" id="Usage">
+<a class="viewcode-back" href="../../module_docs/oa/oa_types.html#oa.oa_types.Usage">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Usage</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">prompt_tokens</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">total_tokens</span><span class="p">:</span> <span class="nb">int</span></div>
+
+
+
+<span class="c1"># ResponseBody is now parameterized by DatumT</span>
+<div class="viewcode-block" id="ResponseBody">
+<a class="viewcode-back" href="../../module_docs/oa/oa_types.html#oa.oa_types.ResponseBody">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ResponseBody</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">,</span> <span class="n">Generic</span><span class="p">[</span><span class="n">DatumT</span><span class="p">]):</span>
+    <span class="nb">object</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">data</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">DatumT</span><span class="p">]</span>  <span class="c1"># Generic list of DatumT</span>
+    <span class="n">model</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">usage</span><span class="p">:</span> <span class="n">Usage</span></div>
+
+
+
+<div class="viewcode-block" id="RequestResponse">
+<a class="viewcode-back" href="../../module_docs/oa/oa_types.html#oa.oa_types.RequestResponse">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">RequestResponse</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">,</span> <span class="n">Generic</span><span class="p">[</span><span class="n">DatumT</span><span class="p">]):</span>
+    <span class="n">status_code</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">ge</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">le</span><span class="o">=</span><span class="mi">599</span><span class="p">)</span>
+    <span class="n">request_id</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">body</span><span class="p">:</span> <span class="n">ResponseBody</span><span class="p">[</span><span class="n">DatumT</span><span class="p">]</span></div>
+
+
+
+<div class="viewcode-block" id="Response">
+<a class="viewcode-back" href="../../module_docs/oa/oa_types.html#oa.oa_types.Response">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Response</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">,</span> <span class="n">Generic</span><span class="p">[</span><span class="n">DatumT</span><span class="p">]):</span>
+    <span class="nb">id</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">custom_id</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">response</span><span class="p">:</span> <span class="n">RequestResponse</span><span class="p">[</span><span class="n">DatumT</span><span class="p">]</span>
+    <span class="n">error</span><span class="p">:</span> <span class="n">Any</span></div>
+
+
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">openai.types</span><span class="w"> </span><span class="kn">import</span> <span class="n">Embedding</span> <span class="k">as</span> <span class="n">EmbeddingT</span>
+
+<span class="n">EmbeddingResponse</span> <span class="o">=</span> <span class="n">Response</span><span class="p">[</span><span class="n">EmbeddingT</span><span class="p">]</span>
+<span class="n">EmbeddingResponse</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">=</span> <span class="s2">&quot;EmbeddingResponse&quot;</span>
+
+<span class="c1"># --------------------------------------------------------------------------------------</span>
+<span class="c1"># Extras</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">heatmap_of_models_and_their_fields</span><span class="p">():</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>  <span class="c1"># pylint: disable=import-outside-toplevel</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">oplot.matrix</span><span class="w"> </span><span class="kn">import</span> <span class="n">heatmap_sns</span>  <span class="c1"># pylint: disable=import-outside-toplevel</span>
+
+    <span class="n">models_and_their_fields</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+        <span class="p">[{</span><span class="n">k</span><span class="p">:</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">model_fields</span><span class="p">}</span> <span class="k">for</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">pydantic_models</span><span class="o">.</span><span class="n">values</span><span class="p">()],</span>
+        <span class="n">index</span><span class="o">=</span><span class="n">pydantic_models</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">heatmap_sns</span><span class="p">(</span><span class="n">models_and_their_fields</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
+
+
+<span class="c1"># # --------------------------------------------------------------------------------------</span>
+
+<span class="c1"># class Datum(BaseModel):</span>
+<span class="c1">#     object: str</span>
+<span class="c1">#     index: int</span>
+<span class="c1">#     embedding: List[float]</span>
+
+
+<span class="c1"># class Usage(BaseModel):</span>
+<span class="c1">#     prompt_tokens: int</span>
+<span class="c1">#     total_tokens: int</span>
+
+
+<span class="c1"># class ResponseBody(BaseModel):</span>
+<span class="c1">#     object: str</span>
+<span class="c1">#     data: List[Datum]</span>
+<span class="c1">#     model: str</span>
+<span class="c1">#     usage: Usage</span>
+
+
+<span class="c1"># class Response(BaseModel):</span>
+<span class="c1">#     status_code: int = Field(..., ge=100, le=599)</span>
+<span class="c1">#     request_id: str</span>
+<span class="c1">#     body: ResponseBody</span>
+
+
+<span class="c1"># # Note: leaf model</span>
+<span class="c1"># class ResponseRoot(BaseModel):</span>
+<span class="c1">#     id: str</span>
+<span class="c1">#     custom_id: str</span>
+<span class="c1">#     response: Response</span>
+<span class="c1">#     error: Any</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright NO COPYRIGHT.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

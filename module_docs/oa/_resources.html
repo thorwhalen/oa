@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>oa._resources &mdash; oa 0.1.47 documentation</title>
+  <title>oa._resources &mdash; oa 0.1.48 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -15,7 +15,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=5df2d9e8"></script>
+      <script src="../../_static/documentation_options.js?v=b5e87a2a"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -51,7 +51,24 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../oa.html">oa</a></li>
 <li class="toctree-l1"><a class="reference internal" href="_params.html">oa._params</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">oa._resources</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">oa._resources</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#oa._resources.Resources"><code class="docutils literal notranslate"><span class="pre">Resources</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#oa._resources.Resources.get_pricing_table"><code class="docutils literal notranslate"><span class="pre">Resources.get_pricing_table()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#oa._resources.Resources.list_pricing_categories"><code class="docutils literal notranslate"><span class="pre">Resources.list_pricing_categories()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#oa._resources.Resources.pricing_info_from_ai"><code class="docutils literal notranslate"><span class="pre">Resources.pricing_info_from_ai</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#oa._resources.Resources.pricing_page_html"><code class="docutils literal notranslate"><span class="pre">Resources.pricing_page_html</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#oa._resources.Resources.pricing_tables_from_ai"><code class="docutils literal notranslate"><span class="pre">Resources.pricing_tables_from_ai</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#oa._resources.Resources.schema"><code class="docutils literal notranslate"><span class="pre">Resources.schema</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#oa._resources.Resources.schema_description"><code class="docutils literal notranslate"><span class="pre">Resources.schema_description</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#oa._resources.compare_pricing_info_to_model_info"><code class="docutils literal notranslate"><span class="pre">compare_pricing_info_to_model_info()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#oa._resources.extract_pricing_data"><code class="docutils literal notranslate"><span class="pre">extract_pricing_data()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#oa._resources.get_pricing_page_html"><code class="docutils literal notranslate"><span class="pre">get_pricing_page_html()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#oa._resources.parse_pricing_page"><code class="docutils literal notranslate"><span class="pre">parse_pricing_page()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#oa._resources.parse_section"><code class="docutils literal notranslate"><span class="pre">parse_section()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="ask.html">oa.ask</a></li>
 <li class="toctree-l1"><a class="reference internal" href="audio.html">oa.audio</a></li>
 <li class="toctree-l1"><a class="reference internal" href="base.html">oa.base</a></li>
@@ -93,8 +110,121 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="oa-resources">
-<h1>oa._resources<a class="headerlink" href="#oa-resources" title="Link to this heading"></a></h1>
+  <section id="module-oa._resources">
+<span id="oa-resources"></span><h1>oa._resources<a class="headerlink" href="#module-oa._resources" title="Link to this heading"></a></h1>
+<p>Tools to get resources for oa</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="oa._resources.Resources">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">oa._resources.</span></span><span class="sig-name descname"><span class="pre">Resources</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">resources_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'/home/runner/work/oa/oa/misc/data/resources'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pricing_url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'https://platform.openai.com/docs/pricing'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">schema_description_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'openai_api_pricing_schema_description.txt'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">schema_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'api_pricing_schema.json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pricing_html_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'openai_api_pricing.html'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pricing_info_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'openai_api_pricing_info.json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pricing_info_from_ai_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'openai_api_pricing_info_from_ai.json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_pricing_page_html</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">infer_schema_from_verbal_description</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prompt_json_function</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">None</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/oa/_resources.html#Resources"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oa._resources.Resources" title="Link to this definition"></a></dt>
+<dd><p>Data Access class for OpenAI pricing information.</p>
+<p>This class manages the retrieval, computation, and caching of
+OpenAI pricing data through a chain of computations.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">r</span> <span class="o">=</span> <span class="n">Resources</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">r</span><span class="o">.</span><span class="n">resources_dir</span>
+<span class="go">&#39;...misc/data/resources&#39;</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="oa._resources.Resources.get_pricing_table">
+<span class="sig-name descname"><span class="pre">get_pricing_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">category</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="reference internal" href="../../_modules/oa/_resources.html#Resources.get_pricing_table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oa._resources.Resources.get_pricing_table" title="Link to this definition"></a></dt>
+<dd><p>Get a specific pricing table as a pandas DataFrame.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="oa._resources.Resources.list_pricing_categories">
+<span class="sig-name descname"><span class="pre">list_pricing_categories</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/oa/_resources.html#Resources.list_pricing_categories"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oa._resources.Resources.list_pricing_categories" title="Link to this definition"></a></dt>
+<dd><p>List available pricing categories.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="oa._resources.Resources.pricing_info_from_ai">
+<span class="sig-name descname"><span class="pre">pricing_info_from_ai</span></span><a class="headerlink" href="#oa._resources.Resources.pricing_info_from_ai" title="Link to this definition"></a></dt>
+<dd><p>Extract pricing information from the HTML using AI.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="oa._resources.Resources.pricing_page_html">
+<span class="sig-name descname"><span class="pre">pricing_page_html</span></span><a class="headerlink" href="#oa._resources.Resources.pricing_page_html" title="Link to this definition"></a></dt>
+<dd><p>Retrieve the HTML for the OpenAI pricing page.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="oa._resources.Resources.pricing_tables_from_ai">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">pricing_tables_from_ai</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#oa._resources.Resources.pricing_tables_from_ai" title="Link to this definition"></a></dt>
+<dd><p>Convert pricing tables to pandas DataFrames.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="oa._resources.Resources.schema">
+<span class="sig-name descname"><span class="pre">schema</span></span><a class="headerlink" href="#oa._resources.Resources.schema" title="Link to this definition"></a></dt>
+<dd><p>Generate or retrieve the schema for OpenAI API pricing.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="oa._resources.Resources.schema_description">
+<span class="sig-name descname"><span class="pre">schema_description</span></span><a class="headerlink" href="#oa._resources.Resources.schema_description" title="Link to this definition"></a></dt>
+<dd><p>Generate and retrieve the schema description for OpenAI API pricing.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="oa._resources.compare_pricing_info_to_model_info">
+<span class="sig-prename descclassname"><span class="pre">oa._resources.</span></span><span class="sig-name descname"><span class="pre">compare_pricing_info_to_model_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/oa/_resources.html#compare_pricing_info_to_model_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oa._resources.compare_pricing_info_to_model_info" title="Link to this definition"></a></dt>
+<dd><p>Compares</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="oa._resources.extract_pricing_data">
+<span class="sig-prename descclassname"><span class="pre">oa._resources.</span></span><span class="sig-name descname"><span class="pre">extract_pricing_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">html_content</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/oa/_resources.html#extract_pricing_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oa._resources.extract_pricing_data" title="Link to this definition"></a></dt>
+<dd><p>Main function to extract pricing data from HTML content.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>html_content</strong> – HTML content of the pricing page</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dictionary with API categories as keys and pricing information as values</p>
+</dd>
+</dl>
+<p>Example:</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="oa._resources.get_pricing_page_html">
+<span class="sig-prename descclassname"><span class="pre">oa._resources.</span></span><span class="sig-name descname"><span class="pre">get_pricing_page_html</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'https://platform.openai.com/docs/pricing'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/oa/_resources.html#get_pricing_page_html"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oa._resources.get_pricing_page_html" title="Link to this definition"></a></dt>
+<dd><p>Get the HTML content of the pricing page.</p>
+<p>Need to use chrome to render the page and get the full content.
+Sometimes need to do it twice, since some catpcha pages are shown sometimes.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="oa._resources.parse_pricing_page">
+<span class="sig-prename descclassname"><span class="pre">oa._resources.</span></span><span class="sig-name descname"><span class="pre">parse_pricing_page</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">html_content</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/oa/_resources.html#parse_pricing_page"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oa._resources.parse_pricing_page" title="Link to this definition"></a></dt>
+<dd><p>Parse the HTML content and extract pricing information from all sections.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>html_content</strong> – HTML content as a string</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dictionary with category names as keys and their parsed data as values</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="oa._resources.parse_section">
+<span class="sig-prename descclassname"><span class="pre">oa._resources.</span></span><span class="sig-name descname"><span class="pre">parse_section</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">section</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tag</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/oa/_resources.html#parse_section"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oa._resources.parse_section" title="Link to this definition"></a></dt>
+<dd><p>Parse a section containing pricing information into potentially multiple categories.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>section</strong> – BeautifulSoup Tag containing a section</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of tuples, each with (category_name, data_dict)</p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 
 

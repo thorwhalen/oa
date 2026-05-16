@@ -1,0 +1,648 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>oa.base &mdash; oa 0.1.48 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=b5e87a2a"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            oa
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa.html">oa</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/_params.html">oa._params</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/_resources.html">oa._resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/ask.html">oa.ask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/audio.html">oa.audio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/base.html">oa.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/batch_embeddings.html">oa.batch_embeddings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/batches.html">oa.batches</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/chats.html">oa.chats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/examples/aesop_fables.html">oa.examples.aesop_fables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/examples/batch_embeddings_examples.html">oa.examples.batch_embeddings_examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/examples/illustrate_stories.html">oa.examples.illustrate_stories</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/oa_types.html">oa.oa_types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/openai_specs.html">oa.openai_specs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/stores.html">oa.stores</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/tools.html">oa.tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/util.html">oa.util</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/oa/vector_stores.html">oa.vector_stores</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">oa</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">oa.base</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for oa.base</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Base oa functionality&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">itertools</span><span class="w"> </span><span class="kn">import</span> <span class="n">chain</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">partial</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">KT</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">Callable</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">types</span><span class="w"> </span><span class="kn">import</span> <span class="n">SimpleNamespace</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">i2</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sig</span><span class="p">,</span> <span class="n">Param</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">oa.util</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">openai</span><span class="p">,</span>
+    <span class="n">djoin</span><span class="p">,</span>
+    <span class="n">mk_client</span><span class="p">,</span>
+    <span class="n">num_tokens</span><span class="p">,</span>
+    <span class="n">model_information_dict</span><span class="p">,</span>
+    <span class="n">DFLT_ENGINE</span><span class="p">,</span>
+    <span class="n">DFLT_MODEL</span><span class="p">,</span>
+    <span class="n">DFLT_EMBEDDINGS_MODEL</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">oa.openai_specs</span><span class="w"> </span><span class="kn">import</span> <span class="n">prompt_path</span>
+
+<span class="n">Text</span> <span class="o">=</span> <span class="nb">str</span>
+<span class="n">TextStrings</span> <span class="o">=</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Text</span><span class="p">]</span>
+<span class="n">TextStore</span> <span class="o">=</span> <span class="n">Mapping</span><span class="p">[</span><span class="n">KT</span><span class="p">,</span> <span class="n">Text</span><span class="p">]</span>
+<span class="n">Texts</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="n">TextStrings</span><span class="p">,</span> <span class="n">TextStore</span><span class="p">]</span>
+<span class="n">TextOrTexts</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="n">Text</span><span class="p">,</span> <span class="n">Texts</span><span class="p">]</span>
+
+<span class="n">api</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="c1"># TODO: Expand this to include all the other endpoints (automatically?)</span>
+<span class="c1"># api = SimpleNamespace(</span>
+<span class="c1">#     chat=sig.CreateChatCompletionRequest(openai.chat.completions.create),</span>
+<span class="c1">#     complete=sig.CreateCompletionRequest(openai.completions.create),</span>
+<span class="c1">#     dalle=sig.CreateImageRequest(openai.images.generate),</span>
+<span class="c1"># )</span>
+
+<span class="n">_model_id_aliases</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;davinci&quot;</span><span class="p">:</span> <span class="s2">&quot;text-davinci-003&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ada v2&quot;</span><span class="p">:</span> <span class="s2">&quot;text-embedding-ada-002&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">_model_information_aliases</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;max_tokens&quot;</span><span class="p">:</span> <span class="s2">&quot;max_input&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;price&quot;</span><span class="p">:</span> <span class="s2">&quot;price_per_million_tokens&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+
+<span class="c1"># TODO: Literal type of models and information?</span>
+<div class="viewcode-block" id="model_information">
+<a class="viewcode-back" href="../../module_docs/oa/base.html#oa.base.model_information">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">model_information</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">information</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get information about a model&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">_model_id_aliases</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">_model_id_aliases</span><span class="p">[</span><span class="n">model</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">information</span> <span class="ow">in</span> <span class="n">_model_information_aliases</span><span class="p">:</span>
+        <span class="n">information</span> <span class="o">=</span> <span class="n">_model_information_aliases</span><span class="p">[</span><span class="n">information</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">model</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">model_information_dict</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown model: </span><span class="si">{</span><span class="n">model</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">information</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">model_information_dict</span><span class="p">[</span><span class="n">model</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown information: </span><span class="si">{</span><span class="n">information</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">model_information_dict</span><span class="p">[</span><span class="n">model</span><span class="p">][</span><span class="n">information</span><span class="p">]</span></div>
+
+
+
+<span class="n">model_information</span><span class="o">.</span><span class="n">model_information_dict</span> <span class="o">=</span> <span class="n">model_information_dict</span>
+
+
+<span class="c1"># TODO: Parse more info and complete this function</span>
+<span class="c1">#     (see https://github.com/thorwhalen/oa/discussions/8#discussioncomment-9138661)</span>
+<div class="viewcode-block" id="compute_price">
+<a class="viewcode-back" href="../../module_docs/oa/base.html#oa.base.compute_price">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">compute_price</span><span class="p">(</span>
+    <span class="n">model</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">num_input_tokens</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">num_output_tokens</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the price of a model given the number of input and output tokens&quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="n">num_output_tokens</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;num_output_tokens not yet implemented&quot;</span>
+    <span class="k">if</span> <span class="n">num_input_tokens</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">partial</span><span class="p">(</span><span class="n">compute_price</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
+    <span class="n">price_per_million_tokens</span> <span class="o">=</span> <span class="n">model_information</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;price_per_million_tokens&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">price_per_million_tokens</span> <span class="o">*</span> <span class="p">(</span><span class="n">num_input_tokens</span> <span class="o">/</span> <span class="mi">1_000_000</span><span class="p">)</span></div>
+
+
+
+<span class="n">compute_price</span><span class="o">.</span><span class="n">model_information_dict</span> <span class="o">=</span> <span class="n">model_information_dict</span>
+
+<span class="n">prompt_dalle_path</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">prompt_path</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="n">djoin</span><span class="p">(</span><span class="s2">&quot;dalle&quot;</span><span class="p">))</span>
+<span class="n">prompt_davinci_path</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">prompt_path</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="n">djoin</span><span class="p">(</span><span class="s2">&quot;davinci&quot;</span><span class="p">))</span>
+
+<span class="c1"># TODO: Use oa.openai_specs sig to provide good signatures</span>
+
+
+<span class="nd">@Sig</span><span class="o">.</span><span class="n">replace_kwargs_using</span><span class="p">(</span><span class="n">openai</span><span class="o">.</span><span class="n">completions</span><span class="o">.</span><span class="n">create</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">complete</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">complete_params</span><span class="p">):</span>
+    <span class="k">if</span> <span class="s2">&quot;engine&quot;</span> <span class="ow">in</span> <span class="n">complete_params</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">complete_params</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;engine&quot;</span><span class="p">)</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">model</span> <span class="ow">or</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">complete</span><span class="p">,</span> <span class="s2">&quot;engine&quot;</span><span class="p">,</span> <span class="n">DFLT_ENGINE</span><span class="p">)</span>
+    <span class="n">text_resp</span> <span class="o">=</span> <span class="n">openai</span><span class="o">.</span><span class="n">completions</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">prompt</span><span class="o">=</span><span class="n">prompt</span><span class="p">,</span> <span class="o">**</span><span class="n">complete_params</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">text_resp</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span>
+
+
+<span class="n">complete</span><span class="o">.</span><span class="n">engine</span> <span class="o">=</span> <span class="n">DFLT_ENGINE</span>
+
+
+<span class="nd">@Sig</span><span class="o">.</span><span class="n">replace_kwargs_using</span><span class="p">(</span><span class="n">openai</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">completions</span><span class="o">.</span><span class="n">create</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_raw_chat</span><span class="p">(</span><span class="n">prompt</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">DFLT_MODEL</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">messages</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">chat_params</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="p">((</span><span class="n">prompt</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="o">^</span> <span class="p">(</span><span class="n">messages</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Either prompt or messages must be specified, but not both.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">prompt</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">messages</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="n">prompt</span><span class="p">}]</span>
+    <span class="k">return</span> <span class="n">openai</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">completions</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="o">**</span><span class="n">chat_params</span><span class="p">)</span>
+
+
+<span class="c1"># chat_sig = sig.CreateChatCompletionRequest</span>
+<span class="c1"># chat_sig = chat_sig.ch_defaults(model=DFLT_MODEL, messages=None)</span>
+<span class="c1"># chat_sig = Sig([Param(name=&#39;prompt&#39;, default=None, annotation=str), *chat_sig.params])</span>
+
+
+<span class="nd">@Sig</span><span class="o">.</span><span class="n">replace_kwargs_using</span><span class="p">(</span><span class="n">_raw_chat</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">chat</span><span class="p">(</span><span class="n">prompt</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">DFLT_MODEL</span><span class="p">,</span> <span class="n">messages</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">chat_params</span><span class="p">):</span>
+    <span class="n">resp</span> <span class="o">=</span> <span class="n">_raw_chat</span><span class="p">(</span><span class="n">prompt</span><span class="o">=</span><span class="n">prompt</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span> <span class="o">**</span><span class="n">chat_params</span><span class="p">)</span>
+    <span class="c1"># TODO: Make attr and item getters more robust (use glom?)</span>
+    <span class="k">return</span> <span class="n">resp</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">content</span>
+
+
+<span class="n">chat</span><span class="o">.</span><span class="n">raw</span> <span class="o">=</span> <span class="n">_raw_chat</span>
+
+
+<span class="nd">@Sig</span><span class="o">.</span><span class="n">replace_kwargs_using</span><span class="p">(</span><span class="n">openai</span><span class="o">.</span><span class="n">images</span><span class="o">.</span><span class="n">generate</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_raw_dalle</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="s2">&quot;512x512&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">image_create_params</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">openai</span><span class="o">.</span><span class="n">images</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">prompt</span><span class="o">=</span><span class="n">prompt</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">,</span> <span class="o">**</span><span class="n">image_create_params</span><span class="p">)</span>
+
+
+<span class="nd">@Sig</span><span class="o">.</span><span class="n">replace_kwargs_using</span><span class="p">(</span><span class="n">_raw_dalle</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">dalle</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="s2">&quot;512x512&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">image_create_params</span><span class="p">):</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">_raw_dalle</span><span class="p">(</span><span class="n">prompt</span><span class="o">=</span><span class="n">prompt</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">,</span> <span class="o">**</span><span class="n">image_create_params</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">r</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">url</span>
+
+
+<div class="viewcode-block" id="list_engine_ids">
+<a class="viewcode-back" href="../../module_docs/oa/base.html#oa.base.list_engine_ids">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">list_engine_ids</span><span class="p">(</span><span class="n">pattern</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;List the available engine IDs. Optionally filter by a regex pattern.&quot;&quot;&quot;</span>
+    <span class="n">models_list</span> <span class="o">=</span> <span class="n">mk_client</span><span class="p">()</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">list</span><span class="p">()</span>
+    <span class="n">model_ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">models_list</span><span class="o">.</span><span class="n">data</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">pattern</span><span class="p">:</span>
+        <span class="c1"># filter model_ids by pattern, taken to be a regex pattern</span>
+        <span class="n">pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">pattern</span><span class="p">)</span>
+        <span class="n">model_ids</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="n">pattern</span><span class="o">.</span><span class="n">search</span><span class="p">,</span> <span class="n">model_ids</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">model_ids</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_raise_if_any_invalid</span><span class="p">(</span>
+    <span class="n">validation_vector</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">bool</span><span class="p">],</span>
+    <span class="n">texts</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Text</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">print_invalid_texts</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">validation_vector</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
+        <span class="c1"># if it&#39;s a single validation boolean, make it a list of one boolean</span>
+        <span class="n">validation_vector</span> <span class="o">=</span> <span class="p">[</span><span class="n">validation_vector</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">validation_vector</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">validation_vector</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="n">validation_vector</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">print_invalid_texts</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="s2">&quot;Invalid text(s):</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                    <span class="n">item</span>
+                    <span class="k">for</span> <span class="n">is_valid</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">validation_vector</span><span class="p">,</span> <span class="n">texts</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">is_valid</span>
+                <span class="p">),</span>
+            <span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Some of the texts are invalid&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">texts</span>
+
+
+<span class="c1"># --------------------------------------------------------------------------------------</span>
+<span class="c1"># Embeddings</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">There are (at least) three ways to compute embeddings, which are more or less ideal </span>
+<span class="sd">depending on the situation.</span>
+
+<span class="sd">* One by one, locally and serially (that is, we wait for the response of the request </span>
+<span class="sd">    before sending another). This is **VERY** slow, and you don&#39;t want to do this with </span>
+<span class="sd">    a lot of data. But it has the advantage of being simple and straightforward, and, </span>
+<span class="sd">    if one of your segments has a problem, you&#39;ll know easily exactly which one does.</span>
+<span class="sd">* In batches, locally and serially. </span>
+<span class="sd">* In batches, remotely, in parallel, asynchronously. Advantages here are that it&#39;s </span>
+<span class="sd">    remote, so you&#39;re not hogging down the resources of your computer, and the remote </span>
+<span class="sd">    server will manage the persistence, status, etc. It&#39;s also cheaper (with OpenAI, </span>
+<span class="sd">    at the time of writing this, half the price). But it&#39;s more complex, and though </span>
+<span class="sd">    often faster to get your response every time I&#39;ve ever tried, you are &quot;only&quot; </span>
+<span class="sd">    guaranteed getting your batch jobs within 24h of launching them.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">NOT_GIVEN</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Any</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">oa.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">chunk_iterable</span><span class="p">,</span> <span class="n">mk_local_files_saves_callback</span>
+
+<span class="c1"># from collections.abc import Mapping, Iterable</span>
+
+<span class="n">extra_embeddings_params</span> <span class="o">=</span> <span class="n">Sig</span><span class="p">(</span><span class="n">openai</span><span class="o">.</span><span class="n">embeddings</span><span class="o">.</span><span class="n">create</span><span class="p">)</span> <span class="o">-</span> <span class="p">{</span><span class="s2">&quot;input&quot;</span><span class="p">,</span> <span class="s2">&quot;model&quot;</span><span class="p">}</span>
+
+
+<span class="c1"># TODO: Added a lot of options, but not really clean. Should be cleaned up.</span>
+<span class="c1"># TODO: The dict-versus-list types should be handled more cleanly!</span>
+<span class="c1"># TODO: Integrate the batch API way of doing embeddings</span>
+<span class="c1"># TODO: Batches should be able to be done in paralel, with async/await</span>
+<span class="c1"># TODO: Make a few useful validation_callback functions</span>
+<span class="c1">#    (e.g. return list or dict where invalid texts are replaced with None)</span>
+<span class="c1">#    (e.g. return dict containing only valid texts (if input was list, uses indices as keys)</span>
+<div class="viewcode-block" id="embeddings">
+<a class="viewcode-back" href="../../module_docs/oa/base.html#oa.base.embeddings">[docs]</a>
+<span class="nd">@Sig</span><span class="o">.</span><span class="n">replace_kwargs_using</span><span class="p">(</span><span class="n">extra_embeddings_params</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">embeddings</span><span class="p">(</span>
+    <span class="n">texts</span><span class="p">:</span> <span class="n">TextOrTexts</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="mi">2048</span><span class="p">,</span>  <span class="c1"># found on unofficial OpenAI API docs</span>
+    <span class="n">egress</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">batch_callback</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">]],</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">validate</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="n">Callable</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">valid_text_getter</span><span class="o">=</span><span class="n">_raise_if_any_invalid</span><span class="p">,</span>
+    <span class="n">model</span><span class="o">=</span><span class="n">DFLT_EMBEDDINGS_MODEL</span><span class="p">,</span>
+    <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">dimensions</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">NOT_GIVEN</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">extra_embeddings_params</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get embeddings for a text or texts.</span>
+
+<span class="sd">    :param texts: A string, an iterable of strings, or a dictionary of strings</span>
+<span class="sd">    :param egress: A function that takes the embeddings and returns the desired output.</span>
+<span class="sd">        If None, the output will be a list of embeddings. If False, no output will be</span>
+<span class="sd">        returned, so the batch_callback had better be set to accumulate the results.</span>
+<span class="sd">    :param batch_callback: A function that is called after each batch of embeddings is</span>
+<span class="sd">        computed. This can be used for logging, saving, etc.</span>
+<span class="sd">        One common use case is to save the intermediate results, in files, database,</span>
+<span class="sd">        or in a list. This can be useful if you&#39;re worried about the process failing</span>
+<span class="sd">        and want to be able to resume from where you left off instead of having</span>
+<span class="sd">        to start over (wasting time, and money).</span>
+<span class="sd">        To accumulate the results in a list, you can set `results = []` and then</span>
+<span class="sd">        use a lambda function like this:</span>
+<span class="sd">        `batch_callback = lambda i, batch: results.extend(batch)`.</span>
+<span class="sd">    :param validate: If True, validate the text(s) before getting embeddings</span>
+<span class="sd">    :param valid_text_getter: A function that gets valid texts from the input texts</span>
+<span class="sd">    :param model: The model to use for embeddings</span>
+<span class="sd">    :param client: The OpenAI client to use</span>
+<span class="sd">    :param dimensions: If given will reduce the dimensions of the full size embedding</span>
+<span class="sd">        vectors to that size</span>
+<span class="sd">    :param batch_size: The maximum number of texts to send in a single request</span>
+<span class="sd">    :param extra_embeddings_params: Extra parameters to pass to the embeddings API</span>
+
+<span class="sd">    &gt;&gt;&gt; from functools import partial</span>
+<span class="sd">    &gt;&gt;&gt; dimensions = 3</span>
+<span class="sd">    &gt;&gt;&gt; embeddings_ = partial(embeddings, dimensions=dimensions, validate=True)</span>
+
+<span class="sd">    Test with a single word:</span>
+
+<span class="sd">    &gt;&gt;&gt; text = &quot;vector&quot;</span>
+<span class="sd">    &gt;&gt;&gt; result = embeddings_(text)</span>
+<span class="sd">    &gt;&gt;&gt; result  # doctest: +SKIP</span>
+<span class="sd">    [-0.4096039831638336, 0.3794299364089966, -0.8296127915382385]</span>
+<span class="sd">    &gt;&gt;&gt; isinstance(result, list)</span>
+<span class="sd">    True</span>
+<span class="sd">    &gt;&gt;&gt; len(result) == dimensions == 3</span>
+<span class="sd">    True</span>
+
+<span class="sd">    # Test with a list of words</span>
+<span class="sd">    &gt;&gt;&gt; texts = [&quot;semantic&quot;, &quot;vector&quot;]</span>
+<span class="sd">    &gt;&gt;&gt; result = embeddings_(texts)</span>
+<span class="sd">    &gt;&gt;&gt; isinstance(result, list)</span>
+<span class="sd">    True</span>
+<span class="sd">    &gt;&gt;&gt; len(result)</span>
+<span class="sd">    2</span>
+
+<span class="sd">    Two vectors; one for each word. Note that the second vector is the vector of</span>
+<span class="sd">    &quot;vector&quot;, which we&#39;ve seen before.</span>
+<span class="sd">    &gt;&gt;&gt; result[1]  # doctest: +SKIP</span>
+<span class="sd">    [-0.4096039831638336, 0.3794299364089966, -0.8296127915382385]</span>
+
+<span class="sd">    &gt;&gt;&gt; len(result[1]) == dimensions == 3</span>
+<span class="sd">    True</span>
+
+<span class="sd">    # Test with a dictionary of words</span>
+<span class="sd">    &gt;&gt;&gt; texts = {&quot;adj&quot;: &quot;semantic&quot;, &quot;noun&quot;: &quot;vector&quot;}</span>
+<span class="sd">    &gt;&gt;&gt; result = embeddings_(texts)</span>
+<span class="sd">    &gt;&gt;&gt; isinstance(result, dict)</span>
+<span class="sd">    True</span>
+<span class="sd">    &gt;&gt;&gt; len(result)</span>
+<span class="sd">    2</span>
+<span class="sd">    &gt;&gt;&gt; result[&quot;noun&quot;]  # doctest: +SKIP</span>
+<span class="sd">    [-0.4096039831638336, 0.3794299364089966, -0.8296127915382385]</span>
+<span class="sd">    &gt;&gt;&gt; len(result[&quot;adj&quot;]) == len(result[&quot;noun&quot;]) == dimensions == 3</span>
+<span class="sd">    True</span>
+
+<span class="sd">    If you don&#39;t specify `texts`, you will get a &quot;partial&quot; function that you can</span>
+<span class="sd">    use later to compute embeddings for texts. This is useful if you want to</span>
+<span class="sd">    set some parameters (like `dimensions`, `validate`, etc.) and then use the</span>
+<span class="sd">    resulting function to compute embeddings for different texts later on.</span>
+<span class="sd">    &gt;&gt;&gt; embeddings_with_10_dimensions = embeddings_(texts=None, dimensions=10)</span>
+<span class="sd">    &gt;&gt;&gt; isinstance(embeddings_with_10_dimensions, Callable)</span>
+<span class="sd">    True</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">texts</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">_kwargs</span> <span class="o">=</span> <span class="nb">locals</span><span class="p">()</span>
+        <span class="n">_</span> <span class="o">=</span> <span class="n">_kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;texts&quot;</span><span class="p">)</span>
+        <span class="n">extra_embeddings_params</span> <span class="o">=</span> <span class="n">_kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;extra_embeddings_params&quot;</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="k">return</span> <span class="n">partial</span><span class="p">(</span><span class="n">embeddings</span><span class="p">,</span> <span class="o">**</span><span class="n">_kwargs</span><span class="p">,</span> <span class="o">**</span><span class="n">extra_embeddings_params</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">egress</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="n">batch_callback</span><span class="p">,</span> <span class="p">(</span>
+            <span class="s2">&quot;batch_callback must be provided if egress is False: &quot;</span>
+            <span class="s2">&quot;It will be the batch_callback&#39;s responsibility to accumulate the batches &quot;</span>
+            <span class="s2">&quot;of embeddings!&quot;</span>
+        <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">batch_callback</span> <span class="o">==</span> <span class="s2">&quot;temp_files&quot;</span><span class="p">:</span>  <span class="c1"># an extra not annotated or documented</span>
+        <span class="c1"># convenience to get intermediary results saved to file</span>
+        <span class="n">batch_callback</span> <span class="o">=</span> <span class="n">mk_local_files_saves_callback</span><span class="p">()</span>
+    <span class="n">batch_callback</span> <span class="o">=</span> <span class="n">batch_callback</span> <span class="ow">or</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">i</span><span class="p">,</span> <span class="n">batch</span><span class="p">:</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">callable</span><span class="p">(</span><span class="n">batch_callback</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">Sig</span><span class="p">(</span><span class="n">batch_callback</span><span class="p">))</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span>
+        <span class="s2">&quot;batch_callback must be callable with at least two arguments (i, batch)&quot;</span>
+    <span class="p">)</span>
+    <span class="n">texts</span><span class="p">,</span> <span class="n">texts_type</span><span class="p">,</span> <span class="n">keys</span> <span class="o">=</span> <span class="n">_prepare_embeddings_args</span><span class="p">(</span>
+        <span class="n">validate</span><span class="p">,</span> <span class="n">texts</span><span class="p">,</span> <span class="n">valid_text_getter</span><span class="p">,</span> <span class="n">model</span>
+    <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">texts_type</span> <span class="ow">is</span> <span class="nb">str</span> <span class="ow">and</span> <span class="n">egress</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;egress should be None if texts is a single string&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">client</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">client</span> <span class="o">=</span> <span class="n">mk_client</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_embeddings_batches</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">batch</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">chunk_iterable</span><span class="p">(</span><span class="n">texts</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">)):</span>
+            <span class="n">batch_result</span> <span class="o">=</span> <span class="n">_embeddings_batch</span><span class="p">(</span>
+                <span class="n">batch</span><span class="p">,</span>
+                <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span>
+                <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">,</span>
+                <span class="n">dimensions</span><span class="o">=</span><span class="n">dimensions</span><span class="p">,</span>
+                <span class="o">**</span><span class="n">extra_embeddings_params</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">batch_callback</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">batch_result</span><span class="p">)</span>
+            <span class="k">yield from</span> <span class="n">batch_result</span>
+
+    <span class="c1"># vectors = chain.from_iterable(_embeddings_batches())</span>
+    <span class="n">vectors</span> <span class="o">=</span> <span class="n">_embeddings_batches</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">egress</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+        <span class="c1"># the batch</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">vectors</span><span class="p">:</span>
+            <span class="k">pass</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">egress</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">texts_type</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">):</span>
+                <span class="n">egress</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">vectors</span><span class="p">:</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">vectors</span><span class="p">)}</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">egress</span> <span class="o">=</span> <span class="nb">list</span>
+
+        <span class="k">if</span> <span class="n">texts_type</span> <span class="ow">is</span> <span class="nb">str</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">vectors</span><span class="p">))</span>  <span class="c1"># there&#39;s one and only one (note: no egress)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">egress</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_embeddings_batch</span><span class="p">(</span>
+    <span class="n">texts</span><span class="p">:</span> <span class="n">TextOrTexts</span><span class="p">,</span>
+    <span class="n">model</span><span class="o">=</span><span class="n">DFLT_EMBEDDINGS_MODEL</span><span class="p">,</span>
+    <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">dimensions</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">NOT_GIVEN</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">extra_embeddings_params</span><span class="p">,</span>
+<span class="p">):</span>
+
+    <span class="c1"># Note: validate set to False, as we&#39;ve already validated</span>
+    <span class="k">return</span> <span class="p">[</span>
+        <span class="n">x</span><span class="o">.</span><span class="n">embedding</span>
+        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">embeddings</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+            <span class="nb">input</span><span class="o">=</span><span class="n">texts</span><span class="p">,</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span>
+            <span class="n">dimensions</span><span class="o">=</span><span class="n">dimensions</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">extra_embeddings_params</span><span class="p">,</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">data</span>
+    <span class="p">]</span>
+
+
+<span class="c1"># --------------------------------------------------------------------------------------</span>
+<span class="c1"># embeddings utils</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_prepare_embeddings_args</span><span class="p">(</span><span class="n">validate</span><span class="p">,</span> <span class="n">texts</span><span class="p">,</span> <span class="n">valid_text_getter</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">validate</span><span class="p">:</span>
+        <span class="n">texts</span> <span class="o">=</span> <span class="n">validate_texts_for_embeddings</span><span class="p">(</span><span class="n">texts</span><span class="p">,</span> <span class="n">valid_text_getter</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
+
+    <span class="n">texts</span><span class="p">,</span> <span class="n">texts_type</span><span class="p">,</span> <span class="n">keys</span> <span class="o">=</span> <span class="n">normalize_text_input</span><span class="p">(</span><span class="n">texts</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">texts</span><span class="p">,</span> <span class="n">texts_type</span><span class="p">,</span> <span class="n">keys</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">validate_texts_for_embeddings</span><span class="p">(</span>
+    <span class="n">texts</span><span class="p">,</span> <span class="n">valid_text_getter</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">DFLT_EMBEDDINGS_MODEL</span>
+<span class="p">):</span>
+    <span class="n">validate</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">text_is_valid</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">)</span>
+    <span class="n">validation_vector</span> <span class="o">=</span> <span class="n">validate</span><span class="p">(</span><span class="n">texts</span><span class="p">)</span>
+
+    <span class="c1"># TODO: Too many places where we have to check if it&#39;s a dict or a list. Need to clean up.</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">validation_vector</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">):</span>
+        <span class="n">keys</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">validation_vector</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="n">validation_vector</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">validation_vector</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">keys</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="n">texts</span> <span class="o">=</span> <span class="n">valid_text_getter</span><span class="p">(</span><span class="n">validation_vector</span><span class="p">,</span> <span class="n">texts</span><span class="o">=</span><span class="n">texts</span><span class="p">)</span>
+
+    <span class="c1"># TODO: Too many places where we have to check if it&#39;s a dict or a list. Need to clean up.</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">validation_vector</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">texts</span><span class="p">)}</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">texts</span>
+
+
+<div class="viewcode-block" id="normalize_text_input">
+<a class="viewcode-back" href="../../module_docs/oa/base.html#oa.base.normalize_text_input">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">normalize_text_input</span><span class="p">(</span><span class="n">texts</span><span class="p">:</span> <span class="n">TextOrTexts</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TextStrings</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Ensures the type of texts is an iterable of strings&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">texts</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">texts</span><span class="p">],</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">None</span>  <span class="c1"># Single string case</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">texts</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">texts</span><span class="o">.</span><span class="n">values</span><span class="p">(),</span> <span class="n">Mapping</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">texts</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">texts</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">texts</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="kc">None</span>  <span class="c1"># Iterable case</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Input type not supported&quot;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="text_is_valid">
+<a class="viewcode-back" href="../../module_docs/oa/base.html#oa.base.text_is_valid">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">text_is_valid</span><span class="p">(</span>
+    <span class="n">texts</span><span class="p">:</span> <span class="n">TextOrTexts</span><span class="p">,</span>
+    <span class="n">token_count</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">model</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">DFLT_EMBEDDINGS_MODEL</span><span class="p">,</span>
+    <span class="n">max_tokens</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if text (a string or iterable of strings) is/are valid for a given model.</span>
+
+<span class="sd">    Text is valid if</span>
+<span class="sd">    - it is not empty</span>
+<span class="sd">    - the number of tokens in the text is less than or equal to the max_tokens</span>
+
+<span class="sd">    :param texts: a string or an iterable of strings</span>
+<span class="sd">    :param token_count: Specification of the token count of the text or texts</span>
+<span class="sd">    :param model: The model to use for token count</span>
+<span class="sd">    :param max_tokens: The maximum number of tokens allowed by the model</span>
+
+<span class="sd">    If token_count is an integer, it will check if it is less than or equal to the</span>
+<span class="sd">    `max_tokens`.</span>
+
+<span class="sd">    If token_count is True, it will compute the number of tokens in the text using the</span>
+<span class="sd">    model specified by `model` and check if it is less than or equal to `max_tokens`.</span>
+
+<span class="sd">    If token_count is False, it will not check the token count.</span>
+
+<span class="sd">    If token_count is an iterable, it will apply the same mechanism as above, to each</span>
+<span class="sd">    text in `texts` and the corresponding token count in `token_count`.</span>
+<span class="sd">    This means both texts and token_count(s) must be of the same length.</span>
+
+<span class="sd">    Examples:</span>
+
+<span class="sd">    &gt;&gt;&gt; text_is_valid(&#39;Hello, world!&#39;)</span>
+<span class="sd">    True</span>
+<span class="sd">    &gt;&gt;&gt; text_is_valid(&#39;&#39;)</span>
+<span class="sd">    False</span>
+<span class="sd">    &gt;&gt;&gt; text_is_valid(&#39;Alice &#39; * 9000)</span>
+<span class="sd">    False</span>
+<span class="sd">    &gt;&gt;&gt; text_is_valid(&#39;Alice &#39; * 9000, token_count=False)</span>
+<span class="sd">    True</span>
+<span class="sd">    &gt;&gt;&gt; list(text_is_valid([&#39;Bob&#39;, &#39;&#39;, &#39;Alice &#39; * 9000]))</span>
+<span class="sd">    [True, False, False]</span>
+<span class="sd">    &gt;&gt;&gt; list(text_is_valid([&#39;Bob&#39;, &#39;&#39;, &#39;Alice &#39; * 9000], token_count=False))</span>
+<span class="sd">    [True, False, True]</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Normalize the input</span>
+    <span class="n">texts</span><span class="p">,</span> <span class="n">texts_type</span><span class="p">,</span> <span class="n">keys</span> <span class="o">=</span> <span class="n">normalize_text_input</span><span class="p">(</span><span class="n">texts</span><span class="p">)</span>
+
+    <span class="c1"># Set the maximum tokens allowed if not provided</span>
+    <span class="n">max_tokens</span> <span class="o">=</span> <span class="n">max_tokens</span> <span class="ow">or</span> <span class="n">model_information_dict</span><span class="p">[</span><span class="n">model</span><span class="p">][</span><span class="s2">&quot;max_input&quot;</span><span class="p">]</span>
+
+    <span class="c1"># Define the validation logic for a single text</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_text_valid</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">token_count</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">text</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="n">token_count</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">token_count</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="n">token_count</span> <span class="o">=</span> <span class="n">num_tokens</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">token_count</span> <span class="o">&lt;=</span> <span class="n">max_tokens</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="c1"># Handle the validation for different input types</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">token_count</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">):</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="n">is_text_valid</span><span class="p">,</span> <span class="n">texts</span><span class="p">,</span> <span class="n">token_count</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="n">is_text_valid</span><span class="p">,</span> <span class="n">token_count</span><span class="o">=</span><span class="n">token_count</span><span class="p">),</span> <span class="n">texts</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">texts_type</span> <span class="ow">is</span> <span class="n">Mapping</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">results</span><span class="p">)</span>
+        <span class="p">}</span>  <span class="c1"># Return a mapping if input was a mapping</span>
+    <span class="k">elif</span> <span class="n">texts_type</span> <span class="ow">is</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">next</span><span class="p">(</span>
+            <span class="n">results</span>
+        <span class="p">)</span>  <span class="c1"># Return the boolean directly if the input was a single string</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>  <span class="c1"># Return the list of booleans for an iterable of strings</span></div>
+
+
+
+<span class="c1"># df[&#39;ada_embedding&#39;] = df.combined.apply(lambda x: get_embedding(x, model=&#39;text-embedding-3-small&#39;))</span>
+<span class="c1"># df.to_csv(&#39;output/embedded_1k_reviews.csv&#39;, index=False)</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright NO COPYRIGHT.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
