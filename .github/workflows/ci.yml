@@ -1,11 +1,15 @@
 name: Continuous Integration (uv)
-# MIGRATION NOTE: PyPI auth changed: set secrets.PYPI_PASSWORD to a PyPI API token (uv publish uses UV_PUBLISH_TOKEN, mapped from PYPI_PASSWORD)
 # MIGRATION NOTE: Old CI references setup.cfg - ensure project is migrated to pyproject.toml first (use: wads-migrate setup-to-pyproject)
 on: [push, pull_request]
 
-# Note: Environment variables (PROJECT_NAME and vars from [tool.wads.ci.env])
-# are set by the read-ci-config action in the setup job and made available
-# to all subsequent jobs via GITHUB_ENV
+# Workflow-level env vars from [tool.wads.ci.env] in pyproject.toml.
+# Populated by wads-migrate / wads init via template substitution.
+# Includes PROJECT_NAME, literal defaults from env.defaults, and secret-
+# backed vars from required_envvars / test_envvars / extra_envvars,
+# rendered as `KEY: secrets.KEY || ''` so missing secrets don't fail parsing.
+env:
+  PROJECT_NAME: oa
+  OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY || '' }}
 
 jobs:
   # First job: Read configuration from pyproject.toml
@@ -55,8 +59,6 @@ jobs:
     strategy:
       matrix:
         python-version: ${{ fromJson(needs.setup.outputs.python-versions) }}
-    env:
-      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
 
     steps:
       - uses: actions/checkout@v6
@@ -121,8 +123,6 @@ jobs:
     needs: setup
     runs-on: windows-latest
     continue-on-error: true
-    env:
-      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
 
     steps:
       - uses: actions/checkout@v6

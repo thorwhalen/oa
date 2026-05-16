@@ -74,5 +74,8 @@ addopts = "--ignore=oa/batch_embeddings.py --ignore=oa/examples"
 [tool.hatch.build.targets.wheel]
 packages = ["oa"]
 
-[tool.wads.ci.env.defaults]
-OPENAI_API_KEY = "test-dummy-key"
+[tool.wads.ci.env]
+# OPENAI_API_KEY: many oa modules read this via config2py at module import.
+# Listed in test_envvars so wads-migrate wires it from secrets into the
+# workflow-level env: block (propagates to all jobs).
+test_envvars = ["OPENAI_API_KEY"]
