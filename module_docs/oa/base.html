@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>oa.base &mdash; oa 0.1.46 documentation</title>
+  <title>oa.base &mdash; oa 0.1.47 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -15,7 +15,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=f98a5df1"></script>
+      <script src="../../_static/documentation_options.js?v=5df2d9e8"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -54,15 +54,7 @@
 <li class="toctree-l1"><a class="reference internal" href="_resources.html">oa._resources</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ask.html">oa.ask</a></li>
 <li class="toctree-l1"><a class="reference internal" href="audio.html">oa.audio</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">oa.base</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#oa.base.compute_price"><code class="docutils literal notranslate"><span class="pre">compute_price()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#oa.base.embeddings"><code class="docutils literal notranslate"><span class="pre">embeddings()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#oa.base.list_engine_ids"><code class="docutils literal notranslate"><span class="pre">list_engine_ids()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#oa.base.model_information"><code class="docutils literal notranslate"><span class="pre">model_information()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#oa.base.normalize_text_input"><code class="docutils literal notranslate"><span class="pre">normalize_text_input()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#oa.base.text_is_valid"><code class="docutils literal notranslate"><span class="pre">text_is_valid()</span></code></a></li>
-</ul>
-</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">oa.base</a></li>
 <li class="toctree-l1"><a class="reference internal" href="batch_embeddings.html">oa.batch_embeddings</a></li>
 <li class="toctree-l1"><a class="reference internal" href="batches.html">oa.batches</a></li>
 <li class="toctree-l1"><a class="reference internal" href="chats.html">oa.chats</a></li>
@@ -101,157 +93,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="module-oa.base">
-<span id="oa-base"></span><h1>oa.base<a class="headerlink" href="#module-oa.base" title="Link to this heading"></a></h1>
-<p>Base oa functionality</p>
-<dl class="py function">
-<dt class="sig sig-object py" id="oa.base.compute_price">
-<span class="sig-prename descclassname"><span class="pre">oa.base.</span></span><span class="sig-name descname"><span class="pre">compute_price</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_input_tokens</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_output_tokens</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/oa/base.html#compute_price"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oa.base.compute_price" title="Link to this definition"></a></dt>
-<dd><p>Compute the price of a model given the number of input and output tokens</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="oa.base.embeddings">
-<span class="sig-prename descclassname"><span class="pre">oa.base.</span></span><span class="sig-name descname"><span class="pre">embeddings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">texts:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">~collections.abc.Iterable[str]</span> <span class="pre">|</span> <span class="pre">~collections.abc.Mapping[KT,</span> <span class="pre">str]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">*,</span> <span class="pre">batch_size:</span> <span class="pre">int</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">2048,</span> <span class="pre">egress:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">batch_callback:</span> <span class="pre">~collections.abc.Callable[[int,</span> <span class="pre">list[list]],</span> <span class="pre">~typing.Any]</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">validate:</span> <span class="pre">bool</span> <span class="pre">|</span> <span class="pre">~collections.abc.Callable</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">True,</span> <span class="pre">valid_text_getter=&lt;function</span> <span class="pre">_raise_if_any_invalid&gt;,</span> <span class="pre">model='text-embedding-3-small',</span> <span class="pre">client=None,</span> <span class="pre">dimensions:</span> <span class="pre">int</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">NOT_GIVEN,</span> <span class="pre">encoding_format:</span> <span class="pre">Literal['float',</span> <span class="pre">'base64']</span> <span class="pre">|</span> <span class="pre">Omit</span> <span class="pre">=</span> <span class="pre">&lt;openai.Omit</span> <span class="pre">object&gt;,</span> <span class="pre">user:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">Omit</span> <span class="pre">=</span> <span class="pre">&lt;openai.Omit</span> <span class="pre">object&gt;,</span> <span class="pre">extra_headers:</span> <span class="pre">Headers</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">extra_query:</span> <span class="pre">Query</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">extra_body:</span> <span class="pre">Body</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">timeout:</span> <span class="pre">float</span> <span class="pre">|</span> <span class="pre">httpx.Timeout</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">|</span> <span class="pre">NotGiven</span> <span class="pre">=</span> <span class="pre">NOT_GIVEN</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/oa/base.html#embeddings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oa.base.embeddings" title="Link to this definition"></a></dt>
-<dd><p>Get embeddings for a text or texts.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>texts</strong> – A string, an iterable of strings, or a dictionary of strings</p></li>
-<li><p><strong>egress</strong> – A function that takes the embeddings and returns the desired output.
-If None, the output will be a list of embeddings. If False, no output will be
-returned, so the batch_callback had better be set to accumulate the results.</p></li>
-<li><p><strong>batch_callback</strong> – A function that is called after each batch of embeddings is
-computed. This can be used for logging, saving, etc.
-One common use case is to save the intermediate results, in files, database,
-or in a list. This can be useful if you’re worried about the process failing
-and want to be able to resume from where you left off instead of having
-to start over (wasting time, and money).
-To accumulate the results in a list, you can set <cite>results = []</cite> and then
-use a lambda function like this:
-<cite>batch_callback = lambda i, batch: results.extend(batch)</cite>.</p></li>
-<li><p><strong>validate</strong> – If True, validate the text(s) before getting embeddings</p></li>
-<li><p><strong>valid_text_getter</strong> – A function that gets valid texts from the input texts</p></li>
-<li><p><strong>model</strong> – The model to use for embeddings</p></li>
-<li><p><strong>client</strong> – The OpenAI client to use</p></li>
-<li><p><strong>dimensions</strong> – If given will reduce the dimensions of the full size embedding
-vectors to that size</p></li>
-<li><p><strong>batch_size</strong> – The maximum number of texts to send in a single request</p></li>
-<li><p><strong>extra_embeddings_params</strong> – Extra parameters to pass to the embeddings API</p></li>
-</ul>
-</dd>
-</dl>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">partial</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">dimensions</span> <span class="o">=</span> <span class="mi">3</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">embeddings_</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">embeddings</span><span class="p">,</span> <span class="n">dimensions</span><span class="o">=</span><span class="n">dimensions</span><span class="p">,</span> <span class="n">validate</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Test with a single word:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;vector&quot;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">embeddings_</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span>
-<span class="go">[-0.4096039831638336, 0.3794299364089966, -0.8296127915382385]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span>
-<span class="go">True</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="o">==</span> <span class="n">dimensions</span> <span class="o">==</span> <span class="mi">3</span>
-<span class="go">True</span>
-</pre></div>
-</div>
-<p># Test with a list of words
-&gt;&gt;&gt; texts = [“semantic”, “vector”]
-&gt;&gt;&gt; result = embeddings_(texts)
-&gt;&gt;&gt; isinstance(result, list)
-True
-&gt;&gt;&gt; len(result)
-2</p>
-<p>Two vectors; one for each word. Note that the second vector is the vector of
-“vector”, which we’ve seen before.
-&gt;&gt;&gt; result[1]  # doctest: +SKIP
-[-0.4096039831638336, 0.3794299364089966, -0.8296127915382385]</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">==</span> <span class="n">dimensions</span> <span class="o">==</span> <span class="mi">3</span>
-<span class="go">True</span>
-</pre></div>
-</div>
-<p># Test with a dictionary of words
-&gt;&gt;&gt; texts = {“adj”: “semantic”, “noun”: “vector”}
-&gt;&gt;&gt; result = embeddings_(texts)
-&gt;&gt;&gt; isinstance(result, dict)
-True
-&gt;&gt;&gt; len(result)
-2
-&gt;&gt;&gt; result[“noun”]  # doctest: +SKIP
-[-0.4096039831638336, 0.3794299364089966, -0.8296127915382385]
-&gt;&gt;&gt; len(result[“adj”]) == len(result[“noun”]) == dimensions == 3
-True</p>
-<p>If you don’t specify <cite>texts</cite>, you will get a “partial” function that you can
-use later to compute embeddings for texts. This is useful if you want to
-set some parameters (like <cite>dimensions</cite>, <cite>validate</cite>, etc.) and then use the
-resulting function to compute embeddings for different texts later on.
-&gt;&gt;&gt; embeddings_with_10_dimensions = embeddings_(texts=None, dimensions=10)
-&gt;&gt;&gt; isinstance(embeddings_with_10_dimensions, Callable)
-True</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="oa.base.list_engine_ids">
-<span class="sig-prename descclassname"><span class="pre">oa.base.</span></span><span class="sig-name descname"><span class="pre">list_engine_ids</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pattern</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/oa/base.html#list_engine_ids"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oa.base.list_engine_ids" title="Link to this definition"></a></dt>
-<dd><p>List the available engine IDs. Optionally filter by a regex pattern.</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="oa.base.model_information">
-<span class="sig-prename descclassname"><span class="pre">oa.base.</span></span><span class="sig-name descname"><span class="pre">model_information</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">information</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/oa/base.html#model_information"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oa.base.model_information" title="Link to this definition"></a></dt>
-<dd><p>Get information about a model</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="oa.base.normalize_text_input">
-<span class="sig-prename descclassname"><span class="pre">oa.base.</span></span><span class="sig-name descname"><span class="pre">normalize_text_input</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">texts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><span class="pre">KT</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/oa/base.html#normalize_text_input"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oa.base.normalize_text_input" title="Link to this definition"></a></dt>
-<dd><p>Ensures the type of texts is an iterable of strings</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="oa.base.text_is_valid">
-<span class="sig-prename descclassname"><span class="pre">oa.base.</span></span><span class="sig-name descname"><span class="pre">text_is_valid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">texts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><span class="pre">KT</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">token_count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'text-embedding-3-small'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_tokens</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/oa/base.html#text_is_valid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oa.base.text_is_valid" title="Link to this definition"></a></dt>
-<dd><p>Check if text (a string or iterable of strings) is/are valid for a given model.</p>
-<p>Text is valid if
-- it is not empty
-- the number of tokens in the text is less than or equal to the max_tokens</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>texts</strong> – a string or an iterable of strings</p></li>
-<li><p><strong>token_count</strong> – Specification of the token count of the text or texts</p></li>
-<li><p><strong>model</strong> – The model to use for token count</p></li>
-<li><p><strong>max_tokens</strong> – The maximum number of tokens allowed by the model</p></li>
-</ul>
-</dd>
-</dl>
-<p>If token_count is an integer, it will check if it is less than or equal to the
-<cite>max_tokens</cite>.</p>
-<p>If token_count is True, it will compute the number of tokens in the text using the
-model specified by <cite>model</cite> and check if it is less than or equal to <cite>max_tokens</cite>.</p>
-<p>If token_count is False, it will not check the token count.</p>
-<p>If token_count is an iterable, it will apply the same mechanism as above, to each
-text in <cite>texts</cite> and the corresponding token count in <cite>token_count</cite>.
-This means both texts and token_count(s) must be of the same length.</p>
-<p>Examples:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">text_is_valid</span><span class="p">(</span><span class="s1">&#39;Hello, world!&#39;</span><span class="p">)</span>
-<span class="go">True</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">text_is_valid</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
-<span class="go">False</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">text_is_valid</span><span class="p">(</span><span class="s1">&#39;Alice &#39;</span> <span class="o">*</span> <span class="mi">9000</span><span class="p">)</span>
-<span class="go">False</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">text_is_valid</span><span class="p">(</span><span class="s1">&#39;Alice &#39;</span> <span class="o">*</span> <span class="mi">9000</span><span class="p">,</span> <span class="n">token_count</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="go">True</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">text_is_valid</span><span class="p">([</span><span class="s1">&#39;Bob&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;Alice &#39;</span> <span class="o">*</span> <span class="mi">9000</span><span class="p">]))</span>
-<span class="go">[True, False, False]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">text_is_valid</span><span class="p">([</span><span class="s1">&#39;Bob&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;Alice &#39;</span> <span class="o">*</span> <span class="mi">9000</span><span class="p">],</span> <span class="n">token_count</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
-<span class="go">[True, False, True]</span>
-</pre></div>
-</div>
-</dd></dl>
-
+  <section id="oa-base">
+<h1>oa.base<a class="headerlink" href="#oa-base" title="Link to this heading"></a></h1>
 </section>
 
 
