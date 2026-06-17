@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>oa.tools &mdash; oa 0.1.48 documentation</title>
+  <title>oa.tools &mdash; oa 0.1.49 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=b5e87a2a"></script>
+      <script src="../../_static/documentation_options.js?v=1190fe33"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -630,13 +630,42 @@
 
 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">infer_schema_from_verbal_description</span><span class="p">(</span><span class="n">verbal_description</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<div class="viewcode-block" id="infer_schema_from_verbal_description">
+<a class="viewcode-back" href="../../module_docs/oa/tools.html#oa.tools.infer_schema_from_verbal_description">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">infer_schema_from_verbal_description</span><span class="p">(</span>
+    <span class="n">verbal_description</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">prompt_func</span><span class="o">=</span><span class="n">chat</span><span class="p">,</span>
+    <span class="n">prompt_func_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;gpt-4o-mini&quot;</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Infer a JSON Schema (``{name, properties, type}``) from a verbal description.</span>
+
+<span class="sd">    The LLM backend is **injectable** so this is not hardwired to OpenAI: pass any</span>
+<span class="sd">    ``prompt_func`` with the ``(prompt, **kwargs) -&gt; str`` shape (e.g. a</span>
+<span class="sd">    provider-agnostic ``aix.chat``) to route the inference through a different</span>
+<span class="sd">    provider, optionally pinning ``model`` / extra ``prompt_func_kwargs``. The</span>
+<span class="sd">    defaults preserve the original behavior (oa&#39;s ``chat`` on ``gpt-4o-mini``).</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        verbal_description: Natural-language description of the desired JSON output.</span>
+<span class="sd">        prompt_func: The LLM callable to use (default: oa&#39;s ``chat``). Forwarded to</span>
+<span class="sd">            :func:`prompt_json_function`.</span>
+<span class="sd">        prompt_func_kwargs: Extra keyword arguments merged into the ``prompt_func``</span>
+<span class="sd">            call (e.g. provider options).</span>
+<span class="sd">        model: Model id passed to ``prompt_func`` (pass ``None`` to let an</span>
+<span class="sd">            ``aix``-style backend resolve its own configured default).</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A ``dict`` with at least ``name`` and ``properties`` keys (the inferred</span>
+<span class="sd">        JSON Schema, formatted for OpenAI &quot;JSON mode&quot;).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">template</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">    Generate a valid JSON Schema based on the the verbal description of the desired </span>
-<span class="s2">    JSON output below. </span>
-<span class="s2">    The schema must be properly formatted for use with OpenAI’s Chat API </span>
-<span class="s2">    in &quot;JSON mode&quot; and should accurately define the structure, </span>
-<span class="s2">    data types, required fields, and any constraints specified by the user. </span>
+<span class="s2">    Generate a valid JSON Schema based on the the verbal description of the desired</span>
+<span class="s2">    JSON output below.</span>
+<span class="s2">    The schema must be properly formatted for use with OpenAI’s Chat API</span>
+<span class="s2">    in &quot;JSON mode&quot; and should accurately define the structure,</span>
+<span class="s2">    data types, required fields, and any constraints specified by the user.</span>
 <span class="s2">    Ensure correctness and completeness.</span>
 
 <span class="s2">    Note that you need to provide not only a valid schema but also a valid name for it.</span>
@@ -655,8 +684,15 @@
             <span class="s2">&quot;required&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;properties&quot;</span><span class="p">],</span>
         <span class="p">},</span>
     <span class="p">}</span>
-    <span class="n">f</span> <span class="o">=</span> <span class="n">prompt_json_function</span><span class="p">(</span><span class="n">template</span><span class="p">,</span> <span class="n">output_schema</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">f</span><span class="p">(</span><span class="n">verbal_description</span><span class="o">=</span><span class="n">verbal_description</span><span class="p">)</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="n">prompt_json_function</span><span class="p">(</span>
+        <span class="n">template</span><span class="p">,</span>
+        <span class="n">output_schema</span><span class="p">,</span>
+        <span class="n">prompt_func</span><span class="o">=</span><span class="n">prompt_func</span><span class="p">,</span>
+        <span class="n">prompt_func_kwargs</span><span class="o">=</span><span class="n">prompt_func_kwargs</span><span class="p">,</span>
+        <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">f</span><span class="p">(</span><span class="n">verbal_description</span><span class="o">=</span><span class="n">verbal_description</span><span class="p">)</span></div>
+
 
 
 <span class="c1"># -----------------------------------------------------------------------------</span>
@@ -980,7 +1016,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright NO COPYRIGHT.</p>
+    <p></p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

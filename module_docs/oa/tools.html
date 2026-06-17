@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>oa.tools &mdash; oa 0.1.48 documentation</title>
+  <title>oa.tools &mdash; oa 0.1.49 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -15,7 +15,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=b5e87a2a"></script>
+      <script src="../../_static/documentation_options.js?v=1190fe33"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -74,6 +74,7 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#oa.tools.constrained_answer"><code class="docutils literal notranslate"><span class="pre">constrained_answer()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#oa.tools.ensure_json_type"><code class="docutils literal notranslate"><span class="pre">ensure_json_type()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#oa.tools.infer_schema_from_verbal_description"><code class="docutils literal notranslate"><span class="pre">infer_schema_from_verbal_description()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#oa.tools.make_generic_json_schema"><code class="docutils literal notranslate"><span class="pre">make_generic_json_schema()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#oa.tools.pattern_based_map"><code class="docutils literal notranslate"><span class="pre">pattern_based_map()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#oa.tools.prompt_function"><code class="docutils literal notranslate"><span class="pre">prompt_function()</span></code></a></li>
@@ -225,6 +226,34 @@ as a convenient tool to do response statistics and validation (via n&gt;1).</p>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="oa.tools.infer_schema_from_verbal_description">
+<span class="sig-prename descclassname"><span class="pre">oa.tools.</span></span><span class="sig-name descname"><span class="pre">infer_schema_from_verbal_description</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbal_description</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prompt_func</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;function</span> <span class="pre">chat&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prompt_func_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'gpt-4o-mini'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/oa/tools.html#infer_schema_from_verbal_description"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oa.tools.infer_schema_from_verbal_description" title="Link to this definition"></a></dt>
+<dd><p>Infer a JSON Schema (<code class="docutils literal notranslate"><span class="pre">{name,</span> <span class="pre">properties,</span> <span class="pre">type}</span></code>) from a verbal description.</p>
+<p>The LLM backend is <strong>injectable</strong> so this is not hardwired to OpenAI: pass any
+<code class="docutils literal notranslate"><span class="pre">prompt_func</span></code> with the <code class="docutils literal notranslate"><span class="pre">(prompt,</span> <span class="pre">**kwargs)</span> <span class="pre">-&gt;</span> <span class="pre">str</span></code> shape (e.g. a
+provider-agnostic <code class="docutils literal notranslate"><span class="pre">aix.chat</span></code>) to route the inference through a different
+provider, optionally pinning <code class="docutils literal notranslate"><span class="pre">model</span></code> / extra <code class="docutils literal notranslate"><span class="pre">prompt_func_kwargs</span></code>. The
+defaults preserve the original behavior (oa’s <code class="docutils literal notranslate"><span class="pre">chat</span></code> on <code class="docutils literal notranslate"><span class="pre">gpt-4o-mini</span></code>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>verbal_description</strong> – Natural-language description of the desired JSON output.</p></li>
+<li><p><strong>prompt_func</strong> – The LLM callable to use (default: oa’s <code class="docutils literal notranslate"><span class="pre">chat</span></code>). Forwarded to
+<a class="reference internal" href="#oa.tools.prompt_json_function" title="oa.tools.prompt_json_function"><code class="xref py py-func docutils literal notranslate"><span class="pre">prompt_json_function()</span></code></a>.</p></li>
+<li><p><strong>prompt_func_kwargs</strong> – Extra keyword arguments merged into the <code class="docutils literal notranslate"><span class="pre">prompt_func</span></code>
+call (e.g. provider options).</p></li>
+<li><p><strong>model</strong> – Model id passed to <code class="docutils literal notranslate"><span class="pre">prompt_func</span></code> (pass <code class="docutils literal notranslate"><span class="pre">None</span></code> to let an
+<code class="docutils literal notranslate"><span class="pre">aix</span></code>-style backend resolve its own configured default).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A <code class="docutils literal notranslate"><span class="pre">dict</span></code> with at least <code class="docutils literal notranslate"><span class="pre">name</span></code> and <code class="docutils literal notranslate"><span class="pre">properties</span></code> keys (the inferred
+JSON Schema, formatted for OpenAI “JSON mode”).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="oa.tools.make_generic_json_schema">
 <span class="sig-prename descclassname"><span class="pre">oa.tools.</span></span><span class="sig-name descname"><span class="pre">make_generic_json_schema</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">json_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#oa.tools.JsonTypes" title="oa.tools.JsonTypes"><span class="pre">JsonTypes</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../../_modules/oa/tools.html#make_generic_json_schema"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oa.tools.make_generic_json_schema" title="Link to this definition"></a></dt>
 <dd><p>Make a generic json schema for a given json type.</p>
@@ -329,7 +358,7 @@ injection purposes, via a triple-backtick marker.</p>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright NO COPYRIGHT.</p>
+    <p></p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

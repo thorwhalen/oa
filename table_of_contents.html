@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>&lt;no title&gt; &mdash; oa 0.1.48 documentation</title>
+  <title>&lt;no title&gt; &mdash; oa 0.1.49 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
@@ -15,7 +15,7 @@
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=b5e87a2a"></script>
+      <script src="_static/documentation_options.js?v=1190fe33"></script>
       <script src="_static/doctools.js?v=fd6eb6e6"></script>
       <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -122,7 +122,16 @@
 <li class="toctree-l2"><a class="reference internal" href="module_docs/oa/base.html#oa.base.text_is_valid"><code class="docutils literal notranslate"><span class="pre">text_is_valid()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/oa/batch_embeddings.html">oa.batch_embeddings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/oa/batch_embeddings.html">oa.batch_embeddings</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/oa/batch_embeddings.html#oa.batch_embeddings.BatchError"><code class="docutils literal notranslate"><span class="pre">BatchError</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/oa/batch_embeddings.html#oa.batch_embeddings.BatchRequestCounts"><code class="docutils literal notranslate"><span class="pre">BatchRequestCounts</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/oa/batch_embeddings.html#oa.batch_embeddings.BatchStatus"><code class="docutils literal notranslate"><span class="pre">BatchStatus</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/oa/batch_embeddings.html#oa.batch_embeddings.EmbeddingsBatchProcess"><code class="docutils literal notranslate"><span class="pre">EmbeddingsBatchProcess</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/oa/batch_embeddings.html#oa.batch_embeddings.ProcessingMall"><code class="docutils literal notranslate"><span class="pre">ProcessingMall</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/oa/batch_embeddings.html#oa.batch_embeddings.compute_embeddings"><code class="docutils literal notranslate"><span class="pre">compute_embeddings()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/oa/batch_embeddings.html#oa.batch_embeddings.compute_embeddings_df"><code class="docutils literal notranslate"><span class="pre">compute_embeddings_df()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/oa/batches.html">oa.batches</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="module_docs/oa/batches.html#oa.batches.BatchCancelledError"><code class="docutils literal notranslate"><span class="pre">BatchCancelledError</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="module_docs/oa/batches.html#oa.batches.BatchError"><code class="docutils literal notranslate"><span class="pre">BatchError</span></code></a></li>
@@ -148,8 +157,19 @@
 <li class="toctree-l2"><a class="reference internal" href="module_docs/oa/chats.html#oa.chats.truncate_dict_values"><code class="docutils literal notranslate"><span class="pre">truncate_dict_values()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/oa/examples/aesop_fables.html">oa.examples.aesop_fables</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/oa/examples/batch_embeddings_examples.html">oa.examples.batch_embeddings_examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/oa/examples/aesop_fables.html">oa.examples.aesop_fables</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/oa/examples/aesop_fables.html#oa.examples.aesop_fables.get_original_stories"><code class="docutils literal notranslate"><span class="pre">get_original_stories()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/oa/examples/aesop_fables.html#oa.examples.aesop_fables.rm_extension"><code class="docutils literal notranslate"><span class="pre">rm_extension()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/oa/examples/batch_embeddings_examples.html">oa.examples.batch_embeddings_examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/oa/examples/batch_embeddings_examples.html#oa.examples.batch_embeddings_examples.context_manager_example"><code class="docutils literal notranslate"><span class="pre">context_manager_example()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/oa/examples/batch_embeddings_examples.html#oa.examples.batch_embeddings_examples.error_handling_example"><code class="docutils literal notranslate"><span class="pre">error_handling_example()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/oa/examples/batch_embeddings_examples.html#oa.examples.batch_embeddings_examples.non_blocking_example"><code class="docutils literal notranslate"><span class="pre">non_blocking_example()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/oa/examples/batch_embeddings_examples.html#oa.examples.batch_embeddings_examples.pandas_example"><code class="docutils literal notranslate"><span class="pre">pandas_example()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/oa/examples/batch_embeddings_examples.html#oa.examples.batch_embeddings_examples.simple_example"><code class="docutils literal notranslate"><span class="pre">simple_example()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/oa/examples/illustrate_stories.html">oa.examples.illustrate_stories</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="module_docs/oa/examples/illustrate_stories.html#oa.examples.illustrate_stories.aggregate_story_and_image"><code class="docutils literal notranslate"><span class="pre">aggregate_story_and_image()</span></code></a></li>
 </ul>
@@ -213,6 +233,7 @@
 <li class="toctree-l2"><a class="reference internal" href="module_docs/oa/tools.html#oa.tools.PromptFuncs"><code class="docutils literal notranslate"><span class="pre">PromptFuncs</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="module_docs/oa/tools.html#oa.tools.constrained_answer"><code class="docutils literal notranslate"><span class="pre">constrained_answer()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="module_docs/oa/tools.html#oa.tools.ensure_json_type"><code class="docutils literal notranslate"><span class="pre">ensure_json_type()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/oa/tools.html#oa.tools.infer_schema_from_verbal_description"><code class="docutils literal notranslate"><span class="pre">infer_schema_from_verbal_description()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="module_docs/oa/tools.html#oa.tools.make_generic_json_schema"><code class="docutils literal notranslate"><span class="pre">make_generic_json_schema()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="module_docs/oa/tools.html#oa.tools.pattern_based_map"><code class="docutils literal notranslate"><span class="pre">pattern_based_map()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="module_docs/oa/tools.html#oa.tools.prompt_function"><code class="docutils literal notranslate"><span class="pre">prompt_function()</span></code></a></li>
@@ -256,7 +277,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright NO COPYRIGHT.</p>
+    <p></p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

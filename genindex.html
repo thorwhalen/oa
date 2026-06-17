@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Index &mdash; oa 0.1.48 documentation</title>
+  <title>Index &mdash; oa 0.1.49 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=b5e87a2a"></script>
+      <script src="_static/documentation_options.js?v=1190fe33"></script>
       <script src="_static/doctools.js?v=fd6eb6e6"></script>
       <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -111,6 +111,7 @@
  | <a href="#S"><strong>S</strong></a>
  | <a href="#T"><strong>T</strong></a>
  | <a href="#U"><strong>U</strong></a>
+ | <a href="#W"><strong>W</strong></a>
  
 </div>
 <h2 id="A">A</h2>
@@ -118,10 +119,12 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/oa/stores.html#oa.stores.OaVectorStoreFiles.add_file">add_file() (oa.stores.OaVectorStoreFiles method)</a>
 </li>
-      <li><a href="module_docs/oa/examples/illustrate_stories.html#oa.examples.illustrate_stories.aggregate_story_and_image">aggregate_story_and_image() (in module oa.examples.illustrate_stories)</a>
+      <li><a href="module_docs/oa/batch_embeddings.html#oa.batch_embeddings.EmbeddingsBatchProcess.aggregate_results">aggregate_results() (oa.batch_embeddings.EmbeddingsBatchProcess method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="module_docs/oa/examples/illustrate_stories.html#oa.examples.illustrate_stories.aggregate_story_and_image">aggregate_story_and_image() (in module oa.examples.illustrate_stories)</a>
+</li>
       <li><a href="module_docs/oa/stores.html#oa.stores.OaBatches.append">append() (oa.stores.OaBatches method)</a>
 
       <ul>
@@ -140,14 +143,14 @@
 </li>
       <li><a href="module_docs/oa/batches.html#oa.batches.BatchCancelledError">BatchCancelledError</a>
 </li>
-      <li><a href="module_docs/oa/batches.html#oa.batches.BatchError">BatchError</a>
+      <li><a href="module_docs/oa/batch_embeddings.html#oa.batch_embeddings.BatchError">BatchError</a>, <a href="module_docs/oa/batches.html#oa.batches.BatchError">[1]</a>
 </li>
       <li><a href="module_docs/oa/batches.html#oa.batches.BatchExpiredError">BatchExpiredError</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/oa/batches.html#oa.batches.BatchFailedError">BatchFailedError</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/oa/batches.html#oa.batches.BatchFinalizingError">BatchFinalizingError</a>
 </li>
       <li><a href="module_docs/oa/batches.html#oa.batches.BatchInProgressError">BatchInProgressError</a>
@@ -155,6 +158,10 @@
       <li><a href="module_docs/oa/oa_types.html#oa.oa_types.BatchRequest">BatchRequest (class in oa.oa_types)</a>
 </li>
       <li><a href="module_docs/oa/oa_types.html#oa.oa_types.BatchRequestBody">BatchRequestBody (class in oa.oa_types)</a>
+</li>
+      <li><a href="module_docs/oa/batch_embeddings.html#oa.batch_embeddings.BatchRequestCounts">BatchRequestCounts (class in oa.batch_embeddings)</a>
+</li>
+      <li><a href="module_docs/oa/batch_embeddings.html#oa.batch_embeddings.BatchStatus">BatchStatus (class in oa.batch_embeddings)</a>
 </li>
       <li><a href="module_docs/oa/vector_stores.html#oa.vector_stores.bind_and_modify">bind_and_modify() (in module oa.vector_stores)</a>
 </li>
@@ -168,15 +175,23 @@
 </li>
       <li><a href="module_docs/oa/util.html#oa.util.chunk_iterable">chunk_iterable() (in module oa.util)</a>
 </li>
+      <li><a href="module_docs/oa/batch_embeddings.html#oa.batch_embeddings.ProcessingMall.clear">clear() (oa.batch_embeddings.ProcessingMall method)</a>
+</li>
       <li><a href="module_docs/oa/_resources.html#oa._resources.compare_pricing_info_to_model_info">compare_pricing_info_to_model_info() (in module oa._resources)</a>
 </li>
-      <li><a href="module_docs/oa/base.html#oa.base.compute_price">compute_price() (in module oa.base)</a>
+      <li><a href="module_docs/oa/batch_embeddings.html#oa.batch_embeddings.compute_embeddings">compute_embeddings() (in module oa.batch_embeddings)</a>
+</li>
+      <li><a href="module_docs/oa/batch_embeddings.html#oa.batch_embeddings.compute_embeddings_df">compute_embeddings_df() (in module oa.batch_embeddings)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="module_docs/oa/base.html#oa.base.compute_price">compute_price() (in module oa.base)</a>
+</li>
       <li><a href="module_docs/oa/util.html#oa.util.concat_lists">concat_lists() (in module oa.util)</a>
 </li>
       <li><a href="module_docs/oa/tools.html#oa.tools.constrained_answer">constrained_answer() (in module oa.tools)</a>
+</li>
+      <li><a href="module_docs/oa/examples/batch_embeddings_examples.html#oa.examples.batch_embeddings_examples.context_manager_example">context_manager_example() (in module oa.examples.batch_embeddings_examples)</a>
 </li>
       <li><a href="module_docs/oa/chats.html#oa.chats.ChatDacc.copy_turns_json">copy_turns_json() (oa.chats.ChatDacc method)</a>
 </li>
@@ -212,6 +227,8 @@
 </li>
       <li><a href="module_docs/oa/base.html#oa.base.embeddings">embeddings() (in module oa.base)</a>
 </li>
+      <li><a href="module_docs/oa/batch_embeddings.html#oa.batch_embeddings.EmbeddingsBatchProcess">EmbeddingsBatchProcess (class in oa.batch_embeddings)</a>
+</li>
       <li><a href="module_docs/oa/stores.html#oa.stores.EmbeddingsDataObject">EmbeddingsDataObject (class in oa.stores)</a>
 </li>
   </ul></td>
@@ -219,6 +236,8 @@
       <li><a href="module_docs/oa/tools.html#oa.tools.ensure_json_type">ensure_json_type() (in module oa.tools)</a>
 </li>
       <li><a href="module_docs/oa/util.html#oa.util.ensure_oa_client">ensure_oa_client() (in module oa.util)</a>
+</li>
+      <li><a href="module_docs/oa/examples/batch_embeddings_examples.html#oa.examples.batch_embeddings_examples.error_handling_example">error_handling_example() (in module oa.examples.batch_embeddings_examples)</a>
 </li>
       <li><a href="module_docs/oa/stores.html#oa.stores.extract_id">extract_id() (in module oa.stores)</a>
 </li>
@@ -256,6 +275,8 @@
 </li>
       <li><a href="module_docs/oa/openai_specs.html#oa.openai_specs.get_openapi_spec_dict">get_openapi_spec_dict() (in module oa.openai_specs)</a>
 </li>
+      <li><a href="module_docs/oa/examples/aesop_fables.html#oa.examples.aesop_fables.get_original_stories">get_original_stories() (in module oa.examples.aesop_fables)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/oa/batches.html#oa.batches.get_output_file_data">get_output_file_data() (in module oa.batches)</a>
@@ -270,21 +291,35 @@
 </li>
       <li><a href="module_docs/oa/chats.html#oa.chats.get_rendered_html_async">get_rendered_html_async() (in module oa.chats)</a>
 </li>
+      <li><a href="module_docs/oa/batch_embeddings.html#oa.batch_embeddings.EmbeddingsBatchProcess.get_status_summary">get_status_summary() (oa.batch_embeddings.EmbeddingsBatchProcess method)</a>
+</li>
   </ul></td>
 </tr></table>
 
 <h2 id="I">I</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="module_docs/oa/tools.html#oa.tools.infer_schema_from_verbal_description">infer_schema_from_verbal_description() (in module oa.tools)</a>
+</li>
       <li><a href="module_docs/oa/oa_types.html#oa.oa_types.InputDataJsonL">InputDataJsonL (in module oa.oa_types)</a>
 </li>
       <li><a href="module_docs/oa/oa_types.html#oa.oa_types.InputText">InputText (class in oa.oa_types)</a>
 </li>
+      <li><a href="module_docs/oa/batch_embeddings.html#oa.batch_embeddings.EmbeddingsBatchProcess.is_complete">is_complete (oa.batch_embeddings.EmbeddingsBatchProcess property)</a>
+</li>
+      <li><a href="module_docs/oa/batch_embeddings.html#oa.batch_embeddings.ProcessingMall.is_complete">is_complete() (oa.batch_embeddings.ProcessingMall method)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="module_docs/oa/batch_embeddings.html#oa.batch_embeddings.EmbeddingsBatchProcess.is_running">is_running (oa.batch_embeddings.EmbeddingsBatchProcess property)</a>
+</li>
+      <li><a href="module_docs/oa/batch_embeddings.html#oa.batch_embeddings.BatchStatus.is_success">is_success() (oa.batch_embeddings.BatchStatus class method)</a>
+</li>
       <li><a href="module_docs/oa/stores.html#oa.stores.is_task_dict">is_task_dict() (in module oa.stores)</a>
 </li>
       <li><a href="module_docs/oa/stores.html#oa.stores.is_task_dict_list">is_task_dict_list() (in module oa.stores)</a>
+</li>
+      <li><a href="module_docs/oa/batch_embeddings.html#oa.batch_embeddings.BatchStatus.is_terminal">is_terminal() (oa.batch_embeddings.BatchStatus class method)</a>
 </li>
       <li><a href="module_docs/oa/util.html#oa.util.iso_date_to_utc_int">iso_date_to_utc_int() (in module oa.util)</a>
 </li>
@@ -388,9 +423,15 @@
 </li>
         <li><a href="module_docs/oa/base.html#module-oa.base">oa.base</a>
 </li>
+        <li><a href="module_docs/oa/batch_embeddings.html#module-oa.batch_embeddings">oa.batch_embeddings</a>
+</li>
         <li><a href="module_docs/oa/batches.html#module-oa.batches">oa.batches</a>
 </li>
         <li><a href="module_docs/oa/chats.html#module-oa.chats">oa.chats</a>
+</li>
+        <li><a href="module_docs/oa/examples/aesop_fables.html#module-oa.examples.aesop_fables">oa.examples.aesop_fables</a>
+</li>
+        <li><a href="module_docs/oa/examples/batch_embeddings_examples.html#module-oa.examples.batch_embeddings_examples">oa.examples.batch_embeddings_examples</a>
 </li>
         <li><a href="module_docs/oa/examples/illustrate_stories.html#module-oa.examples.illustrate_stories">oa.examples.illustrate_stories</a>
 </li>
@@ -407,6 +448,8 @@
         <li><a href="module_docs/oa/vector_stores.html#module-oa.vector_stores">oa.vector_stores</a>
 </li>
       </ul></li>
+      <li><a href="module_docs/oa/batch_embeddings.html#oa.batch_embeddings.EmbeddingsBatchProcess.monitor_batches">monitor_batches() (oa.batch_embeddings.EmbeddingsBatchProcess method)</a>
+</li>
       <li><a href="module_docs/oa/stores.html#oa.stores.MutuableMappingHooks">MutuableMappingHooks (class in oa.stores)</a>
 </li>
   </ul></td>
@@ -415,6 +458,8 @@
 <h2 id="N">N</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="module_docs/oa/examples/batch_embeddings_examples.html#oa.examples.batch_embeddings_examples.non_blocking_example">non_blocking_example() (in module oa.examples.batch_embeddings_examples)</a>
+</li>
       <li><a href="module_docs/oa/base.html#oa.base.normalize_text_input">normalize_text_input() (in module oa.base)</a>
 </li>
   </ul></td>
@@ -472,6 +517,13 @@
 </li>
       </ul></li>
       <li>
+    oa.batch_embeddings
+
+      <ul>
+        <li><a href="module_docs/oa/batch_embeddings.html#module-oa.batch_embeddings">module</a>
+</li>
+      </ul></li>
+      <li>
     oa.batches
 
       <ul>
@@ -483,6 +535,20 @@
 
       <ul>
         <li><a href="module_docs/oa/chats.html#module-oa.chats">module</a>
+</li>
+      </ul></li>
+      <li>
+    oa.examples.aesop_fables
+
+      <ul>
+        <li><a href="module_docs/oa/examples/aesop_fables.html#module-oa.examples.aesop_fables">module</a>
+</li>
+      </ul></li>
+      <li>
+    oa.examples.batch_embeddings_examples
+
+      <ul>
+        <li><a href="module_docs/oa/examples/batch_embeddings_examples.html#module-oa.examples.batch_embeddings_examples">module</a>
 </li>
       </ul></li>
       <li>
@@ -499,6 +565,8 @@
         <li><a href="module_docs/oa/oa_types.html#module-oa.oa_types">module</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     oa.openai_specs
 
@@ -506,8 +574,6 @@
         <li><a href="module_docs/oa/openai_specs.html#module-oa.openai_specs">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     oa.stores
 
@@ -572,6 +638,8 @@
 <h2 id="P">P</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="module_docs/oa/examples/batch_embeddings_examples.html#oa.examples.batch_embeddings_examples.pandas_example">pandas_example() (in module oa.examples.batch_embeddings_examples)</a>
+</li>
       <li><a href="module_docs/oa/chats.html#oa.chats.parse_chat_html">parse_chat_html() (in module oa.chats)</a>
 </li>
       <li><a href="module_docs/oa/_resources.html#oa._resources.parse_pricing_page">parse_pricing_page() (in module oa._resources)</a>
@@ -597,6 +665,8 @@
       <li><a href="module_docs/oa/util.html#oa.util.ProcessingManager.process_items">process_items() (oa.util.ProcessingManager method)</a>
 </li>
       <li><a href="module_docs/oa/util.html#oa.util.ProcessingManager.process_pending_items">process_pending_items() (oa.util.ProcessingManager method)</a>
+</li>
+      <li><a href="module_docs/oa/batch_embeddings.html#oa.batch_embeddings.ProcessingMall">ProcessingMall (class in oa.batch_embeddings)</a>
 </li>
       <li><a href="module_docs/oa/util.html#oa.util.ProcessingManager">ProcessingManager (class in oa.util)</a>
 </li>
@@ -626,10 +696,10 @@
 </li>
       <li><a href="module_docs/oa/chats.html#oa.chats.remove_utm_source">remove_utm_source() (in module oa.chats)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/oa/oa_types.html#oa.oa_types.RequestResponse">RequestResponse (class in oa.oa_types)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/oa/_resources.html#oa._resources.Resources">Resources (class in oa._resources)</a>
 </li>
       <li><a href="module_docs/oa/oa_types.html#id2">Response (class in oa.oa_types)</a>, <a href="module_docs/oa/oa_types.html#oa.oa_types.Response">[1]</a>
@@ -637,6 +707,12 @@
       <li><a href="module_docs/oa/oa_types.html#oa.oa_types.ResponseBody">ResponseBody (class in oa.oa_types)</a>
 </li>
       <li><a href="module_docs/oa/stores.html#oa.stores.ResponseDict">ResponseDict (class in oa.stores)</a>
+</li>
+      <li><a href="module_docs/oa/batch_embeddings.html#oa.batch_embeddings.EmbeddingsBatchProcess.result">result (oa.batch_embeddings.EmbeddingsBatchProcess property)</a>
+</li>
+      <li><a href="module_docs/oa/examples/aesop_fables.html#oa.examples.aesop_fables.rm_extension">rm_extension() (in module oa.examples.aesop_fables)</a>
+</li>
+      <li><a href="module_docs/oa/batch_embeddings.html#oa.batch_embeddings.EmbeddingsBatchProcess.run">run() (oa.batch_embeddings.EmbeddingsBatchProcess method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -652,15 +728,19 @@
 </li>
       <li><a href="module_docs/oa/openai_specs.html#oa.openai_specs.schema_to_docs">schema_to_docs() (in module oa.openai_specs)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/oa/openai_specs.html#oa.openai_specs.schema_to_rst_argument_descriptions">schema_to_rst_argument_descriptions() (in module oa.openai_specs)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/oa/openai_specs.html#oa.openai_specs.schema_to_signature">schema_to_signature() (in module oa.openai_specs)</a>
+</li>
+      <li><a href="module_docs/oa/examples/batch_embeddings_examples.html#oa.examples.batch_embeddings_examples.simple_example">simple_example() (in module oa.examples.batch_embeddings_examples)</a>
 </li>
       <li><a href="module_docs/oa/util.html#oa.util.source_parameter_props_from">source_parameter_props_from() (in module oa.util)</a>
 </li>
       <li><a href="module_docs/oa/util.html#oa.util.ProcessingManager.status">status (oa.util.ProcessingManager property)</a>
+</li>
+      <li><a href="module_docs/oa/batch_embeddings.html#oa.batch_embeddings.EmbeddingsBatchProcess.submit_batches">submit_batches() (oa.batch_embeddings.EmbeddingsBatchProcess method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -701,6 +781,14 @@
   </ul></td>
 </tr></table>
 
+<h2 id="W">W</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="module_docs/oa/batch_embeddings.html#oa.batch_embeddings.ProcessingMall.with_folder">with_folder() (oa.batch_embeddings.ProcessingMall class method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
 
 
            </div>
@@ -710,7 +798,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright NO COPYRIGHT.</p>
+    <p></p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

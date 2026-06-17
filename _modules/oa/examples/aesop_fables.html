@@ -1,0 +1,551 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>oa.examples.aesop_fables &mdash; oa 0.1.49 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=1190fe33"></script>
+      <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            oa
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/oa.html">oa</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/oa/_params.html">oa._params</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/oa/_resources.html">oa._resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/oa/ask.html">oa.ask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/oa/audio.html">oa.audio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/oa/base.html">oa.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/oa/batch_embeddings.html">oa.batch_embeddings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/oa/batches.html">oa.batches</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/oa/chats.html">oa.chats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/oa/examples/aesop_fables.html">oa.examples.aesop_fables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/oa/examples/batch_embeddings_examples.html">oa.examples.batch_embeddings_examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/oa/examples/illustrate_stories.html">oa.examples.illustrate_stories</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/oa/oa_types.html">oa.oa_types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/oa/openai_specs.html">oa.openai_specs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/oa/stores.html">oa.stores</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/oa/tools.html">oa.tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/oa/util.html">oa.util</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/oa/vector_stores.html">oa.vector_stores</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">oa</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">oa.examples.aesop_fables</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for oa.examples.aesop_fables</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Making a children book containing rhyming stories of aesop fables,</span>
+<span class="sd">illustrated using different styles of images, taking art movements and</span>
+<span class="sd">famous artists as styles.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">MutableMapping</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">io</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">itertools</span><span class="w"> </span><span class="kn">import</span> <span class="n">cycle</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tabled</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_tables_from_url</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dol</span><span class="w"> </span><span class="kn">import</span> <span class="n">Files</span><span class="p">,</span> <span class="n">TextFiles</span><span class="p">,</span> <span class="n">wrap_kvs</span>
+
+
+<span class="c1"># --------------------------------------------------------------------------------------</span>
+<span class="c1"># Stores</span>
+<span class="c1"># Here, we&#39;ll use `dol` to make some &quot;stores&quot; -- that is, a `MutableMapping` facade to</span>
+<span class="c1"># where we&#39;ll store stuff (our fables text, rhyming stories, illustration urls,</span>
+<span class="c1"># images...).</span>
+<span class="c1"># We&#39;ll store things in local files here, but we can change this to use S3, DBs, etc.</span>
+<span class="c1"># simply by changing the backend of the facade.</span>
+<div class="viewcode-block" id="rm_extension">
+<a class="viewcode-back" href="../../../module_docs/oa/examples/aesop_fables.html#oa.examples.aesop_fables.rm_extension">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">rm_extension</span><span class="p">(</span><span class="n">ext</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Make a key transformer that removes the given extension from keys&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">ext</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">):</span>
+        <span class="n">ext</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span> <span class="o">+</span> <span class="n">ext</span>
+    <span class="k">return</span> <span class="n">wrap_kvs</span><span class="p">(</span><span class="n">id_of_key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">+</span> <span class="n">ext</span><span class="p">,</span> <span class="n">key_of_id</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[:</span> <span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">ext</span><span class="p">)])</span></div>
+
+
+
+<span class="n">Texts</span> <span class="o">=</span> <span class="n">rm_extension</span><span class="p">(</span><span class="s2">&quot;txt&quot;</span><span class="p">)(</span><span class="n">TextFiles</span><span class="p">)</span>
+<span class="n">Images</span> <span class="o">=</span> <span class="n">rm_extension</span><span class="p">(</span><span class="s2">&quot;jpg&quot;</span><span class="p">)(</span><span class="n">Files</span><span class="p">)</span>
+<span class="n">Htmls</span> <span class="o">=</span> <span class="n">rm_extension</span><span class="p">(</span><span class="s2">&quot;html&quot;</span><span class="p">)(</span><span class="n">TextFiles</span><span class="p">)</span>
+
+<span class="c1"># --------------------------------------------------------------------------------------</span>
+
+
+<span class="n">root_url</span> <span class="o">=</span> <span class="s2">&quot;https://aesopfables.com/&quot;</span>
+<span class="n">url</span> <span class="o">=</span> <span class="n">root_url</span> <span class="o">+</span> <span class="s2">&quot;aesopsel.html&quot;</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">url_to_bytes</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span><span class="o">.</span><span class="n">content</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_clean_up_fable_table</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+    <span class="n">t</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;fable&quot;</span><span class="p">,</span> <span class="s2">&quot;moral&quot;</span><span class="p">]</span>
+    <span class="n">t</span><span class="p">[</span><span class="s2">&quot;moral&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">t</span><span class="p">[</span><span class="s2">&quot;moral&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+    <span class="n">t</span><span class="p">[</span><span class="s2">&quot;moral&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">t</span><span class="p">[</span><span class="s2">&quot;moral&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="n">x</span><span class="p">)</span>
+    <span class="n">t</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">],</span> <span class="n">t</span><span class="p">[</span><span class="s2">&quot;rel_url&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">t</span><span class="p">[</span><span class="s2">&quot;fable&quot;</span><span class="p">])</span>
+    <span class="n">t</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">t</span><span class="p">[</span><span class="s2">&quot;rel_url&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">root_url</span> <span class="o">+</span> <span class="n">x</span><span class="p">)</span>
+    <span class="k">del</span> <span class="n">t</span><span class="p">[</span><span class="s2">&quot;fable&quot;</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">t</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">get_fable_table</span><span class="p">(</span><span class="n">files</span><span class="p">):</span>
+    <span class="k">if</span> <span class="s2">&quot;fables.csv&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">get_tables_from_url</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">extract_links</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">_clean_up_fable_table</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+        <span class="n">files</span><span class="p">[</span><span class="s2">&quot;fables.csv&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">io</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">(</span><span class="n">files</span><span class="p">[</span><span class="s2">&quot;fables.csv&quot;</span><span class="p">]))</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">get_title_and_urls</span><span class="p">(</span><span class="n">fable_table</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">fable_table</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">],</span> <span class="n">fable_table</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">]))</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">get_original_story</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">bs4</span><span class="w"> </span><span class="kn">import</span> <span class="n">BeautifulSoup</span>
+
+    <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">soup</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;pre&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+
+<span class="c1"># TODO: Make decorators for launch_iteration, print_progress, and overwrite concerns.</span>
+
+
+<div class="viewcode-block" id="get_original_stories">
+<a class="viewcode-back" href="../../../module_docs/oa/examples/aesop_fables.html#oa.examples.aesop_fables.get_original_stories">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_original_stories</span><span class="p">(</span>
+    <span class="n">title_and_urls</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">,</span>
+    <span class="n">original_stories</span><span class="p">:</span> <span class="n">MutableMapping</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">launch_iteration</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">print_progress</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">overwrite</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Extract and store the text of each fable in the fable table&quot;&quot;&quot;</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">title_and_urls</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">run_process</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">title_and_urls</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">print_progress</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">title</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">overwrite</span> <span class="ow">or</span> <span class="n">title</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">original_stories</span><span class="p">:</span>
+                <span class="n">original_story</span> <span class="o">=</span> <span class="n">get_original_story</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+                <span class="n">original_stories</span><span class="p">[</span><span class="n">title</span><span class="p">]</span> <span class="o">=</span> <span class="n">original_story</span>
+
+    <span class="k">if</span> <span class="n">launch_iteration</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">run_process</span><span class="p">():</span>
+            <span class="k">pass</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">run_process</span></div>
+
+
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">oa.examples.illustrate_stories</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ii</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">get_rhyming_stories</span><span class="p">(</span>
+    <span class="n">original_stories</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">rhyming_stories</span><span class="p">:</span> <span class="n">MutableMapping</span><span class="p">,</span>
+    <span class="n">launch_iteration</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">overwrite</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">print_progress</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">original_stories</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">run_process</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">original_story</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">original_stories</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">print_progress</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">title</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">overwrite</span> <span class="ow">or</span> <span class="n">title</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">rhyming_stories</span><span class="p">:</span>
+                <span class="n">original_story</span> <span class="o">=</span> <span class="n">original_stories</span><span class="p">[</span><span class="n">title</span><span class="p">]</span>
+                <span class="n">rhyming_story</span> <span class="o">=</span> <span class="n">ii</span><span class="o">.</span><span class="n">make_it_rhyming</span><span class="p">(</span><span class="n">original_story</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+                <span class="n">rhyming_stories</span><span class="p">[</span><span class="n">title</span><span class="p">]</span> <span class="o">=</span> <span class="n">rhyming_story</span>
+
+    <span class="k">if</span> <span class="n">launch_iteration</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">run_process</span><span class="p">():</span>
+            <span class="k">pass</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">run_process</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">get_image_descriptions</span><span class="p">(</span>
+    <span class="n">stories</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">image_descriptions</span><span class="p">:</span> <span class="n">MutableMapping</span><span class="p">,</span>
+    <span class="n">image_styles</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;children&#39;s book drawing&quot;</span><span class="p">,),</span>
+    <span class="n">launch_iteration</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">overwrite</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">print_progress</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="n">_image_styles</span> <span class="o">=</span> <span class="n">cycle</span><span class="p">(</span><span class="n">image_styles</span><span class="p">)</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">stories</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">run_process</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">story</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">stories</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">image_style</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">_image_styles</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">print_progress</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">title</span><span class="si">=}</span><span class="s2">, </span><span class="si">{</span><span class="n">image_style</span><span class="si">=}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">overwrite</span> <span class="ow">or</span> <span class="n">title</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">image_descriptions</span><span class="p">:</span>
+                <span class="n">image_description</span> <span class="o">=</span> <span class="n">ii</span><span class="o">.</span><span class="n">get_image_description</span><span class="p">(</span>
+                    <span class="n">story</span><span class="p">,</span> <span class="n">image_style</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+                <span class="p">)</span>
+                <span class="n">image_descriptions</span><span class="p">[</span><span class="n">title</span><span class="p">]</span> <span class="o">=</span> <span class="n">image_description</span>
+            <span class="k">yield</span>
+
+    <span class="k">if</span> <span class="n">launch_iteration</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">run_process</span><span class="p">():</span>
+            <span class="k">pass</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">run_process</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">get_images</span><span class="p">(</span>
+    <span class="n">image_descriptions</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">,</span>
+    <span class="n">images</span><span class="p">:</span> <span class="n">MutableMapping</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">image_urls</span><span class="p">:</span> <span class="n">Mapping</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">image_styles</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;children&#39;s book drawing&quot;</span><span class="p">,),</span>
+    <span class="n">launch_iteration</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">overwrite</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">print_progress</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">image_descriptions</span><span class="p">)</span>
+    <span class="n">_image_styles</span> <span class="o">=</span> <span class="n">cycle</span><span class="p">(</span><span class="n">image_styles</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">run_process</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">image_description</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">image_descriptions</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">image_style</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">_image_styles</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">overwrite</span> <span class="ow">or</span> <span class="n">title</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">images</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">print_progress</span><span class="p">:</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">title</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                    <span class="n">image_url</span> <span class="o">=</span> <span class="n">ii</span><span class="o">.</span><span class="n">get_image_url</span><span class="p">(</span>
+                        <span class="n">image_description</span><span class="p">,</span> <span class="n">image_style</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+                    <span class="p">)</span>
+                    <span class="k">if</span> <span class="n">image_urls</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="n">image_urls</span><span class="p">[</span><span class="n">title</span><span class="p">]</span> <span class="o">=</span> <span class="n">image_url</span>
+                    <span class="n">images</span><span class="p">[</span><span class="n">title</span><span class="p">]</span> <span class="o">=</span> <span class="n">url_to_bytes</span><span class="p">(</span><span class="n">image_url</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;The description or url for </span><span class="si">{</span><span class="n">title</span><span class="si">}</span><span class="s2"> lead to the error </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">. &quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;Description:</span><span class="se">\n\n</span><span class="si">{</span><span class="n">image_description</span><span class="si">}</span><span class="se">\n\n\n</span><span class="s2">&quot;</span>
+                    <span class="p">)</span>
+            <span class="k">yield</span>
+
+    <span class="k">if</span> <span class="n">launch_iteration</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">run_process</span><span class="p">():</span>
+            <span class="k">pass</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">run_process</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">store_stats</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">original_stories</span><span class="p">,</span> <span class="n">rhyming_stories</span><span class="p">,</span> <span class="n">image_descriptions</span><span class="p">,</span> <span class="n">image_urls</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">original_stories</span><span class="p">)</span><span class="si">=}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">rhyming_stories</span><span class="p">)</span><span class="si">=}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">image_descriptions</span><span class="p">)</span><span class="si">=}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">image_urls</span><span class="p">)</span><span class="si">=}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">missing_rhyming_stories</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">original_stories</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">rhyming_stories</span><span class="p">)</span>
+    <span class="n">missing_descriptions</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">rhyming_stories</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">image_descriptions</span><span class="p">)</span>
+    <span class="n">missing_urls</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">image_descriptions</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">image_urls</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">missing_rhyming_stories</span><span class="p">)</span><span class="si">=}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">missing_descriptions</span><span class="p">)</span><span class="si">=}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">missing_urls</span><span class="p">)</span><span class="si">=}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">mk_pages_store</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">rhyming_stories</span><span class="p">,</span> <span class="n">image_urls</span><span class="p">,</span> <span class="n">ipython_display</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">dol</span><span class="w"> </span><span class="kn">import</span> <span class="n">wrap_kvs</span><span class="p">,</span> <span class="n">add_ipython_key_completions</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">dol.sources</span><span class="w"> </span><span class="kn">import</span> <span class="n">FanoutReader</span>
+
+    <span class="n">fanout_store</span> <span class="o">=</span> <span class="n">add_ipython_key_completions</span><span class="p">(</span>
+        <span class="n">FanoutReader</span><span class="p">(</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;rhyming_stories&quot;</span><span class="p">:</span> <span class="n">rhyming_stories</span><span class="p">,</span>
+                <span class="s2">&quot;image_urls&quot;</span><span class="p">:</span> <span class="n">image_urls</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="n">keys</span><span class="o">=</span><span class="n">image_urls</span><span class="p">,</span>  <span class="c1"># take keys from image_urls</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+
+    <span class="n">s</span> <span class="o">=</span> <span class="n">wrap_kvs</span><span class="p">(</span>
+        <span class="n">fanout_store</span><span class="p">,</span>
+        <span class="n">obj_of_data</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">ii</span><span class="o">.</span><span class="n">aggregate_story_and_image</span><span class="p">(</span>
+            <span class="n">image_url</span><span class="o">=</span><span class="n">x</span><span class="p">[</span><span class="s2">&quot;image_urls&quot;</span><span class="p">],</span> <span class="n">story_text</span><span class="o">=</span><span class="n">x</span><span class="p">[</span><span class="s2">&quot;rhyming_stories&quot;</span><span class="p">]</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="n">ipython_display</span><span class="p">:</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">HTML</span>
+
+        <span class="n">s</span> <span class="o">=</span> <span class="n">wrap_kvs</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">obj_of_data</span><span class="o">=</span><span class="n">HTML</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">s</span>
+
+
+<span class="c1"># --------------------------------------------------------------------------------------</span>
+<span class="c1"># Resources</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">get_top100_artists</span><span class="p">():</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">operator</span><span class="w"> </span><span class="kn">import</span> <span class="n">attrgetter</span><span class="p">,</span> <span class="n">itemgetter</span><span class="p">,</span> <span class="n">methodcaller</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">bs4</span><span class="w"> </span><span class="kn">import</span> <span class="n">BeautifulSoup</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">dol</span><span class="w"> </span><span class="kn">import</span> <span class="n">Pipe</span>
+
+    <span class="n">get_soup</span> <span class="o">=</span> <span class="n">Pipe</span><span class="p">(</span><span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">,</span> <span class="n">attrgetter</span><span class="p">(</span><span class="s2">&quot;content&quot;</span><span class="p">),</span> <span class="n">BeautifulSoup</span><span class="p">)</span>
+
+    <span class="n">soup</span> <span class="o">=</span> <span class="n">get_soup</span><span class="p">(</span><span class="s2">&quot;https://www.art-prints-on-demand.com/a/artists-painters.html&quot;</span><span class="p">)</span>
+    <span class="n">soup2</span> <span class="o">=</span> <span class="n">get_soup</span><span class="p">(</span>
+        <span class="s2">&quot;https://www.art-prints-on-demand.com/a/artists-painters.html&amp;mpos=999&amp;ALL_ABC=1&quot;</span>
+    <span class="p">)</span>
+    <span class="c1"># extract artists</span>
+    <span class="n">get_title</span> <span class="o">=</span> <span class="n">Pipe</span><span class="p">(</span><span class="n">methodcaller</span><span class="p">(</span><span class="s2">&quot;find&quot;</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">),</span> <span class="n">itemgetter</span><span class="p">(</span><span class="s2">&quot;title&quot;</span><span class="p">))</span>
+    <span class="n">t1</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
+        <span class="nb">map</span><span class="p">(</span><span class="n">get_title</span><span class="p">,</span> <span class="n">soup</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s2">&quot;div&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;class&quot;</span><span class="p">:</span> <span class="s2">&quot;kk_category_pic&quot;</span><span class="p">}))</span>
+    <span class="p">)</span>  <span class="c1"># 30 top</span>
+    <span class="n">t2</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
+        <span class="nb">map</span><span class="p">(</span><span class="n">get_title</span><span class="p">,</span> <span class="n">soup2</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s2">&quot;div&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;class&quot;</span><span class="p">:</span> <span class="s2">&quot;kk_category_pic&quot;</span><span class="p">}))</span>
+    <span class="p">)</span>  <span class="c1"># 100 top</span>
+    <span class="c1"># merge both lists leaving the top 30 at the top, to favor them</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">t1</span> <span class="o">+</span> <span class="n">t2</span>
+    <span class="n">top_artists</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="k">if</span> <span class="n">x</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="n">t</span><span class="p">)[:</span><span class="n">i</span><span class="p">]]</span>
+    <span class="k">return</span> <span class="n">top_artists</span>
+
+
+<span class="c1"># Note: Obtained from get_top100_artists()</span>
+<span class="n">top100_artists</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;Claude Monet&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Gustav Klimt&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Vincent van Gogh&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Paul Klee&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Wassily Kandinsky&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Franz Marc&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Caspar David Friedrich&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;August Macke&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Egon Schiele&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Pierre-Auguste Renoir&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;William Turner&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Leonardo da Vinci&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Johannes Vermeer&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Albrecht Dürer&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Carl Spitzweg&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Alphonse Mucha&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Catrin Welz-Stein&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Max Liebermann&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Paul Cézanne&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Rembrandt van Rijn&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Paul Gauguin&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;(Raphael) Raffaello Sanzio&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Amadeo Modigliani&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Sandro Botticelli&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Edvard Munch&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Pierre Joseph Redouté&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Michelangelo Caravaggio&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Ernst Ludwig Kirchner&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Piet Mondrian&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Pablo Picasso&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Katsushika Hokusai&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Hieronymus Bosch&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Timothy  Easton&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Paula Modersohn-Becker&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Edgar Degas&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Michelangelo (Buonarroti)&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Salvador Dali&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Gustave Caillebotte&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Pieter Brueghel the Elder&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Ferdinand Hodler&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Joan Miró&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;John William Waterhouse&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Peter Severin Kroyer&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Peter Paul Rubens&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Peter  Graham&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Henri de Toulouse-Lautrec&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Camille Pissarro&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Edouard Manet&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Joaquin Sorolla&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Sara Catena&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Henri Julien-Félix Rousseau&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Gustave Courbet&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Jack Vettriano&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Felix Vallotton&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;All catalogs&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Arnold Böcklin&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Alexej von Jawlensky&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Kazimir Severinovich Malewitsch&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Odilon Redon&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Jean-Étienne Liotard&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Giovanni Segantini&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Azure&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Oskar Schlemmer&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Carl Larsson&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Francisco José de Goya&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Artist Artist&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;François Boucher&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Mark Rothko&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Susett Heise&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Alfred Sisley&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Giovanni Antonio Canal (Canaletto)&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Jean-François Millet&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Giuseppe Arcimboldo&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Iwan Konstantinowitsch Aiwasowski&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Catherine  Abel&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Edward Hopper&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Mark  Adlington&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Jean Honoré Fragonard&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Lucy Willis&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Jacques Louis David&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Pavel van Golod&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;M.c. Escher&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Pierre Bonnard&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Ferdinand Victor Eugène Delacroix&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Carel Fabritius&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Franz von Stuck&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;John Constable&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;László Moholy-Nagy&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Lincoln  Seligman&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;William Adolphe Bouguereau&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Adolph Friedrich Erdmann von Menzel&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Petra Schüßler&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Pompei, wall painting&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Unbekannter Künstler&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Ando oder Utagawa Hiroshige&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Marc Chagall&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Zita Rauschgold&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;William  Ireland&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Bernardo Bellotto&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Hermann Angeli&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="c1"># Note: Reference: https://magazine.artland.com/art-movements-and-styles/</span>
+<span class="n">art_movements</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;Abstract Expressionism</span>
+<span class="s2">Art Deco</span>
+<span class="s2">Art Nouveau</span>
+<span class="s2">Avant-garde</span>
+<span class="s2">Baroque</span>
+<span class="s2">Bauhaus</span>
+<span class="s2">Classicism</span>
+<span class="s2">CoBrA</span>
+<span class="s2">Color Field Painting</span>
+<span class="s2">Conceptual Art</span>
+<span class="s2">Constructivism</span>
+<span class="s2">Cubism</span>
+<span class="s2">Dada / Dadaism</span>
+<span class="s2">Digital Art</span>
+<span class="s2">Expressionism</span>
+<span class="s2">Fauvism</span>
+<span class="s2">Futurism</span>
+<span class="s2">Harlem Renaissance</span>
+<span class="s2">Impressionism</span>
+<span class="s2">Installation Art</span>
+<span class="s2">Land Art</span>
+<span class="s2">Minimalism</span>
+<span class="s2">Neo-Impressionism</span>
+<span class="s2">Neoclassicism</span>
+<span class="s2">Neon Art</span>
+<span class="s2">Op Art</span>
+<span class="s2">Performance Art</span>
+<span class="s2">Pop Art</span>
+<span class="s2">Post-Impressionism</span>
+<span class="s2">Precisionism</span>
+<span class="s2">Rococo</span>
+<span class="s2">Street Art</span>
+<span class="s2">Surrealism</span>
+<span class="s2">Suprematism</span>
+<span class="s2">Symbolism</span>
+<span class="s2">Zero Group&quot;&quot;&quot;</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>
+
+<span class="n">styles_of_art</span> <span class="o">=</span> <span class="n">art_movements</span> <span class="o">+</span> <span class="n">top100_artists</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

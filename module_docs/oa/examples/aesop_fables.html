@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>oa.examples.aesop_fables &mdash; oa 0.1.48 documentation</title>
+  <title>oa.examples.aesop_fables &mdash; oa 0.1.49 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
@@ -15,7 +15,7 @@
   
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../_static/documentation_options.js?v=b5e87a2a"></script>
+      <script src="../../../_static/documentation_options.js?v=1190fe33"></script>
       <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -58,7 +58,11 @@
 <li class="toctree-l1"><a class="reference internal" href="../batch_embeddings.html">oa.batch_embeddings</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../batches.html">oa.batches</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chats.html">oa.chats</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">oa.examples.aesop_fables</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">oa.examples.aesop_fables</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#oa.examples.aesop_fables.get_original_stories"><code class="docutils literal notranslate"><span class="pre">get_original_stories()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#oa.examples.aesop_fables.rm_extension"><code class="docutils literal notranslate"><span class="pre">rm_extension()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="batch_embeddings_examples.html">oa.examples.batch_embeddings_examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="illustrate_stories.html">oa.examples.illustrate_stories</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../oa_types.html">oa.oa_types</a></li>
@@ -93,8 +97,23 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="oa-examples-aesop-fables">
-<h1>oa.examples.aesop_fables<a class="headerlink" href="#oa-examples-aesop-fables" title="Link to this heading"></a></h1>
+  <section id="module-oa.examples.aesop_fables">
+<span id="oa-examples-aesop-fables"></span><h1>oa.examples.aesop_fables<a class="headerlink" href="#module-oa.examples.aesop_fables" title="Link to this heading"></a></h1>
+<p>Making a children book containing rhyming stories of aesop fables,
+illustrated using different styles of images, taking art movements and
+famous artists as styles.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="oa.examples.aesop_fables.get_original_stories">
+<span class="sig-prename descclassname"><span class="pre">oa.examples.aesop_fables.</span></span><span class="sig-name descname"><span class="pre">get_original_stories</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">title_and_urls</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Mapping</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">original_stories</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">MutableMapping</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">launch_iteration</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">print_progress</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overwrite</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/oa/examples/aesop_fables.html#get_original_stories"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oa.examples.aesop_fables.get_original_stories" title="Link to this definition"></a></dt>
+<dd><p>Extract and store the text of each fable in the fable table</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="oa.examples.aesop_fables.rm_extension">
+<span class="sig-prename descclassname"><span class="pre">oa.examples.aesop_fables.</span></span><span class="sig-name descname"><span class="pre">rm_extension</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ext</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/oa/examples/aesop_fables.html#rm_extension"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oa.examples.aesop_fables.rm_extension" title="Link to this definition"></a></dt>
+<dd><p>Make a key transformer that removes the given extension from keys</p>
+</dd></dl>
+
 </section>
 
 
@@ -108,7 +127,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright NO COPYRIGHT.</p>
+    <p></p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
