@@ -516,13 +516,40 @@ def prompt_json_function(
     return func
 
 
-def infer_schema_from_verbal_description(verbal_description: str):
+def infer_schema_from_verbal_description(
+    verbal_description: str,
+    *,
+    prompt_func=chat,
+    prompt_func_kwargs=None,
+    model="gpt-4o-mini",
+):
+    """Infer a JSON Schema (``{name, properties, type}``) from a verbal description.
+
+    The LLM backend is **injectable** so this is not hardwired to OpenAI: pass any
+    ``prompt_func`` with the ``(prompt, **kwargs) -> str`` shape (e.g. a
+    provider-agnostic ``aix.chat``) to route the inference through a different
+    provider, optionally pinning ``model`` / extra ``prompt_func_kwargs``. The
+    defaults preserve the original behavior (oa's ``chat`` on ``gpt-4o-mini``).
+
+    Args:
+        verbal_description: Natural-language description of the desired JSON output.
+        prompt_func: The LLM callable to use (default: oa's ``chat``). Forwarded to
+            :func:`prompt_json_function`.
+        prompt_func_kwargs: Extra keyword arguments merged into the ``prompt_func``
+            call (e.g. provider options).
+        model: Model id passed to ``prompt_func`` (pass ``None`` to let an
+            ``aix``-style backend resolve its own configured default).
+
+    Returns:
+        A ``dict`` with at least ``name`` and ``properties`` keys (the inferred
+        JSON Schema, formatted for OpenAI "JSON mode").
+    """
     template = """
-    Generate a valid JSON Schema based on the the verbal description of the desired 
-    JSON output below. 
-    The schema must be properly formatted for use with OpenAI’s Chat API 
-    in "JSON mode" and should accurately define the structure, 
-    data types, required fields, and any constraints specified by the user. 
+    Generate a valid JSON Schema based on the the verbal description of the desired
+    JSON output below.
+    The schema must be properly formatted for use with OpenAI’s Chat API
+    in "JSON mode" and should accurately define the structure,
+    data types, required fields, and any constraints specified by the user.
     Ensure correctness and completeness.
 
     Note that you need to provide not only a valid schema but also a valid name for it.
@@ -541,7 +568,13 @@ def infer_schema_from_verbal_description(verbal_description: str):
             "required": ["name", "properties"],
         },
     }
-    f = prompt_json_function(template, output_schema)
+    f = prompt_json_function(
+        template,
+        output_schema,
+        prompt_func=prompt_func,
+        prompt_func_kwargs=prompt_func_kwargs,
+        model=model,
+    )
     return f(verbal_description=verbal_description)
 
 
