@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "oa"
-version = "0.1.50"
+version = "0.1.51"
 description = "Python interface to OpenAI"
 readme = "README.md"
 requires-python = ">=3.10"
