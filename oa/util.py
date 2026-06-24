@@ -333,7 +333,34 @@ DFLT_TEMPLATES_SOURCE = get_config(
 def _extract_folder_and_suffixes(
     string: str, default_suffixes=(), *, default_folder="", root_sep=":", suffix_sep=","
 ):
+    r"""Split a ``"folder"`` or ``"folder:suffix1,suffix2"`` spec.
+
+    A leading Windows drive letter (``C:\...`` or ``C:/...``) is NOT mistaken
+    for the folder/suffixes separator (whose default is also ``":"``), so the
+    parser behaves identically on POSIX and Windows (backslash paths work too).
+
+    >>> _extract_folder_and_suffixes("/data/templates")
+    ('/data/templates', ())
+    >>> _extract_folder_and_suffixes("/data/templates:txt,md")
+    ('/data/templates', ['txt', 'md'])
+    >>> _extract_folder_and_suffixes("C:/Users/me/templates")  # drive colon protected
+    ('C:/Users/me/templates', ())
+    >>> _extract_folder_and_suffixes("C:/Users/me/templates:txt,md")
+    ('C:/Users/me/templates', ['txt', 'md'])
+    """
+    # Protect a leading drive-letter colon (``X:`` at the start, before a path
+    # separator or end-of-string) from the folder:suffixes split below.
+    drive = ""
+    if (
+        root_sep == ":"
+        and len(string) >= 2
+        and string[0].isalpha()
+        and string[1] == ":"
+        and (len(string) == 2 or string[2] in "\\/")
+    ):
+        drive, string = string[:2], string[2:]
     root_folder, *suffixes = string.split(root_sep)
+    root_folder = drive + root_folder
     if root_folder == "":
         root_folder = default_folder
     if len(suffixes) == 0:
