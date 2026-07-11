@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>oa.util &mdash; oa 0.1.50 documentation</title>
+  <title>oa.util &mdash; oa 0.1.51 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=f2b49961"></script>
+      <script src="../../_static/documentation_options.js?v=56cc1d78"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -435,7 +435,34 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">_extract_folder_and_suffixes</span><span class="p">(</span>
     <span class="n">string</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">default_suffixes</span><span class="o">=</span><span class="p">(),</span> <span class="o">*</span><span class="p">,</span> <span class="n">default_folder</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">root_sep</span><span class="o">=</span><span class="s2">&quot;:&quot;</span><span class="p">,</span> <span class="n">suffix_sep</span><span class="o">=</span><span class="s2">&quot;,&quot;</span>
 <span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Split a ``&quot;folder&quot;`` or ``&quot;folder:suffix1,suffix2&quot;`` spec.</span>
+
+<span class="sd">    A leading Windows drive letter (``C:\...`` or ``C:/...``) is NOT mistaken</span>
+<span class="sd">    for the folder/suffixes separator (whose default is also ``&quot;:&quot;``), so the</span>
+<span class="sd">    parser behaves identically on POSIX and Windows (backslash paths work too).</span>
+
+<span class="sd">    &gt;&gt;&gt; _extract_folder_and_suffixes(&quot;/data/templates&quot;)</span>
+<span class="sd">    (&#39;/data/templates&#39;, ())</span>
+<span class="sd">    &gt;&gt;&gt; _extract_folder_and_suffixes(&quot;/data/templates:txt,md&quot;)</span>
+<span class="sd">    (&#39;/data/templates&#39;, [&#39;txt&#39;, &#39;md&#39;])</span>
+<span class="sd">    &gt;&gt;&gt; _extract_folder_and_suffixes(&quot;C:/Users/me/templates&quot;)  # drive colon protected</span>
+<span class="sd">    (&#39;C:/Users/me/templates&#39;, ())</span>
+<span class="sd">    &gt;&gt;&gt; _extract_folder_and_suffixes(&quot;C:/Users/me/templates:txt,md&quot;)</span>
+<span class="sd">    (&#39;C:/Users/me/templates&#39;, [&#39;txt&#39;, &#39;md&#39;])</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Protect a leading drive-letter colon (``X:`` at the start, before a path</span>
+    <span class="c1"># separator or end-of-string) from the folder:suffixes split below.</span>
+    <span class="n">drive</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">if</span> <span class="p">(</span>
+        <span class="n">root_sep</span> <span class="o">==</span> <span class="s2">&quot;:&quot;</span>
+        <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">string</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">2</span>
+        <span class="ow">and</span> <span class="n">string</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">isalpha</span><span class="p">()</span>
+        <span class="ow">and</span> <span class="n">string</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;:&quot;</span>
+        <span class="ow">and</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">string</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">or</span> <span class="n">string</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="ow">in</span> <span class="s2">&quot;</span><span class="se">\\</span><span class="s2">/&quot;</span><span class="p">)</span>
+    <span class="p">):</span>
+        <span class="n">drive</span><span class="p">,</span> <span class="n">string</span> <span class="o">=</span> <span class="n">string</span><span class="p">[:</span><span class="mi">2</span><span class="p">],</span> <span class="n">string</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span>
     <span class="n">root_folder</span><span class="p">,</span> <span class="o">*</span><span class="n">suffixes</span> <span class="o">=</span> <span class="n">string</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">root_sep</span><span class="p">)</span>
+    <span class="n">root_folder</span> <span class="o">=</span> <span class="n">drive</span> <span class="o">+</span> <span class="n">root_folder</span>
     <span class="k">if</span> <span class="n">root_folder</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
         <span class="n">root_folder</span> <span class="o">=</span> <span class="n">default_folder</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">suffixes</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
