@@ -36,6 +36,7 @@ def remove_pattern(string, pattern_to_remove: Pattern | None = DFLT_IGNORE_PATTE
 
 
 def extract_parts(string: str, pattern: Pattern) -> NamedTuple:
+    """Split `string` into `(matched, unmatched)` lists of segments, alternating around `pattern` matches."""
     PartResult = namedtuple("PartResult", ["matched", "unmatched"])
     matched: list[str] = []
     unmatched: list[str] = []
@@ -176,6 +177,7 @@ def _template_with_double_braces_in_ignored_sections(
 def string_format_embodier(
     template, *, ignore_pattern: Pattern | None = DFLT_IGNORE_PATTERN
 ):
+    """Default `embodier` for `prompt_function`: turn a `str.format` `template` into a keyword-only function that fills it in."""
 
     names = _extract_names_from_format_string(template, ignore_pattern=ignore_pattern)
     names = tuple(dict.fromkeys(names))  # get unique names, but conserving order
@@ -316,6 +318,7 @@ from collections.abc import Mapping
 
 
 def identity(x):
+    """Return `x` unchanged."""
     return x
 
 
@@ -343,6 +346,8 @@ from enum import Enum
 
 
 class JsonTypes(Enum):
+    """Every accepted spelling (JSON Schema string or Python type) of a JSON type."""
+
     string = "string"
     number = "number"
     object = "object"

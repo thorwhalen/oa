@@ -38,12 +38,16 @@ InputDataJsonL = JsonL[InputText]
 
 
 class BatchRequestBody(BaseModel):
+    """The `body` of a batch request task: the texts to process and the target model."""
+
     input: list[str]
     model: str
 
 
 # Note: leaf model
 class BatchRequest(BaseModel):
+    """One task line of an OpenAI batch input file (a `custom_id`-tagged API call)."""
+
     custom_id: str
     method: str
     url: str
@@ -61,12 +65,16 @@ DatumT = TypeVar("DatumT")
 
 # Usage model remains the same
 class Usage(BaseModel):
+    """Token usage counters as returned alongside an OpenAI API response."""
+
     prompt_tokens: int
     total_tokens: int
 
 
 # ResponseBody is now parameterized by DatumT
 class ResponseBody(BaseModel, Generic[DatumT]):
+    """The `body` of an API response: a list of `DatumT` items plus usage info."""
+
     object: str
     data: list[DatumT]  # Generic list of DatumT
     model: str
@@ -74,12 +82,16 @@ class ResponseBody(BaseModel, Generic[DatumT]):
 
 
 class RequestResponse(BaseModel, Generic[DatumT]):
+    """The HTTP-level wrapper around a `ResponseBody[DatumT]`: status code and request id."""
+
     status_code: int = Field(..., ge=100, le=599)
     request_id: str
     body: ResponseBody[DatumT]
 
 
 class Response(BaseModel, Generic[DatumT]):
+    """One line of an OpenAI batch output file: a `custom_id`-tagged `RequestResponse[DatumT]` or `error`."""
+
     id: str
     custom_id: str
     response: RequestResponse[DatumT]
@@ -96,6 +108,7 @@ EmbeddingResponse.__name__ = "EmbeddingResponse"
 
 
 def heatmap_of_models_and_their_fields():
+    """Plot a heatmap of which fields each pydantic model in `openai.types` has (requires `oplot`)."""
     import pandas as pd  # pylint: disable=import-outside-toplevel
     from oplot.matrix import heatmap_sns  # pylint: disable=import-outside-toplevel
 

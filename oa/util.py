@@ -79,6 +79,7 @@ config_sources = [
 
 
 def kv_strip_value(k, v):
+    """Return `v.strip()`, ignoring `k` (an egress function for `config_getter`)."""
     return v.strip()
 
 
@@ -260,6 +261,11 @@ model_information_dict = dict(
 # Have a particular way to get this api key
 @lru_cache
 def get_api_key_from_config():
+    """Get the OpenAI API key, checked in order from `oa`'s config, the environment, then user input.
+
+    Cached with `lru_cache`, so it is only looked up (and, if needed, asked
+    for interactively) once per process.
+    """
     return get_config(
         OPENAI_API_KEY_ENV_NAME,
         sources=[
@@ -287,6 +293,17 @@ openai.api_key = get_api_key_from_config()
 
 @lru_cache
 def mk_client(api_key=None, **client_kwargs) -> openai.Client:
+    """Make an `openai.Client`, defaulting `api_key` to `get_api_key_from_config()`.
+
+    Args:
+        api_key: The OpenAI API key. Falls back to `get_api_key_from_config()`
+            (config file, then environment, then interactive prompt) if not given.
+        **client_kwargs: Forwarded to `openai.OpenAI`.
+
+    Returns:
+        openai.Client: A client, cached per distinct `(api_key, client_kwargs)`
+        by `lru_cache`.
+    """
     api_key = api_key or get_api_key_from_config()
     return openai.OpenAI(api_key=api_key, **client_kwargs)
 
@@ -377,6 +394,17 @@ def _extract_folder_and_suffixes(
 
 
 def mk_template_store(template_store: Mapping | str):
+    """Return `template_store` as-is if it's a `Mapping`, else build a text-file `Mapping` from a directory path.
+
+    Args:
+        template_store: A `Mapping` of templates, used unchanged; or a
+            directory path, optionally followed by ``:`` and a comma/space
+            separated list of file suffixes to include (see
+            `_extract_folder_and_suffixes`).
+
+    Raises:
+        TypeError: If `template_store` is neither a `Mapping` nor a `str`.
+    """
     if isinstance(template_store, Mapping):
         return template_store
     elif isinstance(template_store, str):
@@ -551,10 +579,12 @@ iso_date_to_utc_int.inverse = utc_int_to_iso_date
 
 
 def transpose_iterable(iterable_of_tuples):
+    """Transpose an iterable of same-length tuples into tuples of their i-th elements (like `zip(*...)`)."""
     return zip(*iterable_of_tuples)
 
 
 def transpose_and_concatenate(iterable_of_tuples):
+    """Transpose `iterable_of_tuples`, then concatenate each resulting group of iterables into one list."""
     return map(list, map(chain.from_iterable, transpose_iterable(iterable_of_tuples)))
 
 
@@ -651,6 +681,7 @@ from inspect import Parameter
 def merge_multiple_signatures(
     iterable_of_sigs: Iterable[SignatureAble], **merge_with_sig_options
 ):
+    """Merge `iterable_of_sigs` into one `i2.Sig`, folding each in turn with `Sig.merge_with_sig`."""
     sig = Sig()
     for input_sig in map(Sig, iterable_of_sigs):
         sig = sig.merge_with_sig(input_sig, **merge_with_sig_options)

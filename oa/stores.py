@@ -136,6 +136,12 @@ def extract_id(
 
 
 class MappingHooks(Mapping):
+    """Implement `Mapping`'s dunder methods by delegating to `_iter`/`_len`/`_contains`/`_getitem` hooks.
+
+    A subclass defines those hooks (rather than the dunders directly) to get a
+    read-only mapping interface.
+    """
+
     def __iter__(self):
         # TODO: I'd like to just return the (iterable) object, but that doesn't work (why?)
         yield from self._iter()
@@ -151,6 +157,8 @@ class MappingHooks(Mapping):
 
 
 class MutuableMappingHooks(MappingHooks):
+    """`MappingHooks` plus mutation, delegating to `_delitem`/`_setitem` hooks."""
+
     def __delitem__(self, key):
         return self._delitem(key)
 
@@ -159,6 +167,8 @@ class MutuableMappingHooks(MappingHooks):
 
 
 class OaMapping(MappingHooks, KvReader):
+    """Base class for the OpenAI-resource key-value stores below: a `client`-backed `MappingHooks`."""
+
     client: openai.Client
     _list_kwargs = {}  # default, overriden in __init__
 
@@ -198,6 +208,8 @@ def is_task_dict_list(x):
 
 
 class OaFilesBase(OaMapping):
+    """A key-value store of OpenAI files: keys are file ids, values are their content."""
+
     # @params_from_openai_files_cls
     @Sig.replace_kwargs_using(files_create_sig - "purpose")
     def __init__(
@@ -223,10 +235,12 @@ class OaFilesBase(OaMapping):
 
     @extract_id
     def metadata(self, file_id) -> FileObject:
+        """Get the `FileObject` metadata for `file_id`."""
         return self.client.files.retrieve(file_id, **self.extra_kwargs)
 
     @extract_id
     def content(self, file_id):
+        """Get the raw content of the file `file_id`."""
         return self.client.files.content(file_id, **self.extra_kwargs)
 
     _getitem = content
@@ -238,6 +252,7 @@ class OaFilesBase(OaMapping):
 
     @params_from_openai_files_cls
     def append(self, file: FileTypes | dict) -> FileObject:
+        """Upload `file` (or a task dict/list, jsonl-encoded first) to OpenAI and return its `FileObject`."""
         # Note: self.client.create can be found in openai.resources.files.Files.create
         if is_task_dict(file) or is_task_dict_list(file):
             file = jsonl_dumps(file, self.encoding)
@@ -247,6 +262,7 @@ class OaFilesBase(OaMapping):
 
     @Sig.replace_kwargs_using(mk_batch_file_embeddings_task)
     def create_embedding_task(self, texts: TextOrTexts, **extra_kwargs):
+        """Build an embeddings batch task for `texts` (via `mk_batch_file_embeddings_task`) and upload it."""
         # Note: self.client.create can be found in openai.resources.files.Files.create
         task = mk_batch_file_embeddings_task(texts, **extra_kwargs)
         return self.append(task)
@@ -301,6 +317,8 @@ from typing import TypedDict, TypeVar
 
 # TODO: Find some where to import this definition from
 class ResponseDict(TypedDict):
+    """One line of a batch output file: `id`, `custom_id`, `response` body, and `error`."""
+
     id: str  # Example type, you can replace it with whatever type is appropriate
     custom_id: str
     response: dict
@@ -338,6 +356,7 @@ jsonl_loads_list = Pipe(jsonl_loads_response_lines, list)
 
 
 def response_body_data(response_dict: ResponseDict) -> DataObject:
+    """Get `response_dict['response']['body']['data']`."""
     return response_dict["response"]["body"]["data"]
 
 
@@ -356,6 +375,7 @@ def object_of_data(data: DataObject) -> DataObjectValue:
 def response_body_data_objects(
     response_dict: ResponseDict,
 ) -> Iterable[DataObjectValue]:
+    """Yield each data object's value (via `object_of_data`) from `response_dict`'s `response.body.data`."""
     data = response_body_data(response_dict)
     for d in data:
         yield object_of_data(d)
@@ -395,6 +415,8 @@ from typing import Literal
 # TODO: Why does go to definition here (for self.client.batches,
 #    but also for self.client.files), but not in OpenAIFilesBase?
 class OaBatchesBase(OaMapping):
+    """A key-value store of OpenAI batches: keys are batch ids, values their `BatchObj` metadata."""
+
     def __init__(self, client: openai.Client | None = None, **extra_kwargs):
         if client is None:
             client = mk_client()
@@ -455,6 +477,16 @@ NotGiven = type("NotGiven", (), {})()
 
 
 def ensure_utc_date(x, *, val_if_none=NotGiven):
+    """Coerce `x` (an ISO date string, a UTC int, or `None`) to a UTC integer timestamp.
+
+    Args:
+        x: An ISO date string, an already-UTC int, or `None`.
+        val_if_none: Value returned when `x` is `None`; if left as the
+            sentinel `NotGiven`, `x=None` raises instead.
+
+    Raises:
+        TypeError: If `x` is not a str, int, or (when allowed) `None`.
+    """
     if isinstance(x, str):
         return iso_date_to_utc_int(x)
     elif isinstance(x, int):
@@ -503,48 +535,68 @@ def date_filter(
 
 
 class OaStores:
+    """Facade bundling every OpenAI-resource key-value store (files, batches, vector stores) behind one client.
+
+    Each attribute is a `functools.cached_property` returning a `MappingHooks`
+    store built from the same `client`, so accessing `.files`, `.batches`, etc.
+    only pays for the stores you actually use.
+
+    Attributes:
+        client: The `openai.Client` (or client spec) shared by every store.
+    """
+
     def __init__(self, client: OaClientSpec = None) -> None:
         client = ensure_oa_client(client)
         self.client = client
 
     @cached_property
     def data_files(self):
+        """`OaFilesJsonData`: files store decoding content as embeddings/task json(l) data."""
         return OaFilesJsonData(self.client)
 
     @cached_property
     def json_files(self):
+        """`OaJsonFiles`: files store decoding content as parsed json/jsonl."""
         return OaJsonFiles(self.client)
 
     @cached_property
     def jsonl_files(self):
+        """`OaJsonFiles`: alias of `json_files`."""
         return OaJsonFiles(self.client)
 
     @cached_property
     def files(self):
+        """`OaFiles`: files store, values as raw bytes content."""
         return OaFiles(self.client)
 
     @cached_property
     def batches(self):
+        """`OaBatches`: batches store, keyed by batch id."""
         return OaBatches(self.client)
 
     @cached_property
     def files_base(self):
+        """`OaFilesBase`: the undecorated files store `data_files`/`json_files`/`files` build on."""
         return OaFilesBase(self.client)
 
     @cached_property
     def batches_base(self):
+        """`OaBatchesBase`: the undecorated batches store `batches` builds on."""
         return OaBatchesBase(self.client)
 
     @cached_property
     def files_metadata(self):
+        """`OaFilesMetadata`: files store, values as file metadata (`FileObject`)."""
         return OaFilesMetadata(self.client)
 
     @cached_property
     def vector_stores(self):
+        """`OaVectorStores`: vector stores store, keyed by vector store id."""
         return OaVectorStores(self.client)
 
     @cached_property
     def vector_stores_base(self):
+        """`OaVectorStoresBase`: the undecorated vector stores store `vector_stores` builds on."""
         return OaVectorStoresBase(self.client)
 
 
@@ -559,6 +611,13 @@ Vector = list[float]  # TODO: Replace by more specific, global type
 
 
 class OaDacc:
+    """Data-access facade over `OaStores`, adding batch/embeddings convenience methods.
+
+    Wraps an `OaStores` instance (`self.s`) built from `client`, and exposes
+    higher-level operations (resolving a batch, fetching its output file,
+    segments and embeddings) on top of the raw stores.
+    """
+
     def __init__(self, client: openai.Client | None = None) -> None:
         if client is None:
             client = mk_client()
@@ -569,28 +628,35 @@ class OaDacc:
 
     @property
     def files(self):
+        """Shortcut for `self.s.files`."""
         return self.s.files
 
     @property
     def json_files(self):
+        """Shortcut for `self.s.json_files`."""
         return self.s.json_files
 
     @property
     def batches(self):
+        """Shortcut for `self.s.batches`."""
         return self.s.batches
 
     @property
     def vector_stores(self):
+        """Shortcut for `self.s.vector_stores`."""
         return self.s.vector_stores
 
     def ensure_batch_obj(self, batch) -> BatchObj:
+        """Resolve `batch` (a `BatchObj` or id) to its `BatchObj`, via `self.s`."""
         return get_batch_obj(self.s, batch)
 
     def batch_id_and_obj(self, batch) -> tuple[BatchId, BatchObj]:
+        """Resolve `batch` (a `BatchObj` or id) to `(batch_id, batch_obj)`, via `self.s`."""
         batch_id, batch_obj = get_batch_id_and_obj(self.s, batch)
         return batch_id, batch_obj
 
     def get_output_file_data(self, batch):
+        """Get the output file data of `batch`, if it completed successfully."""
         return get_output_file_data(batch, oa_stores=self.s)
 
     def check_status(self, batch: BatchSpec) -> str:
@@ -658,6 +724,7 @@ class OaDacc:
     def launch_embedding_task(
         self, segments: Iterable[Segment], **imbed_task_dict_kwargs
     ):
+        """Upload `segments` as an embeddings task file and submit it as a batch."""
         # Upload files and get input file IDs
         input_file_id = self.files.create_embedding_task(
             segments, **imbed_task_dict_kwargs
@@ -673,6 +740,7 @@ class OaDacc:
 
 
 def print_some_jsonl_line_fields(line):
+    """Print the shape of a batch-output jsonl `line`'s fields, for interactive debugging."""
     print(f"{list(line)=}")
     print(f"{list(line['response'])=}")
     print(f"{list(line['response']['body'])=}")

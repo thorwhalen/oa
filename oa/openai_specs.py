@@ -110,6 +110,8 @@ pytype_of_jstype = {
 #  Could use TypedDict with annotations:
 #  {p.name: p.annotation for p in sig.ChatCompletionRequestMessage.params}
 class Message(TypedDict):
+    """A single chat message: `role`, `content`, and an optional `name`."""
+
     role: str
     content: str
     name: str | None
@@ -269,28 +271,39 @@ from functools import partial, cached_property
 
 # TODO: Write a types.SimpleNamespace version of this.
 class SpecNames:
+    """Cross-reference the OpenAI OpenAPI spec's `create*Request` schemas against `oa.openai`'s attributes.
+
+    Each property is a `functools.cached_property` derived from `specs`, computed
+    once per instance and reused for the introspection helpers below it.
+    """
+
     specs = specs
 
     @cached_property
     def op_paths(self):
+        """Doctree paths (within `specs`) of every `operationId` key or value."""
         return list(
             path_filter(lambda p, k, v: k == "operationId" or v == "operationId", specs)
         )
 
     @cached_property
     def route_and_op(self):
+        """`(operation_id, operation_dict)` pairs, one per entry in `op_paths`."""
         return [(p[1], path_get(specs, p, get_value=dict.get)) for p in self.op_paths]
 
     @cached_property
     def create_route_and_op(self):
+        """The subset of `route_and_op` whose operation id starts with ``'create'``."""
         return list(filter(lambda x: x[1].startswith("create"), self.route_and_op))
 
     @cached_property
     def sigs_ending_with_req(self):
+        """Names in `sig` (the schema-to-signature mapping) ending in ``'Request'``."""
         return [x for x in vars(sig) if x.endswith("Request")]
 
     @cached_property
     def creation_actions(self):
+        """Lowercased action names derived by stripping ``'create'``/``'request'`` from `sigs_ending_with_req`."""
         return set(
             map(
                 lambda x: x[len("create") : -len("request")].lower(),
@@ -300,6 +313,7 @@ class SpecNames:
 
     @cached_property
     def attrs(self):
+        """The attribute namespace of `oa.openai` (the OpenAI client)."""
         import oa
 
         return vars(oa.openai)
@@ -307,6 +321,7 @@ class SpecNames:
 
     @cached_property
     def matched_names(self):
+        """Names in `attrs` that also appear (lowercased) in `creation_actions`."""
         return [
             x
             for x in list(self.attrs)
@@ -316,6 +331,7 @@ class SpecNames:
 
     @cached_property
     def doc_for_name(self):
+        """Mapping of each `matched_names` entry to its `oa.openai.<name>.create` docstring."""
         import oa
 
         return {
@@ -325,6 +341,7 @@ class SpecNames:
 
     @cached_property
     def schema_for_name(self):
+        """Mapping of each `matched_names` entry to its `Create<Name>Request` schema."""
         return {
             name: schemas[f"Create{name[0].upper()}{name[1:]}Request"]
             for name in self.matched_names
@@ -395,6 +412,7 @@ def normalized_file_name(prompt: str) -> str:
 
 
 def prompt_path(prompt, prefix=""):
+    """Build (and ensure) a directory path for `prompt`, joining `prefix` with its `normalized_file_name`."""
     filepath = os.path.join(prefix, normalized_file_name(prompt))
     return dol.ensure_dir(filepath)
 
@@ -417,6 +435,7 @@ def merge_keys_to_values(d: dict, key_name="key"):
 
 
 def schemas_df(schema: dict):
+    """Print a schema's `properties` and `required` list as a pandas DataFrame/Series (for interactive use)."""
     import pandas as pd
 
     print(pd.Series(schema["properties"]))

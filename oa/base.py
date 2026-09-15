@@ -88,6 +88,25 @@ prompt_davinci_path = partial(prompt_path, prefix=djoin("davinci"))
 
 @Sig.replace_kwargs_using(openai.completions.create)
 def complete(prompt, model=None, **complete_params):
+    """Complete `prompt` using OpenAI's (legacy) completions endpoint.
+
+    Args:
+        prompt: The text to complete.
+        model: The completions model to use. Defaults to ``complete.engine``
+            (itself defaulting to `DFLT_ENGINE`) when not given.
+        **complete_params: Forwarded to ``openai.completions.create`` (e.g.
+            ``max_tokens``, ``temperature``); ``engine`` is accepted as an
+            alias for `model`.
+
+    Returns:
+        str: The completion text of the first choice.
+
+    Requires network access and a configured OpenAI API key; no runnable
+    example is included here for that reason.
+
+    See Also:
+        `chat`: the chat-completions equivalent for chat models.
+    """
     if "engine" in complete_params:
         model = complete_params.pop("engine")
     model = model or getattr(complete, "engine", DFLT_ENGINE)
@@ -114,6 +133,30 @@ def _raw_chat(prompt=None, model=DFLT_MODEL, *, messages=None, **chat_params):
 
 @Sig.replace_kwargs_using(_raw_chat)
 def chat(prompt=None, *, model=DFLT_MODEL, messages=None, **chat_params):
+    """Ask a chat model a question and return its text reply.
+
+    Args:
+        prompt: A single user message. Mutually exclusive with `messages`.
+        model: The chat-completions model to use. Defaults to `DFLT_MODEL`.
+        messages: A full chat-completions ``messages`` list, as an alternative
+            to `prompt`. Mutually exclusive with `prompt`.
+        **chat_params: Forwarded to ``openai.chat.completions.create`` (e.g.
+            ``temperature``, ``max_tokens``).
+
+    Returns:
+        str: The assistant's reply content for the first choice.
+
+    Raises:
+        ValueError: If both or neither of `prompt` and `messages` are given
+            (via the underlying `chat.raw`).
+
+    Requires network access and a configured OpenAI API key; no runnable
+    example is included here for that reason.
+
+    See Also:
+        `chat.raw`: the same call, returning the full API response object.
+        `complete`: the legacy completions endpoint.
+    """
     resp = _raw_chat(prompt=prompt, model=model, messages=messages, **chat_params)
     # TODO: Make attr and item getters more robust (use glom?)
     return resp.choices[0].message.content
@@ -129,6 +172,20 @@ def _raw_dalle(prompt, n=1, size="512x512", **image_create_params):
 
 @Sig.replace_kwargs_using(_raw_dalle)
 def dalle(prompt, n=1, size="512x512", **image_create_params):
+    """Generate an image from `prompt` via OpenAI's image endpoint.
+
+    Args:
+        prompt: Text description of the desired image.
+        n: Number of images to generate; only the first is returned here.
+        size: Image size string, as accepted by ``openai.images.generate``.
+        **image_create_params: Forwarded to ``openai.images.generate``.
+
+    Returns:
+        str: The URL of the first generated image.
+
+    Requires network access and a configured OpenAI API key; no runnable
+    example is included here for that reason.
+    """
     r = _raw_dalle(prompt=prompt, n=n, size=size, **image_create_params)
     return r.data[0].url
 
@@ -396,6 +453,7 @@ def _prepare_embeddings_args(validate, texts, valid_text_getter, model):
 def validate_texts_for_embeddings(
     texts, valid_text_getter, model=DFLT_EMBEDDINGS_MODEL
 ):
+    """Filter/transform `texts` through `valid_text_getter`, using `text_is_valid` as the validity signal."""
     validate = partial(text_is_valid, model=model)
     validation_vector = validate(texts)
 

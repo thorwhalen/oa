@@ -253,6 +253,7 @@ from oa.util import oa_extractor
 
 
 def batch_info_to_segments_and_embeddings(jsonl_store, batch_info):
+    """Get `(segments, embedding_vectors)` for a completed embeddings `batch_info`, or `None` if not available."""
     output_data_dict = jsonl_store[batch_info.output_file_id]
     output_data = oa_extractor(output_data_dict)
     if (
@@ -268,6 +269,7 @@ def batch_info_to_segments_and_embeddings(jsonl_store, batch_info):
 
 
 def get_segments_and_embeddings(batch_store, jsonl_store):
+    """Yield `(segments, embedding_vectors)` for every completed embeddings batch in `batch_store`."""
     for batch_info in batch_store.values():
         if batch_info.endpoint == "/v1/embeddings" and batch_info.status == "completed":
             yield batch_info_to_segments_and_embeddings(jsonl_store, batch_info)
@@ -283,12 +285,14 @@ create_at_within_range = value_in_interval(get_val=attrgetter("created_at"))
 
 
 def batches_within_range(batches_base, min_date, max_date=None):
+    """Filter `batches_base` to items whose `created_at` falls within `[min_date, max_date]`."""
     return filter(
         create_at_within_range(min_val=min_date, max_val=max_date), batches_base
     )
 
 
 def request_counts(batch_list):
+    """Sum the per-status request counts (e.g. completed, failed) across `batch_list`."""
     # pylint: disable=import-error
     import pandas as pd
 
@@ -308,30 +312,47 @@ from datetime import timedelta
 # TODO: Rethink these. They're not really errors (except perhaps failed and canceled)
 #   Perhaps some state object is more appropriate?
 class BatchError(ValueError):  # Or RuntimeError? Or just Exception?
+    """Base class for errors raised about the state of an OpenAI batch."""
+
     pass
 
 
 class BatchInProgressError(BatchError):
+    """Raised when a batch is still running and its output is not yet available."""
+
     pass
 
 
 class BatchCancelledError(BatchError):
+    """Raised when a batch was cancelled before completion."""
+
     pass
 
 
 class BatchExpiredError(BatchError):
+    """Raised when a batch expired before completion."""
+
     pass
 
 
 class BatchFinalizingError(BatchError):
+    """Raised when a batch is in its finalizing state and not yet complete."""
+
     pass
 
 
 class BatchFailedError(BatchError):
+    """Raised when a batch completed with a failed status."""
+
     pass
 
 
 def get_batch_obj(oa_stores, batch: BatchSpec) -> BatchObj:
+    """Look up the batch object for `batch` in `oa_stores.batches_base`.
+
+    Raises:
+        KeyError: If `batch` is not found.
+    """
     try:
         return oa_stores.batches_base[batch]
     except KeyError:
@@ -339,6 +360,11 @@ def get_batch_obj(oa_stores, batch: BatchSpec) -> BatchObj:
 
 
 def get_batch_id_and_obj(oa_stores, batch: BatchSpec) -> tuple[BatchId, BatchObj]:
+    """Look up `(batch_id, batch_obj)` for `batch` in `oa_stores.batches_base`.
+
+    Raises:
+        KeyError: If `batch` is not found.
+    """
     try:
         batch_obj = oa_stores.batches_base[batch]
         batch_id = batch_obj.id
@@ -353,6 +379,7 @@ def on_complete(oa_stores, batch_obj: BatchObj):
 
 
 def raise_error(error_obj: BaseException):
+    """Raise `error_obj` (the default `on_error` handler for `get_output_file_data`)."""
     raise error_obj
 
 
