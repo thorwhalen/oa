@@ -249,12 +249,13 @@ def prompt_function(
     >>> f = prompt_function(prompt_template, prompt_func=None)
     >>> from inspect import signature
     >>> assert str(signature(f)) == "(inputs, *, injected='normally')"
-    >>> print(f('INPUTS', injected="INJECTED"))  # doctest: +NORMALIZE_WHITESPACE
-    ```
-    In this block, all {placeholders} are {igno:red} so that they can appear in prompt.
-    ```
-    But outside INPUTS are INJECTED
-
+    >>> output = f('INPUTS', injected="INJECTED")
+    >>> expected = (
+    ...     "\n```\nIn this block, all {placeholders} are {igno:red} "
+    ...     "so that they can appear in prompt.\n```\nBut outside INPUTS are INJECTED\n"
+    ... )
+    >>> output == expected
+    True
     """
 
     template_original = template
