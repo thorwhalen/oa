@@ -666,10 +666,9 @@ def compute_embeddings(
         **embeddings_kwargs: Additional parameters for embedding generation
 
     Returns:
-        If return_process is False (default):
-            Tuple of (segments, embeddings)
-        If return_process is True:
-            EmbeddingsBatchProcess object for further interaction
+        Tuple of (segments, embeddings) if `return_process` is False
+        (default); the `EmbeddingsBatchProcess` object itself, for further
+        interaction, if `return_process` is True.
     """
     # Create batch process
     process = EmbeddingsBatchProcess(
