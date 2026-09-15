@@ -505,9 +505,9 @@ def chunk_iterable(
         chk_size: The size of each chunk.
         chunk_type: The type of the chunks (list, tuple, set, dict...).
 
-    Returns:
-        An iterator of dicts if the input is a Mapping, otherwise an iterator
-        of collections (list, tuple, set...).
+    Yields:
+        A dict per chunk if the input is a Mapping, otherwise a collection
+        (list, tuple, set...) per chunk.
 
     Examples:
         >>> list(chunk_iterable([1, 2, 3, 4, 5], 2))

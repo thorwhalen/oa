@@ -350,6 +350,9 @@ class BatchFailedError(BatchError):
 def get_batch_obj(oa_stores, batch: BatchSpec) -> BatchObj:
     """Look up the batch object for `batch` in `oa_stores.batches_base`.
 
+    Returns:
+        BatchObj: The batch object.
+
     Raises:
         KeyError: If `batch` is not found.
     """
@@ -361,6 +364,9 @@ def get_batch_obj(oa_stores, batch: BatchSpec) -> BatchObj:
 
 def get_batch_id_and_obj(oa_stores, batch: BatchSpec) -> tuple[BatchId, BatchObj]:
     """Look up `(batch_id, batch_obj)` for `batch` in `oa_stores.batches_base`.
+
+    Returns:
+        tuple[BatchId, BatchObj]: The batch id and its batch object.
 
     Raises:
         KeyError: If `batch` is not found.

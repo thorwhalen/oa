@@ -22,6 +22,8 @@ def docs_to_vector_store(
     Args:
         docs: Mapping of document keys to text content
         vs_name: Optional name for the vector store. If None, generates a unique name.
+        client: An `openai.Client`, or anything `OaStores` accepts; defaults
+            to the shared client when `None`.
 
     Returns:
         tuple: (vector_store_id, file_id_to_doc_key_mapping)
@@ -147,6 +149,8 @@ def mk_search_func_for_oa_vector_store(
     Args:
         vector_store_id: The ID of the vector store to search
         doc_id_mapping: Optional mapping from file IDs to document keys for result translation
+        client: An `openai.Client`, or anything `OaStores` accepts; defaults
+            to the shared client when `None`.
 
     Returns:
         A function that takes a query and returns search results

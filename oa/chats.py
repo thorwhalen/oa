@@ -417,15 +417,18 @@ paths_get_or_none = partial(
 
 
 class ChatDacc:
-    """Chat Data Accessor - manages and extracts data from shared ChatGPT conversations."""
+    """Chat Data Accessor - manages and extracts data from shared ChatGPT conversations.
+
+    Args:
+        src: Either a shared-conversation URL string, or a list of already-
+            parsed conversation dicts.
+
+    Raises:
+        ValueError: If `src` is a string that isn't a URL, or is neither a
+            string nor a list.
+    """
 
     def __init__(self, src):
-        """
-        Initialize ChatDacc with a source (URL or parsed conversation data).
-
-        Args:
-            src: Either a URL string or a list of conversation dictionaries
-        """
         self.src = src
         if isinstance(src, str):
             if src.startswith("http"):

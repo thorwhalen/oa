@@ -715,37 +715,43 @@ def constrained_answer(
         One of the valid answers, respecting the type constraint
 
     Examples:
+        These call the OpenAI API and need a configured key, so they are not
+        run as part of the test suite (``# doctest: +SKIP``).
+
         >>> # String options
         >>> answer = constrained_answer(
         ...     "Is Python compiled or interpreted?",
         ...     ["compiled", "interpreted", "both"]
-        ... )
-        >>> answer in ["compiled", "interpreted", "both"]
+        ... )  # doctest: +SKIP
+        >>> answer in ["compiled", "interpreted", "both"]  # doctest: +SKIP
         True
 
         >>> # Boolean
         >>> answer = constrained_answer(
         ...     "Is Python dynamically typed?",
         ...     bool
-        ... )
-        >>> isinstance(answer, bool)
+        ... )  # doctest: +SKIP
+        >>> isinstance(answer, bool)  # doctest: +SKIP
         True
 
         >>> # Integer options
         >>> answer = constrained_answer(
         ...     "How many wheels does a car have?",
         ...     [2, 3, 4, 6, 8]
-        ... )
-        >>> answer in [2, 3, 4, 6, 8]
+        ... )  # doctest: +SKIP
+        >>> answer in [2, 3, 4, 6, 8]  # doctest: +SKIP
         True
 
         >>> # Numerical range
         >>> answer = constrained_answer(
         ...     "What is a reasonable hourly rate for a senior Python developer? (USD)",
         ...     (50.0, 300.0)
-        ... )
-        >>> 50.0 <= answer <= 300.0
+        ... )  # doctest: +SKIP
+        >>> 50.0 <= answer <= 300.0  # doctest: +SKIP
         True
+
+    Raises:
+        ValueError: If `valid_answers` is an empty list.
     """
     if n != 1:
         from functools import partial

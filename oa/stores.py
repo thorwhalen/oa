@@ -504,7 +504,7 @@ def date_filter(
     *,
     date_extractor: str | Callable = "created_at",
     stop_on_first_out_of_range=False,
-):
+) -> Iterable:
     """
     Filter objects by date.
 
