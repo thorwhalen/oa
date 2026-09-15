@@ -345,7 +345,7 @@ def find_url_keys(data, current_path=""):
         >>> from functools import partial
         >>> import re
         >>> paths = find_url_keys(example_data)
-        >>> transform = partial(re.sub, '\[\d+\]', '[*]')
+        >>> transform = partial(re.sub, r'\[\d+\]', '[*]')
         >>> unique_paths = set(map(transform, paths))
         >>> sorted(unique_paths)
         ['key1.nested[*].url', 'key2']

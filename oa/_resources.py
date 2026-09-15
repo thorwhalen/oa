@@ -542,9 +542,5 @@ def extract_pricing_data(html_content: str) -> dict[str, dict[str, Any]]:
 
     Returns:
         Dictionary with API categories as keys and pricing information as values
-
-    Example:
-
-
     """
     return parse_pricing_page(html_content)

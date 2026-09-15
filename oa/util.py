@@ -709,30 +709,35 @@ class ProcessingManager(Generic[KT, VT, Result]):
     A class to manage and monitor the processing of a collection of items, allowing customizable
     processing functions, status handling, and timing control, using keys to track items.
 
-    **Use Case**:
-    - Ideal for scenarios where you have a set of items identified by keys that require periodic status
-      checks until they reach a completed state.
-    - Useful for managing batch jobs, asynchronous tasks, or any operations where items may not complete
-      processing immediately.
+    Use case: scenarios where you have a set of items identified by keys that require
+    periodic status checks until they reach a completed state, such as managing batch
+    jobs, asynchronous tasks, or any operations where items may not complete processing
+    immediately.
 
-    **Attributes**:
-    - **pending_items** (`MutableMapping[KT, VT]`): The mapping of keys to pending items.
-        - If an iterable is provided, it is converted to a dict using `dict(enumerate(iterable))`.
-    - **processing_function** (`Callable[[VT], Tuple[Status, Result]]`): A function that takes a value (item)
-      and returns a tuple of `(status, result)`.
-        - `status` (`Status`): Indicates the current state of the item (e.g., `'completed'`, `'in_progress'`, `'failed'`).
-        - `result` (`Result`): Additional data or context about the item's processing result.
-    - **handle_status_function** (`Callable[[VT, Status, Result], bool]`): A function that decides whether to remove
-      an item from `pending_items` based on its `status` and `result`.
-        - Returns `True` if the item should be removed (e.g., processing is complete or failed irrecoverably).
-    - **wait_time_function** (`Callable[[float, Dict], float]`): A function that determines how long to wait
-      before the next processing cycle.
-        - Takes `cycle_duration` (time taken for the last cycle) and `locals()` dictionary as inputs.
-        - Returns the sleep time in seconds.
-    - **status_check_interval** (`float`): Desired minimum time (in seconds) between status checks. Defaults to `5.0`.
-    - **max_cycles** (`Optional[int]`): Maximum number of processing cycles to perform. If `None`, there is no limit.
-    - **completed_items** (`MutableMapping[KT, Result]`): Mapping of keys to results for items that have been processed.
-    - **cycles** (`int`): Number of processing cycles that have been performed.
+    Attributes:
+        pending_items (MutableMapping[KT, VT]): The mapping of keys to pending items.
+            If an iterable is provided, it is converted to a dict using
+            ``dict(enumerate(iterable))``.
+        processing_function (Callable[[VT], Tuple[Status, Result]]): A function that
+            takes a value (item) and returns a tuple of ``(status, result)``. ``status``
+            indicates the current state of the item (e.g. ``'completed'``,
+            ``'in_progress'``, ``'failed'``); ``result`` is additional data or context
+            about the item's processing result.
+        handle_status_function (Callable[[VT, Status, Result], bool]): A function that
+            decides whether to remove an item from ``pending_items`` based on its
+            ``status`` and ``result``. Returns ``True`` if the item should be removed
+            (e.g. processing is complete or failed irrecoverably).
+        wait_time_function (Callable[[float, Dict], float]): A function that determines
+            how long to wait before the next processing cycle. Takes ``cycle_duration``
+            (time taken for the last cycle) and the ``locals()`` dictionary as inputs,
+            and returns the sleep time in seconds.
+        status_check_interval (float): Desired minimum time (in seconds) between status
+            checks. Defaults to ``5.0``.
+        max_cycles (Optional[int]): Maximum number of processing cycles to perform. If
+            ``None``, there is no limit.
+        completed_items (MutableMapping[KT, Result]): Mapping of keys to results for
+            items that have been processed.
+        cycles (int): Number of processing cycles that have been performed.
     """
 
     pending_items: MutableMapping[KT, VT] | Iterable[VT]

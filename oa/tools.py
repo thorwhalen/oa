@@ -63,13 +63,14 @@ def pattern_based_map(
     depending on the value of apply_to.
 
     Example:
-    >>> func = str.upper
-    >>> string = "the good the ```bad``` and the ugly"
-    >>> ignore_pattern = r'```.*?```'
-    >>> pattern_based_map(func, string, ignore_pattern)
-    'THE GOOD THE ```bad``` AND THE UGLY'
-    >>> pattern_based_map(func, string, ignore_pattern, 'matched')
-    'the good the ```BAD``` and the ugly'
+
+        >>> func = str.upper
+        >>> string = "the good the ```bad``` and the ugly"
+        >>> ignore_pattern = r'```.*?```'
+        >>> pattern_based_map(func, string, ignore_pattern)
+        'THE GOOD THE ```bad``` AND THE UGLY'
+        >>> pattern_based_map(func, string, ignore_pattern, 'matched')
+        'the good the ```BAD``` and the ugly'
     """
     parts = extract_parts(string, pattern)
     result = ""

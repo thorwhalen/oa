@@ -460,18 +460,18 @@ def text_is_valid(
 
     Examples:
 
-    >>> text_is_valid('Hello, world!')
-    True
-    >>> text_is_valid('')
-    False
-    >>> text_is_valid('Alice ' * 9000)
-    False
-    >>> text_is_valid('Alice ' * 9000, token_count=False)
-    True
-    >>> list(text_is_valid(['Bob', '', 'Alice ' * 9000]))
-    [True, False, False]
-    >>> list(text_is_valid(['Bob', '', 'Alice ' * 9000], token_count=False))
-    [True, False, True]
+        >>> text_is_valid('Hello, world!')
+        True
+        >>> text_is_valid('')
+        False
+        >>> text_is_valid('Alice ' * 9000)
+        False
+        >>> text_is_valid('Alice ' * 9000, token_count=False)
+        True
+        >>> list(text_is_valid(['Bob', '', 'Alice ' * 9000]))
+        [True, False, False]
+        >>> list(text_is_valid(['Bob', '', 'Alice ' * 9000], token_count=False))
+        [True, False, True]
 
     """
     # Normalize the input
