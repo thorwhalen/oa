@@ -692,6 +692,7 @@ def constrained_answer(
     Args:
         prompt: The question or prompt to ask the LLM
         valid_answers: Can be:
+
             - list[str]: List of valid string options
             - list[int]: List of valid integer options
             - list[float]: List of valid float options
@@ -699,6 +700,7 @@ def constrained_answer(
             - int: Any integer
             - float: Any number
             - tuple[float, float]: Numerical range (min, max) inclusive
+
         model: The model to use for the LLM (default: "gpt-4o-mini")
         n: Number of times to call the LLM (default: 1)
 
