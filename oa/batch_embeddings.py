@@ -135,6 +135,7 @@ class ProcessingMall(Mapping):
     Container for all stores needed during batch processing.
 
     The ProcessingMall contains five stores, all keyed by batch_id:
+
     - current: Batches that are currently being processed
     - segments: The text segments corresponding to each batch
     - finished: Completed batches

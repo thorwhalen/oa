@@ -43,7 +43,7 @@ Or see argument descriptions in rst format by doing:
 >>> from oa.openai_specs import schema_to_rst_argument_descriptions, schemas
 >>> schema_to_rst_argument_descriptions(schemas['CreateCompletionRequest'])  # doctest: +SKIP
 
-```
+.. code-block:: text
 
 """
 

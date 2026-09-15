@@ -257,7 +257,8 @@ def embeddings(
     >>> len(result) == dimensions == 3
     True
 
-    # Test with a list of words
+    .. rubric:: Test with a list of words
+
     >>> texts = ["semantic", "vector"]
     >>> result = embeddings_(texts)
     >>> isinstance(result, list)
@@ -267,13 +268,15 @@ def embeddings(
 
     Two vectors; one for each word. Note that the second vector is the vector of
     "vector", which we've seen before.
+
     >>> result[1]  # doctest: +SKIP
     [-0.4096039831638336, 0.3794299364089966, -0.8296127915382385]
 
     >>> len(result[1]) == dimensions == 3
     True
 
-    # Test with a dictionary of words
+    .. rubric:: Test with a dictionary of words
+
     >>> texts = {"adj": "semantic", "noun": "vector"}
     >>> result = embeddings_(texts)
     >>> isinstance(result, dict)
@@ -289,6 +292,7 @@ def embeddings(
     use later to compute embeddings for texts. This is useful if you want to
     set some parameters (like `dimensions`, `validate`, etc.) and then use the
     resulting function to compute embeddings for different texts later on.
+
     >>> embeddings_with_10_dimensions = embeddings_(texts=None, dimensions=10)
     >>> isinstance(embeddings_with_10_dimensions, Callable)
     True
@@ -433,6 +437,7 @@ def text_is_valid(
     """Check if text (a string or iterable of strings) is/are valid for a given model.
 
     Text is valid if
+
     - it is not empty
     - the number of tokens in the text is less than or equal to the max_tokens
 

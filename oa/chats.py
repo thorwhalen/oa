@@ -49,7 +49,9 @@ def get_rendered_html(
     By default this uses the synchronous Playwright API. If `use_async=True` the
     async variant will be executed via asyncio.run.
 
-    Note: This function only imports Playwright when called. Install with:
+    Note:
+        This function only imports Playwright when called. Install with:
+
         pip install playwright
         playwright install chromium
 

@@ -65,7 +65,8 @@ def transcribe(
     :param kwargs: Additional parameters for the API
     :return: Dict with 'text', 'segments', 'language', and 'raw_response'
 
-    Note: Actual API calls require a valid audio file and API key
+    Note:
+        Actual API calls require a valid audio file and API key
     """
     client = ensure_oa_client(client)
 
@@ -194,7 +195,8 @@ def text_to_speech(
     :param kwargs: Additional parameters for the API
     :return: Audio content as bytes
 
-    Note: Actual API calls require a valid API key
+    Note:
+        Actual API calls require a valid API key
     """
     client = ensure_oa_client(client)
 

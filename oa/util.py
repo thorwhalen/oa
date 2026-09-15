@@ -130,7 +130,8 @@ def pricing_info(category: PricingCategory = None, *, print_data_date=False):
     """
     Return the pricing info for the OpenAI API.
 
-    Note: These are not live prices. Live prices can be found here:
+    Note:
+        These are not live prices. Live prices can be found here:
 
     The information pricing_info returns is taken from the file `openai_api_pricing_info.json`
     in the `data` directory of the package.
@@ -792,6 +793,7 @@ class ProcessingManager(Generic[KT, VT, Result]):
         Runs the processing loop until all pending items are processed or max_cycles is reached.
 
         In each cycle:
+
         - Calls `process_pending_items()` to process the current pending items.
         - Increments the cycle count.
         - Calculates the duration of the cycle and determines how long to sleep before the next cycle
@@ -799,6 +801,7 @@ class ProcessingManager(Generic[KT, VT, Result]):
         - Sleeps for the calculated duration if there are still pending items.
 
         The loop continues until:
+
         - `pending_items` is empty (all items have been processed), or
         - The number of cycles reaches `max_cycles`, if specified.
         """

@@ -2,6 +2,7 @@
 Batch functionality
 
 Useful links:
+
 - Web tool: https://platform.openai.com/batches/
 - API docs: https://platform.openai.com/docs/api-reference/batch
 
