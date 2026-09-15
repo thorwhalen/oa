@@ -509,11 +509,18 @@ def date_filter(
     Filter objects by date.
 
     Args:
-        objs: The objects to filter (must have a)
-        min_date: The minimum date (inclusive)
-        max_date: The maximum date (inclusive)
-        date_attr: The attribute to get the date from
-        stop_on_first_out_of_range: If True, stop iteration on first out-of-range date
+        objs: The objects to filter; each must expose the date attribute
+            named by `date_extractor` (or be accepted by it, if callable).
+        min_date: The minimum date (inclusive).
+        max_date: The maximum date (inclusive).
+        date_extractor: The attribute name to get the date from (e.g.
+            ``"created_at"``), or a callable applied to each object.
+        stop_on_first_out_of_range: If True, stop iteration as soon as an
+            object falls outside `[min_date, max_date]`, instead of skipping
+            it and continuing.
+
+    Yields:
+        Each object in `objs` whose date falls within `[min_date, max_date]`.
     """
     if isinstance(date_extractor, str):
         date_attr = date_extractor
@@ -537,12 +544,10 @@ def date_filter(
 class OaStores:
     """Facade bundling every OpenAI-resource key-value store (files, batches, vector stores) behind one client.
 
-    Each attribute is a `functools.cached_property` returning a `MappingHooks`
-    store built from the same `client`, so accessing `.files`, `.batches`, etc.
-    only pays for the stores you actually use.
-
-    Attributes:
-        client: The `openai.Client` (or client spec) shared by every store.
+    Built from a single `client` (an `openai.Client`, or anything
+    `ensure_oa_client` accepts); each of `.files`, `.batches`, etc. below is a
+    `functools.cached_property` returning a `MappingHooks` store built from
+    that same client, so accessing one only pays for the store you use.
     """
 
     def __init__(self, client: OaClientSpec = None) -> None:

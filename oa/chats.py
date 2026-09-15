@@ -30,7 +30,7 @@ you to access the data in a shared chat in a structured way.
 import re
 import json
 import asyncio
-from typing import Optional, Union, List, Dict, Any
+from typing import Optional, Union, List, Dict, Any, Iterator
 from collections.abc import Callable, Iterable
 from functools import partial, cached_property
 from bs4 import BeautifulSoup
@@ -310,7 +310,7 @@ def remove_utm_source(text):
     return cleaned_text
 
 
-def find_url_keys(data, current_path=""):
+def find_url_keys(data, current_path="") -> Iterator[str]:
     r"""
     Recursively finds all paths in a JSON-like object (nested dicts/lists) where URL strings are present.
 

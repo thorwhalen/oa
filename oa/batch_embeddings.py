@@ -141,6 +141,18 @@ class ProcessingMall(Mapping):
     - finished: Completed batches
     - erred: Batches that encountered errors
     - embeddings: The computed embeddings for each batch
+
+    Args:
+        current: Store for batches currently being processed. Defaults to a
+            fresh `dict` when not given.
+        segments: Store for segments corresponding to each batch. Defaults to
+            a fresh `dict` when not given.
+        finished: Store for completed batches. Defaults to a fresh `dict`
+            when not given.
+        erred: Store for batches that encountered errors. Defaults to a
+            fresh `dict` when not given.
+        embeddings: Store for computed embeddings. Defaults to a fresh
+            `dict` when not given.
     """
 
     _store_names = ("current", "segments", "finished", "erred", "embeddings")
@@ -165,16 +177,6 @@ class ProcessingMall(Mapping):
         erred: MutableMapping | None = None,
         embeddings: MutableMapping | None = None,
     ):
-        """
-        Initialize the ProcessingMall with optional custom stores.
-
-        Args:
-            current: Store for batches currently being processed
-            segments: Store for segments corresponding to each batch
-            finished: Store for completed batches
-            erred: Store for batches that encountered errors
-            embeddings: Store for computed embeddings
-        """
         self.current = current if current is not None else {}
         self.segments = segments if segments is not None else {}
         self.finished = finished if finished is not None else {}
@@ -187,7 +189,15 @@ class ProcessingMall(Mapping):
         Create a ProcessingMall with stores that persist to local files.
 
         Args:
-            rootdir: Directory where the stores will be saved
+            rootdir: Directory where the stores will be saved. If it has no
+                path separator and does not already exist, it is treated as
+                a name and created under `imbed.util.DFLT_BATCHES_DIR`.
+            store_cls: A callable (store class) used for every named store,
+                or a `dict` mapping store names to their own callable.
+
+        Returns:
+            ProcessingMall: A new instance backed by the folder's stores,
+            with `rootdir` recorded as an attribute.
         """
         from imbed.util import DFLT_BATCHES_DIR
         import os
@@ -238,6 +248,26 @@ class EmbeddingsBatchProcess:
     This class handles submitting batch requests to the OpenAI API,
     monitoring their status, retrieving results, and aggregating them.
     It can be used as a context manager for automatic cleanup.
+
+    Args:
+        segments: Text segments to embed, either as a list or a dictionary.
+        processing_mall: An existing `ProcessingMall`, a directory path to
+            back one with local files (via `ProcessingMall.with_folder`), or
+            `None` to create a fresh in-memory one.
+        model: OpenAI embedding model to use.
+        batch_size: Maximum number of segments per batch.
+        poll_interval: Seconds between status checks.
+        max_polls: Maximum number of status checks before timing out.
+            Defaults to about 24 hours worth of polls at `poll_interval`.
+        verbosity: Level of logging detail (0-2).
+        keep_processing_info: Whether to keep mall data after completion.
+        dacc: Optional custom `OaDacc` instance.
+        logger: Optional custom logger.
+        **embeddings_kwargs: Additional parameters for embedding generation.
+
+    Raises:
+        TypeError: If `processing_mall` is neither `None`, a `str`, nor a
+            `ProcessingMall`.
     """
 
     def __init__(
@@ -255,22 +285,6 @@ class EmbeddingsBatchProcess:
         logger: logging.Logger | None = None,
         **embeddings_kwargs,
     ):
-        """
-        Initialize a new EmbeddingsBatchProcess for embedding generation.
-
-        Args:
-            segments: Text segments to embed, either as a list or a dictionary.
-            model: OpenAI embedding model to use
-            batch_size: Maximum number of segments per batch
-            poll_interval: Seconds between status checks
-            max_polls: Maximum number of status checks before timing out
-            verbosity: Level of logging detail (0-2)
-            processing_mall: Optional custom ProcessingMall
-            keep_processing_info: Whether to keep mall data after completion
-            dacc: Optional custom OaDacc instance
-            logger: Optional custom logger
-            **embeddings_kwargs: Additional parameters for embedding generation
-        """
         self.segments = segments
         self.model = model
         self.batch_size = batch_size
@@ -333,8 +347,8 @@ class EmbeddingsBatchProcess:
         """
         Prepare and chunk segments into batches.
 
-        Returns:
-            Iterator yielding (segments_batch, batch_id) tuples
+        Yields:
+            `(segments_batch, batch_id)` tuples, one per submitted batch.
         """
         # Convert segments to a list if it's a dictionary
         if isinstance(self.segments, dict):
@@ -508,6 +522,10 @@ class EmbeddingsBatchProcess:
 
         Returns:
             Tuple of (all_segments, all_embeddings)
+
+        Raises:
+            BatchError: If processing is not yet complete (`monitor_batches()`
+                or `run()` must be called first).
         """
         if not self._is_complete:
             raise BatchError(
@@ -690,6 +708,9 @@ def compute_embeddings_df(
 
     Returns:
         DataFrame with 'segment' and 'embedding' columns
+
+    Raises:
+        ImportError: If `pandas` is not installed.
     """
     try:
         import pandas as pd

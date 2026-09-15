@@ -146,9 +146,8 @@ def chat(prompt=None, *, model=DFLT_MODEL, messages=None, **chat_params):
     Returns:
         str: The assistant's reply content for the first choice.
 
-    Raises:
-        ValueError: If both or neither of `prompt` and `messages` are given
-            (via the underlying `chat.raw`).
+    `chat.raw` (the underlying call) raises `ValueError` if both or neither
+    of `prompt` and `messages` are given.
 
     Requires network access and a configured OpenAI API key; no runnable
     example is included here for that reason.
