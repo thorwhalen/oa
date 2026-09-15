@@ -15,6 +15,16 @@ To install:	```pip install oa```
 
 
 
+<!-- epythet:agentic-readme:start -->
+# For AI agents
+
+`oa` publishes its documentation in forms made for coding agents. If you are one, start here.
+
+**The documentation, machine-readable**: [`llms.txt`](https://thorwhalen.github.io/oa/llms.txt) indexes every page; [`oa.md`](https://thorwhalen.github.io/oa/oa.md) is the whole documentation in one file; every page has a `.md` twin; [`objects.inv`](https://thorwhalen.github.io/oa/objects.inv) maps symbols to URLs.
+
+If you identify as a dinosaur, the rest of this README is written for you, starting at [Usage](#usage).
+<!-- epythet:agentic-readme:end -->
+
 # Usage
 
 Sure, you can do many things in English now with our new AI superpowers, but still, to be able to really reuse and compose your best prompts, you had better parametrize them -- that is, distill them down to the minimal necessary interface. The function.
