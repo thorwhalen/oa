@@ -286,17 +286,39 @@ def get_api_key_from_config():
 signature_source_client = openai.OpenAI(api_key="signature-introspection-only")
 
 
+def _lookup_api_key_without_asking() -> str | None:
+    """The API key from oa's config store or the environment, else None. Never prompts."""
+    api_key = get_config(
+        OPENAI_API_KEY_ENV_NAME,
+        sources=[configs_local_store, os.environ],
+        default=None,
+    )
+    return api_key.strip() if api_key else None
+
+
+_openai_api_key_ensured = False
+
+
 def ensure_openai_api_key() -> str:
     """Make sure the module-level ``openai`` client has an API key, resolving it lazily.
 
-    The key is looked up (config store, environment, then asking the user) only
-    the first time something needs it, never at ``import oa`` time, so importing
+    The key is looked up (config store, environment, then asking the user) the
+    first time something needs it, never at ``import oa`` time, so importing
     ``oa`` works -- and dependents' test suites can run -- when no key is set.
-    A key already set on ``openai.api_key`` is respected, not overwritten.
+    Resolution follows oa's own order (store before environment), as when the key
+    was set at import, and happens once: a key set on ``openai.api_key``
+    afterwards is respected. If no key is stored or in the environment, a key
+    already set on ``openai.api_key`` is kept rather than asking the user.
     """
-    # TODO: Hm... set api key globally? Doesn't seem we should do that!
-    if openai.api_key is None:
-        openai.api_key = get_api_key_from_config()
+    global _openai_api_key_ensured
+    if not _openai_api_key_ensured:
+        # TODO: Hm... set api key globally? Doesn't seem we should do that!
+        api_key = _lookup_api_key_without_asking()
+        if api_key is None and openai.api_key is None:
+            api_key = get_api_key_from_config()  # ask the user
+        if api_key is not None:
+            openai.api_key = api_key
+        _openai_api_key_ensured = True
     return openai.api_key
 
 
@@ -333,12 +355,8 @@ def _get_dflt_client() -> openai.Client | None:
     Never prompts (a bare attribute access shouldn't block on input), and a
     failure isn't cached, so the client appears once a key is set.
     """
-    api_key = get_config(
-        OPENAI_API_KEY_ENV_NAME,
-        sources=[configs_local_store, os.environ],
-        default=None,
-    )
-    return mk_client(api_key.strip()) if api_key else None
+    api_key = _lookup_api_key_without_asking()
+    return mk_client(api_key) if api_key else None
 
 
 def __getattr__(name):

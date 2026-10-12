@@ -44,21 +44,41 @@ def test_import_oa_with_no_api_key(tmp_path):
     assert "IMPORT_OK" in result.stdout
 
 
-def test_key_resolved_on_first_use(monkeypatch):
+def _fresh(monkeypatch, *, store=None, api_key=None):
+    """Hermetic state: given oa config store, no env key, ``ensure`` not yet run."""
     import oa.util as util
 
-    monkeypatch.setattr(util.openai, "api_key", None)
-    monkeypatch.setenv("OPENAI_API_KEY", "sk-test-lazy")
+    monkeypatch.setattr(util, "configs_local_store", dict(store or {}))
+    monkeypatch.delenv("OPENAI_API_KEY", raising=False)
+    monkeypatch.setattr(util.openai, "api_key", api_key)
+    monkeypatch.setattr(util, "_openai_api_key_ensured", False)
     util.get_api_key_from_config.cache_clear()
-    try:
-        assert util.ensure_openai_api_key() == "sk-test-lazy"
-        assert util.openai.api_key == "sk-test-lazy"
-    finally:
-        util.get_api_key_from_config.cache_clear()
+    return util
 
 
-def test_explicitly_set_openai_key_is_respected(monkeypatch):
-    import oa.util as util
+def test_key_resolved_on_first_use(monkeypatch):
+    util = _fresh(monkeypatch)
+    monkeypatch.setenv("OPENAI_API_KEY", "sk-test-lazy")
+    assert util.ensure_openai_api_key() == "sk-test-lazy"
+    assert util.openai.api_key == "sk-test-lazy"
+    util.get_api_key_from_config.cache_clear()
 
-    monkeypatch.setattr(util.openai, "api_key", "sk-user-set")
-    assert util.ensure_openai_api_key() == "sk-user-set"
+
+def test_store_key_wins_over_env_even_if_openai_mirrored_env(monkeypatch):
+    # openai's module client copies the env key into openai.api_key when first touched
+    util = _fresh(monkeypatch, store={"OPENAI_API_KEY": "sk-test-store"})
+    monkeypatch.setenv("OPENAI_API_KEY", "sk-test-env")
+    monkeypatch.setattr(util.openai, "api_key", "sk-test-env")
+    assert util.ensure_openai_api_key() == "sk-test-store"
+
+
+def test_key_set_on_openai_is_kept_when_none_stored(monkeypatch):
+    util = _fresh(monkeypatch, api_key="sk-test-user-set")
+    assert util.ensure_openai_api_key() == "sk-test-user-set"  # and no prompt
+
+
+def test_key_set_on_openai_after_first_use_is_respected(monkeypatch):
+    util = _fresh(monkeypatch, store={"OPENAI_API_KEY": "sk-test-store"})
+    util.ensure_openai_api_key()
+    util.openai.api_key = "sk-test-later"
+    assert util.ensure_openai_api_key() == "sk-test-later"
