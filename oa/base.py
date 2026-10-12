@@ -198,7 +198,10 @@ from oa.util import chunk_iterable, mk_local_files_saves_callback
 
 # from collections.abc import Mapping, Iterable
 
-extra_embeddings_params = Sig(signature_source_client.embeddings.create) - {"input", "model"}
+extra_embeddings_params = Sig(signature_source_client.embeddings.create) - {
+    "input",
+    "model",
+}
 
 
 # TODO: Added a lot of options, but not really clean. Should be cleaned up.
