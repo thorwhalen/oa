@@ -1,7 +1,36 @@
-"""Set a dummy OPENAI_API_KEY before pytest collection so tests that construct
-clients succeed in CI without real secrets. (``import oa`` itself no longer
-needs a key; see oa/tests/test_lazy_api_key.py.)"""
+"""Pytest configuration: skip tests that call the OpenAI API when no key is set.
+
+``import oa`` needs no key (it is resolved on first use), so there is no dummy key:
+a dummy would make "is a key available?" checks pass and the API calls fail with 401.
+Tests carry ``@pytest.mark.needs_api``; doctests that call the API are listed in
+``API_DOCTESTS`` (a doctest can't carry a marker).
+"""
 
 import os
 
-os.environ.setdefault("OPENAI_API_KEY", "test-dummy-key-for-ci")
+import pytest
+from _pytest.doctest import DoctestItem
+
+API_DOCTESTS = frozenset({"oa.base.embeddings", "oa.tools.constrained_answer"})
+
+
+def _has_api_key() -> bool:
+    return bool(os.environ.get("OPENAI_API_KEY", "").strip())
+
+
+def pytest_configure(config):
+    config.addinivalue_line(
+        "markers",
+        "needs_api: calls the OpenAI API; skipped when OPENAI_API_KEY is unset",
+    )
+
+
+def pytest_collection_modifyitems(config, items):
+    if _has_api_key():
+        return
+    skip = pytest.mark.skip(reason="needs OPENAI_API_KEY (calls the OpenAI API)")
+    for item in items:
+        if "needs_api" in item.keywords or (
+            isinstance(item, DoctestItem) and item.name in API_DOCTESTS
+        ):
+            item.add_marker(skip)
