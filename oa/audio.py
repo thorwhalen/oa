@@ -6,7 +6,13 @@ from collections.abc import Callable, Iterable
 
 from i2 import Sig
 
-from oa.util import openai, mk_client, ensure_oa_client, OaClientSpec
+from oa.util import (
+    openai,
+    mk_client,
+    ensure_oa_client,
+    OaClientSpec,
+    signature_source_client,
+)
 
 # --------------------------------------------------------------------------------------
 # Defaults
@@ -44,7 +50,7 @@ def _parse_transcription_response(resp, response_format: str) -> dict:
     }
 
 
-@Sig.replace_kwargs_using(openai.audio.transcriptions.create)
+@Sig.replace_kwargs_using(signature_source_client.audio.transcriptions.create)
 def transcribe(
     audio: str,
     *,
@@ -173,7 +179,7 @@ def transcription_to_srt(transcription: dict, *, segment_duration: float = None)
 # Text-to-Speech
 
 
-@Sig.replace_kwargs_using(openai.audio.speech.create)
+@Sig.replace_kwargs_using(signature_source_client.audio.speech.create)
 def text_to_speech(
     text: str,
     *,
