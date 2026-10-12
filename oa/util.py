@@ -277,13 +277,28 @@ _API_KEY_PROMPT = (
 _PROMPT_OVERRIDE_ENV_NAME = "OA_PROMPT_FOR_API_KEY"  # "1"/"0" forces/forbids prompting
 
 
+def _windows_stdin_is_console() -> bool:
+    import ctypes
+    import msvcrt
+
+    handle = msvcrt.get_osfhandle(sys.stdin.fileno())
+    return bool(
+        ctypes.windll.kernel32.GetConsoleMode(
+            ctypes.c_void_p(handle), ctypes.byref(ctypes.c_uint32())
+        )
+    )
+
+
 def _has_controlling_terminal() -> bool:
     """Whether a terminal can be asked (``getpass`` reads ``/dev/tty``, not just stdin)."""
     try:
         if sys.stdin is not None and sys.stdin.isatty():
-            return True
+            # On Windows ``isatty()`` is also True for NUL (e.g. CI): check for a console
+            return os.name != "nt" or _windows_stdin_is_console()
     except (ValueError, OSError):  # e.g. closed stdin
         pass
+    if os.name == "nt":
+        return False
     try:
         os.close(os.open("/dev/tty", os.O_RDWR))  # POSIX: stdin may be piped
         return True
