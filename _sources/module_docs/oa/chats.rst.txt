@@ -1,4 +1,0 @@
-oa.chats
-========
-.. automodule:: oa.chats
-   :members:

@@ -1,0 +1,28 @@
+oa.openai\_specs
+================
+
+.. automodule:: oa.openai_specs
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      get_openapi_spec_dict
+      merge_keys_to_values
+      normalized_file_name
+      prompt_path
+      properties_to_annotation
+      properties_to_param_dict
+      schema_to_docs
+      schema_to_rst_argument_descriptions
+      schema_to_signature
+      schemas_df
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      Message
+      SpecNames
+   

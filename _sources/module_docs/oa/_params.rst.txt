@@ -1,4 +1,0 @@
-oa._params
-==========
-.. automodule:: oa._params
-   :members:

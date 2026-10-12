@@ -1,0 +1,39 @@
+oa.util
+=======
+
+.. automodule:: oa.util
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      chunk_iterable
+      concat_lists
+      ensure_oa_client
+      ensure_openai_api_key
+      get_api_key_from_config
+      get_package_name
+      iso_date_to_utc_int
+      jsonl_dumps
+      jsonl_loads_iter
+      kv_strip_value
+      merge_multiple_signatures
+      mk_client
+      mk_local_files_saves_callback
+      mk_template_store
+      num_tokens
+      oa_extractors_obj
+      pricing_info
+      save_in_temp_dir
+      source_parameter_props_from
+      transpose_and_concatenate
+      transpose_iterable
+      utc_int_to_iso_date
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      ProcessingManager
+   

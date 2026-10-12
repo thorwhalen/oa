@@ -1,4 +1,0 @@
-oa.base
-=======
-.. automodule:: oa.base
-   :members:

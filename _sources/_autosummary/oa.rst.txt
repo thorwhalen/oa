@@ -1,0 +1,24 @@
+﻿oa
+==
+
+.. automodule:: oa
+
+   
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :recursive:
+
+   ask
+   audio
+   base
+   batch_embeddings
+   batches
+   chats
+   oa_types
+   openai_specs
+   stores
+   tools
+   util
+   vector_stores

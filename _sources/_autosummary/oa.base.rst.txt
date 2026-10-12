@@ -1,0 +1,21 @@
+oa.base
+=======
+
+.. automodule:: oa.base
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      chat
+      complete
+      compute_price
+      dalle
+      embeddings
+      list_engine_ids
+      model_information
+      normalize_text_input
+      text_is_valid
+      validate_texts_for_embeddings
+   

@@ -1,0 +1,29 @@
+oa.oa\_types
+============
+
+.. automodule:: oa.oa_types
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      heatmap_of_models_and_their_fields
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      BatchRequest
+      BatchRequestBody
+      EmbeddingResponse
+      InputDataJsonL
+      InputText
+      JsonL
+      JsonL[InputText]
+      RequestResponse
+      Response
+      ResponseBody
+      Response[Embedding]
+      Usage
+   

@@ -1,0 +1,33 @@
+oa.batches
+==========
+
+.. automodule:: oa.batches
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      batch_info_to_segments_and_embeddings
+      batches_within_range
+      get_batch_id_and_obj
+      get_batch_obj
+      get_output_file_data
+      get_segments_and_embeddings
+      mk_batch_file_embeddings_task
+      on_complete
+      raise_error
+      random_custom_id
+      request_counts
+   
+   .. rubric:: Exceptions
+
+   .. autosummary::
+   
+      BatchCancelledError
+      BatchError
+      BatchExpiredError
+      BatchFailedError
+      BatchFinalizingError
+      BatchInProgressError
+   

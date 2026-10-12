@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+
+<html :class="{ 'dark' : darkMode === true }" data-content_root="../" lang="en" x-data="{ darkMode: $persist(window.matchMedia('(prefers-color-scheme: dark)').matches), activeSection: ''}">
+<head>
+<script>
+    (function () {
+      // Set initial color scheme
+      if ((localStorage.getItem("_x_darkMode") === "true") || (window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+        document.documentElement.classList.add("dark");
+      }
+
+      // Watch for media preference changes
+      window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (event) => {
+        localStorage.setItem("_x_darkMode", event.matches);
+        document.documentElement.classList.toggle("dark", event.matches);
+      });
+    })();
+  </script>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta charset="utf-8"/>
+<meta content="#ffffff" media="(prefers-color-scheme: light)" name="theme-color"/>
+<meta content="#030711" media="(prefers-color-scheme: dark)" name="theme-color"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<link href="oa.util.html.md" rel="alternate" type="text/markdown"/>
+<link href="../llms.txt" rel="describedby" type="text/markdown"/>
+<link href="oa.util.html.md" rel="alternate" type="text/markdown"/>
+<link href="llms.txt" rel="describedby"/>
+<title>oa.util | oa</title>
+<meta content="oa.util | oa" property="og:title"/>
+<meta content="oa.util | oa" name="twitter:title"/>
+<link href="../_static/pygments.css?v=d75fae25" rel="stylesheet" type="text/css"/>
+<link href="../_static/theme.css?v=d6d7c91b" rel="stylesheet" type="text/css"/>
+<link href="../_static/copybutton.css?v=76b2166b" rel="stylesheet" type="text/css"/>
+<link href="../_static/epythet.css?v=7ed1c97d" rel="stylesheet" type="text/css"/>
+<link href="../search.html" rel="search" title="Search"/>
+<link href="../genindex.html" rel="index" title="Index"/>
+<link href="oa.vector_stores.html" rel="next" title="oa.vector_stores"/>
+<link href="oa.tools.html" rel="prev" title="oa.tools"/>
+</head>
+<body :class="{ 'overflow-hidden': showSidebar }" class="min-h-screen font-sans antialiased bg-background text-foreground" x-data="{ showSidebar: false, showScrollTop: false }">
+<div @click.self="showSidebar = false" class="fixed inset-0 z-50 overflow-hidden bg-background/80 backdrop-blur-sm md:hidden" x-cloak="" x-show="showSidebar"></div><div class="relative flex flex-col min-h-screen" id="page"><a class="absolute top-0 left-0 z-[100] block bg-background p-4 text-xl transition -translate-x-full opacity-0 focus:translate-x-0 focus:opacity-100" href="#content">
+      Skip to content
+    </a><header class="sticky top-0 z-40 w-full border-b shadow-xs border-border bg-background/90 backdrop-blur"><div class="container flex items-center h-14">
+<div class="hidden mr-4 md:flex">
+<a class="flex items-center mr-6" href="../index.html"><span class="hidden font-bold sm:inline-block text-clip whitespace-nowrap">oa</span>
+</a><nav class="flex items-center gap-6 text-sm font-medium">
+<a class="transition-colors hover:text-foreground/80 text-foreground/60" href="https://github.com/thorwhalen/oa" rel="noopener nofollow">GitHub</a>
+</nav></div><button @click="showSidebar = true" class="inline-flex items-center justify-center h-10 px-0 py-2 mr-2 text-base font-medium transition-colors rounded-md hover:text-accent-foreground hover:bg-transparent md:hidden" type="button">
+<svg aria-hidden="true" fill="currentColor" height="24" viewbox="0 96 960 960" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M152.587 825.087q-19.152 0-32.326-13.174t-13.174-32.326q0-19.152 13.174-32.326t32.326-13.174h440q19.152 0 32.326 13.174t13.174 32.326q0 19.152-13.174 32.326t-32.326 13.174h-440Zm0-203.587q-19.152 0-32.326-13.174T107.087 576q0-19.152 13.174-32.326t32.326-13.174h320q19.152 0 32.326 13.174T518.087 576q0 19.152-13.174 32.326T472.587 621.5h-320Zm0-203.587q-19.152 0-32.326-13.174t-13.174-32.326q0-19.152 13.174-32.326t32.326-13.174h440q19.152 0 32.326 13.174t13.174 32.326q0 19.152-13.174 32.326t-32.326 13.174h-440ZM708.913 576l112.174 112.174q12.674 12.674 12.674 31.826t-12.674 31.826Q808.413 764.5 789.261 764.5t-31.826-12.674l-144-144Q600 594.391 600 576t13.435-31.826l144-144q12.674-12.674 31.826-12.674t31.826 12.674q12.674 12.674 12.674 31.826t-12.674 31.826L708.913 576Z"></path>
+</svg>
+<span class="sr-only">Toggle navigation menu</span>
+</button>
+<div class="flex items-center justify-between flex-1 gap-2 sm:gap-4 md:justify-end">
+<div class="flex-1 w-full md:w-auto md:flex-none"><form @keydown.k.window.meta="$refs.search.focus()" action="../search.html" class="relative flex items-center group" id="searchbox" method="get">
+<input aria-label="Search the docs" class="inline-flex items-center font-medium transition-colors bg-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background border border-input hover:bg-accent focus:bg-accent hover:text-accent-foreground focus:text-accent-foreground hover:placeholder-accent-foreground py-2 px-4 relative h-9 w-full justify-start rounded-[0.5rem] text-sm text-muted-foreground sm:pr-12 md:w-40 lg:w-64" id="search-input" name="q" placeholder="Search ..." type="search" x-ref="search"/>
+<kbd class="pointer-events-none absolute right-1.5 top-2 hidden h-5 select-none text-muted-foreground items-center gap-1 rounded border border-border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex group-hover:bg-accent group-hover:text-accent-foreground">
+<span class="text-xs">⌘</span>
+    K
+  </kbd>
+</form>
+</div>
+<nav class="flex items-center gap-1">
+<button @click="darkMode = !darkMode" class="relative inline-flex items-center justify-center px-0 text-sm font-medium transition-colors rounded-md hover:bg-accent hover:text-accent-foreground h-9 w-9" title="Toggle color scheme" type="button">
+<svg class="absolute transition-all scale-100 rotate-0 dark:-rotate-90 dark:scale-0" fill="currentColor" height="16" viewbox="0 96 960 960" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 685q45.456 0 77.228-31.772Q589 621.456 589 576q0-45.456-31.772-77.228Q525.456 467 480 467q-45.456 0-77.228 31.772Q371 530.544 371 576q0 45.456 31.772 77.228Q434.544 685 480 685Zm0 91q-83 0-141.5-58.5T280 576q0-83 58.5-141.5T480 376q83 0 141.5 58.5T680 576q0 83-58.5 141.5T480 776ZM80 621.5q-19.152 0-32.326-13.174T34.5 576q0-19.152 13.174-32.326T80 530.5h80q19.152 0 32.326 13.174T205.5 576q0 19.152-13.174 32.326T160 621.5H80Zm720 0q-19.152 0-32.326-13.174T754.5 576q0-19.152 13.174-32.326T800 530.5h80q19.152 0 32.326 13.174T925.5 576q0 19.152-13.174 32.326T880 621.5h-80Zm-320-320q-19.152 0-32.326-13.174T434.5 256v-80q0-19.152 13.174-32.326T480 130.5q19.152 0 32.326 13.174T525.5 176v80q0 19.152-13.174 32.326T480 301.5Zm0 720q-19.152 0-32.326-13.17Q434.5 995.152 434.5 976v-80q0-19.152 13.174-32.326T480 850.5q19.152 0 32.326 13.174T525.5 896v80q0 19.152-13.174 32.33-13.174 13.17-32.326 13.17ZM222.174 382.065l-43-42Q165.5 327.391 166 308.239t13.174-33.065q13.435-13.674 32.587-13.674t32.065 13.674l42.239 43q12.674 13.435 12.555 31.706-.12 18.272-12.555 31.946-12.674 13.674-31.445 13.413-18.772-.261-32.446-13.174Zm494 494.761-42.239-43q-12.674-13.435-12.674-32.087t12.674-31.565Q686.609 756.5 705.38 757q18.772.5 32.446 13.174l43 41.761Q794.5 824.609 794 843.761t-13.174 33.065Q767.391 890.5 748.239 890.5t-32.065-13.674Zm-42-494.761Q660.5 369.391 661 350.62q.5-18.772 13.174-32.446l41.761-43Q728.609 261.5 747.761 262t33.065 13.174q13.674 13.435 13.674 32.587t-13.674 32.065l-43 42.239q-13.435 12.674-31.706 12.555-18.272-.12-31.946-12.555Zm-495 494.761Q165.5 863.391 165.5 844.239t13.674-32.065l43-42.239q13.435-12.674 32.087-12.674t31.565 12.674Q299.5 782.609 299 801.38q-.5 18.772-13.174 32.446l-41.761 43Q231.391 890.5 212.239 890t-33.065-13.174ZM480 576Z"></path>
+</svg>
+<svg class="absolute transition-all scale-0 rotate-90 dark:rotate-0 dark:scale-100" fill="currentColor" height="16" viewbox="0 96 960 960" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 936q-151 0-255.5-104.5T120 576q0-138 90-239.5T440 218q25-3 39 18t-1 44q-17 26-25.5 55t-8.5 61q0 90 63 153t153 63q31 0 61.5-9t54.5-25q21-14 43-1.5t19 39.5q-14 138-117.5 229T480 936Zm0-80q88 0 158-48.5T740 681q-20 5-40 8t-40 3q-123 0-209.5-86.5T364 396q0-20 3-40t8-40q-78 32-126.5 102T200 576q0 116 82 198t198 82Zm-10-270Z"></path>
+</svg>
+</button>
+</nav>
+</div>
+</div>
+</header>
+<div class="flex-1"><div class="container md:grid md:grid-cols-[220px_minmax(0,1fr)] md:gap-6 lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-10"><aside :aria-hidden="!showSidebar" :class="{ 'translate-x-0': showSidebar }" class="fixed inset-y-0 left-0 md:top-14 z-50 md:z-30 bg-background md:bg-transparent transition-all duration-100 -translate-x-full md:translate-x-0 ml-0 p-6 md:p-0 md:-ml-2 md:h-[calc(100vh-3.5rem)] w-5/6 md:w-full overflow-y-auto border-r border-border md:sticky" id="left-sidebar">
+<a class="justify-start text-sm md:!hidden bg-background" href="../index.html"><span class="font-bold text-clip whitespace-nowrap">oa</span>
+</a>
+<div class="relative overflow-hidden md:overflow-auto my-4 md:my-0">
+<div class="overflow-y-auto h-full w-full relative pr-6"><nav class="flex md:hidden flex-col font-medium mt-4">
+<a href="https://github.com/thorwhalen/oa" rel="nofollow noopener">GitHub</a>
+</nav><nav class="table w-full min-w-full my-6 lg:my-8">
+<ul class="current">
+<li class="toctree-l1 current" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="../api.html">API reference<button @click.prevent.stop="expanded = !expanded" type="button" x-cloak=""><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul class="current" x-show="expanded">
+<li class="toctree-l2 current" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="oa.html">oa<button @click.prevent.stop="expanded = !expanded" type="button" x-cloak=""><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul class="current" x-show="expanded">
+<li class="toctree-l3"><a class="reference internal" href="oa.ask.html">oa.ask</a></li>
+<li class="toctree-l3"><a class="reference internal" href="oa.audio.html">oa.audio</a></li>
+<li class="toctree-l3"><a class="reference internal" href="oa.base.html">oa.base</a></li>
+<li class="toctree-l3"><a class="reference internal" href="oa.batch_embeddings.html">oa.batch_embeddings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="oa.batches.html">oa.batches</a></li>
+<li class="toctree-l3"><a class="reference internal" href="oa.chats.html">oa.chats</a></li>
+<li class="toctree-l3"><a class="reference internal" href="oa.oa_types.html">oa.oa_types</a></li>
+<li class="toctree-l3"><a class="reference internal" href="oa.openai_specs.html">oa.openai_specs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="oa.stores.html">oa.stores</a></li>
+<li class="toctree-l3"><a class="reference internal" href="oa.tools.html">oa.tools</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">oa.util</a></li>
+<li class="toctree-l3"><a class="reference internal" href="oa.vector_stores.html">oa.vector_stores</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+<button @click="showSidebar = false" class="absolute md:hidden right-4 top-4 rounded-sm opacity-70 transition-opacity hover:opacity-100" type="button">
+<svg class="h-4 w-4" fill="currentColor" height="24" stroke="none" viewbox="0 96 960 960" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 632 284 828q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536 576l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480 632Z"></path>
+</svg>
+</button>
+</aside>
+<main class="relative py-6 lg:gap-10 lg:py-8 xl:grid xl:grid-cols-[1fr_300px]">
+<div class="w-full min-w-0 mx-auto">
+<nav aria-label="breadcrumbs" class="flex items-center mb-4 space-x-1 text-sm text-muted-foreground">
+<a class="overflow-hidden text-ellipsis whitespace-nowrap hover:text-foreground" href="../index.html">
+<span class="hidden md:inline">oa</span>
+<svg aria-label="Home" class="md:hidden" fill="currentColor" height="18" stroke="none" viewbox="0 96 960 960" width="18" xmlns="http://www.w3.org/2000/svg">
+<path d="M240 856h120V616h240v240h120V496L480 316 240 496v360Zm-80 80V456l320-240 320 240v480H520V696h-80v240H160Zm320-350Z"></path>
+</svg>
+</a>
+<div class="mr-1">/</div><a class="hover:text-foreground overflow-hidden text-ellipsis whitespace-nowrap" href="../api.html">API reference</a>
+<div class="mr-1">/</div><a class="hover:text-foreground overflow-hidden text-ellipsis whitespace-nowrap" href="oa.html">oa</a>
+<div class="mr-1">/</div><span aria-current="page" class="font-medium text-foreground overflow-hidden text-ellipsis whitespace-nowrap">oa.util</span>
+</nav>
+<div id="content" role="main">
+<section id="module-oa.util">
+<span id="oa-util"></span><h1>oa.util<a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#module-oa.util">¶</a></h1>
+<p>oa utils</p>
+<p class="rubric">Functions</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#oa.util.chunk_iterable" title="oa.util.chunk_iterable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chunk_iterable</span></code></a>(iterable, chk_size, *[, ...])</p></td>
+<td><p>Divide an iterable into chunks/batches of a specific size.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#oa.util.concat_lists" title="oa.util.concat_lists"><code class="xref py py-obj docutils literal notranslate"><span class="pre">concat_lists</span></code></a>(lists)</p></td>
+<td><p>Concatenate a list of lists into a single list.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#oa.util.ensure_oa_client" title="oa.util.ensure_oa_client"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ensure_oa_client</span></code></a>(oa_client)</p></td>
+<td><p>Ensure that an OpenAI client is available, either by using the provided one or creating a new one.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#oa.util.ensure_openai_api_key" title="oa.util.ensure_openai_api_key"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ensure_openai_api_key</span></code></a>()</p></td>
+<td><p>Make sure the module-level <code class="docutils literal notranslate"><span class="pre">openai</span></code> client has an API key, resolving it lazily.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_api_key_from_config</span></code>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#oa.util.get_package_name" title="oa.util.get_package_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_package_name</span></code></a>()</p></td>
+<td><p>Return current package name</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#oa.util.iso_date_to_utc_int" title="oa.util.iso_date_to_utc_int"><code class="xref py py-obj docutils literal notranslate"><span class="pre">iso_date_to_utc_int</span></code></a>(iso_date)</p></td>
+<td><p>Convert iso date string to utc integer timestamp.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#oa.util.jsonl_dumps" title="oa.util.jsonl_dumps"><code class="xref py py-obj docutils literal notranslate"><span class="pre">jsonl_dumps</span></code></a>(x[, encoding])</p></td>
+<td><p>Serialize an iterable as JSONL bytes</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#oa.util.jsonl_loads_iter" title="oa.util.jsonl_loads_iter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">jsonl_loads_iter</span></code></a>(src, *[, get_lines, ...])</p></td>
+<td><p>Deserialize JSONL bytes into a python iterable (dict or list of dicts)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">kv_strip_value</span></code>(k, v)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">merge_multiple_signatures</span></code>(iterable_of_sigs, ...)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">mk_client</span></code>([api_key])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#oa.util.mk_local_files_saves_callback" title="oa.util.mk_local_files_saves_callback"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mk_local_files_saves_callback</span></code></a>([rootdir, ...])</p></td>
+<td><p>Returns a function that takes two inputs (i: int, obj: Any) and saves the serializer(obj) bytes in a file named index_to_filename(i) in the rootdir.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">mk_template_store</span></code>(template_store)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#oa.util.num_tokens" title="oa.util.num_tokens"><code class="xref py py-obj docutils literal notranslate"><span class="pre">num_tokens</span></code></a>([text, model])</p></td>
+<td><p>Return the number of tokens in a string, under given model.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#oa.util.oa_extractors_obj" title="oa.util.oa_extractors_obj"><code class="xref py py-obj docutils literal notranslate"><span class="pre">oa_extractors_obj</span></code></a>(**named_paths)</p></td>
+<td><p>Return a SimpleNamespace of extractors for the named paths</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#oa.util.pricing_info" title="oa.util.pricing_info"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pricing_info</span></code></a>([category, print_data_date])</p></td>
+<td><p>Return the pricing info for the OpenAI API.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#oa.util.save_in_temp_dir" title="oa.util.save_in_temp_dir"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_in_temp_dir</span></code></a>(obj[, serializer])</p></td>
+<td><p>Saves obj in a temp file, using serializer to serialize it, and returns its path.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#oa.util.source_parameter_props_from" title="oa.util.source_parameter_props_from"><code class="xref py py-obj docutils literal notranslate"><span class="pre">source_parameter_props_from</span></code></a>(parameters)</p></td>
+<td><p>A decorator that will change the annotation and default of the parameters of the decorated function, sourcing them from <code class="code docutils literal notranslate"><span class="pre">parameters</span></code>, matching them by name.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">transpose_and_concatenate</span></code>(iterable_of_tuples)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">transpose_iterable</span></code>(iterable_of_tuples)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#oa.util.utc_int_to_iso_date" title="oa.util.utc_int_to_iso_date"><code class="xref py py-obj docutils literal notranslate"><span class="pre">utc_int_to_iso_date</span></code></a>(utc_time)</p></td>
+<td><p>Convert utc integer timestamp to more human readable iso format.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Classes</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#oa.util.ProcessingManager" title="oa.util.ProcessingManager"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ProcessingManager</span></code></a>(pending_items, ...[, ...])</p></td>
+<td><p>A class to manage and monitor the processing of a collection of items, allowing customizable processing functions, status handling, and timing control, using keys to track items.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="oa.util.ProcessingManager">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">oa.util.</span></span><span class="sig-name descname"><span class="pre">ProcessingManager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pending_items</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">processing_function</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">handle_status_function</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wait_time_function</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status_check_interval</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_cycles</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">completed_items</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cycles</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/oa/util.html#ProcessingManager"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#oa.util.ProcessingManager" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#oa.util.ProcessingManager'">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Generic" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Generic</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">KT</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">VT</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">Result</span></code>]</p>
+<p>A class to manage and monitor the processing of a collection of items, allowing customizable
+processing functions, status handling, and timing control, using keys to track items.</p>
+<p><strong>Use Case</strong>:</p>
+<ul class="simple">
+<li><p>Ideal for scenarios where you have a set of items identified by keys that require periodic status
+checks until they reach a completed state.</p></li>
+<li><p>Useful for managing batch jobs, asynchronous tasks, or any operations where items may not complete
+processing immediately.</p></li>
+</ul>
+<p><strong>Attributes</strong>:</p>
+<ul>
+<li><dl class="simple">
+<dt><strong>pending_items</strong> (<code class="code docutils literal notranslate"><span class="pre">MutableMapping[KT,</span> <span class="pre">VT]</span></code>): The mapping of keys to pending items.</dt><dd><ul class="simple">
+<li><p>If an iterable is provided, it is converted to a dict using <code class="code docutils literal notranslate"><span class="pre">dict(enumerate(iterable))</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p><strong>processing_function</strong> (<code class="code docutils literal notranslate"><span class="pre">Callable[[VT],</span> <span class="pre">Tuple[Status,</span> <span class="pre">Result]]</span></code>): A function that takes a value (item)
+and returns a tuple of <code class="code docutils literal notranslate"><span class="pre">(status,</span> <span class="pre">result)</span></code>.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="code docutils literal notranslate"><span class="pre">status</span></code> (<code class="code docutils literal notranslate"><span class="pre">Status</span></code>): Indicates the current state of the item (e.g., <code class="code docutils literal notranslate"><span class="pre">'completed'</span></code>, <code class="code docutils literal notranslate"><span class="pre">'in_progress'</span></code>, <code class="code docutils literal notranslate"><span class="pre">'failed'</span></code>).</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">result</span></code> (<code class="code docutils literal notranslate"><span class="pre">Result</span></code>): Additional data or context about the item’s processing result.</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><strong>handle_status_function</strong> (<code class="code docutils literal notranslate"><span class="pre">Callable[[VT,</span> <span class="pre">Status,</span> <span class="pre">Result],</span> <span class="pre">bool]</span></code>): A function that decides whether to remove
+an item from <code class="code docutils literal notranslate"><span class="pre">pending_items</span></code> based on its <code class="code docutils literal notranslate"><span class="pre">status</span></code> and <code class="code docutils literal notranslate"><span class="pre">result</span></code>.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Returns <code class="code docutils literal notranslate"><span class="pre">True</span></code> if the item should be removed (e.g., processing is complete or failed irrecoverably).</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><strong>wait_time_function</strong> (<code class="code docutils literal notranslate"><span class="pre">Callable[[float,</span> <span class="pre">Dict],</span> <span class="pre">float]</span></code>): A function that determines how long to wait
+before the next processing cycle.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Takes <code class="code docutils literal notranslate"><span class="pre">cycle_duration</span></code> (time taken for the last cycle) and <code class="code docutils literal notranslate"><span class="pre">locals()</span></code> dictionary as inputs.</p></li>
+<li><p>Returns the sleep time in seconds.</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><strong>status_check_interval</strong> (<code class="code docutils literal notranslate"><span class="pre">float</span></code>): Desired minimum time (in seconds) between status checks. Defaults to <code class="code docutils literal notranslate"><span class="pre">5.0</span></code>.</p></li>
+<li><p><strong>max_cycles</strong> (<code class="code docutils literal notranslate"><span class="pre">Optional[int]</span></code>): Maximum number of processing cycles to perform. If <code class="code docutils literal notranslate"><span class="pre">None</span></code>, there is no limit.</p></li>
+<li><p><strong>completed_items</strong> (<code class="code docutils literal notranslate"><span class="pre">MutableMapping[KT,</span> <span class="pre">Result]</span></code>): Mapping of keys to results for items that have been processed.</p></li>
+<li><p><strong>cycles</strong> (<code class="code docutils literal notranslate"><span class="pre">int</span></code>): Number of processing cycles that have been performed.</p></li>
+</ul>
+<dl class="field-list simple">
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="oa.util.ProcessingManager.process_items">
+<span class="sig-name descname"><span class="pre">process_items</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/oa/util.html#ProcessingManager.process_items"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#oa.util.ProcessingManager.process_items" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#oa.util.ProcessingManager.process_items'">¶</a></dt>
+<dd><p>Runs the processing loop until all pending items are processed or max_cycles is reached.</p>
+<p>In each cycle:</p>
+<ul class="simple">
+<li><p>Calls <code class="code docutils literal notranslate"><span class="pre">process_pending_items()</span></code> to process the current pending items.</p></li>
+<li><p>Increments the cycle count.</p></li>
+<li><p>Calculates the duration of the cycle and determines how long to sleep before the next cycle
+using <code class="code docutils literal notranslate"><span class="pre">wait_time_function</span></code>.</p></li>
+<li><p>Sleeps for the calculated duration if there are still pending items.</p></li>
+</ul>
+<p>The loop continues until:</p>
+<ul class="simple">
+<li><p><code class="code docutils literal notranslate"><span class="pre">pending_items</span></code> is empty (all items have been processed), or</p></li>
+<li><p>The number of cycles reaches <code class="code docutils literal notranslate"><span class="pre">max_cycles</span></code>, if specified.</p></li>
+</ul>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="oa.util.ProcessingManager.process_pending_items">
+<span class="sig-name descname"><span class="pre">process_pending_items</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/oa/util.html#ProcessingManager.process_pending_items"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#oa.util.ProcessingManager.process_pending_items" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#oa.util.ProcessingManager.process_pending_items'">¶</a></dt>
+<dd><p>Processes the pending items once.</p>
+<p>This method iterates over each key-value pair in <code class="code docutils literal notranslate"><span class="pre">pending_items</span></code>, applies the <code class="code docutils literal notranslate"><span class="pre">processing_function</span></code>
+to determine its status, and then uses <code class="code docutils literal notranslate"><span class="pre">handle_status_function</span></code> to decide whether to
+remove the item from <code class="code docutils literal notranslate"><span class="pre">pending_items</span></code>. Items removed are added to <code class="code docutils literal notranslate"><span class="pre">completed_items</span></code> with their results.</p>
+</dd></dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="oa.util.ProcessingManager.status">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">status</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" rel="nofollow noopener" title="(in Python v3.15)"><span class="pre">bool</span><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a></span><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#oa.util.ProcessingManager.status" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#oa.util.ProcessingManager.status'">¶</a></dt>
+<dd><p>Indicates whether all pending items have been processed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="code docutils literal notranslate"><span class="pre">True</span></code> if there are no more pending items, <code class="code docutils literal notranslate"><span class="pre">False</span></code> otherwise.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" rel="nofollow noopener" title="(in Python v3.15)"><em>bool</em><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a></p>
+</dd>
+</dl>
+</dd></dl>
+</dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="oa.util.chunk_iterable">
+<span class="sig-prename descclassname"><span class="pre">oa.util.</span></span><span class="sig-name descname"><span class="pre">chunk_iterable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">iterable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chk_size</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">chunk_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/oa/util.html#chunk_iterable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#oa.util.chunk_iterable" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#oa.util.chunk_iterable'">¶</a></dt>
+<dd><p>Divide an iterable into chunks/batches of a specific size.</p>
+<p>Handles both mappings (e.g. dicts) and non-mappings (lists, tuples, sets…)
+as you probably expect it to (if you give a dict input, it will chunk on the
+(key, value) items and return dicts of these).
+Thought note that you always can control the type of the chunks with the
+<code class="code docutils literal notranslate"><span class="pre">chunk_type</span></code> argument.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>iterable</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterable" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterable</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a>(<code class="docutils literal notranslate"><span class="pre">T</span></code>)] | <a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mapping</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a>(<code class="docutils literal notranslate"><span class="pre">KT</span></code>), <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a>(<code class="docutils literal notranslate"><span class="pre">VT</span></code>)]</span>) – The iterable or mapping to divide.</p></li>
+<li><p><strong>chk_size</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a></span>) – The size of each chunk.</p></li>
+<li><p><strong>chunk_type</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Callable" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Callable</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a>[<a class="reference external" href="https://docs.python.org/3/builtins/constants.html#Ellipsis" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-data docutils literal notranslate"><span class="pre">...</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a>, <a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterable" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterable</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a>(<code class="docutils literal notranslate"><span class="pre">T</span></code>)] | <a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mapping</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a>(<code class="docutils literal notranslate"><span class="pre">KT</span></code>), <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a>(<code class="docutils literal notranslate"><span class="pre">VT</span></code>)]] | <a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a></span>) – The type of the chunks (list, tuple, set, dict…).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterator" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterator</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a>[<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a>(<code class="docutils literal notranslate"><span class="pre">T</span></code>)] | <a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a>(<code class="docutils literal notranslate"><span class="pre">T</span></code>), <a class="reference external" href="https://docs.python.org/3/builtins/constants.html#Ellipsis" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-data docutils literal notranslate"><span class="pre">...</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a>] | <a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a>(<code class="docutils literal notranslate"><span class="pre">KT</span></code>), <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a>(<code class="docutils literal notranslate"><span class="pre">VT</span></code>)]]</span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>An iterator of dicts if the input is a Mapping, otherwise an iterator
+of collections (list, tuple, set…).</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">chunk_iterable</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="mi">2</span><span class="p">))</span>
+</span><span id="line-2"><span class="go">[[1, 2], [3, 4], [5]]</span>
+</span></code></pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">chunk_iterable</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="mi">3</span><span class="p">,</span> <span class="n">chunk_type</span><span class="o">=</span><span class="nb">tuple</span><span class="p">))</span>
+</span><span id="line-2"><span class="go">[(1, 2, 3), (4, 5)]</span>
+</span></code></pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">chunk_iterable</span><span class="p">({</span><span class="s2">"a"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">"b"</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">"c"</span><span class="p">:</span> <span class="mi">3</span><span class="p">},</span> <span class="mi">2</span><span class="p">))</span>
+</span><span id="line-2"><span class="go">[{'a': 1, 'b': 2}, {'c': 3}]</span>
+</span></code></pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">chunk_iterable</span><span class="p">({</span><span class="s2">"x"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">"y"</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">"z"</span><span class="p">:</span> <span class="mi">3</span><span class="p">},</span> <span class="mi">1</span><span class="p">,</span> <span class="n">chunk_type</span><span class="o">=</span><span class="nb">dict</span><span class="p">))</span>
+</span><span id="line-2"><span class="go">[{'x': 1}, {'y': 2}, {'z': 3}]</span>
+</span></code></pre></div>
+</div>
+</dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="oa.util.concat_lists">
+<span class="sig-prename descclassname"><span class="pre">oa.util.</span></span><span class="sig-name descname"><span class="pre">concat_lists</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lists</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/oa/util.html#concat_lists"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#oa.util.concat_lists" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#oa.util.concat_lists'">¶</a></dt>
+<dd><p>Concatenate a list of lists into a single list.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="gp">&gt;&gt;&gt; </span><span class="n">concat_lists</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]])</span>
+</span><span id="line-2"><span class="go">[1, 2, 3, 4, 5, 6]</span>
+</span></code></pre></div>
+</div>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="oa.util.ensure_oa_client">
+<span class="sig-prename descclassname"><span class="pre">oa.util.</span></span><span class="sig-name descname"><span class="pre">ensure_oa_client</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">oa_client</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/oa/util.html#ensure_oa_client"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#oa.util.ensure_oa_client" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#oa.util.ensure_oa_client'">¶</a></dt>
+<dd><p>Ensure that an OpenAI client is available, either by using the provided one or creating a new one.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">OpenAI</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="oa.util.ensure_openai_api_key">
+<span class="sig-prename descclassname"><span class="pre">oa.util.</span></span><span class="sig-name descname"><span class="pre">ensure_openai_api_key</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/oa/util.html#ensure_openai_api_key"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#oa.util.ensure_openai_api_key" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#oa.util.ensure_openai_api_key'">¶</a></dt>
+<dd><p>Make sure the module-level <code class="docutils literal notranslate"><span class="pre">openai</span></code> client has an API key, resolving it lazily.</p>
+<p>The key is looked up (config store, environment, then asking the user) the
+first time something needs it, never at <code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">oa</span></code> time, so importing
+<code class="docutils literal notranslate"><span class="pre">oa</span></code> works – and dependents’ test suites can run – when no key is set.
+Resolution follows oa’s own order (store before environment), as when the key
+was set at import, and happens once: a key set on <code class="docutils literal notranslate"><span class="pre">openai.api_key</span></code>
+afterwards is respected. If no key is stored or in the environment, a key
+already set on <code class="docutils literal notranslate"><span class="pre">openai.api_key</span></code> is kept rather than asking the user.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="oa.util.get_package_name">
+<span class="sig-prename descclassname"><span class="pre">oa.util.</span></span><span class="sig-name descname"><span class="pre">get_package_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/oa/util.html#get_package_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#oa.util.get_package_name" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#oa.util.get_package_name'">¶</a></dt>
+<dd><p>Return current package name</p>
+</dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="oa.util.iso_date_to_utc_int">
+<span class="sig-prename descclassname"><span class="pre">oa.util.</span></span><span class="sig-name descname"><span class="pre">iso_date_to_utc_int</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">iso_date</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/oa/util.html#iso_date_to_utc_int"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#oa.util.iso_date_to_utc_int" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#oa.util.iso_date_to_utc_int'">¶</a></dt>
+<dd><p>Convert iso date string to utc integer timestamp.
+Inverse of utc_int_to_iso_date.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a></span></p>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="gp">&gt;&gt;&gt; </span><span class="n">iso_date_to_utc_int</span><span class="p">(</span><span class="s1">'2024-08-12T14:01:57+00:00'</span><span class="p">)</span>
+</span><span id="line-2"><span class="go">1723471317</span>
+</span></code></pre></div>
+</div>
+</dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="oa.util.jsonl_dumps">
+<span class="sig-prename descclassname"><span class="pre">oa.util.</span></span><span class="sig-name descname"><span class="pre">jsonl_dumps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'utf-8'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/oa/util.html#jsonl_dumps"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#oa.util.jsonl_dumps" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#oa.util.jsonl_dumps'">¶</a></dt>
+<dd><p>Serialize an iterable as JSONL bytes</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#bytes" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a></span></p>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="gp">&gt;&gt;&gt; </span><span class="n">jsonl_dumps</span><span class="p">([{</span><span class="s1">'a'</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span> <span class="p">{</span><span class="s1">'b'</span><span class="p">:</span> <span class="mi">2</span><span class="p">}])</span>
+</span><span id="line-2"><span class="go">b'{"a": 1}\n{"b": 2}'</span>
+</span></code></pre></div>
+</div>
+</dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="oa.util.jsonl_loads_iter">
+<span class="sig-prename descclassname"><span class="pre">oa.util.</span></span><span class="sig-name descname"><span class="pre">jsonl_loads_iter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">src</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_lines</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;method</span> <span class="pre">'splitlines'</span> <span class="pre">of</span> <span class="pre">'bytes'</span> <span class="pre">objects&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">line_egress</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">operator.methodcaller('strip')</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/oa/util.html#jsonl_loads_iter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#oa.util.jsonl_loads_iter" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#oa.util.jsonl_loads_iter'">¶</a></dt>
+<dd><p>Deserialize JSONL bytes into a python iterable (dict or list of dicts)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterable" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterable</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a>[<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a>]</span></p>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">jsonl_loads</span><span class="p">(</span><span class="sa">b</span><span class="s1">'</span><span class="se">\n</span><span class="s1">{"a": 1}</span><span class="se">\n\n</span><span class="s1">{"b": 2}'</span><span class="p">))</span>
+</span><span id="line-2"><span class="go">[{'a': 1}, {'b': 2}]</span>
+</span></code></pre></div>
+</div>
+</dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="oa.util.mk_local_files_saves_callback">
+<span class="sig-prename descclassname"><span class="pre">oa.util.</span></span><span class="sig-name descname"><span class="pre">mk_local_files_saves_callback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rootdir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">serializer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;built-in</span> <span class="pre">function</span> <span class="pre">dumps&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index_to_filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;built-in</span> <span class="pre">method</span> <span class="pre">format</span> <span class="pre">of</span> <span class="pre">str</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">print_dir_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/oa/util.html#mk_local_files_saves_callback"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#oa.util.mk_local_files_saves_callback" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#oa.util.mk_local_files_saves_callback'">¶</a></dt>
+<dd><p>Returns a function that takes two inputs (i: int, obj: Any) and saves the
+serializer(obj) bytes in a file named index_to_filename(i) in the rootdir.
+If rootdir, a temp dir is used.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="oa.util.num_tokens">
+<span class="sig-prename descclassname"><span class="pre">oa.util.</span></span><span class="sig-name descname"><span class="pre">num_tokens</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'gpt-3.5-turbo'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/oa/util.html#num_tokens"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#oa.util.num_tokens" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#oa.util.num_tokens'">¶</a></dt>
+<dd><p>Return the number of tokens in a string, under given model.</p>
+<p>keywords: token count, number of tokens</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="oa.util.oa_extractors_obj">
+<span class="sig-prename descclassname"><span class="pre">oa.util.</span></span><span class="sig-name descname"><span class="pre">oa_extractors_obj</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">named_paths</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/oa/util.html#oa_extractors_obj"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#oa.util.oa_extractors_obj" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#oa.util.oa_extractors_obj'">¶</a></dt>
+<dd><p>Return a SimpleNamespace of extractors for the named paths</p>
+</dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="oa.util.pricing_info">
+<span class="sig-prename descclassname"><span class="pre">oa.util.</span></span><span class="sig-name descname"><span class="pre">pricing_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">category</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">print_data_date</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/oa/util.html#pricing_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#oa.util.pricing_info" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#oa.util.pricing_info'">¶</a></dt>
+<dd><p>Return the pricing info for the OpenAI API.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>These are not live prices. Live prices can be found here:</p>
+</div>
+<p>The information pricing_info returns is taken from the file <code class="code docutils literal notranslate"><span class="pre">openai_api_pricing_info.json</span></code>
+in the <code class="code docutils literal notranslate"><span class="pre">data</span></code> directory of the package.
+To print a message with the data date, do <code class="code docutils literal notranslate"><span class="pre">pricing_info(print_data_date=True)</span></code>.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="oa.util.save_in_temp_dir">
+<span class="sig-prename descclassname"><span class="pre">oa.util.</span></span><span class="sig-name descname"><span class="pre">save_in_temp_dir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">serializer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;built-in</span> <span class="pre">function</span> <span class="pre">dumps&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/oa/util.html#save_in_temp_dir"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#oa.util.save_in_temp_dir" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#oa.util.save_in_temp_dir'">¶</a></dt>
+<dd><p>Saves obj in a temp file, using serializer to serialize it, and returns its path.</p>
+</dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="oa.util.source_parameter_props_from">
+<span class="sig-prename descclassname"><span class="pre">oa.util.</span></span><span class="sig-name descname"><span class="pre">source_parameter_props_from</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/oa/util.html#source_parameter_props_from"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#oa.util.source_parameter_props_from" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#oa.util.source_parameter_props_from'">¶</a></dt>
+<dd><p>A decorator that will change the annotation and default of the parameters of the
+decorated function, sourcing them from <code class="code docutils literal notranslate"><span class="pre">parameters</span></code>, matching them by name.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="oa.util.utc_int_to_iso_date">
+<span class="sig-prename descclassname"><span class="pre">oa.util.</span></span><span class="sig-name descname"><span class="pre">utc_int_to_iso_date</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">utc_time</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/oa/util.html#utc_int_to_iso_date"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#oa.util.utc_int_to_iso_date" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#oa.util.utc_int_to_iso_date'">¶</a></dt>
+<dd><p>Convert utc integer timestamp to more human readable iso format.
+Inverse of iso_date_to_utc_int.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a></span></p>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="gp">&gt;&gt;&gt; </span><span class="n">utc_int_to_iso_date</span><span class="p">(</span><span class="mi">1723471317</span><span class="p">)</span>
+</span><span id="line-2"><span class="go">'2024-08-12T14:01:57+00:00'</span>
+</span></code></pre></div>
+</div>
+</dd></dl>
+</section>
+</div></div><aside class="hidden text-sm xl:block" id="right-sidebar">
+<div class="sticky top-16 -mt-10 max-h-[calc(100vh-5rem)] h-full overflow-y-auto pt-6 space-y-2"><p class="font-medium">On this page</p>
+<ul>
+<li><a :data-current="activeSection === '#oa.util.ProcessingManager'" class="reference internal" href="#oa.util.ProcessingManager"><code class="docutils literal notranslate"><span class="pre">ProcessingManager</span></code></a><ul>
+<li><a :data-current="activeSection === '#oa.util.ProcessingManager.process_items'" class="reference internal" href="#oa.util.ProcessingManager.process_items"><code class="docutils literal notranslate"><span class="pre">ProcessingManager.process_items()</span></code></a></li>
+<li><a :data-current="activeSection === '#oa.util.ProcessingManager.process_pending_items'" class="reference internal" href="#oa.util.ProcessingManager.process_pending_items"><code class="docutils literal notranslate"><span class="pre">ProcessingManager.process_pending_items()</span></code></a></li>
+<li><a :data-current="activeSection === '#oa.util.ProcessingManager.status'" class="reference internal" href="#oa.util.ProcessingManager.status"><code class="docutils literal notranslate"><span class="pre">ProcessingManager.status</span></code></a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#oa.util.chunk_iterable'" class="reference internal" href="#oa.util.chunk_iterable"><code class="docutils literal notranslate"><span class="pre">chunk_iterable()</span></code></a></li>
+<li><a :data-current="activeSection === '#oa.util.concat_lists'" class="reference internal" href="#oa.util.concat_lists"><code class="docutils literal notranslate"><span class="pre">concat_lists()</span></code></a></li>
+<li><a :data-current="activeSection === '#oa.util.ensure_oa_client'" class="reference internal" href="#oa.util.ensure_oa_client"><code class="docutils literal notranslate"><span class="pre">ensure_oa_client()</span></code></a></li>
+<li><a :data-current="activeSection === '#oa.util.ensure_openai_api_key'" class="reference internal" href="#oa.util.ensure_openai_api_key"><code class="docutils literal notranslate"><span class="pre">ensure_openai_api_key()</span></code></a></li>
+<li><a :data-current="activeSection === '#oa.util.get_package_name'" class="reference internal" href="#oa.util.get_package_name"><code class="docutils literal notranslate"><span class="pre">get_package_name()</span></code></a></li>
+<li><a :data-current="activeSection === '#oa.util.iso_date_to_utc_int'" class="reference internal" href="#oa.util.iso_date_to_utc_int"><code class="docutils literal notranslate"><span class="pre">iso_date_to_utc_int()</span></code></a></li>
+<li><a :data-current="activeSection === '#oa.util.jsonl_dumps'" class="reference internal" href="#oa.util.jsonl_dumps"><code class="docutils literal notranslate"><span class="pre">jsonl_dumps()</span></code></a></li>
+<li><a :data-current="activeSection === '#oa.util.jsonl_loads_iter'" class="reference internal" href="#oa.util.jsonl_loads_iter"><code class="docutils literal notranslate"><span class="pre">jsonl_loads_iter()</span></code></a></li>
+<li><a :data-current="activeSection === '#oa.util.mk_local_files_saves_callback'" class="reference internal" href="#oa.util.mk_local_files_saves_callback"><code class="docutils literal notranslate"><span class="pre">mk_local_files_saves_callback()</span></code></a></li>
+<li><a :data-current="activeSection === '#oa.util.num_tokens'" class="reference internal" href="#oa.util.num_tokens"><code class="docutils literal notranslate"><span class="pre">num_tokens()</span></code></a></li>
+<li><a :data-current="activeSection === '#oa.util.oa_extractors_obj'" class="reference internal" href="#oa.util.oa_extractors_obj"><code class="docutils literal notranslate"><span class="pre">oa_extractors_obj()</span></code></a></li>
+<li><a :data-current="activeSection === '#oa.util.pricing_info'" class="reference internal" href="#oa.util.pricing_info"><code class="docutils literal notranslate"><span class="pre">pricing_info()</span></code></a></li>
+<li><a :data-current="activeSection === '#oa.util.save_in_temp_dir'" class="reference internal" href="#oa.util.save_in_temp_dir"><code class="docutils literal notranslate"><span class="pre">save_in_temp_dir()</span></code></a></li>
+<li><a :data-current="activeSection === '#oa.util.source_parameter_props_from'" class="reference internal" href="#oa.util.source_parameter_props_from"><code class="docutils literal notranslate"><span class="pre">source_parameter_props_from()</span></code></a></li>
+<li><a :data-current="activeSection === '#oa.util.utc_int_to_iso_date'" class="reference internal" href="#oa.util.utc_int_to_iso_date"><code class="docutils literal notranslate"><span class="pre">utc_int_to_iso_date()</span></code></a></li>
+</ul>
+</div>
+</aside>
+</main>
+</div>
+</div><footer class="py-6 border-t border-border md:py-0">
+<div class="container flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
+<div class="flex flex-col items-center gap-4 px-8 md:flex-row md:gap-2 md:px-0">
+<p class="text-sm leading-loose text-center text-muted-foreground md:text-left"></p>
+</div>
+</div>
+</footer>
+</div>
+<script src="../_static/documentation_options.js?v=c54c130b"></script>
+<script src="../_static/doctools.js?v=fd6eb6e6"></script>
+<script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+<script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+<script src="../_static/copybutton.js?v=fd10adb8"></script>
+<script defer="defer" src="../_static/theme.js?v=5db23cf8"></script>
+</body>
+</html>

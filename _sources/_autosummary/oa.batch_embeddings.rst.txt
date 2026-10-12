@@ -1,0 +1,28 @@
+oa.batch\_embeddings
+====================
+
+.. automodule:: oa.batch_embeddings
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      compute_embeddings
+      compute_embeddings_df
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      BatchRequestCounts
+      BatchStatus
+      EmbeddingsBatchProcess
+      ProcessingMall
+   
+   .. rubric:: Exceptions
+
+   .. autosummary::
+   
+      BatchError
+   

@@ -1,0 +1,15 @@
+oa.audio
+========
+
+.. automodule:: oa.audio
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      text_to_speech
+      transcribe
+      transcription_to_srt
+      tts
+   

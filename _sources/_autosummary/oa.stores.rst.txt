@@ -1,0 +1,46 @@
+oa.stores
+=========
+
+.. automodule:: oa.stores
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      date_filter
+      ensure_utc_date
+      extract_id
+      get_json_data_from_response
+      get_json_or_jsonl_data
+      is_task_dict
+      is_task_dict_list
+      object_of_data
+      print_some_jsonl_line_fields
+      response_body_data
+      response_body_data_objects
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      DataObject
+      EmbeddingsDataObject
+      MappingHooks
+      MutuableMappingHooks
+      OaBatches
+      OaBatchesBase
+      OaDacc
+      OaFiles
+      OaFilesBase
+      OaFilesJsonData
+      OaFilesMetadata
+      OaJsonFiles
+      OaJsonLFiles
+      OaMapping
+      OaStores
+      OaVectorStoreFiles
+      OaVectorStores
+      OaVectorStoresBase
+      ResponseDict
+   

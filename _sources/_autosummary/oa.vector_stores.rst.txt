@@ -1,0 +1,15 @@
+oa.vector\_stores
+=================
+
+.. automodule:: oa.vector_stores
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      bind_and_modify
+      docs_to_search_func_factory_via_vector_store
+      docs_to_vector_store
+      mk_search_func_for_oa_vector_store
+   

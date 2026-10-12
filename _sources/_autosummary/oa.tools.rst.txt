@@ -1,0 +1,31 @@
+oa.tools
+========
+
+.. automodule:: oa.tools
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      constrained_answer
+      dflt_factory_key
+      dflt_function_key
+      ensure_json_type
+      extract_parts
+      identity
+      infer_schema_from_verbal_description
+      make_generic_json_schema
+      pattern_based_map
+      prompt_function
+      prompt_json_function
+      remove_pattern
+      string_format_embodier
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      JsonTypes
+      PromptFuncs
+   

@@ -1,0 +1,31 @@
+# oa
+
+> Python interface to OpenAI
+
+
+## Pages
+
+- [oa](index.html.md): Python interface to OpenAi
+- [API reference](api.html.md): | &#96;oa&#96;   | Python facade to OpenAi functionality.   |
+- [oa](_autosummary/oa.html.md): Python facade to OpenAi functionality.
+- [oa.ask](_autosummary/oa.ask.html.md): Access to already made prompt functions
+- [oa.audio](_autosummary/oa.audio.html.md): OpenAI Audio tools
+- [oa.base](_autosummary/oa.base.html.md): Base oa functionality
+- [oa.batch_embeddings](_autosummary/oa.batch_embeddings.html.md): Simplified interface for computing embeddings in bulk using OpenAI’s batch API.
+- [oa.batches](_autosummary/oa.batches.html.md): Batch functionality
+- [oa.chats](_autosummary/oa.chats.html.md): Tools to work with shared chats (conversations).
+- [oa.oa_types](_autosummary/oa.oa_types.html.md): Types for oa
+- [oa.openai_specs](_autosummary/oa.openai_specs.html.md): Tools to extract specs from the openai interface
+- [oa.stores](_autosummary/oa.stores.html.md): Data object layers for openai resources
+- [oa.tools](_autosummary/oa.tools.html.md): Interface tools
+- [oa.util](_autosummary/oa.util.html.md): | &#96;chunk_iterable&#96;(iterable, chk_size, &#92;&#42;&#91;, ...&#93;)   | Divide an iterable into chunks/batches of a sp...
+- [oa.vector_stores](_autosummary/oa.vector_stores.html.md): Vector stores and search
+- [About this build](about-this-build.html.md): This documentation was built on &#42;&#42;2026-10-12 17:39 UTC&#42;&#42; from commit &lt;a href="https://github.com/tho...
+
+## Optional
+
+- [oa.md](oa.md): Complete documentation in a single file.
+
+## Build
+
+- [build_info.json](build_info.json): build provenance (commit, version, tool versions, whether the docs match the package)
