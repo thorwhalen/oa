@@ -3,6 +3,8 @@
 from collections.abc import Callable
 import os
 
+import pytest
+
 # ------------------------------------------------------------------------------
 # Search functionality Testing Utils
 
@@ -205,6 +207,7 @@ def test_vector_store_search_functionality():
 
 
 # Function to run the full test with API calls (uncomment to use)
+@pytest.mark.needs_api
 def test_vector_store_search_with_api():
     """Run the full vector store search test with actual API calls."""
     print("Running full vector store search test with API calls...")
