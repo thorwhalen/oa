@@ -1,5 +1,6 @@
-"""Set dummy env vars before pytest collection so module-level config2py
-lookups (e.g. OPENAI_API_KEY) succeed in CI without requiring real secrets."""
+"""Set a dummy OPENAI_API_KEY before pytest collection so tests that construct
+clients succeed in CI without real secrets. (``import oa`` itself no longer
+needs a key; see oa/tests/test_lazy_api_key.py.)"""
 
 import os
 

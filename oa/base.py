@@ -10,6 +10,8 @@ from types import SimpleNamespace
 from i2 import Sig, Param
 
 from oa.util import (
+    ensure_openai_api_key,
+    signature_source_client,
     openai,
     djoin,
     mk_client,
@@ -86,11 +88,12 @@ prompt_davinci_path = partial(prompt_path, prefix=djoin("davinci"))
 # TODO: Use oa.openai_specs sig to provide good signatures
 
 
-@Sig.replace_kwargs_using(openai.completions.create)
+@Sig.replace_kwargs_using(signature_source_client.completions.create)
 def complete(prompt, model=None, **complete_params):
     if "engine" in complete_params:
         model = complete_params.pop("engine")
     model = model or getattr(complete, "engine", DFLT_ENGINE)
+    ensure_openai_api_key()
     text_resp = openai.completions.create(model=model, prompt=prompt, **complete_params)
     return text_resp.choices[0].text
 
@@ -98,12 +101,13 @@ def complete(prompt, model=None, **complete_params):
 complete.engine = DFLT_ENGINE
 
 
-@Sig.replace_kwargs_using(openai.chat.completions.create)
+@Sig.replace_kwargs_using(signature_source_client.chat.completions.create)
 def _raw_chat(prompt=None, model=DFLT_MODEL, *, messages=None, **chat_params):
     if not ((prompt is None) ^ (messages is None)):
         raise ValueError("Either prompt or messages must be specified, but not both.")
     if prompt is not None:
         messages = [{"role": "user", "content": prompt}]
+    ensure_openai_api_key()
     return openai.chat.completions.create(messages=messages, model=model, **chat_params)
 
 
@@ -122,8 +126,9 @@ def chat(prompt=None, *, model=DFLT_MODEL, messages=None, **chat_params):
 chat.raw = _raw_chat
 
 
-@Sig.replace_kwargs_using(openai.images.generate)
+@Sig.replace_kwargs_using(signature_source_client.images.generate)
 def _raw_dalle(prompt, n=1, size="512x512", **image_create_params):
+    ensure_openai_api_key()
     return openai.images.generate(prompt=prompt, n=n, size=size, **image_create_params)
 
 
@@ -193,7 +198,7 @@ from oa.util import chunk_iterable, mk_local_files_saves_callback
 
 # from collections.abc import Mapping, Iterable
 
-extra_embeddings_params = Sig(openai.embeddings.create) - {"input", "model"}
+extra_embeddings_params = Sig(signature_source_client.embeddings.create) - {"input", "model"}
 
 
 # TODO: Added a lot of options, but not really clean. Should be cleaned up.

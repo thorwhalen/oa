@@ -280,8 +280,24 @@ def get_api_key_from_config():
     )
 
 
-# TODO: Hm... set api key globally? Doesn't seem we should do that!
-openai.api_key = get_api_key_from_config()
+# A client that is only ever *inspected* (never used to make a request), so that
+# modules can borrow signatures of ``openai`` methods at import time without
+# needing a real API key.
+signature_source_client = openai.OpenAI(api_key="signature-introspection-only")
+
+
+def ensure_openai_api_key() -> str:
+    """Make sure the module-level ``openai`` client has an API key, resolving it lazily.
+
+    The key is looked up (config store, environment, then asking the user) only
+    the first time something needs it, never at ``import oa`` time, so importing
+    ``oa`` works -- and dependents' test suites can run -- when no key is set.
+    A key already set on ``openai.api_key`` is respected, not overwritten.
+    """
+    # TODO: Hm... set api key globally? Doesn't seem we should do that!
+    if openai.api_key is None:
+        openai.api_key = get_api_key_from_config()
+    return openai.api_key
 
 
 @lru_cache
@@ -311,10 +327,26 @@ def ensure_oa_client(oa_client: OaClientSpec) -> openai.Client:
 
 # TODO: Pros and cons of using a default client
 #   Reason was that I was fed up of having to pass the client to every function
-try:
-    dflt_client = mk_client()
-except Exception as e:
-    dflt_client = None
+def _get_dflt_client() -> openai.Client | None:
+    """The default client, or None if no key is available without asking the user.
+
+    Never prompts (a bare attribute access shouldn't block on input), and a
+    failure isn't cached, so the client appears once a key is set.
+    """
+    api_key = get_config(
+        OPENAI_API_KEY_ENV_NAME,
+        sources=[configs_local_store, os.environ],
+        default=None,
+    )
+    return mk_client(api_key.strip()) if api_key else None
+
+
+def __getattr__(name):
+    # PEP 562: ``dflt_client`` is built on first access, not at import time.
+    if name == "dflt_client":
+        return _get_dflt_client()
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
+
 
 _grazed_dir = dol.ensure_dir(os.path.join(app_data_dir, "grazed"))
 grazed = graze.Graze(rootdir=_grazed_dir)
