@@ -26,12 +26,18 @@ def _run_without_key(tmp_path, script=_SCRIPT):
         if k not in ("OPENAI_API_KEY", "OA_APP_DATA_DIR")
     }
     # Fresh HOME so no key saved in a real oa config store can be found
-    env.update(HOME=str(tmp_path), XDG_CONFIG_HOME=str(tmp_path / "cfg"))
+    env.update(
+        HOME=str(tmp_path),
+        XDG_CONFIG_HOME=str(tmp_path / "cfg"),
+        APPDATA=str(tmp_path / "appdata"),
+        CONFIG2PY_CONFIG_DIR=str(tmp_path / "config2py"),
+    )
     return subprocess.run(
         [sys.executable, "-c", script],
         env=env,
         cwd=tmp_path,
         stdin=subprocess.DEVNULL,
+        start_new_session=True,  # no controlling terminal, even if pytest has one
         capture_output=True,
         text=True,
         timeout=120,
@@ -112,7 +118,7 @@ def test_concurrent_first_use_asks_once(monkeypatch):
     import time
 
     util = _fresh(monkeypatch)
-    monkeypatch.setattr(util, "_can_prompt_user", lambda: True)
+    monkeypatch.setenv("OA_PROMPT_FOR_API_KEY", "1")
     asked = []
 
     def slow_ask(prompt, **kwargs):
@@ -134,3 +140,45 @@ def test_concurrent_first_use_asks_once(monkeypatch):
     assert len(asked) == 1
     assert util.configs_local_store["OPENAI_API_KEY"] == "sk-test-asked"
     util.get_api_key_from_config.cache_clear()
+
+
+def test_prompting_is_main_thread_only_unless_forced(monkeypatch):
+    import threading
+
+    util = _fresh(monkeypatch)
+    monkeypatch.delenv("OA_PROMPT_FOR_API_KEY", raising=False)
+    monkeypatch.setattr(util, "_has_controlling_terminal", lambda: True)
+    monkeypatch.setattr(util, "_in_jupyter_kernel", lambda: False)
+    assert util._can_prompt_user() is True  # main thread with a terminal
+    seen = []
+    t = threading.Thread(target=lambda: seen.append(util._can_prompt_user()))
+    t.start(), t.join()
+    assert seen == [False]  # e.g. a server's request handler
+    monkeypatch.setenv("OA_PROMPT_FOR_API_KEY", "1")
+    t = threading.Thread(target=lambda: seen.append(util._can_prompt_user()))
+    t.start(), t.join()
+    assert seen == [False, True]
+
+
+def test_closed_stdin_means_cannot_prompt_not_a_crash(monkeypatch):
+    import io
+
+    util = _fresh(monkeypatch)
+    stdin = io.StringIO()
+    stdin.close()
+    monkeypatch.setattr(util.sys, "stdin", stdin)
+    monkeypatch.setattr(util.os, "open", lambda *a, **k: (_ for _ in ()).throw(OSError))
+    assert util._has_controlling_terminal() is False
+
+
+def test_ensure_does_not_wait_behind_a_prompt_once_resolved(monkeypatch):
+    import threading
+
+    util = _fresh(monkeypatch, store={"OPENAI_API_KEY": "sk-test-store"})
+    util.ensure_openai_api_key()  # resolved
+    with util._api_key_lock:  # another thread is stuck in a prompt
+        got = []
+        t = threading.Thread(target=lambda: got.append(util.ensure_openai_api_key()))
+        t.start()
+        t.join(timeout=5)
+        assert got == ["sk-test-store"]

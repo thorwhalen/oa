@@ -274,13 +274,47 @@ _API_KEY_PROMPT = (
 )
 
 
-def _can_prompt_user() -> bool:
-    """Whether asking the user for input could work: a terminal, or a Jupyter kernel.
+_PROMPT_OVERRIDE_ENV_NAME = "OA_PROMPT_FOR_API_KEY"  # "1"/"0" forces/forbids prompting
 
-    False in servers, CI, cron and the like, where a prompt would block forever.
+
+def _has_controlling_terminal() -> bool:
+    """Whether a terminal can be asked (``getpass`` reads ``/dev/tty``, not just stdin)."""
+    try:
+        if sys.stdin is not None and sys.stdin.isatty():
+            return True
+    except (ValueError, OSError):  # e.g. closed stdin
+        pass
+    try:
+        os.close(os.open("/dev/tty", os.O_RDWR))  # POSIX: stdin may be piped
+        return True
+    except OSError:  # no controlling terminal (cron, systemd, containers), or Windows
+        return False
+
+
+def _in_jupyter_kernel() -> bool:
+    ipython = sys.modules.get("IPython")
+    shell = ipython.get_ipython() if ipython is not None else None
+    return getattr(shell, "kernel", None) is not None
+
+
+def _can_prompt_user() -> bool:
+    """Whether asking the user for input is likely to work, and not hang a server.
+
+    True in a Jupyter kernel, or from the main thread of a process with a terminal.
+    False elsewhere -- worker threads (a server's request handlers, even when the
+    server was started from a terminal), cron, CI, containers. Set the environment
+    variable ``OA_PROMPT_FOR_API_KEY`` to ``1`` or ``0`` to force the answer.
     """
-    stdin = sys.stdin
-    return (stdin is not None and stdin.isatty()) or "ipykernel" in sys.modules
+    override = os.environ.get(_PROMPT_OVERRIDE_ENV_NAME, "").strip().lower()
+    if override in ("1", "true", "yes"):
+        return True
+    if override in ("0", "false", "no"):
+        return False
+    if _in_jupyter_kernel():
+        return True
+    return threading.current_thread() is threading.main_thread() and (
+        _has_controlling_terminal()
+    )
 
 
 # Have a particular way to get this api key
@@ -300,8 +334,10 @@ def get_api_key_from_config():
         if not _can_prompt_user():
             raise OpenAIKeyNotFoundError(
                 f"No OpenAI API key found. Set the {OPENAI_API_KEY_ENV_NAME} environment "
-                "variable (or store it in oa's config), or pass `api_key=` to "
-                "`oa.util.mk_client`. (Not asking interactively: there is no terminal.)"
+                "variable (or store it in oa's config), set `openai.api_key`, or pass "
+                "`api_key=` to `oa.util.mk_client`. (Not asking interactively: not the "
+                f"main thread of a process with a terminal; set {_PROMPT_OVERRIDE_ENV_NAME}=1 "
+                "to ask anyway.)"
             )
         api_key = (
             ask_user_for_input(_API_KEY_PROMPT, mask_input=True, masking_toggle_str="")
@@ -339,6 +375,8 @@ def ensure_openai_api_key() -> str:
     Thread-safe.
     """
     global _openai_api_key_ensured
+    if _openai_api_key_ensured:  # fast path: don't queue behind a prompt
+        return openai.api_key
     with _api_key_lock:
         if not _openai_api_key_ensured:
             # TODO: Hm... set api key globally? Doesn't seem we should do that!
