@@ -51,6 +51,7 @@ These functions all have propert signatures:
 
 ```python
 import inspect
+
 print(inspect.signature(ai.suggest_names))
 ```
 
@@ -91,7 +92,7 @@ Let's just scratch the surface of what `PromptFuncs` can do. For more, you can l
 from oa import PromptFuncs
 
 funcs = PromptFuncs(
-    template_store = {
+    template_store={
         "haiku": "Write haiku about {subject}. Only output the haiku.",
         "stylize": """
             Reword what I_SAY, using the style: {style:funny}.
@@ -111,9 +112,9 @@ list(funcs)
 
 ```python
 import inspect
+
 for name in funcs:
     print(f"{name}: {inspect.signature(funcs[name])}")
-
 ```
 
     haiku: (*, subject)
@@ -174,13 +175,14 @@ WORDS:
 {words}
 """
 
-define_jargon = prompt_function(template, defaults=dict(context='machine learning'))
+define_jargon = prompt_function(template, defaults=dict(context="machine learning"))
 ```
 
 
 ```python
 # Let's look at the signature
 import inspect
+
 print(inspect.signature(define_jargon))
 ```
 
@@ -189,7 +191,9 @@ print(inspect.signature(define_jargon))
 
 
 ```python
-response = define_jargon(words='supervised learning\tunsupervised learning\treinforcement learning')
+response = define_jargon(
+    words="supervised learning\tunsupervised learning\treinforcement learning"
+)
 print(response)
 ```
 
@@ -201,14 +205,16 @@ print(response)
 
 
 ```python
-def table_str_to_dict(table_str, *, newline='\n', sep='   '):
-    return dict([x.split('   ') for x in table_str.split('\n')[1:]])
+def table_str_to_dict(table_str, *, newline="\n", sep="   "):
+    return dict([x.split("   ") for x in table_str.split("\n")[1:]])
 
-table_str_to_dict(define_jargon(
-    words='\n'.join(['allomorph', 'phonology', 'phonotactic constraints']),
-    context='linguistics'
-))
 
+table_str_to_dict(
+    define_jargon(
+        words="\n".join(["allomorph", "phonology", "phonotactic constraints"]),
+        context="linguistics",
+    )
+)
 ```
 
 
@@ -222,7 +228,7 @@ Check out the many ways you can configure your function with `prompt_function`:
 
 
 ```python
-str(inspect.signature(prompt_function)).split(', ')
+str(inspect.signature(prompt_function)).split(", ")
 ```
 
 
@@ -254,21 +260,21 @@ get that schema!
 from oa import chat
 from oa.util import data_files
 
-# To make sure we get a json schema that is openAI compliant, we'll use an example of 
+# To make sure we get a json schema that is openAI compliant, we'll use an example of
 # one in our prompt to AI to give us one...
-example_of_a_openai_json_schema = example_of_a_openai_json_schema = (
-    data_files.joinpath('json_schema_example.json').read_text()
-)
+example_of_a_openai_json_schema = example_of_a_openai_json_schema = data_files.joinpath(
+    "json_schema_example.json"
+).read_text()
 
 json_schema_str = chat(
     "Give me the json of a json_schema I can use different characteristics of "
     "programming languages. This schema should be a valid schema to use as a "
     "response_format in the OpenAI API. "
-    f"Here's an example:\n{example_of_a_openai_json_schema}", 
-    model='gpt-4o-mini',
-    response_format={'type': 'json_object'}
+    f"Here's an example:\n{example_of_a_openai_json_schema}",
+    model="gpt-4o-mini",
+    response_format={"type": "json_object"},
 )
-print(json_schema_str[:500] + '...')
+print(json_schema_str[:500] + "...")
 ```
 
 ```
@@ -304,21 +310,22 @@ import json
 
 properties_of_language = prompt_function(
     "Give me a json that describes characteristics of the programming language: {language}.",
-    prompt_func=chat, 
+    prompt_func=chat,
     prompt_func_kwargs=dict(
-        model='gpt-4o-mini', 
+        model="gpt-4o-mini",
         response_format={
-            'type': 'json_schema',
-            'json_schema': json.loads(json_schema_str)
-        }
+            "type": "json_schema",
+            "json_schema": json.loads(json_schema_str),
+        },
     ),
-    egress=json.loads
+    egress=json.loads,
 )
 
-info = properties_of_language('Python')
+info = properties_of_language("Python")
 print(f"{type(info)=}\n")
 
 from pprint import pprint
+
 pprint(info)
 ```
 
@@ -352,7 +359,7 @@ import oa
 
 
 ```python
-print(oa.complete('chatGPT is a'))
+print(oa.complete("chatGPT is a"))
 ```
 
      chatbot based on OpenAI's GPT-2, a natural language processing
@@ -360,7 +367,7 @@ print(oa.complete('chatGPT is a'))
 
 
 ```python
-print(oa.chat('Act as a chatGPT expert. List 5 useful prompt templates'))
+print(oa.chat("Act as a chatGPT expert. List 5 useful prompt templates"))
 ```
 
     Sure, here are 5 useful prompt templates that can be used in a chatGPT session:
@@ -383,7 +390,7 @@ print(oa.chat('Act as a chatGPT expert. List 5 useful prompt templates'))
 
 
 ```python
-url = oa.dalle('An image of Davinci, pop art style')
+url = oa.dalle("An image of Davinci, pop art style")
 print(url)
 ```
 
@@ -481,16 +488,16 @@ help(oa.raw.chatcompletion)
 
 
 ```python
-prompt = 'List 5 top prompt engineering tricks to write good prompts for chatGPT'
+prompt = "List 5 top prompt engineering tricks to write good prompts for chatGPT"
 
 resp = oa.raw.chatcompletion(
     messages=[
         {"role": "system", "content": "You are an expert at chatGPT"},
         {"role": "user", "content": prompt},
     ],
-    model='gpt-3.5-turbo-0301',
+    model="gpt-3.5-turbo-0301",
     temperature=0.5,
-    max_tokens=300
+    max_tokens=300,
 )
 resp
 ```
@@ -522,7 +529,7 @@ resp
 
 
 ```python
-print(resp['choices'][0]['message']['content'])
+print(resp["choices"][0]["message"]["content"])
 ```
 
     Sure, here are 5 top prompt engineering tricks to write good prompts for chatGPT:
@@ -554,7 +561,7 @@ Begin by creating a ChatDacc object with a conversation’s shared URL:
 ```python
 from oa.chats import ChatDacc
 
-url = 'https://chatgpt.com/share/6788d539-0f2c-8013-9535-889bf344d7d5'
+url = "https://chatgpt.com/share/6788d539-0f2c-8013-9535-889bf344d7d5"
 dacc = ChatDacc(url)
 ```
 
