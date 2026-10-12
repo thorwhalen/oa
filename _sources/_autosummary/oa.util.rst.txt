@@ -37,3 +37,9 @@ oa.util
    
       ProcessingManager
    
+   .. rubric:: Exceptions
+
+   .. autosummary::
+   
+      OpenAIKeyNotFoundError
+   

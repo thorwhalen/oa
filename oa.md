@@ -1,4 +1,4 @@
-> built 2026-10-12 17:39 UTC from 68b38a7 (main) · oa 0.1.53. Details: build_info.json
+> built 2026-10-12 17:55 UTC from fe23559 (main) · oa 0.1.54. Details: build_info.json
 
 # index.html.md
 
@@ -2369,7 +2369,7 @@ oa utils
 | [`concat_lists`](_autosummary/oa.util.html.md#oa.util.concat_lists)(lists)                             | Concatenate a list of lists into a single list.                                                                                                              |
 | [`ensure_oa_client`](_autosummary/oa.util.html.md#oa.util.ensure_oa_client)(oa_client)                     | Ensure that an OpenAI client is available, either by using the provided one or creating a new one.                                                           |
 | [`ensure_openai_api_key`](_autosummary/oa.util.html.md#oa.util.ensure_openai_api_key)()                         | Make sure the module-level `openai` client has an API key, resolving it lazily.                                                                              |
-| `get_api_key_from_config`()                                                                      |                                                                                                                                                              |
+| [`get_api_key_from_config`](_autosummary/oa.util.html.md#oa.util.get_api_key_from_config)()                       | The OpenAI API key: oa's config store, then the environment, then ask the user.                                                                              |
 | [`get_package_name`](_autosummary/oa.util.html.md#oa.util.get_package_name)()                              | Return current package name                                                                                                                                  |
 | [`iso_date_to_utc_int`](_autosummary/oa.util.html.md#oa.util.iso_date_to_utc_int)(iso_date)                   | Convert iso date string to utc integer timestamp.                                                                                                            |
 | [`jsonl_dumps`](_autosummary/oa.util.html.md#oa.util.jsonl_dumps)(x[, encoding])                      | Serialize an iterable as JSONL bytes                                                                                                                         |
@@ -2392,6 +2392,17 @@ oa utils
 
 | [`ProcessingManager`](_autosummary/oa.util.html.md#oa.util.ProcessingManager)(pending_items, ...[, ...])   | A class to manage and monitor the processing of a collection of items, allowing customizable processing functions, status handling, and timing control, using keys to track items.   |
 |-------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+
+### Exceptions
+
+| [`OpenAIKeyNotFoundError`](_autosummary/oa.util.html.md#oa.util.OpenAIKeyNotFoundError)   | No OpenAI API key is configured, and there is no one to ask for it.   |
+|---------------------------------------------------------------------------|-----------------------------------------------------------------------|
+
+### *exception* oa.util.OpenAIKeyNotFoundError
+
+Bases: `ConfigNotFound`
+
+No OpenAI API key is configured, and there is no one to ask for it.
 
 ### *class* oa.util.ProcessingManager(pending_items, processing_function, handle_status_function, wait_time_function, status_check_interval=5.0, max_cycles=None, completed_items=<factory>, cycles=0)
 
@@ -2530,9 +2541,18 @@ Resolution follows oa’s own order (store before environment), as when the key
 was set at import, and happens once: a key set on `openai.api_key`
 afterwards is respected. If no key is stored or in the environment, a key
 already set on `openai.api_key` is kept rather than asking the user.
+Thread-safe.
 
 * **Return type:**
   [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
+
+### oa.util.get_api_key_from_config()
+
+The OpenAI API key: oa’s config store, then the environment, then ask the user.
+
+Asking only happens when the user can be asked (see `_can_prompt_user`);
+otherwise an informative `OpenAIKeyNotFoundError` is raised. Thread-safe: when
+several threads need the key at once, only one asks, and the others reuse the answer.
 
 ### oa.util.get_package_name()
 
@@ -2712,7 +2732,7 @@ Create a search function for an OpenAI vector store using the Responses API.
 
 # About this build
 
-This documentation was built on **2026-10-12 17:39 UTC** from commit <a href="https://github.com/thorwhalen/oa/commit/68b38a7daf3c1daec3c57ab7e968d2a99bdc9205"><code>68b38a7</code></a> on branch <code>main</code>, for **oa 0.1.53** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-10-12 17:55 UTC** from commit <a href="https://github.com/thorwhalen/oa/commit/fe235590f4b929fd5c459fd55f13b787001b2a31"><code>fe23559</code></a> on branch <code>main</code>, for **oa 0.1.54** (from <code>pyproject.toml</code>).
 
 #### NOTE
 Nothing suggests a mismatch: the tree was clean at the commit above, and the documented version is the one on PyPI.
@@ -2721,9 +2741,9 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 
 |                     |                                                                                                                                                      |
 |---------------------|------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/thorwhalen/oa/commit/68b38a7daf3c1daec3c57ab7e968d2a99bdc9205"><code>68b38a7daf3c1daec3c57ab7e968d2a99bdc9205</code></a> |
+| Commit              | <a href="https://github.com/thorwhalen/oa/commit/fe235590f4b929fd5c459fd55f13b787001b2a31"><code>fe235590f4b929fd5c459fd55f13b787001b2a31</code></a> |
 | Branch              | <code>main</code>                                                                                                                                    |
-| Tags at this commit | <code>0.1.53</code>                                                                                                                                  |
+| Tags at this commit | <code>0.1.54</code>                                                                                                                                  |
 | Working tree        | clean                                                                                                                                                |
 | Remote              | <code>https://github.com/thorwhalen/oa</code>                                                                                                        |
 
@@ -2732,9 +2752,9 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
 | Repository   | <code>thorwhalen/oa</code>                                                                 |
-| Run          | <a href="https://github.com/thorwhalen/oa/actions/runs/38285327916">38285327916</a>        |
+| Run          | <a href="https://github.com/thorwhalen/oa/actions/runs/38287102659">38287102659</a>        |
 | Ref          | <code>refs/heads/main</code>                                                               |
-| Event commit | <code>729e60b913215d44c9def99e66b4a4fe3479a07e</code> (in the history of the built commit) |
+| Event commit | <code>f4835709a2219f3709b29bfe94f8f26c10404ac5</code> (in the history of the built commit) |
 
 ## Tools
 
@@ -2759,13 +2779,13 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 
 ## Package on PyPI
 
-Latest release: <a href="https://pypi.org/project/oa/0.1.53/">0.1.53</a>, the same as the documented version.
+Latest release: <a href="https://pypi.org/project/oa/0.1.54/">0.1.54</a>, the same as the documented version.
 
 ## Reproduce
 
 ```bash
 git clone https://github.com/thorwhalen/oa && cd oa
-git checkout 68b38a7daf3c1daec3c57ab7e968d2a99bdc9205
+git checkout fe235590f4b929fd5c459fd55f13b787001b2a31
 pip install "epythet==0.2.12"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```

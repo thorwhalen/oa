@@ -141,8 +141,8 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#oa.util.ensure_openai_api_key" title="oa.util.ensure_openai_api_key"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ensure_openai_api_key</span></code></a>()</p></td>
 <td><p>Make sure the module-level <code class="docutils literal notranslate"><span class="pre">openai</span></code> client has an API key, resolving it lazily.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_api_key_from_config</span></code>()</p></td>
-<td><p></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#oa.util.get_api_key_from_config" title="oa.util.get_api_key_from_config"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_api_key_from_config</span></code></a>()</p></td>
+<td><p>The OpenAI API key: oa's config store, then the environment, then ask the user.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#oa.util.get_package_name" title="oa.util.get_package_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_package_name</span></code></a>()</p></td>
 <td><p>Return current package name</p></td>
@@ -205,6 +205,20 @@
 </tr>
 </tbody>
 </table>
+<p class="rubric">Exceptions</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#oa.util.OpenAIKeyNotFoundError" title="oa.util.OpenAIKeyNotFoundError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">OpenAIKeyNotFoundError</span></code></a></p></td>
+<td><p>No OpenAI API key is configured, and there is no one to ask for it.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py exception">
+<dt class="sig sig-object py" id="oa.util.OpenAIKeyNotFoundError">
+<span class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">oa.util.</span></span><span class="sig-name descname"><span class="pre">OpenAIKeyNotFoundError</span></span><a class="reference internal" href="../_modules/oa/util.html#OpenAIKeyNotFoundError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#oa.util.OpenAIKeyNotFoundError" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#oa.util.OpenAIKeyNotFoundError'">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ConfigNotFound</span></code></p>
+<p>No OpenAI API key is configured, and there is no one to ask for it.</p>
+</dd></dl>
 <dl class="py class">
 <dt class="sig sig-object py" id="oa.util.ProcessingManager">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">oa.util.</span></span><span class="sig-name descname"><span class="pre">ProcessingManager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pending_items</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">processing_function</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">handle_status_function</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wait_time_function</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status_check_interval</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_cycles</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">completed_items</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cycles</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/oa/util.html#ProcessingManager"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#oa.util.ProcessingManager" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#oa.util.ProcessingManager'">¶</a></dt>
@@ -374,12 +388,21 @@ first time something needs it, never at <code class="docutils literal notranslat
 Resolution follows oa’s own order (store before environment), as when the key
 was set at import, and happens once: a key set on <code class="docutils literal notranslate"><span class="pre">openai.api_key</span></code>
 afterwards is respected. If no key is stored or in the environment, a key
-already set on <code class="docutils literal notranslate"><span class="pre">openai.api_key</span></code> is kept rather than asking the user.</p>
+already set on <code class="docutils literal notranslate"><span class="pre">openai.api_key</span></code> is kept rather than asking the user.
+Thread-safe.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a></span></p>
 </dd>
 </dl>
+</dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="oa.util.get_api_key_from_config">
+<span class="sig-prename descclassname"><span class="pre">oa.util.</span></span><span class="sig-name descname"><span class="pre">get_api_key_from_config</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/oa/util.html#get_api_key_from_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#oa.util.get_api_key_from_config" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#oa.util.get_api_key_from_config'">¶</a></dt>
+<dd><p>The OpenAI API key: oa’s config store, then the environment, then ask the user.</p>
+<p>Asking only happens when the user can be asked (see <code class="docutils literal notranslate"><span class="pre">_can_prompt_user</span></code>);
+otherwise an informative <code class="docutils literal notranslate"><span class="pre">OpenAIKeyNotFoundError</span></code> is raised. Thread-safe: when
+several threads need the key at once, only one asks, and the others reuse the answer.</p>
 </dd></dl>
 <dl class="py function">
 <dt class="sig sig-object py" id="oa.util.get_package_name">
@@ -500,6 +523,7 @@ Inverse of iso_date_to_utc_int.</p>
 </div></div><aside class="hidden text-sm xl:block" id="right-sidebar">
 <div class="sticky top-16 -mt-10 max-h-[calc(100vh-5rem)] h-full overflow-y-auto pt-6 space-y-2"><p class="font-medium">On this page</p>
 <ul>
+<li><a :data-current="activeSection === '#oa.util.OpenAIKeyNotFoundError'" class="reference internal" href="#oa.util.OpenAIKeyNotFoundError"><code class="docutils literal notranslate"><span class="pre">OpenAIKeyNotFoundError</span></code></a></li>
 <li><a :data-current="activeSection === '#oa.util.ProcessingManager'" class="reference internal" href="#oa.util.ProcessingManager"><code class="docutils literal notranslate"><span class="pre">ProcessingManager</span></code></a><ul>
 <li><a :data-current="activeSection === '#oa.util.ProcessingManager.process_items'" class="reference internal" href="#oa.util.ProcessingManager.process_items"><code class="docutils literal notranslate"><span class="pre">ProcessingManager.process_items()</span></code></a></li>
 <li><a :data-current="activeSection === '#oa.util.ProcessingManager.process_pending_items'" class="reference internal" href="#oa.util.ProcessingManager.process_pending_items"><code class="docutils literal notranslate"><span class="pre">ProcessingManager.process_pending_items()</span></code></a></li>
@@ -510,6 +534,7 @@ Inverse of iso_date_to_utc_int.</p>
 <li><a :data-current="activeSection === '#oa.util.concat_lists'" class="reference internal" href="#oa.util.concat_lists"><code class="docutils literal notranslate"><span class="pre">concat_lists()</span></code></a></li>
 <li><a :data-current="activeSection === '#oa.util.ensure_oa_client'" class="reference internal" href="#oa.util.ensure_oa_client"><code class="docutils literal notranslate"><span class="pre">ensure_oa_client()</span></code></a></li>
 <li><a :data-current="activeSection === '#oa.util.ensure_openai_api_key'" class="reference internal" href="#oa.util.ensure_openai_api_key"><code class="docutils literal notranslate"><span class="pre">ensure_openai_api_key()</span></code></a></li>
+<li><a :data-current="activeSection === '#oa.util.get_api_key_from_config'" class="reference internal" href="#oa.util.get_api_key_from_config"><code class="docutils literal notranslate"><span class="pre">get_api_key_from_config()</span></code></a></li>
 <li><a :data-current="activeSection === '#oa.util.get_package_name'" class="reference internal" href="#oa.util.get_package_name"><code class="docutils literal notranslate"><span class="pre">get_package_name()</span></code></a></li>
 <li><a :data-current="activeSection === '#oa.util.iso_date_to_utc_int'" class="reference internal" href="#oa.util.iso_date_to_utc_int"><code class="docutils literal notranslate"><span class="pre">iso_date_to_utc_int()</span></code></a></li>
 <li><a :data-current="activeSection === '#oa.util.jsonl_dumps'" class="reference internal" href="#oa.util.jsonl_dumps"><code class="docutils literal notranslate"><span class="pre">jsonl_dumps()</span></code></a></li>
@@ -534,7 +559,7 @@ Inverse of iso_date_to_utc_int.</p>
 </div>
 </footer>
 </div>
-<script src="../_static/documentation_options.js?v=c54c130b"></script>
+<script src="../_static/documentation_options.js?v=0ec583c6"></script>
 <script src="../_static/doctools.js?v=fd6eb6e6"></script>
 <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
 <script src="../_static/clipboard.min.js?v=a7894cd8"></script>

@@ -9,7 +9,7 @@ oa utils
 | [`concat_lists`](#oa.util.concat_lists)(lists)                             | Concatenate a list of lists into a single list.                                                                                                              |
 | [`ensure_oa_client`](#oa.util.ensure_oa_client)(oa_client)                     | Ensure that an OpenAI client is available, either by using the provided one or creating a new one.                                                           |
 | [`ensure_openai_api_key`](#oa.util.ensure_openai_api_key)()                         | Make sure the module-level `openai` client has an API key, resolving it lazily.                                                                              |
-| `get_api_key_from_config`()                                                                      |                                                                                                                                                              |
+| [`get_api_key_from_config`](#oa.util.get_api_key_from_config)()                       | The OpenAI API key: oa's config store, then the environment, then ask the user.                                                                              |
 | [`get_package_name`](#oa.util.get_package_name)()                              | Return current package name                                                                                                                                  |
 | [`iso_date_to_utc_int`](#oa.util.iso_date_to_utc_int)(iso_date)                   | Convert iso date string to utc integer timestamp.                                                                                                            |
 | [`jsonl_dumps`](#oa.util.jsonl_dumps)(x[, encoding])                      | Serialize an iterable as JSONL bytes                                                                                                                         |
@@ -32,6 +32,17 @@ oa utils
 
 | [`ProcessingManager`](#oa.util.ProcessingManager)(pending_items, ...[, ...])   | A class to manage and monitor the processing of a collection of items, allowing customizable processing functions, status handling, and timing control, using keys to track items.   |
 |-------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+
+### Exceptions
+
+| [`OpenAIKeyNotFoundError`](#oa.util.OpenAIKeyNotFoundError)   | No OpenAI API key is configured, and there is no one to ask for it.   |
+|---------------------------------------------------------------------------|-----------------------------------------------------------------------|
+
+### *exception* oa.util.OpenAIKeyNotFoundError
+
+Bases: `ConfigNotFound`
+
+No OpenAI API key is configured, and there is no one to ask for it.
 
 ### *class* oa.util.ProcessingManager(pending_items, processing_function, handle_status_function, wait_time_function, status_check_interval=5.0, max_cycles=None, completed_items=<factory>, cycles=0)
 
@@ -170,9 +181,18 @@ Resolution follows oa’s own order (store before environment), as when the key
 was set at import, and happens once: a key set on `openai.api_key`
 afterwards is respected. If no key is stored or in the environment, a key
 already set on `openai.api_key` is kept rather than asking the user.
+Thread-safe.
 
 * **Return type:**
   [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
+
+### oa.util.get_api_key_from_config()
+
+The OpenAI API key: oa’s config store, then the environment, then ask the user.
+
+Asking only happens when the user can be asked (see `_can_prompt_user`);
+otherwise an informative `OpenAIKeyNotFoundError` is raised. Thread-safe: when
+several threads need the key at once, only one asks, and the others reuse the answer.
 
 ### oa.util.get_package_name()
 
