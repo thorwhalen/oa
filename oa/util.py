@@ -2,6 +2,8 @@
 
 from importlib.resources import files
 import os
+import sys
+import threading
 from functools import partial, lru_cache
 from typing import Union, get_args, Literal
 from collections.abc import Mapping
@@ -10,6 +12,7 @@ from types import SimpleNamespace
 from i2 import Sig, get_app_config_folder
 import dol
 import graze
+from config2py.errors import ConfigNotFound
 from config2py import (
     get_config,
     ask_user_for_input,
@@ -256,34 +259,58 @@ model_information_dict = dict(
 )
 
 
+class OpenAIKeyNotFoundError(ConfigNotFound):
+    """No OpenAI API key is configured, and there is no one to ask for it."""
+
+
+_api_key_lock = (
+    threading.RLock()
+)  # serializes first-use key resolution (and its prompt)
+
+_API_KEY_PROMPT = (
+    "Please set your OpenAI API key and press enter to continue. "
+    "If you don't have one, you can get one at "
+    "https://platform.openai.com/account/api-keys. "
+)
+
+
+def _can_prompt_user() -> bool:
+    """Whether asking the user for input could work: a terminal, or a Jupyter kernel.
+
+    False in servers, CI, cron and the like, where a prompt would block forever.
+    """
+    stdin = sys.stdin
+    return (stdin is not None and stdin.isatty()) or "ipykernel" in sys.modules
+
+
 # Have a particular way to get this api key
 @lru_cache
 def get_api_key_from_config():
-    return get_config(
-        OPENAI_API_KEY_ENV_NAME,
-        sources=[
-            # Try to find it in oa config
-            configs_local_store,
-            # Try to find it in os.environ (environmental variables)
-            os.environ,
-            # If not, ask the user to input it
-            lambda k: ask_user_for_input(
-                f"Please set your OpenAI API key and press enter to continue. "
-                "If you don't have one, you can get one at "
-                "https://platform.openai.com/account/api-keys. ",
-                mask_input=True,
-                masking_toggle_str="",
-                egress=lambda v: configs_local_store.__setitem__(k, v),
-            ),
-        ],
-        egress=kv_strip_value,
-    )
+    """The OpenAI API key: oa's config store, then the environment, then ask the user.
 
-
-# A client that is only ever *inspected* (never used to make a request), so that
-# modules can borrow signatures of ``openai`` methods at import time without
-# needing a real API key.
-signature_source_client = openai.OpenAI(api_key="signature-introspection-only")
+    Asking only happens when the user can be asked (see ``_can_prompt_user``);
+    otherwise an informative ``OpenAIKeyNotFoundError`` is raised. Thread-safe: when
+    several threads need the key at once, only one asks, and the others reuse the answer.
+    """
+    with _api_key_lock:
+        # (re)checked inside the lock: another thread may have just stored the answer
+        api_key = _lookup_api_key_without_asking()
+        if api_key:
+            return api_key
+        if not _can_prompt_user():
+            raise OpenAIKeyNotFoundError(
+                f"No OpenAI API key found. Set the {OPENAI_API_KEY_ENV_NAME} environment "
+                "variable (or store it in oa's config), or pass `api_key=` to "
+                "`oa.util.mk_client`. (Not asking interactively: there is no terminal.)"
+            )
+        api_key = (
+            ask_user_for_input(_API_KEY_PROMPT, mask_input=True, masking_toggle_str="")
+            or ""
+        ).strip()
+        if not api_key:
+            raise OpenAIKeyNotFoundError("No OpenAI API key was provided.")
+        configs_local_store[OPENAI_API_KEY_ENV_NAME] = api_key
+        return api_key
 
 
 def _lookup_api_key_without_asking() -> str | None:
@@ -309,17 +336,25 @@ def ensure_openai_api_key() -> str:
     was set at import, and happens once: a key set on ``openai.api_key``
     afterwards is respected. If no key is stored or in the environment, a key
     already set on ``openai.api_key`` is kept rather than asking the user.
+    Thread-safe.
     """
     global _openai_api_key_ensured
-    if not _openai_api_key_ensured:
-        # TODO: Hm... set api key globally? Doesn't seem we should do that!
-        api_key = _lookup_api_key_without_asking()
-        if api_key is None and openai.api_key is None:
-            api_key = get_api_key_from_config()  # ask the user
-        if api_key is not None:
-            openai.api_key = api_key
-        _openai_api_key_ensured = True
+    with _api_key_lock:
+        if not _openai_api_key_ensured:
+            # TODO: Hm... set api key globally? Doesn't seem we should do that!
+            api_key = _lookup_api_key_without_asking()
+            if api_key is None and openai.api_key is None:
+                api_key = get_api_key_from_config()  # ask the user, if possible
+            if api_key is not None:
+                openai.api_key = api_key
+            _openai_api_key_ensured = True
     return openai.api_key
+
+
+# A client that is only ever *inspected* (never used to make a request), so that
+# modules can borrow signatures of ``openai`` methods at import time without
+# needing a real API key.
+signature_source_client = openai.OpenAI(api_key="signature-introspection-only")
 
 
 @lru_cache
