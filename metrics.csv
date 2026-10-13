@@ -1,30 +1,26 @@
 metric,value
 schema_version,1.0
-timestamp,2026-10-13T07:19:59.135880Z
-commit_sha,df7bf5becf545e9e656a94588520f17be7a3de0b
-commit_message,"fix(vector_stores): write documents as UTF-8; log failed cleanup instead of swallowing it
-
-Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>"
+timestamp,2026-10-13T07:20:11.530394Z
+commit_sha,4bf40479c8e367a26caa66d9a95b21cba5ceba8f
+commit_message,Merge df7bf5becf545e9e656a94588520f17be7a3de0b into 061ce0ee721399a5dc675fdc523b454047e5d3c3
 python_version,3.10
-metrics.umpyre_stats.num_functions,45789
-metrics.umpyre_stats.num_classes,11465
-metrics.umpyre_stats.total_lines,1485545
-metrics.umpyre_stats.empty_lines,236295
-metrics.umpyre_stats.comment_lines,69291
-metrics.umpyre_stats.docs_lines,276096
-metrics.umpyre_stats.function_lines,874326
-metrics.umpyre_stats.empty_lines_ratio,0.15906283552500933
-metrics.umpyre_stats.comment_lines_ratio,0.046643487743555395
-metrics.umpyre_stats.function_lines_ratio,0.5885557152425541
-metrics.umpyre_stats.mean_lines_per_function,19.094673393173032
-metrics.umpyre_stats.files_analyzed,4533
-metrics.umpyre_stats.pypi_version,0.1.56
-metrics.umpyre_stats.errors,"['_dtype_like.py: invalid syntax (_dtype_like.py, line 21)', '_char_codes.py: invalid syntax (_char_codes.py, line 3)', '_shape.py: invalid syntax (_shape.py, line 4)', '_array_like.py: invalid syntax (_array_like.py, line 15)', '_scalars.py: invalid syntax (_scalars.py, line 7)', '_nbit.py: invalid syntax (_nbit.py, line 6)', 'mypy_plugin.py: invalid syntax (mypy_plugin.py, line 118)']"
-metrics.umpyre_stats.total_errors,7
+metrics.umpyre_stats.num_functions,46446
+metrics.umpyre_stats.num_classes,11687
+metrics.umpyre_stats.total_lines,1480423
+metrics.umpyre_stats.empty_lines,235442
+metrics.umpyre_stats.comment_lines,69823
+metrics.umpyre_stats.docs_lines,252351
+metrics.umpyre_stats.function_lines,860098
+metrics.umpyre_stats.empty_lines_ratio,0.1590369779448171
+metrics.umpyre_stats.comment_lines_ratio,0.04716422265798356
+metrics.umpyre_stats.function_lines_ratio,0.5809812465761475
+metrics.umpyre_stats.mean_lines_per_function,18.518236231322398
+metrics.umpyre_stats.files_analyzed,4647
+metrics.umpyre_stats.pypi_version,0.1.57
 metrics.workflow_status.last_run_status,success
-metrics.workflow_status.last_success_timestamp,2026-10-13T05:43:30Z
+metrics.workflow_status.last_success_timestamp,2026-10-13T07:20:06Z
 metrics.workflow_status.recent_failure_count,0
-metrics.workflow_status.run_url,https://github.com/thorwhalen/oa/actions/runs/38352827362
+metrics.workflow_status.run_url,https://github.com/thorwhalen/oa/actions/runs/38361768090
 metrics.workflow_status.total_runs_analyzed,10
 metrics.wily.cyclomatic_avg,0.0
 metrics.wily.maintainability_index,0.0
@@ -40,4 +36,4 @@ metrics.coverage.branch_coverage,0.0
 metrics.coverage.statements_covered,0
 metrics.coverage.statements_total,0
 metrics.coverage.error,No coverage file found
-collection_duration_seconds,15.164872407913208
+collection_duration_seconds,15.46112322807312
