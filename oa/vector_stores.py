@@ -25,6 +25,9 @@ def docs_to_vector_store(
 
     Returns:
         tuple: (vector_store_id, file_id_to_doc_key_mapping)
+
+    If anything fails after the vector store is created, the store and the files
+    uploaded so far are deleted (best effort) before the error is re-raised.
     """
     if vs_name is None:
         import uuid
@@ -37,35 +40,48 @@ def docs_to_vector_store(
     # Create vector store
     vector_store = oa_stores.vector_stores_base.create(vs_name)
 
-    # Create temporary files for each document and upload them
     vs_files = OaVectorStoreFiles(vector_store.id, oa_stores.client)
+    assistants_files = OaFiles(oa_stores.client, purpose="assistants")
     file_id_to_doc_key = {}
+    uploaded_file_ids = []  # includes files whose attachment to the store failed
 
-    for doc_key, doc_text in docs.items():
-        # Create a temporary file with the document content
-        # Use doc_key as filename for easier identification
-        with tempfile.NamedTemporaryFile(
-            mode="w", suffix=".txt", prefix=f"{doc_key}_", delete=False
-        ) as tmp_file:
-            tmp_file.write(doc_text)
-            tmp_file.flush()
-
-            # Upload the file to OpenAI with proper purpose for assistants/vector stores
-            with open(tmp_file.name, "rb") as file_content:
-                # Create a file store with the correct purpose for assistants/vector stores
-                assistants_files = OaFiles(client, purpose="assistants")
-                file_obj = assistants_files.append(file_content)
-
-            # Add the file to the vector store
-            vs_files.add_file(file_obj.id)
-
-            # Store the mapping
-            file_id_to_doc_key[file_obj.id] = doc_key
-
-            # Clean up temporary file
-            os.unlink(tmp_file.name)
+    try:
+        for doc_key, doc_text in docs.items():
+            # Use doc_key as filename prefix for easier identification
+            with tempfile.NamedTemporaryFile(
+                mode="w", suffix=".txt", prefix=f"{doc_key}_", delete=False
+            ) as tmp_file:
+                tmp_path = tmp_file.name
+            try:
+                with open(tmp_path, "w") as f:
+                    f.write(doc_text)
+                with open(tmp_path, "rb") as file_content:
+                    file_obj = assistants_files.append(file_content)
+                uploaded_file_ids.append(file_obj.id)
+                vs_files.add_file(file_obj.id)
+                file_id_to_doc_key[file_obj.id] = doc_key
+            finally:
+                os.unlink(tmp_path)
+    except BaseException:
+        _delete_vector_store_and_files(
+            oa_stores.client, vector_store.id, uploaded_file_ids
+        )
+        raise
 
     return vector_store.id, file_id_to_doc_key
+
+
+def _delete_vector_store_and_files(client, vector_store_id, file_ids) -> None:
+    """Best-effort removal of a vector store and files; never masks the caller's error."""
+    try:
+        client.vector_stores.delete(vector_store_id)
+    except Exception:
+        pass
+    for file_id in file_ids:
+        try:
+            client.files.delete(file_id)
+        except Exception:
+            pass
 
 
 from functools import partial
