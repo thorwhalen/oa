@@ -1,11 +1,14 @@
 """Vector stores and search"""
 
+import logging
 import tempfile
 from functools import partial
 import os
 from typing import Any
 from collections.abc import Callable, Mapping, Iterable
 from oa.stores import OaStores, OaVectorStoreFiles, OaFiles
+
+_log = logging.getLogger(__name__)
 
 Query = str
 MaxNumResults = int
@@ -53,7 +56,7 @@ def docs_to_vector_store(
             ) as tmp_file:
                 tmp_path = tmp_file.name
             try:
-                with open(tmp_path, "w") as f:
+                with open(tmp_path, "w", encoding="utf-8") as f:
                     f.write(doc_text)
                 with open(tmp_path, "rb") as file_content:
                     file_obj = assistants_files.append(file_content)
@@ -75,13 +78,13 @@ def _delete_vector_store_and_files(client, vector_store_id, file_ids) -> None:
     """Best-effort removal of a vector store and files; never masks the caller's error."""
     try:
         client.vector_stores.delete(vector_store_id)
-    except Exception:
-        pass
+    except Exception as e:
+        _log.warning("Could not delete vector store %s: %r", vector_store_id, e)
     for file_id in file_ids:
         try:
             client.files.delete(file_id)
-        except Exception:
-            pass
+        except Exception as e:
+            _log.warning("Could not delete uploaded file %s: %r", file_id, e)
 
 
 from functools import partial

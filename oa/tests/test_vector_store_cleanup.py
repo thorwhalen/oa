@@ -96,3 +96,31 @@ def test_cleanup_errors_do_not_mask_original_error():
     with pytest.raises(RuntimeError, match="upload boom"):
         docs_to_vector_store(DOCS, "x", client=client)
     client.files.delete.assert_called_once_with("file_0")
+
+
+def test_non_ascii_documents_are_written_as_utf8(monkeypatch):
+    import os
+
+    import oa.vector_stores as vector_stores
+
+    written = []
+    real_unlink = os.unlink
+
+    def spy_unlink(path):
+        with open(path, "rb") as f:
+            written.append(f.read())
+        real_unlink(path)
+
+    monkeypatch.setattr(vector_stores.os, "unlink", spy_unlink)
+    docs_to_vector_store({"u": "caf\u00e9 \u2603"}, "x", client=_mk_client())
+    assert written == ["caf\u00e9 \u2603".encode("utf-8")]
+
+
+def test_failed_cleanup_is_logged(caplog):
+    client = _mk_client(fail_upload_at=1)
+    client.vector_stores.delete.side_effect = ValueError("cleanup failed")
+    client.files.delete.side_effect = ValueError("cleanup failed")
+    with caplog.at_level("WARNING", logger="oa.vector_stores"):
+        with pytest.raises(RuntimeError, match="upload boom"):
+            docs_to_vector_store(DOCS, "x", client=client)
+    assert "vs_1" in caplog.text and "file_0" in caplog.text
