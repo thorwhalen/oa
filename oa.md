@@ -1,4 +1,4 @@
-> built 2026-10-13 03:33 UTC from be842d1 (main) · oa 0.1.56. Details: build_info.json
+> built 2026-10-13 05:42 UTC from 061ce0e (main) · oa 0.1.57. Details: build_info.json
 
 # index.html.md
 
@@ -2713,6 +2713,9 @@ Create an OpenAI vector store from a mapping of documents.
 * **Return type:**
   [`tuple`](https://docs.python.org/3/builtins/stdtypes.html#tuple)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]]
 
+If anything fails after the vector store is created, the store and the files
+uploaded so far are deleted (best effort) before the error is re-raised.
+
 ### oa.vector_stores.mk_search_func_for_oa_vector_store(vector_store_id, doc_id_mapping=None, , client=None)
 
 Create a search function for an OpenAI vector store using the Responses API.
@@ -2732,20 +2735,18 @@ Create a search function for an OpenAI vector store using the Responses API.
 
 # About this build
 
-This documentation was built on **2026-10-13 03:33 UTC** from commit <a href="https://github.com/thorwhalen/oa/commit/be842d15a466d017653f4b6a91b582881b48e14a"><code>be842d1</code></a> on branch <code>main</code>, for **oa 0.1.56** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-10-13 05:42 UTC** from commit <a href="https://github.com/thorwhalen/oa/commit/061ce0ee721399a5dc675fdc523b454047e5d3c3"><code>061ce0e</code></a> on branch <code>main</code>, for **oa 0.1.57** (from <code>pyproject.toml</code>).
 
-#### WARNING
-The documentation and the package may be misaligned:
-
-- The documented version (0.1.56) is ahead of the latest release on PyPI (0.1.55): these docs describe unreleased code.
+#### NOTE
+Nothing suggests a mismatch: the tree was clean at the commit above, and the documented version is the one on PyPI.
 
 ## Source
 
 |                     |                                                                                                                                                      |
 |---------------------|------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/thorwhalen/oa/commit/be842d15a466d017653f4b6a91b582881b48e14a"><code>be842d15a466d017653f4b6a91b582881b48e14a</code></a> |
+| Commit              | <a href="https://github.com/thorwhalen/oa/commit/061ce0ee721399a5dc675fdc523b454047e5d3c3"><code>061ce0ee721399a5dc675fdc523b454047e5d3c3</code></a> |
 | Branch              | <code>main</code>                                                                                                                                    |
-| Tags at this commit | <code>0.1.56</code>                                                                                                                                  |
+| Tags at this commit | <code>0.1.57</code>                                                                                                                                  |
 | Working tree        | clean                                                                                                                                                |
 | Remote              | <code>https://github.com/thorwhalen/oa</code>                                                                                                        |
 
@@ -2754,9 +2755,9 @@ The documentation and the package may be misaligned:
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
 | Repository   | <code>thorwhalen/oa</code>                                                                 |
-| Run          | <a href="https://github.com/thorwhalen/oa/actions/runs/38341989564">38341989564</a>        |
+| Run          | <a href="https://github.com/thorwhalen/oa/actions/runs/38352519893">38352519893</a>        |
 | Ref          | <code>refs/heads/main</code>                                                               |
-| Event commit | <code>8cc5e0050c5b0a71ce2174e8224d2eb4e17e27bb</code> (in the history of the built commit) |
+| Event commit | <code>e6c9266f9ecdaccb36d3fbfd9259811955e63e1f</code> (in the history of the built commit) |
 
 ## Tools
 
@@ -2781,13 +2782,13 @@ The documentation and the package may be misaligned:
 
 ## Package on PyPI
 
-Latest release: <a href="https://pypi.org/project/oa/0.1.55/">0.1.55</a>, older than the documented version (0.1.56).
+Latest release: <a href="https://pypi.org/project/oa/0.1.57/">0.1.57</a>, the same as the documented version.
 
 ## Reproduce
 
 ```bash
 git clone https://github.com/thorwhalen/oa && cd oa
-git checkout be842d15a466d017653f4b6a91b582881b48e14a
+git checkout 061ce0ee721399a5dc675fdc523b454047e5d3c3
 pip install "epythet==0.2.13"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```

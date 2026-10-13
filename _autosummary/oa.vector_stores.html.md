@@ -61,6 +61,9 @@ Create an OpenAI vector store from a mapping of documents.
 * **Return type:**
   [`tuple`](https://docs.python.org/3/builtins/stdtypes.html#tuple)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]]
 
+If anything fails after the vector store is created, the store and the files
+uploaded so far are deleted (best effort) before the error is re-raised.
+
 ### oa.vector_stores.mk_search_func_for_oa_vector_store(vector_store_id, doc_id_mapping=None, , client=None)
 
 Create a search function for an OpenAI vector store using the Responses API.

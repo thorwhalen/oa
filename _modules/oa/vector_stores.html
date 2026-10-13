@@ -200,191 +200,207 @@
 </span><span id="line-25">
 </span><span id="line-26"><span class="sd">    Returns:</span>
 </span><span id="line-27"><span class="sd">        tuple: (vector_store_id, file_id_to_doc_key_mapping)</span>
-</span><span id="line-28"><span class="sd">    """</span>
-</span><span id="line-29">    <span class="k">if</span> <span class="n">vs_name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="line-30">        <span class="kn">import</span><span class="w"> </span><span class="nn">uuid</span>
-</span><span id="line-31">
-</span><span id="line-32">        <span class="n">vs_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"test_vs_</span><span class="si">{</span><span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">()</span><span class="o">.</span><span class="n">hex</span><span class="p">[:</span><span class="mi">8</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span>
-</span><span id="line-33">
-</span><span id="line-34">    <span class="c1"># Initialize OA stores</span>
-</span><span id="line-35">    <span class="n">oa_stores</span> <span class="o">=</span> <span class="n">OaStores</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+</span><span id="line-28">
+</span><span id="line-29"><span class="sd">    If anything fails after the vector store is created, the store and the files</span>
+</span><span id="line-30"><span class="sd">    uploaded so far are deleted (best effort) before the error is re-raised.</span>
+</span><span id="line-31"><span class="sd">    """</span>
+</span><span id="line-32">    <span class="k">if</span> <span class="n">vs_name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="line-33">        <span class="kn">import</span><span class="w"> </span><span class="nn">uuid</span>
+</span><span id="line-34">
+</span><span id="line-35">        <span class="n">vs_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"test_vs_</span><span class="si">{</span><span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">()</span><span class="o">.</span><span class="n">hex</span><span class="p">[:</span><span class="mi">8</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span>
 </span><span id="line-36">
-</span><span id="line-37">    <span class="c1"># Create vector store</span>
-</span><span id="line-38">    <span class="n">vector_store</span> <span class="o">=</span> <span class="n">oa_stores</span><span class="o">.</span><span class="n">vector_stores_base</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">vs_name</span><span class="p">)</span>
+</span><span id="line-37">    <span class="c1"># Initialize OA stores</span>
+</span><span id="line-38">    <span class="n">oa_stores</span> <span class="o">=</span> <span class="n">OaStores</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
 </span><span id="line-39">
-</span><span id="line-40">    <span class="c1"># Create temporary files for each document and upload them</span>
-</span><span id="line-41">    <span class="n">vs_files</span> <span class="o">=</span> <span class="n">OaVectorStoreFiles</span><span class="p">(</span><span class="n">vector_store</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">oa_stores</span><span class="o">.</span><span class="n">client</span><span class="p">)</span>
-</span><span id="line-42">    <span class="n">file_id_to_doc_key</span> <span class="o">=</span> <span class="p">{}</span>
-</span><span id="line-43">
-</span><span id="line-44">    <span class="k">for</span> <span class="n">doc_key</span><span class="p">,</span> <span class="n">doc_text</span> <span class="ow">in</span> <span class="n">docs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-</span><span id="line-45">        <span class="c1"># Create a temporary file with the document content</span>
-</span><span id="line-46">        <span class="c1"># Use doc_key as filename for easier identification</span>
-</span><span id="line-47">        <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span>
-</span><span id="line-48">            <span class="n">mode</span><span class="o">=</span><span class="s2">"w"</span><span class="p">,</span> <span class="n">suffix</span><span class="o">=</span><span class="s2">".txt"</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">doc_key</span><span class="si">}</span><span class="s2">_"</span><span class="p">,</span> <span class="n">delete</span><span class="o">=</span><span class="kc">False</span>
-</span><span id="line-49">        <span class="p">)</span> <span class="k">as</span> <span class="n">tmp_file</span><span class="p">:</span>
-</span><span id="line-50">            <span class="n">tmp_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">doc_text</span><span class="p">)</span>
-</span><span id="line-51">            <span class="n">tmp_file</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
-</span><span id="line-52">
-</span><span id="line-53">            <span class="c1"># Upload the file to OpenAI with proper purpose for assistants/vector stores</span>
-</span><span id="line-54">            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">tmp_file</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s2">"rb"</span><span class="p">)</span> <span class="k">as</span> <span class="n">file_content</span><span class="p">:</span>
-</span><span id="line-55">                <span class="c1"># Create a file store with the correct purpose for assistants/vector stores</span>
-</span><span id="line-56">                <span class="n">assistants_files</span> <span class="o">=</span> <span class="n">OaFiles</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">purpose</span><span class="o">=</span><span class="s2">"assistants"</span><span class="p">)</span>
-</span><span id="line-57">                <span class="n">file_obj</span> <span class="o">=</span> <span class="n">assistants_files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">file_content</span><span class="p">)</span>
-</span><span id="line-58">
-</span><span id="line-59">            <span class="c1"># Add the file to the vector store</span>
-</span><span id="line-60">            <span class="n">vs_files</span><span class="o">.</span><span class="n">add_file</span><span class="p">(</span><span class="n">file_obj</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
-</span><span id="line-61">
-</span><span id="line-62">            <span class="c1"># Store the mapping</span>
-</span><span id="line-63">            <span class="n">file_id_to_doc_key</span><span class="p">[</span><span class="n">file_obj</span><span class="o">.</span><span class="n">id</span><span class="p">]</span> <span class="o">=</span> <span class="n">doc_key</span>
-</span><span id="line-64">
-</span><span id="line-65">            <span class="c1"># Clean up temporary file</span>
-</span><span id="line-66">            <span class="n">os</span><span class="o">.</span><span class="n">unlink</span><span class="p">(</span><span class="n">tmp_file</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-</span><span id="line-67">
-</span><span id="line-68">    <span class="k">return</span> <span class="n">vector_store</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">file_id_to_doc_key</span></div>
-
-</span><span id="line-69">
+</span><span id="line-40">    <span class="c1"># Create vector store</span>
+</span><span id="line-41">    <span class="n">vector_store</span> <span class="o">=</span> <span class="n">oa_stores</span><span class="o">.</span><span class="n">vector_stores_base</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">vs_name</span><span class="p">)</span>
+</span><span id="line-42">
+</span><span id="line-43">    <span class="n">vs_files</span> <span class="o">=</span> <span class="n">OaVectorStoreFiles</span><span class="p">(</span><span class="n">vector_store</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">oa_stores</span><span class="o">.</span><span class="n">client</span><span class="p">)</span>
+</span><span id="line-44">    <span class="n">assistants_files</span> <span class="o">=</span> <span class="n">OaFiles</span><span class="p">(</span><span class="n">oa_stores</span><span class="o">.</span><span class="n">client</span><span class="p">,</span> <span class="n">purpose</span><span class="o">=</span><span class="s2">"assistants"</span><span class="p">)</span>
+</span><span id="line-45">    <span class="n">file_id_to_doc_key</span> <span class="o">=</span> <span class="p">{}</span>
+</span><span id="line-46">    <span class="n">uploaded_file_ids</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># includes files whose attachment to the store failed</span>
+</span><span id="line-47">
+</span><span id="line-48">    <span class="k">try</span><span class="p">:</span>
+</span><span id="line-49">        <span class="k">for</span> <span class="n">doc_key</span><span class="p">,</span> <span class="n">doc_text</span> <span class="ow">in</span> <span class="n">docs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+</span><span id="line-50">            <span class="c1"># Use doc_key as filename prefix for easier identification</span>
+</span><span id="line-51">            <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span>
+</span><span id="line-52">                <span class="n">mode</span><span class="o">=</span><span class="s2">"w"</span><span class="p">,</span> <span class="n">suffix</span><span class="o">=</span><span class="s2">".txt"</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">doc_key</span><span class="si">}</span><span class="s2">_"</span><span class="p">,</span> <span class="n">delete</span><span class="o">=</span><span class="kc">False</span>
+</span><span id="line-53">            <span class="p">)</span> <span class="k">as</span> <span class="n">tmp_file</span><span class="p">:</span>
+</span><span id="line-54">                <span class="n">tmp_path</span> <span class="o">=</span> <span class="n">tmp_file</span><span class="o">.</span><span class="n">name</span>
+</span><span id="line-55">            <span class="k">try</span><span class="p">:</span>
+</span><span id="line-56">                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">tmp_path</span><span class="p">,</span> <span class="s2">"w"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+</span><span id="line-57">                    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">doc_text</span><span class="p">)</span>
+</span><span id="line-58">                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">tmp_path</span><span class="p">,</span> <span class="s2">"rb"</span><span class="p">)</span> <span class="k">as</span> <span class="n">file_content</span><span class="p">:</span>
+</span><span id="line-59">                    <span class="n">file_obj</span> <span class="o">=</span> <span class="n">assistants_files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">file_content</span><span class="p">)</span>
+</span><span id="line-60">                <span class="n">uploaded_file_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">file_obj</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+</span><span id="line-61">                <span class="n">vs_files</span><span class="o">.</span><span class="n">add_file</span><span class="p">(</span><span class="n">file_obj</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+</span><span id="line-62">                <span class="n">file_id_to_doc_key</span><span class="p">[</span><span class="n">file_obj</span><span class="o">.</span><span class="n">id</span><span class="p">]</span> <span class="o">=</span> <span class="n">doc_key</span>
+</span><span id="line-63">            <span class="k">finally</span><span class="p">:</span>
+</span><span id="line-64">                <span class="n">os</span><span class="o">.</span><span class="n">unlink</span><span class="p">(</span><span class="n">tmp_path</span><span class="p">)</span>
+</span><span id="line-65">    <span class="k">except</span> <span class="ne">BaseException</span><span class="p">:</span>
+</span><span id="line-66">        <span class="n">_delete_vector_store_and_files</span><span class="p">(</span>
+</span><span id="line-67">            <span class="n">oa_stores</span><span class="o">.</span><span class="n">client</span><span class="p">,</span> <span class="n">vector_store</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">uploaded_file_ids</span>
+</span><span id="line-68">        <span class="p">)</span>
+</span><span id="line-69">        <span class="k">raise</span>
 </span><span id="line-70">
-</span><span id="line-71"><span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">partial</span>
-</span><span id="line-72"><span class="kn">from</span><span class="w"> </span><span class="nn">inspect</span><span class="w"> </span><span class="kn">import</span> <span class="n">Parameter</span>
-</span><span id="line-73"><span class="kn">from</span><span class="w"> </span><span class="nn">i2</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sig</span>
-</span><span id="line-74"><span class="kn">from</span><span class="w"> </span><span class="nn">i2.wrapper</span><span class="w"> </span><span class="kn">import</span> <span class="n">Ingress</span><span class="p">,</span> <span class="n">wrap</span>
-</span><span id="line-75">
-</span><span id="line-76">
+</span><span id="line-71">    <span class="k">return</span> <span class="n">vector_store</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">file_id_to_doc_key</span></div>
+
+</span><span id="line-72">
+</span><span id="line-73">
+</span><span id="line-74"><span class="k">def</span><span class="w"> </span><span class="nf">_delete_vector_store_and_files</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">vector_store_id</span><span class="p">,</span> <span class="n">file_ids</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="line-75"><span class="w">    </span><span class="sd">"""Best-effort removal of a vector store and files; never masks the caller's error."""</span>
+</span><span id="line-76">    <span class="k">try</span><span class="p">:</span>
+</span><span id="line-77">        <span class="n">client</span><span class="o">.</span><span class="n">vector_stores</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">vector_store_id</span><span class="p">)</span>
+</span><span id="line-78">    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+</span><span id="line-79">        <span class="k">pass</span>
+</span><span id="line-80">    <span class="k">for</span> <span class="n">file_id</span> <span class="ow">in</span> <span class="n">file_ids</span><span class="p">:</span>
+</span><span id="line-81">        <span class="k">try</span><span class="p">:</span>
+</span><span id="line-82">            <span class="n">client</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">file_id</span><span class="p">)</span>
+</span><span id="line-83">        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+</span><span id="line-84">            <span class="k">pass</span>
+</span><span id="line-85">
+</span><span id="line-86">
+</span><span id="line-87"><span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">partial</span>
+</span><span id="line-88"><span class="kn">from</span><span class="w"> </span><span class="nn">inspect</span><span class="w"> </span><span class="kn">import</span> <span class="n">Parameter</span>
+</span><span id="line-89"><span class="kn">from</span><span class="w"> </span><span class="nn">i2</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sig</span>
+</span><span id="line-90"><span class="kn">from</span><span class="w"> </span><span class="nn">i2.wrapper</span><span class="w"> </span><span class="kn">import</span> <span class="n">Ingress</span><span class="p">,</span> <span class="n">wrap</span>
+</span><span id="line-91">
+</span><span id="line-92">
 <div class="viewcode-block" id="bind_and_modify">
 <a class="viewcode-back" href="../../_autosummary/oa.vector_stores.html#oa.vector_stores.bind_and_modify">[docs]</a>
-</span><span id="line-77"><span class="k">def</span><span class="w"> </span><span class="nf">bind_and_modify</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="o">*</span><span class="n">bound_args</span><span class="p">,</span> <span class="n">_param_changes</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">(),</span> <span class="o">**</span><span class="n">bound_kwargs</span><span class="p">):</span>
-</span><span id="line-78"><span class="w">    </span><span class="sd">"""</span>
-</span><span id="line-79"><span class="sd">    Convenience function that both binds arguments and modifies signature.</span>
-</span><span id="line-80">
-</span><span id="line-81"><span class="sd">    This is perfect for your vector store search use case.</span>
-</span><span id="line-82">
-</span><span id="line-83"><span class="sd">    :param func: The function to wrap</span>
-</span><span id="line-84"><span class="sd">    :param bound_args: Positional arguments to bind</span>
-</span><span id="line-85"><span class="sd">    :param bound_kwargs: Dict of argument names to values to bind</span>
-</span><span id="line-86"><span class="sd">    :param _param_changes: Parameter modifications</span>
-</span><span id="line-87"><span class="sd">    :return: Wrapped function with bound arguments and modified signature</span>
-</span><span id="line-88">
-</span><span id="line-89"><span class="sd">    Example for your vector store case:</span>
-</span><span id="line-90">
-</span><span id="line-91"><span class="sd">    &gt;&gt;&gt; def search(vector_store_id, *, query, filters=None, max_results=10):</span>
-</span><span id="line-92"><span class="sd">    ...     return f"Searching {vector_store_id} for '{query}'"</span>
-</span><span id="line-93"><span class="sd">    &gt;&gt;&gt;</span>
-</span><span id="line-94"><span class="sd">    &gt;&gt;&gt; # Bind vector_store_id and make query positional</span>
-</span><span id="line-95"><span class="sd">    &gt;&gt;&gt; bound_search = bind_and_modify(</span>
-</span><span id="line-96"><span class="sd">    ...     search,</span>
-</span><span id="line-97"><span class="sd">    ...     vector_store_id='my_store',</span>
-</span><span id="line-98"><span class="sd">    ...     _param_changes=dict(query={'kind': Parameter.POSITIONAL_OR_KEYWORD}),</span>
-</span><span id="line-99"><span class="sd">    ... )</span>
-</span><span id="line-100"><span class="sd">    &gt;&gt;&gt;</span>
-</span><span id="line-101"><span class="sd">    &gt;&gt;&gt; bound_search('my query')</span>
-</span><span id="line-102"><span class="sd">    "Searching my_store for 'my query'"</span>
-</span><span id="line-103"><span class="sd">    """</span>
-</span><span id="line-104">    <span class="kn">from</span><span class="w"> </span><span class="nn">i2.wrapper</span><span class="w"> </span><span class="kn">import</span> <span class="n">Ingress</span><span class="p">,</span> <span class="n">wrap</span>
-</span><span id="line-105">
-</span><span id="line-106">    <span class="c1"># Get original signature and determine what we're binding</span>
-</span><span id="line-107">    <span class="n">original_sig</span> <span class="o">=</span> <span class="n">Sig</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
-</span><span id="line-108">    <span class="n">bound_kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">bound_kwargs</span><span class="p">)</span>
-</span><span id="line-109">
-</span><span id="line-110">    <span class="c1"># Map the bound arguments to parameter names</span>
-</span><span id="line-111">    <span class="n">bound_params</span> <span class="o">=</span> <span class="n">original_sig</span><span class="o">.</span><span class="n">map_arguments</span><span class="p">(</span>
-</span><span id="line-112">        <span class="n">bound_args</span><span class="p">,</span>
-</span><span id="line-113">        <span class="n">bound_kwargs</span><span class="p">,</span>
-</span><span id="line-114">        <span class="n">allow_partial</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-</span><span id="line-115">    <span class="p">)</span>
-</span><span id="line-116">
-</span><span id="line-117">    <span class="c1"># Remove bound parameters from signature</span>
-</span><span id="line-118">    <span class="n">remaining_sig</span> <span class="o">=</span> <span class="n">original_sig</span> <span class="o">-</span> <span class="nb">list</span><span class="p">(</span><span class="n">bound_params</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-</span><span id="line-119">
-</span><span id="line-120">    <span class="c1"># Apply parameter modifications to the remaining signature</span>
-</span><span id="line-121">    <span class="k">if</span> <span class="n">_param_changes</span><span class="p">:</span>
-</span><span id="line-122">        <span class="n">remaining_sig</span> <span class="o">=</span> <span class="n">remaining_sig</span><span class="o">.</span><span class="n">modified</span><span class="p">(</span><span class="o">**</span><span class="n">_param_changes</span><span class="p">)</span>
-</span><span id="line-123">
-</span><span id="line-124">    <span class="c1"># Create an ingress that transforms outer args/kwargs to inner args/kwargs</span>
-</span><span id="line-125">    <span class="k">def</span><span class="w"> </span><span class="nf">kwargs_trans</span><span class="p">(</span><span class="n">outer_kwargs</span><span class="p">):</span>
-</span><span id="line-126">        <span class="c1"># Start with the bound parameters</span>
-</span><span id="line-127">        <span class="n">inner_kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">bound_params</span><span class="p">)</span>
-</span><span id="line-128">        <span class="c1"># Add the outer kwargs</span>
-</span><span id="line-129">        <span class="n">inner_kwargs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">outer_kwargs</span><span class="p">)</span>
-</span><span id="line-130">        <span class="k">return</span> <span class="n">inner_kwargs</span>
-</span><span id="line-131">
-</span><span id="line-132">    <span class="c1"># Create ingress with the modified signature as outer and original as inner</span>
-</span><span id="line-133">    <span class="n">ingress</span> <span class="o">=</span> <span class="n">Ingress</span><span class="p">(</span>
-</span><span id="line-134">        <span class="n">outer_sig</span><span class="o">=</span><span class="n">remaining_sig</span><span class="p">,</span> <span class="n">kwargs_trans</span><span class="o">=</span><span class="n">kwargs_trans</span><span class="p">,</span> <span class="n">inner_sig</span><span class="o">=</span><span class="n">original_sig</span>
-</span><span id="line-135">    <span class="p">)</span>
-</span><span id="line-136">
-</span><span id="line-137">    <span class="c1"># Wrap the function</span>
-</span><span id="line-138">    <span class="k">return</span> <span class="n">wrap</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">ingress</span><span class="o">=</span><span class="n">ingress</span><span class="p">)</span></div>
-
+</span><span id="line-93"><span class="k">def</span><span class="w"> </span><span class="nf">bind_and_modify</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="o">*</span><span class="n">bound_args</span><span class="p">,</span> <span class="n">_param_changes</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">(),</span> <span class="o">**</span><span class="n">bound_kwargs</span><span class="p">):</span>
+</span><span id="line-94"><span class="w">    </span><span class="sd">"""</span>
+</span><span id="line-95"><span class="sd">    Convenience function that both binds arguments and modifies signature.</span>
+</span><span id="line-96">
+</span><span id="line-97"><span class="sd">    This is perfect for your vector store search use case.</span>
+</span><span id="line-98">
+</span><span id="line-99"><span class="sd">    :param func: The function to wrap</span>
+</span><span id="line-100"><span class="sd">    :param bound_args: Positional arguments to bind</span>
+</span><span id="line-101"><span class="sd">    :param bound_kwargs: Dict of argument names to values to bind</span>
+</span><span id="line-102"><span class="sd">    :param _param_changes: Parameter modifications</span>
+</span><span id="line-103"><span class="sd">    :return: Wrapped function with bound arguments and modified signature</span>
+</span><span id="line-104">
+</span><span id="line-105"><span class="sd">    Example for your vector store case:</span>
+</span><span id="line-106">
+</span><span id="line-107"><span class="sd">    &gt;&gt;&gt; def search(vector_store_id, *, query, filters=None, max_results=10):</span>
+</span><span id="line-108"><span class="sd">    ...     return f"Searching {vector_store_id} for '{query}'"</span>
+</span><span id="line-109"><span class="sd">    &gt;&gt;&gt;</span>
+</span><span id="line-110"><span class="sd">    &gt;&gt;&gt; # Bind vector_store_id and make query positional</span>
+</span><span id="line-111"><span class="sd">    &gt;&gt;&gt; bound_search = bind_and_modify(</span>
+</span><span id="line-112"><span class="sd">    ...     search,</span>
+</span><span id="line-113"><span class="sd">    ...     vector_store_id='my_store',</span>
+</span><span id="line-114"><span class="sd">    ...     _param_changes=dict(query={'kind': Parameter.POSITIONAL_OR_KEYWORD}),</span>
+</span><span id="line-115"><span class="sd">    ... )</span>
+</span><span id="line-116"><span class="sd">    &gt;&gt;&gt;</span>
+</span><span id="line-117"><span class="sd">    &gt;&gt;&gt; bound_search('my query')</span>
+</span><span id="line-118"><span class="sd">    "Searching my_store for 'my query'"</span>
+</span><span id="line-119"><span class="sd">    """</span>
+</span><span id="line-120">    <span class="kn">from</span><span class="w"> </span><span class="nn">i2.wrapper</span><span class="w"> </span><span class="kn">import</span> <span class="n">Ingress</span><span class="p">,</span> <span class="n">wrap</span>
+</span><span id="line-121">
+</span><span id="line-122">    <span class="c1"># Get original signature and determine what we're binding</span>
+</span><span id="line-123">    <span class="n">original_sig</span> <span class="o">=</span> <span class="n">Sig</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+</span><span id="line-124">    <span class="n">bound_kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">bound_kwargs</span><span class="p">)</span>
+</span><span id="line-125">
+</span><span id="line-126">    <span class="c1"># Map the bound arguments to parameter names</span>
+</span><span id="line-127">    <span class="n">bound_params</span> <span class="o">=</span> <span class="n">original_sig</span><span class="o">.</span><span class="n">map_arguments</span><span class="p">(</span>
+</span><span id="line-128">        <span class="n">bound_args</span><span class="p">,</span>
+</span><span id="line-129">        <span class="n">bound_kwargs</span><span class="p">,</span>
+</span><span id="line-130">        <span class="n">allow_partial</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="line-131">    <span class="p">)</span>
+</span><span id="line-132">
+</span><span id="line-133">    <span class="c1"># Remove bound parameters from signature</span>
+</span><span id="line-134">    <span class="n">remaining_sig</span> <span class="o">=</span> <span class="n">original_sig</span> <span class="o">-</span> <span class="nb">list</span><span class="p">(</span><span class="n">bound_params</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+</span><span id="line-135">
+</span><span id="line-136">    <span class="c1"># Apply parameter modifications to the remaining signature</span>
+</span><span id="line-137">    <span class="k">if</span> <span class="n">_param_changes</span><span class="p">:</span>
+</span><span id="line-138">        <span class="n">remaining_sig</span> <span class="o">=</span> <span class="n">remaining_sig</span><span class="o">.</span><span class="n">modified</span><span class="p">(</span><span class="o">**</span><span class="n">_param_changes</span><span class="p">)</span>
 </span><span id="line-139">
-</span><span id="line-140">
+</span><span id="line-140">    <span class="c1"># Create an ingress that transforms outer args/kwargs to inner args/kwargs</span>
+</span><span id="line-141">    <span class="k">def</span><span class="w"> </span><span class="nf">kwargs_trans</span><span class="p">(</span><span class="n">outer_kwargs</span><span class="p">):</span>
+</span><span id="line-142">        <span class="c1"># Start with the bound parameters</span>
+</span><span id="line-143">        <span class="n">inner_kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">bound_params</span><span class="p">)</span>
+</span><span id="line-144">        <span class="c1"># Add the outer kwargs</span>
+</span><span id="line-145">        <span class="n">inner_kwargs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">outer_kwargs</span><span class="p">)</span>
+</span><span id="line-146">        <span class="k">return</span> <span class="n">inner_kwargs</span>
+</span><span id="line-147">
+</span><span id="line-148">    <span class="c1"># Create ingress with the modified signature as outer and original as inner</span>
+</span><span id="line-149">    <span class="n">ingress</span> <span class="o">=</span> <span class="n">Ingress</span><span class="p">(</span>
+</span><span id="line-150">        <span class="n">outer_sig</span><span class="o">=</span><span class="n">remaining_sig</span><span class="p">,</span> <span class="n">kwargs_trans</span><span class="o">=</span><span class="n">kwargs_trans</span><span class="p">,</span> <span class="n">inner_sig</span><span class="o">=</span><span class="n">original_sig</span>
+</span><span id="line-151">    <span class="p">)</span>
+</span><span id="line-152">
+</span><span id="line-153">    <span class="c1"># Wrap the function</span>
+</span><span id="line-154">    <span class="k">return</span> <span class="n">wrap</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">ingress</span><span class="o">=</span><span class="n">ingress</span><span class="p">)</span></div>
+
+</span><span id="line-155">
+</span><span id="line-156">
 <div class="viewcode-block" id="mk_search_func_for_oa_vector_store">
 <a class="viewcode-back" href="../../_autosummary/oa.vector_stores.html#oa.vector_stores.mk_search_func_for_oa_vector_store">[docs]</a>
-</span><span id="line-141"><span class="k">def</span><span class="w"> </span><span class="nf">mk_search_func_for_oa_vector_store</span><span class="p">(</span>
-</span><span id="line-142">    <span class="n">vector_store_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">doc_id_mapping</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span>
-</span><span id="line-143"><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Query</span><span class="p">],</span> <span class="n">SearchResults</span><span class="p">]:</span>
-</span><span id="line-144"><span class="w">    </span><span class="sd">"""</span>
-</span><span id="line-145"><span class="sd">    Create a search function for an OpenAI vector store using the Responses API.</span>
-</span><span id="line-146">
-</span><span id="line-147"><span class="sd">    Args:</span>
-</span><span id="line-148"><span class="sd">        vector_store_id: The ID of the vector store to search</span>
-</span><span id="line-149"><span class="sd">        doc_id_mapping: Optional mapping from file IDs to document keys for result translation</span>
-</span><span id="line-150">
-</span><span id="line-151"><span class="sd">    Returns:</span>
-</span><span id="line-152"><span class="sd">        A function that takes a query and returns search results</span>
-</span><span id="line-153"><span class="sd">    """</span>
-</span><span id="line-154">    <span class="n">oa_stores</span> <span class="o">=</span> <span class="n">OaStores</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
-</span><span id="line-155">
-</span><span id="line-156">    <span class="k">def</span><span class="w"> </span><span class="nf">search_func</span><span class="p">(</span><span class="n">query</span><span class="p">:</span> <span class="n">Query</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SearchResults</span><span class="p">:</span>
-</span><span id="line-157"><span class="w">        </span><span class="sd">"""</span>
-</span><span id="line-158"><span class="sd">        Search function that uses the Responses API to perform the search.</span>
-</span><span id="line-159"><span class="sd">        """</span>
-</span><span id="line-160">        <span class="c1"># Use the new Responses API with a single call</span>
-</span><span id="line-161">        <span class="n">response</span> <span class="o">=</span> <span class="n">oa_stores</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">responses</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
-</span><span id="line-162">            <span class="n">model</span><span class="o">=</span><span class="s2">"gpt-4o"</span><span class="p">,</span>
-</span><span id="line-163">            <span class="nb">input</span><span class="o">=</span><span class="n">query</span><span class="p">,</span>
-</span><span id="line-164">            <span class="n">instructions</span><span class="o">=</span><span class="s2">"You are a search assistant. Use the file_search tool to find relevant documents."</span><span class="p">,</span>
-</span><span id="line-165">            <span class="n">tools</span><span class="o">=</span><span class="p">[</span>
-</span><span id="line-166">                <span class="p">{</span>
-</span><span id="line-167">                    <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"file_search"</span><span class="p">,</span>
-</span><span id="line-168">                    <span class="s2">"vector_store_ids"</span><span class="p">:</span> <span class="p">[</span><span class="n">vector_store_id</span><span class="p">],</span>
-</span><span id="line-169">                <span class="p">}</span>
-</span><span id="line-170">            <span class="p">],</span>
-</span><span id="line-171">            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
-</span><span id="line-172">        <span class="p">)</span>
-</span><span id="line-173">
-</span><span id="line-174">        <span class="c1"># Extract file IDs from the response</span>
-</span><span id="line-175">        <span class="n">file_ids</span> <span class="o">=</span> <span class="p">[]</span>
-</span><span id="line-176">        <span class="k">for</span> <span class="n">output</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">output</span><span class="p">:</span>
-</span><span id="line-177">            <span class="k">if</span> <span class="n">output</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">"file_search"</span><span class="p">:</span>
-</span><span id="line-178">                <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">output</span><span class="o">.</span><span class="n">file_search</span><span class="o">.</span><span class="n">results</span><span class="p">:</span>
-</span><span id="line-179">                    <span class="n">file_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">file_id</span><span class="p">)</span>
-</span><span id="line-180">
-</span><span id="line-181">        <span class="k">if</span> <span class="n">doc_id_mapping</span><span class="p">:</span>
-</span><span id="line-182">            <span class="k">return</span> <span class="p">[</span>
-</span><span id="line-183">                <span class="n">doc_id_mapping</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">file_id</span><span class="p">)</span>
-</span><span id="line-184">                <span class="k">for</span> <span class="n">file_id</span> <span class="ow">in</span> <span class="n">file_ids</span>
-</span><span id="line-185">                <span class="k">if</span> <span class="n">file_id</span> <span class="ow">in</span> <span class="n">doc_id_mapping</span>
-</span><span id="line-186">            <span class="p">]</span>
-</span><span id="line-187">        <span class="k">return</span> <span class="n">file_ids</span>
-</span><span id="line-188">
-</span><span id="line-189">    <span class="k">return</span> <span class="n">search_func</span></div>
+</span><span id="line-157"><span class="k">def</span><span class="w"> </span><span class="nf">mk_search_func_for_oa_vector_store</span><span class="p">(</span>
+</span><span id="line-158">    <span class="n">vector_store_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">doc_id_mapping</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span>
+</span><span id="line-159"><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Query</span><span class="p">],</span> <span class="n">SearchResults</span><span class="p">]:</span>
+</span><span id="line-160"><span class="w">    </span><span class="sd">"""</span>
+</span><span id="line-161"><span class="sd">    Create a search function for an OpenAI vector store using the Responses API.</span>
+</span><span id="line-162">
+</span><span id="line-163"><span class="sd">    Args:</span>
+</span><span id="line-164"><span class="sd">        vector_store_id: The ID of the vector store to search</span>
+</span><span id="line-165"><span class="sd">        doc_id_mapping: Optional mapping from file IDs to document keys for result translation</span>
+</span><span id="line-166">
+</span><span id="line-167"><span class="sd">    Returns:</span>
+</span><span id="line-168"><span class="sd">        A function that takes a query and returns search results</span>
+</span><span id="line-169"><span class="sd">    """</span>
+</span><span id="line-170">    <span class="n">oa_stores</span> <span class="o">=</span> <span class="n">OaStores</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+</span><span id="line-171">
+</span><span id="line-172">    <span class="k">def</span><span class="w"> </span><span class="nf">search_func</span><span class="p">(</span><span class="n">query</span><span class="p">:</span> <span class="n">Query</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SearchResults</span><span class="p">:</span>
+</span><span id="line-173"><span class="w">        </span><span class="sd">"""</span>
+</span><span id="line-174"><span class="sd">        Search function that uses the Responses API to perform the search.</span>
+</span><span id="line-175"><span class="sd">        """</span>
+</span><span id="line-176">        <span class="c1"># Use the new Responses API with a single call</span>
+</span><span id="line-177">        <span class="n">response</span> <span class="o">=</span> <span class="n">oa_stores</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">responses</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+</span><span id="line-178">            <span class="n">model</span><span class="o">=</span><span class="s2">"gpt-4o"</span><span class="p">,</span>
+</span><span id="line-179">            <span class="nb">input</span><span class="o">=</span><span class="n">query</span><span class="p">,</span>
+</span><span id="line-180">            <span class="n">instructions</span><span class="o">=</span><span class="s2">"You are a search assistant. Use the file_search tool to find relevant documents."</span><span class="p">,</span>
+</span><span id="line-181">            <span class="n">tools</span><span class="o">=</span><span class="p">[</span>
+</span><span id="line-182">                <span class="p">{</span>
+</span><span id="line-183">                    <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"file_search"</span><span class="p">,</span>
+</span><span id="line-184">                    <span class="s2">"vector_store_ids"</span><span class="p">:</span> <span class="p">[</span><span class="n">vector_store_id</span><span class="p">],</span>
+</span><span id="line-185">                <span class="p">}</span>
+</span><span id="line-186">            <span class="p">],</span>
+</span><span id="line-187">            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+</span><span id="line-188">        <span class="p">)</span>
+</span><span id="line-189">
+</span><span id="line-190">        <span class="c1"># Extract file IDs from the response</span>
+</span><span id="line-191">        <span class="n">file_ids</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="line-192">        <span class="k">for</span> <span class="n">output</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">output</span><span class="p">:</span>
+</span><span id="line-193">            <span class="k">if</span> <span class="n">output</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">"file_search"</span><span class="p">:</span>
+</span><span id="line-194">                <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">output</span><span class="o">.</span><span class="n">file_search</span><span class="o">.</span><span class="n">results</span><span class="p">:</span>
+</span><span id="line-195">                    <span class="n">file_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">file_id</span><span class="p">)</span>
+</span><span id="line-196">
+</span><span id="line-197">        <span class="k">if</span> <span class="n">doc_id_mapping</span><span class="p">:</span>
+</span><span id="line-198">            <span class="k">return</span> <span class="p">[</span>
+</span><span id="line-199">                <span class="n">doc_id_mapping</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">file_id</span><span class="p">)</span>
+</span><span id="line-200">                <span class="k">for</span> <span class="n">file_id</span> <span class="ow">in</span> <span class="n">file_ids</span>
+</span><span id="line-201">                <span class="k">if</span> <span class="n">file_id</span> <span class="ow">in</span> <span class="n">doc_id_mapping</span>
+</span><span id="line-202">            <span class="p">]</span>
+</span><span id="line-203">        <span class="k">return</span> <span class="n">file_ids</span>
+</span><span id="line-204">
+</span><span id="line-205">    <span class="k">return</span> <span class="n">search_func</span></div>
 
-</span><span id="line-190">
-</span><span id="line-191">
+</span><span id="line-206">
+</span><span id="line-207">
 <div class="viewcode-block" id="docs_to_search_func_factory_via_vector_store">
 <a class="viewcode-back" href="../../_autosummary/oa.vector_stores.html#oa.vector_stores.docs_to_search_func_factory_via_vector_store">[docs]</a>
-</span><span id="line-192"><span class="k">def</span><span class="w"> </span><span class="nf">docs_to_search_func_factory_via_vector_store</span><span class="p">(</span>
-</span><span id="line-193">    <span class="n">docs</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
-</span><span id="line-194"><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Query</span><span class="p">],</span> <span class="n">SearchResults</span><span class="p">]:</span>
-</span><span id="line-195"><span class="w">    </span><span class="sd">"""</span>
-</span><span id="line-196"><span class="sd">    Factory function that creates a search function via vector store.</span>
-</span><span id="line-197"><span class="sd">    This can be used with check_search_func_factory.</span>
-</span><span id="line-198"><span class="sd">    """</span>
-</span><span id="line-199">    <span class="c1"># Create vector store from docs</span>
-</span><span id="line-200">    <span class="n">vs_id</span><span class="p">,</span> <span class="n">file_id_mapping</span> <span class="o">=</span> <span class="n">docs_to_vector_store</span><span class="p">(</span><span class="n">docs</span><span class="p">)</span>
-</span><span id="line-201">
-</span><span id="line-202">    <span class="c1"># Create and return search function with proper mapping</span>
-</span><span id="line-203">    <span class="k">return</span> <span class="n">mk_search_func_for_oa_vector_store</span><span class="p">(</span><span class="n">vs_id</span><span class="p">,</span> <span class="n">file_id_mapping</span><span class="p">)</span></div>
+</span><span id="line-208"><span class="k">def</span><span class="w"> </span><span class="nf">docs_to_search_func_factory_via_vector_store</span><span class="p">(</span>
+</span><span id="line-209">    <span class="n">docs</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
+</span><span id="line-210"><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Query</span><span class="p">],</span> <span class="n">SearchResults</span><span class="p">]:</span>
+</span><span id="line-211"><span class="w">    </span><span class="sd">"""</span>
+</span><span id="line-212"><span class="sd">    Factory function that creates a search function via vector store.</span>
+</span><span id="line-213"><span class="sd">    This can be used with check_search_func_factory.</span>
+</span><span id="line-214"><span class="sd">    """</span>
+</span><span id="line-215">    <span class="c1"># Create vector store from docs</span>
+</span><span id="line-216">    <span class="n">vs_id</span><span class="p">,</span> <span class="n">file_id_mapping</span> <span class="o">=</span> <span class="n">docs_to_vector_store</span><span class="p">(</span><span class="n">docs</span><span class="p">)</span>
+</span><span id="line-217">
+</span><span id="line-218">    <span class="c1"># Create and return search function with proper mapping</span>
+</span><span id="line-219">    <span class="k">return</span> <span class="n">mk_search_func_for_oa_vector_store</span><span class="p">(</span><span class="n">vs_id</span><span class="p">,</span> <span class="n">file_id_mapping</span><span class="p">)</span></div>
 
 </span></code></pre></div>
     </div></div>
@@ -399,7 +415,7 @@
 </footer>
     </div>
     
-    <script src="../../_static/documentation_options.js?v=9d458db5"></script>
+    <script src="../../_static/documentation_options.js?v=393d09ac"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
