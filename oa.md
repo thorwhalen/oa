@@ -1,4 +1,4 @@
-> built 2026-10-13 05:42 UTC from 061ce0e (main) · oa 0.1.57. Details: build_info.json
+> built 2026-10-13 07:23 UTC from 833d13a (main) · oa 0.1.58. Details: build_info.json
 
 # index.html.md
 
@@ -2735,7 +2735,7 @@ Create a search function for an OpenAI vector store using the Responses API.
 
 # About this build
 
-This documentation was built on **2026-10-13 05:42 UTC** from commit <a href="https://github.com/thorwhalen/oa/commit/061ce0ee721399a5dc675fdc523b454047e5d3c3"><code>061ce0e</code></a> on branch <code>main</code>, for **oa 0.1.57** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-10-13 07:23 UTC** from commit <a href="https://github.com/thorwhalen/oa/commit/833d13aa9cbfd1b4abb3fda2d867c96cd1df11cf"><code>833d13a</code></a> on branch <code>main</code>, for **oa 0.1.58** (from <code>pyproject.toml</code>).
 
 #### NOTE
 Nothing suggests a mismatch: the tree was clean at the commit above, and the documented version is the one on PyPI.
@@ -2744,9 +2744,9 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 
 |                     |                                                                                                                                                      |
 |---------------------|------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/thorwhalen/oa/commit/061ce0ee721399a5dc675fdc523b454047e5d3c3"><code>061ce0ee721399a5dc675fdc523b454047e5d3c3</code></a> |
+| Commit              | <a href="https://github.com/thorwhalen/oa/commit/833d13aa9cbfd1b4abb3fda2d867c96cd1df11cf"><code>833d13aa9cbfd1b4abb3fda2d867c96cd1df11cf</code></a> |
 | Branch              | <code>main</code>                                                                                                                                    |
-| Tags at this commit | <code>0.1.57</code>                                                                                                                                  |
+| Tags at this commit | <code>0.1.58</code>                                                                                                                                  |
 | Working tree        | clean                                                                                                                                                |
 | Remote              | <code>https://github.com/thorwhalen/oa</code>                                                                                                        |
 
@@ -2755,15 +2755,15 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
 | Repository   | <code>thorwhalen/oa</code>                                                                 |
-| Run          | <a href="https://github.com/thorwhalen/oa/actions/runs/38352519893">38352519893</a>        |
+| Run          | <a href="https://github.com/thorwhalen/oa/actions/runs/38362043507">38362043507</a>        |
 | Ref          | <code>refs/heads/main</code>                                                               |
-| Event commit | <code>e6c9266f9ecdaccb36d3fbfd9259811955e63e1f</code> (in the history of the built commit) |
+| Event commit | <code>81f04a2d5fa57d22a691eb42690931ab55592611</code> (in the history of the built commit) |
 
 ## Tools
 
 |          |         |
 |----------|---------|
-| epythet  | 0.2.13  |
+| epythet  | 0.2.14  |
 | Sphinx   | 9.1.0   |
 | docutils | 0.22.4  |
 | Python   | 3.12.15 |
@@ -2782,14 +2782,14 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 
 ## Package on PyPI
 
-Latest release: <a href="https://pypi.org/project/oa/0.1.57/">0.1.57</a>, the same as the documented version.
+Latest release: <a href="https://pypi.org/project/oa/0.1.58/">0.1.58</a>, the same as the documented version.
 
 ## Reproduce
 
 ```bash
 git clone https://github.com/thorwhalen/oa && cd oa
-git checkout 061ce0ee721399a5dc675fdc523b454047e5d3c3
-pip install "epythet==0.2.13"
+git checkout 833d13aa9cbfd1b4abb3fda2d867c96cd1df11cf
+pip install "epythet==0.2.14"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```
 

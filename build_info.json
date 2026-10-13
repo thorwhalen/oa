@@ -1,38 +1,38 @@
 {
   "schema_version": 1,
-  "built_at": "2026-10-13T05:42:51Z",
+  "built_at": "2026-10-13T07:23:53Z",
   "package": {
     "name": "oa",
-    "version": "0.1.57",
+    "version": "0.1.58",
     "display_name": "oa",
     "source": "pyproject.toml"
   },
   "git": {
     "available": true,
-    "commit": "061ce0ee721399a5dc675fdc523b454047e5d3c3",
-    "short_commit": "061ce0e",
+    "commit": "833d13aa9cbfd1b4abb3fda2d867c96cd1df11cf",
+    "short_commit": "833d13a",
     "branch": "main",
     "tags": [
-      "0.1.57"
+      "0.1.58"
     ],
     "dirty": false,
     "remote_url": "https://github.com/thorwhalen/oa",
-    "commit_url": "https://github.com/thorwhalen/oa/commit/061ce0ee721399a5dc675fdc523b454047e5d3c3",
+    "commit_url": "https://github.com/thorwhalen/oa/commit/833d13aa9cbfd1b4abb3fda2d867c96cd1df11cf",
     "error": null
   },
   "ci": {
     "provider": "github",
     "repository": "thorwhalen/oa",
-    "sha": "e6c9266f9ecdaccb36d3fbfd9259811955e63e1f",
+    "sha": "81f04a2d5fa57d22a691eb42690931ab55592611",
     "sha_in_history": true,
     "ref": "refs/heads/main",
     "ref_name": "main",
-    "run_id": "38352519893",
-    "run_url": "https://github.com/thorwhalen/oa/actions/runs/38352519893",
+    "run_id": "38362043507",
+    "run_url": "https://github.com/thorwhalen/oa/actions/runs/38362043507",
     "server_url": "https://github.com"
   },
   "tools": {
-    "epythet": "0.2.13",
+    "epythet": "0.2.14",
     "sphinx": "9.1.0",
     "docutils": "0.22.4",
     "python": "3.12.15"
@@ -62,11 +62,11 @@
   },
   "pypi": {
     "checked": true,
-    "latest": "0.1.57",
+    "latest": "0.1.58",
     "relation": "same",
     "error": null
   },
-  "reproduce": "git clone https://github.com/thorwhalen/oa && cd oa\ngit checkout 061ce0ee721399a5dc675fdc523b454047e5d3c3\npip install \"epythet==0.2.13\"\nepythet quickstart . --ignore tests/ scrap/ examples/",
+  "reproduce": "git clone https://github.com/thorwhalen/oa && cd oa\ngit checkout 833d13aa9cbfd1b4abb3fda2d867c96cd1df11cf\npip install \"epythet==0.2.14\"\nepythet quickstart . --ignore tests/ scrap/ examples/",
   "warnings": [],
   "alignment": {
     "aligned": true,
