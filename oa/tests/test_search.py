@@ -181,7 +181,7 @@ def test_vector_store_search_functionality():
         assert vs_id and len(file_mapping) == len(docs)
         search_func = mk_search_func_for_oa_vector_store(vs_id, file_mapping)
         assert callable(search_func)
-        assert search_func("programming") is not None
+        assert isinstance(search_func("programming"), list)
     finally:
         _delete_vector_store(vs_id, file_mapping)
 
