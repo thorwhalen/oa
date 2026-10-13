@@ -1,0 +1,57 @@
+{
+  "collection_duration_seconds": 15.248493194580078,
+  "commit_message": "fix(vector_stores): UTF-8 writes; log failed cleanup (sprint review) (#29)\n\n* test(vector_stores): non-ASCII documents are written as UTF-8\n\nCo-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>\n\n* fix(vector_stores): write documents as UTF-8; log failed cleanup instead of swallowing it\n\nCo-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>\n\n---------\n\nCo-authored-by: Claude Sonnet 5.5 <noreply@anthropic.com>",
+  "commit_sha": "81f04a2d5fa57d22a691eb42690931ab55592611",
+  "metrics": {
+    "coverage": {
+      "branch_coverage": 0.0,
+      "error": "No coverage file found",
+      "line_coverage": 0.0,
+      "statements_covered": 0,
+      "statements_total": 0
+    },
+    "umpyre_stats": {
+      "comment_lines": 69291,
+      "comment_lines_ratio": 0.046643487743555395,
+      "docs_lines": 276096,
+      "empty_lines": 236295,
+      "empty_lines_ratio": 0.15906283552500933,
+      "errors": [
+        "_dtype_like.py: invalid syntax (_dtype_like.py, line 21)",
+        "_char_codes.py: invalid syntax (_char_codes.py, line 3)",
+        "_shape.py: invalid syntax (_shape.py, line 4)",
+        "_array_like.py: invalid syntax (_array_like.py, line 15)",
+        "_scalars.py: invalid syntax (_scalars.py, line 7)",
+        "_nbit.py: invalid syntax (_nbit.py, line 6)",
+        "mypy_plugin.py: invalid syntax (mypy_plugin.py, line 118)"
+      ],
+      "files_analyzed": 4533,
+      "function_lines": 874326,
+      "function_lines_ratio": 0.5885557152425541,
+      "mean_lines_per_function": 19.094673393173032,
+      "num_classes": 11465,
+      "num_functions": 45789,
+      "pypi_version": "0.1.57",
+      "total_errors": 7,
+      "total_lines": 1485545
+    },
+    "wily": {
+      "cyclomatic_avg": 0.0,
+      "error": "wily report failed: Usage: wily report [OPTIONS] FILE [METRICS]...\nTry 'wily report --help' for help.\n\nError: Invalid value for '-f' / '--format': 'json' is not one of 'CONSOLE', 'HTML'.\n",
+      "files_analyzed": 0,
+      "maintainability_index": 0.0,
+      "total_loc": 0
+    },
+    "workflow_status": {
+      "last_run_status": "success",
+      "last_success_timestamp": "2026-10-13T07:20:17Z",
+      "recent_failure_count": 0,
+      "run_url": "https://github.com/thorwhalen/oa/actions/runs/38361777776",
+      "total_runs_analyzed": 10
+    }
+  },
+  "python_version": "3.10",
+  "schema_version": "1.0",
+  "timestamp": "2026-10-13T07:22:41.829894Z",
+  "workflow_status": {}
+}
