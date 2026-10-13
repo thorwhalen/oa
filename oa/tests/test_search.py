@@ -1,6 +1,7 @@
 """Test search functionality"""
 
 from collections.abc import Callable
+from functools import wraps
 
 import pytest
 
@@ -76,9 +77,9 @@ def general_test_for_search_function(
     error_message = "\n".join(error_context)
 
     # Perform the assertion
-    assert top_results_contain(
-        top_results_to_check, top_results_expected_to_contain
-    ), error_message
+    assert top_results_contain(top_results_to_check, top_results_expected_to_contain), (
+        error_message
+    )
 
 
 # ─── Test Documents ────────────────────────────────────────────────────────────
@@ -151,6 +152,7 @@ def check_search_func_factory(
 # ------------------------------------------------------------------------------
 # Tests
 
+import oa.vector_stores as vector_stores_module
 from oa.vector_stores import (
     OaStores,
     OaVectorStoreFiles,
@@ -162,13 +164,13 @@ from oa.vector_stores import (
 
 def _delete_vector_store(vs_id, file_ids, *, client=None):
     """Best-effort removal of a test vector store and the files uploaded for it."""
-    oa_stores = OaStores(client)
+    client = OaStores(client).client if client is None else client  # (or a fake)
     try:
-        oa_stores.client.vector_stores.delete(vs_id)
+        client.vector_stores.delete(vs_id)
     finally:
         for file_id in file_ids:
             try:
-                oa_stores.client.files.delete(file_id)
+                client.files.delete(file_id)
             except Exception:  # already gone: nothing left to clean up
                 pass
 
@@ -186,12 +188,121 @@ def test_vector_store_search_functionality():
         _delete_vector_store(vs_id, file_mapping)
 
 
+def _recording(real_docs_to_vector_store, created: list):
+    """Wrap ``docs_to_vector_store`` so that every store it makes is noted in ``created``
+    as ``(vector_store_id, {file_id: doc_key})``."""
+
+    @wraps(real_docs_to_vector_store)
+    def docs_to_vector_store_that_records(*args, **kwargs):
+        vs_id, file_mapping = real_docs_to_vector_store(*args, **kwargs)
+        created.append((vs_id, file_mapping))
+        return vs_id, file_mapping
+
+    return docs_to_vector_store_that_records
+
+
+def _delete_all(created: list, *, client=None):
+    """Delete every recorded store (and its files), then raise if any deletion failed,
+    so that a leak is a visible failure rather than a silent one."""
+    failures = []
+    for vs_id, file_mapping in created:
+        try:
+            _delete_vector_store(vs_id, file_mapping, client=client)
+        except Exception as error:
+            failures.append(f"{vs_id}: {error!r}")
+    if failures:
+        raise AssertionError(f"could not delete test vector stores: {failures}")
+
+
+def _record_created_vector_stores(monkeypatch) -> list:
+    """Make ``oa.vector_stores.docs_to_vector_store`` (which the search factory calls)
+    note every store it creates in the returned list."""
+    created = []
+    monkeypatch.setattr(
+        vector_stores_module,
+        "docs_to_vector_store",
+        _recording(vector_stores_module.docs_to_vector_store, created),
+    )
+    return created
+
+
+@pytest.fixture
+def created_vector_stores(monkeypatch):
+    """The vector stores that ``docs_to_vector_store`` makes during the test, deleted
+    (with their files) afterwards, whether the test passed or not."""
+    created = _record_created_vector_stores(monkeypatch)
+    yield created
+    _delete_all(created)
+
+
 @pytest.mark.needs_api
-def test_vector_store_search_with_api():
+def test_vector_store_search_with_api(created_vector_stores):
     """Run the full vector store search test with actual API calls."""
-    print("Running full vector store search test with API calls...")
     check_search_func_factory(docs_to_search_func_factory_via_vector_store)
-    print("✓ Full vector store search test completed successfully")
+    assert created_vector_stores  # (they are deleted by the fixture)
+
+
+# ------------------------------------------------------------------------------
+# The clean-up machinery itself, with a fake client: no API call, no key needed
+
+
+class _FakeClient:
+    def __init__(self, *, failing_vector_stores=()):
+        self.deleted_vector_stores, self.deleted_files = [], []
+        self._failing = set(failing_vector_stores)
+        client = self
+
+        class _VectorStores:
+            def delete(self, vs_id):
+                if vs_id in client._failing:
+                    raise RuntimeError("boom")
+                client.deleted_vector_stores.append(vs_id)
+
+        class _Files:
+            def delete(self, file_id):
+                client.deleted_files.append(file_id)
+
+        self.vector_stores, self.files = _VectorStores(), _Files()
+
+
+def test_recording_notes_what_the_wrapped_function_makes():
+    created = []
+    wrapped = _recording(lambda docs, name=None: ("vs_1", {"f1": "a"}), created)
+    assert wrapped({"a": "x"}, "n") == ("vs_1", {"f1": "a"})
+    assert created == [("vs_1", {"f1": "a"})]
+
+
+def test_the_search_factory_goes_through_the_recorded_function(monkeypatch):
+    """What the fixture relies on: the factory looks ``docs_to_vector_store`` up in the
+    module, so the recorder sees the store it creates (fakes: no API call)."""
+    monkeypatch.setattr(
+        vector_stores_module, "docs_to_vector_store", lambda docs: ("vs_9", {"f9": "k"})
+    )
+    monkeypatch.setattr(
+        vector_stores_module,
+        "mk_search_func_for_oa_vector_store",
+        lambda vs_id, file_mapping: lambda query: [],
+    )
+    created = _record_created_vector_stores(monkeypatch)
+    search = docs_to_search_func_factory_via_vector_store({"k": "text"})
+    assert search("q") == [] and created == [("vs_9", {"f9": "k"})]
+
+
+def test_delete_all_removes_every_store_and_its_files():
+    client = _FakeClient()
+    _delete_all(
+        [("vs_1", {"f1": "a", "f2": "b"}), ("vs_2", {"f3": "c"})], client=client
+    )
+    assert client.deleted_vector_stores == ["vs_1", "vs_2"]
+    assert client.deleted_files == ["f1", "f2", "f3"]
+
+
+def test_delete_all_still_deletes_the_rest_and_the_files_when_one_fails():
+    client = _FakeClient(failing_vector_stores={"vs_1"})
+    with pytest.raises(AssertionError, match="vs_1"):
+        _delete_all([("vs_1", {"f1": "a"}), ("vs_2", {"f2": "b"})], client=client)
+    assert client.deleted_vector_stores == ["vs_2"]
+    assert client.deleted_files == ["f1", "f2"]
 
 
 # ------------------------------------------------------------------------------
