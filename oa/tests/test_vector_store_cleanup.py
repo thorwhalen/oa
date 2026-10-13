@@ -53,14 +53,19 @@ def test_success_keeps_store_and_files_and_leaves_no_temp_files():
     assert _tmp_docs_files() == before
 
 
-def test_client_is_reused_not_recreated_per_document(monkeypatch):
+def test_client_is_made_once_not_per_document(monkeypatch):
+    """With no client given, the one made for the stores is reused for every upload."""
     import oa.stores
+    import oa.util
 
     client = _mk_client()
-    monkeypatch.setattr(
-        oa.stores, "mk_client", lambda *a, **k: pytest.fail("new client made")
-    )
-    docs_to_vector_store(DOCS, "x", client=client)
+    made = []
+    for module in (oa.util, oa.stores):
+        monkeypatch.setattr(
+            module, "mk_client", lambda *a, **k: made.append(1) or client
+        )
+    docs_to_vector_store(DOCS, "x")
+    assert len(made) == 1
     assert client.files.create.call_count == len(DOCS)
 
 
