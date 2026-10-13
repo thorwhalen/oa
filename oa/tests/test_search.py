@@ -1,7 +1,6 @@
 """Test search functionality"""
 
 from collections.abc import Callable
-import os
 
 import pytest
 
@@ -161,52 +160,32 @@ from oa.vector_stores import (
 )
 
 
-def test_vector_store_search_functionality():
-    """Test the vector store search functionality."""
-
-    # Skip test if no OpenAI API key
-    if not os.getenv("OPENAI_API_KEY") and not os.getenv("OPEN_AI_KEY"):
-        print("Skipping vector store tests - no OpenAI API key found")
-        return
-
+def _delete_vector_store(vs_id, file_ids, *, client=None):
+    """Best-effort removal of a test vector store and the files uploaded for it."""
+    oa_stores = OaStores(client)
     try:
-        print("Testing docs_to_vector_store and mk_search_func_for_oa_vector_store...")
+        oa_stores.client.vector_stores.delete(vs_id)
+    finally:
+        for file_id in file_ids:
+            try:
+                oa_stores.client.files.delete(file_id)
+            except Exception:  # already gone: nothing left to clean up
+                pass
 
-        # Test the individual functions first
-        print("1. Testing docs_to_vector_store...")
-        vs_id, file_mapping = docs_to_vector_store(docs, "test_search_vs")
-        print(f"   Created vector store: {vs_id}")
-        print(f"   File mapping: {len(file_mapping)} files")
 
-        print("2. Testing mk_search_func_for_oa_vector_store...")
+@pytest.mark.needs_api
+def test_vector_store_search_functionality():
+    """Create a vector store from ``docs``, search it, and always delete it."""
+    vs_id, file_mapping = docs_to_vector_store(docs, "test_search_vs")
+    try:
+        assert vs_id and len(file_mapping) == len(docs)
         search_func = mk_search_func_for_oa_vector_store(vs_id, file_mapping)
-        print("   Search function created successfully")
-
-        # Test a simple search
-        print("3. Testing search functionality...")
-        results = search_func("programming")
-        print(f"   Search results: {results}")
-
-        # Test with the factory function using our existing test framework
-        print("4. Testing with check_search_func_factory...")
-        print("   Note: This will create an actual vector store and use OpenAI API")
-
-        # Uncomment the line below to run the full test (uses API calls)
-        # check_search_func_factory(docs_to_search_func_factory_via_vector_store)
-
-        print("✓ Vector store search functions created successfully")
-        print("✓ Basic functionality verified")
-        print("Note: Full search testing requires API calls and is commented out")
-
-    except Exception as e:
-        print(f"✗ Vector store test failed: {e}")
-        print("This might be due to API key issues or OpenAI service availability")
-        import traceback
-
-        traceback.print_exc()
+        assert callable(search_func)
+        assert search_func("programming") is not None
+    finally:
+        _delete_vector_store(vs_id, file_mapping)
 
 
-# Function to run the full test with API calls (uncomment to use)
 @pytest.mark.needs_api
 def test_vector_store_search_with_api():
     """Run the full vector store search test with actual API calls."""
