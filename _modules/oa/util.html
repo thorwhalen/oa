@@ -320,7 +320,7 @@
 </span><span id="line-142">    <span class="n">info_filepath</span> <span class="o">=</span> <span class="n">data_files</span> <span class="o">/</span> <span class="s2">"openai_api_pricing_info.json"</span>
 </span><span id="line-143">    <span class="k">if</span> <span class="n">print_data_date</span><span class="p">:</span>
 </span><span id="line-144">        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Data date: </span><span class="si">{</span><span class="n">info_filepath</span><span class="o">.</span><span class="n">stat</span><span class="p">()</span><span class="o">.</span><span class="n">st_mtime</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-</span><span id="line-145">    <span class="n">info</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">info_filepath</span><span class="o">.</span><span class="n">read_text</span><span class="p">())</span>
+</span><span id="line-145">    <span class="n">info</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">info_filepath</span><span class="o">.</span><span class="n">read_text</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="s2">"utf-8"</span><span class="p">))</span>
 </span><span id="line-146">
 </span><span id="line-147">    <span class="k">if</span> <span class="n">category</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="line-148">
@@ -1208,7 +1208,7 @@
 </footer>
     </div>
     
-    <script src="../../_static/documentation_options.js?v=755f2e77"></script>
+    <script src="../../_static/documentation_options.js?v=5fe4e9ad"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
