@@ -1,24 +1,24 @@
 metric,value
 schema_version,1.0
-timestamp,2026-10-14T00:39:10.203208Z
-commit_sha,6568548f194422d4b28b725ed907fdaba6bdef88
-commit_message,"chore(windows): utf-8 for pricing json read; dol>=0.3.70 (utf-8 TextFiles) (#21)
-
-Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>"
+timestamp,2026-10-14T00:39:12.896141Z
+commit_sha,122847c8dadc43695ec0d0319bb3b16187c1fd1d
+commit_message,Merge 6568548f194422d4b28b725ed907fdaba6bdef88 into eb1a84a4d37e695ad0e164ae2589e799a409ac0e
 python_version,3.10
-metrics.umpyre_stats.num_functions,46484
-metrics.umpyre_stats.num_classes,11687
-metrics.umpyre_stats.total_lines,1481496
-metrics.umpyre_stats.empty_lines,235578
-metrics.umpyre_stats.comment_lines,69821
-metrics.umpyre_stats.docs_lines,252690
-metrics.umpyre_stats.function_lines,861052
-metrics.umpyre_stats.empty_lines_ratio,0.15901359166680168
-metrics.umpyre_stats.comment_lines_ratio,0.04712871313861124
-metrics.umpyre_stats.function_lines_ratio,0.5812044041968388
-metrics.umpyre_stats.mean_lines_per_function,18.52362103089235
-metrics.umpyre_stats.files_analyzed,4647
+metrics.umpyre_stats.num_functions,45833
+metrics.umpyre_stats.num_classes,11465
+metrics.umpyre_stats.total_lines,1486776
+metrics.umpyre_stats.empty_lines,236460
+metrics.umpyre_stats.comment_lines,69320
+metrics.umpyre_stats.docs_lines,276462
+metrics.umpyre_stats.function_lines,875425
+metrics.umpyre_stats.empty_lines_ratio,0.15904211528838239
+metrics.umpyre_stats.comment_lines_ratio,0.046624373812867576
+metrics.umpyre_stats.function_lines_ratio,0.5888075944190652
+metrics.umpyre_stats.mean_lines_per_function,19.100320729605308
+metrics.umpyre_stats.files_analyzed,4533
 metrics.umpyre_stats.pypi_version,0.1.59
+metrics.umpyre_stats.errors,"['_dtype_like.py: invalid syntax (_dtype_like.py, line 21)', '_char_codes.py: invalid syntax (_char_codes.py, line 3)', '_shape.py: invalid syntax (_shape.py, line 4)', '_array_like.py: invalid syntax (_array_like.py, line 15)', '_scalars.py: invalid syntax (_scalars.py, line 7)', '_nbit.py: invalid syntax (_nbit.py, line 6)', 'mypy_plugin.py: invalid syntax (mypy_plugin.py, line 118)']"
+metrics.umpyre_stats.total_errors,7
 metrics.workflow_status.last_run_status,success
 metrics.workflow_status.last_success_timestamp,2026-10-14T00:35:21Z
 metrics.workflow_status.recent_failure_count,0
@@ -38,4 +38,4 @@ metrics.coverage.branch_coverage,0.0
 metrics.coverage.statements_covered,0
 metrics.coverage.statements_total,0
 metrics.coverage.error,No coverage file found
-collection_duration_seconds,15.229772806167603
+collection_duration_seconds,16.683342695236206
