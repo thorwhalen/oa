@@ -1,8 +1,20 @@
 metric,value
 schema_version,1.0
-timestamp,2026-10-14T00:39:15.169684Z
-commit_sha,122847c8dadc43695ec0d0319bb3b16187c1fd1d
-commit_message,Merge 6568548f194422d4b28b725ed907fdaba6bdef88 into eb1a84a4d37e695ad0e164ae2589e799a409ac0e
+timestamp,2026-10-14T00:41:33.655347Z
+commit_sha,fe917988b3611965f7158f3eb4540fa9ac394076
+commit_message,"Windows CI: path-independent Resources doctest, utf-8 hardening (#21) (#32)
+
+* fix(windows-ci): make the Resources doctest path-separator independent (#21)
+
+Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>
+
+* chore(windows): utf-8 for pricing json read; dol>=0.3.70 (utf-8 TextFiles) (#21)
+
+Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>
+
+---------
+
+Co-authored-by: Claude Sonnet 5.5 <noreply@anthropic.com>"
 python_version,3.10
 metrics.umpyre_stats.num_functions,46484
 metrics.umpyre_stats.num_classes,11687
@@ -18,9 +30,9 @@ metrics.umpyre_stats.mean_lines_per_function,18.52362103089235
 metrics.umpyre_stats.files_analyzed,4647
 metrics.umpyre_stats.pypi_version,0.1.59
 metrics.workflow_status.last_run_status,success
-metrics.workflow_status.last_success_timestamp,2026-10-14T00:35:21Z
+metrics.workflow_status.last_success_timestamp,2026-10-14T00:40:38Z
 metrics.workflow_status.recent_failure_count,0
-metrics.workflow_status.run_url,https://github.com/thorwhalen/oa/actions/runs/38490822181
+metrics.workflow_status.run_url,https://github.com/thorwhalen/oa/actions/runs/38491431087
 metrics.workflow_status.total_runs_analyzed,10
 metrics.wily.cyclomatic_avg,0.0
 metrics.wily.maintainability_index,0.0
@@ -36,4 +48,4 @@ metrics.coverage.branch_coverage,0.0
 metrics.coverage.statements_covered,0
 metrics.coverage.statements_total,0
 metrics.coverage.error,No coverage file found
-collection_duration_seconds,12.736772775650024
+collection_duration_seconds,8.838202476501465

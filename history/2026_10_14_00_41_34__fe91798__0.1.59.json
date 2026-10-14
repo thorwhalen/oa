@@ -1,0 +1,47 @@
+{
+  "collection_duration_seconds": 8.838202476501465,
+  "commit_message": "Windows CI: path-independent Resources doctest, utf-8 hardening (#21) (#32)\n\n* fix(windows-ci): make the Resources doctest path-separator independent (#21)\n\nCo-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>\n\n* chore(windows): utf-8 for pricing json read; dol>=0.3.70 (utf-8 TextFiles) (#21)\n\nCo-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>\n\n---------\n\nCo-authored-by: Claude Sonnet 5.5 <noreply@anthropic.com>",
+  "commit_sha": "fe917988b3611965f7158f3eb4540fa9ac394076",
+  "metrics": {
+    "coverage": {
+      "branch_coverage": 0.0,
+      "error": "No coverage file found",
+      "line_coverage": 0.0,
+      "statements_covered": 0,
+      "statements_total": 0
+    },
+    "umpyre_stats": {
+      "comment_lines": 69821,
+      "comment_lines_ratio": 0.04712871313861124,
+      "docs_lines": 252690,
+      "empty_lines": 235578,
+      "empty_lines_ratio": 0.15901359166680168,
+      "files_analyzed": 4647,
+      "function_lines": 861052,
+      "function_lines_ratio": 0.5812044041968388,
+      "mean_lines_per_function": 18.52362103089235,
+      "num_classes": 11687,
+      "num_functions": 46484,
+      "pypi_version": "0.1.59",
+      "total_lines": 1481496
+    },
+    "wily": {
+      "cyclomatic_avg": 0.0,
+      "error": "wily report failed: Usage: wily report [OPTIONS] FILE [METRICS]...\nTry 'wily report --help' for help.\n\nError: Invalid value for '-f' / '--format': 'json' is not one of 'CONSOLE', 'HTML'.\n",
+      "files_analyzed": 0,
+      "maintainability_index": 0.0,
+      "total_loc": 0
+    },
+    "workflow_status": {
+      "last_run_status": "success",
+      "last_success_timestamp": "2026-10-14T00:40:38Z",
+      "recent_failure_count": 0,
+      "run_url": "https://github.com/thorwhalen/oa/actions/runs/38491431087",
+      "total_runs_analyzed": 10
+    }
+  },
+  "python_version": "3.10",
+  "schema_version": "1.0",
+  "timestamp": "2026-10-14T00:41:33.655347Z",
+  "workflow_status": {}
+}
