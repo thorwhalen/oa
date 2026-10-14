@@ -128,8 +128,8 @@ class Resources:
     OpenAI pricing data through a chain of computations.
 
     >>> r = Resources()  # doctest: +ELLIPSIS
-    >>> r.resources_dir  # doctest: +ELLIPSIS
-    '...misc/data/resources'
+    >>> pathlib.Path(r.resources_dir).parts[-3:]
+    ('misc', 'data', 'resources')
     """
 
     resources_dir: str = dflt_resources_dir
