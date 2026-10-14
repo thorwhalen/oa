@@ -142,7 +142,7 @@ def pricing_info(category: PricingCategory = None, *, print_data_date=False):
     info_filepath = data_files / "openai_api_pricing_info.json"
     if print_data_date:
         print(f"Data date: {info_filepath.stat().st_mtime}")
-    info = json.loads(info_filepath.read_text())
+    info = json.loads(info_filepath.read_text(encoding="utf-8"))
 
     if category is None:
 

@@ -24,7 +24,7 @@ classifiers = [
 dependencies = [
     "openai",
     "i2",
-    "dol",
+    "dol>=0.3.70",  # TextFiles reads utf-8 explicitly (Windows)
     "config2py",
     "graze",
     "jsonref",
